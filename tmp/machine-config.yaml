@@ -1,0 +1,34 @@
+version: v1alpha1 # Indicates the schema used to decode the contents.
+debug: false # Enable verbose logging to the console.
+persist: true
+# Provides machine specific configuration options.
+machine:
+    type: controlplane # Defines the role of the machine within the cluster.
+    token: qllftl.hvaya09jbgvyb2tp # The `token` is used by a machine to join the PKI of the cluster.
+    # The root certificate authority of the PKI.
+    ca:
+        crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJQakNCOGFBREFnRUNBaEJTU1lJQ1A4VWI4QXlpS3JHV0hOSHFNQVVHQXl0bGNEQVFNUTR3REFZRFZRUUsKRXdWMFlXeHZjekFlRncweU5EQTJNVGd3TURBM01qSmFGdzB6TkRBMk1UWXdNREEzTWpKYU1CQXhEakFNQmdOVgpCQW9UQlhSaGJHOXpNQ293QlFZREsyVndBeUVBUXQzTEptRkkyVkpSeG1tN2pnMzVhMWNzb3Jrcy9CODR0dFo2CmMySUJ2RUNqWVRCZk1BNEdBMVVkRHdFQi93UUVBd0lDaERBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUkKS3dZQkJRVUhBd0l3RHdZRFZSMFRBUUgvQkFVd0F3RUIvekFkQmdOVkhRNEVGZ1FVL0NMbkdjUzl2emRibFh1dQp5RURubDh4N01aNHdCUVlESzJWd0EwRUFMV1Ayd0dhSHpaS3ZuTnFFOXBIQ1hHMzZaSlRCRVFGcWhvbVZXNjk3CjVNY2FMZG0rOXRSV09obFhNdXcyNitLWU1OV1AwN05abVBwVGR0cStReVpYQkE9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+        key: LS0tLS1CRUdJTiBFRDI1NTE5IFBSSVZBVEUgS0VZLS0tLS0KTUM0Q0FRQXdCUVlESzJWd0JDSUVJSjNGZmVkb0JscCtLVHVXU0FBWCtVZFEydkxkcGRnMnZNdkt3NElOUWx2UgotLS0tLUVORCBFRDI1NTE5IFBSSVZBVEUgS0VZLS0tLS0K
+    # # Extra certificate subject alternative names for the machine's certificate.
+    # certSANs: []
+    # #   # Uncomment this to enable SANs.
+    # #   - 10.0.0.10
+    # #   - 172.16.0.10
+    # #   - 192.168.0.10
+
+    # # Used to provide additional options to the kubelet.
+    # kubelet:
+    #     image: ghcr.io/siderolabs/kubelet:v1.30.1 # The `image` field is an optional reference to an alternative kubelet image.
+    #     defaultRuntimeSeccompProfileEnabled: true # Enable container runtime default Seccomp profile.
+    #     disableManifestsDirectory: true # The `disableManifestsDirectory` field configures the kubelet to get static pod manifests from the /etc/kubernetes/manifests directory.
+    network:
+      interfaces:
+        - interface: enp1s0
+          mtu: 1500
+        - interface: enp1s0.10
+          mtu: 1500
+          addresses:
+            - 192.168.3.2/24
+          routes:
+            - network: 0.0.0.0/0
+              gateway: 192.168.3.1
