@@ -24,7 +24,7 @@ nodes:
   - hostname: "mercury"
     ipAddress: "192.168.3.2"
     installDisk: "/dev/sdb"
-    talosImageURL: factory.talos.dev/installer/ed036d0640097a4e7af413ee089851a12963cd2e2e1715f8866d551d17c2ec62
+    talosImageURL: factory.talos.dev/installer/c7633ae86fe02768faed949925a605979dfe45fc19cd4df00737f545178aca34
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -41,7 +41,7 @@ nodes:
   - hostname: "venus"
     ipAddress: "192.168.3.3"
     installDisk: "/dev/sdb"
-    talosImageURL: factory.talos.dev/installer/ed036d0640097a4e7af413ee089851a12963cd2e2e1715f8866d551d17c2ec62
+    talosImageURL: factory.talos.dev/installer/ef3f62d618366591f9187970d5b97b87bb9c5343733a251a608540305d3c0c10
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -58,7 +58,7 @@ nodes:
   - hostname: "earth"
     ipAddress: "192.168.3.4"
     installDisk: "/dev/sdb"
-    talosImageURL: factory.talos.dev/installer/ed036d0640097a4e7af413ee089851a12963cd2e2e1715f8866d551d17c2ec62
+    talosImageURL: factory.talos.dev/installer/6f5d793fff60bade112dab4fac88f27a0abda72bc98b0b22dbb6630db8dcff59
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
