@@ -22,53 +22,38 @@ cniConfig:
 
 nodes:
   - hostname: "mercury"
-    ipAddress: "192.168.3.2"
+    ipAddress: ""
     installDisk: "/dev/sdb"
-    talosImageURL: factory.talos.dev/installer/c7633ae86fe02768faed949925a605979dfe45fc19cd4df00737f545178aca34
+    talosImageURL: factory.talos.dev/installer/5b3717ebb1bc80ddea39bb8ae3cfd3294bfcfb13e05dcd6f1aa54b8e8f9dbcc1
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "e8:ff:1e:d2:a7:4a"
-        dhcp: false
-        addresses:
-          - "192.168.3.2/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "192.168.3.1"
+        dhcp: true
         mtu: 1500
         vip:
           ip: "192.168.3.20"
   - hostname: "venus"
-    ipAddress: "192.168.3.3"
+    ipAddress: ""
     installDisk: "/dev/sdb"
-    talosImageURL: factory.talos.dev/installer/ef3f62d618366591f9187970d5b97b87bb9c5343733a251a608540305d3c0c10
+    talosImageURL: factory.talos.dev/installer/5b3717ebb1bc80ddea39bb8ae3cfd3294bfcfb13e05dcd6f1aa54b8e8f9dbcc1
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "e8:ff:1e:d2:a6:7b"
-        dhcp: false
-        addresses:
-          - "192.168.3.3/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "192.168.3.1"
+        dhcp: true
         mtu: 1500
         vip:
           ip: "192.168.3.20"
   - hostname: "earth"
-    ipAddress: "192.168.3.4"
+    ipAddress: ""
     installDisk: "/dev/sdb"
-    talosImageURL: factory.talos.dev/installer/6f5d793fff60bade112dab4fac88f27a0abda72bc98b0b22dbb6630db8dcff59
+    talosImageURL: factory.talos.dev/installer/5b3717ebb1bc80ddea39bb8ae3cfd3294bfcfb13e05dcd6f1aa54b8e8f9dbcc1
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "e8:ff:1e:d2:a8:a8"
-        dhcp: false
-        addresses:
-          - "192.168.3.4/24"
-        routes:
-          - network: 0.0.0.0/0
-            gateway: "192.168.3.1"
+        dhcp: true
         mtu: 1500
         vip:
           ip: "192.168.3.20"
