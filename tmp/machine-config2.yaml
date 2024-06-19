@@ -1,0 +1,13 @@
+machine:
+  network:
+    hostname: "mercury"
+    interfaces:
+      - deviceSelector:
+        hardwareAddr: "e8:ff:1e:d2:a7:4a"    
+        vlans:
+          - vlanId: 10
+            mtu: 1500
+            dhcp: true
+            routes:            
+              - network: 0.0.0.0/0
+                gateway: 192.168.3.1
