@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: minio-secret
+## sops --encrypt --in-place ./kubernetes/apps/kube-system/minio/app/minio.sops.yaml
+## sops --decrypt ./kubernetes/apps/kube-system/minio/app/minio.sops.yaml | kubectl apply -f -
+stringData:
+    MINIO_ROOT_USER: ENC[AES256_GCM,data:eOkgBxi42dWdPw==,iv:lMZsCC3x/1zkkIjqykJYOziVuDFtzTDeVva1PlWa6ds=,tag:n1g8OIRl4nMASKEY0yhEPg==,type:str]
+    MINIO_ROOT_PASSWORD: ENC[AES256_GCM,data:qebNUgn7EVLkLg==,iv:Mw8jgyfpG6pHkKjqt9f5jCYAHBJJJYgKllNuZd5Yml8=,tag:1rJOz0OddSYbdYCHA4aoMg==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBYamllYUMvejVJUzdINm9O
+            cDBxS1lMdWtRR3Q5R1NmLzBndlphM1FtSlVJCitCT3FCMU9lSGtxWDFpZDNyQzR0
+            bjBBaHU5YUtUQnlsdkozRFppY3FMbW8KLS0tIEg0YlRrTEduSTFqdFpYTXZkTnNo
+            QnpqcHk2c0l3b2ZWRVhIZFd0TndaVHcKz6hxhPI5BAWmER0/OlSRsdkoyI+O+tnH
+            0BezMxK/eICrzl3IBzALCHtVsjvtIYbq6FityMgA+QBpJti5pIqCJw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-06-21T03:18:24Z"
+    mac: ENC[AES256_GCM,data:Wy6qBdLPH6Aa7FMrwJ9FhgGw82Kb5uYPBXmhQmFHnRGasO2jorjI9x40hqUmBpIC2AtzunYQIhtbynYZqrzaQ4qM7ZdEFnEt5s7o4re47p3f9U5o2/uWIASUQUEbm5U/HbCq7pEOo1oSa9BsT6pBfCtcZrLuWsD8AHooO+bhjl8=,iv:9dVIa+rvxgqFV4rny7lXBgbwF3KDpouChpnWKbm75iM=,tag:AQIs6phB4fMITolJI95vNg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
