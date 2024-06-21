@@ -68,3 +68,8 @@ tasks:
         sh: test -f {{.AGE_FILE}}
       - msg: Missing Github deploy key file
         sh: test -f {{.GITHUB_DEPLOY_KEY_FILE}}
+
+  commit:
+    desc: Stage, commit & push
+    cmds:
+      - git add -A && git commit -m {{ .CLI_ARGS }} && git push && task cluster:reconcile
