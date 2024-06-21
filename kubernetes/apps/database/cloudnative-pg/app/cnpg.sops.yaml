@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: cloudnative-pg-secrets
+stringData:
+    username: postgres
+    password: current93
+    AWS_ACCESS_KEY_ID: uzV8EQRuOmJNXua5S7cc
+    AWS_SECRET_ACCESS_KEY: 692L86nRLkDWbE4sbvjmU0rGZoEnHqbyGLRR5Xmg
+    POSTGRES_SUPER_USER: postgres
+    POSTGRES_SUPER_PASS: current93
