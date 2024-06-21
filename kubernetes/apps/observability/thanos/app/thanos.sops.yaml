@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: thanos-secrets
+## sops --encrypt --in-place ./kubernetes/apps/observability/thanos/app/thanos.sops.yaml
+## sops --decrypt ./kubernetes/apps/observability/thanos/app/thanos.sops.yaml | kubectl apply -f -
+stringData:
+    BUCKET_NAME: ENC[AES256_GCM,data:Lwvx/lPj,iv:Sf4vkfxF4srXxtrNYMx5cqJqe9VoyivV0n2XjVXYnmY=,tag:nGNMjhlYlEsmFN+qW4ylNw==,type:str]
+    BUCKET_HOST: ENC[AES256_GCM,data:gUYM77GiCx0sepHiy79763tPoZk839SG75v4TQTo553aLblkIXHrSA==,iv:fGj4fbnyhYx8eTvRMuHoS3RocseFa3+xkB904w+6ORE=,tag:rHafgc7LhIKapDR50+hagg==,type:str]
+    BUCKET_REGION: ENC[AES256_GCM,data:SiCGCWlU3pSx,iv:uqeTODdOBGWRKKtHElBsjRpPYkW01hVb4/8/+tguyg4=,tag:cLrVcFprooifNpME1O73tQ==,type:str]
+    AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:JYlPNRQy8us9qKirgsUns9TmbqM=,iv:2ArZe6J5TwMyWGYWsZhwZqJZ2chKySVpddKYs+qXeOw=,tag:ZzPieFXN9Ye1k4pDPJzEEQ==,type:str]
+    AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:Nuhk0aJim5FGwe3Zn7q6bmjYZpM0Fi0BbnzPI0H+hngE4u6SrbuEfQ==,iv:wL+b+hvBx+5sysRoA+RNiofkFOs8+d0tAAedGDRLDSU=,tag:dE5XCmsMLOBtYblnnUHZ1g==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAyR3M3STBieGVUVjhZQWlW
+            M29mSmtaUHVvVGFBT3lxVFQwbDBWWE9pdVQwClZoc0hKMFFYaFU3M2ZDejFlYzM0
+            V2tzd1ovZEc1NzBTQTZ2RytTeWtCUFkKLS0tIHZveU51Mmw4OXlsSjlRNGhNQWNp
+            clEzTyt6M29qSU9MaFpwYVBwdGFCa2cKe5t/HowaTs6NvXYG/csIvU5vrTDrm8fD
+            gy88TvixMsjPGbYX8fuD7/1J6EomDR97QK13iXYgqf/t37+ixP/tzw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-06-21T03:59:38Z"
+    mac: ENC[AES256_GCM,data:doM5gfXYqHHGqUgmV+zmztkaHHNmC0B0fHD81CFRq0DiQC6MJBlVLeOsvTU6hKy/sE5nr9kWZ31ANnXvNT/U8+jWSryIwLlFH7E4Er+pbm76tC6PQ6q9KnsPuD6ztRmmMQ1UI0dw/QWagTauvDRWB/hNSM911qxwpAMefnqJ2fA=,iv:gNZsNks/TjtksszRx2Rq09jzJV0qxJ+Cu8dRKuy9ZQ0=,tag:0PbgYGTpDsTXgsBKvTMpkw==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
