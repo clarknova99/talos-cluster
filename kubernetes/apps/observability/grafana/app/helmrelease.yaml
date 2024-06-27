@@ -61,7 +61,9 @@ spec:
         client_id: grafana
         allow_assign_grafana_admin: true
         role_attribute_path: |
-          contains(groups, 'grafana-admin') && 'GrafanaAdmin' || contains(groups, 'people') && 'Viewer'      
+          contains(groups, 'grafana-admin') && 'GrafanaAdmin' || contains(groups, 'people') && 'Viewer'  
+      log.console:
+        level: debug    
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
