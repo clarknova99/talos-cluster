@@ -1,5 +1,5 @@
 ---
-# Note: Authelia vars should be escaped with $${VAR_NAME} to avoid interpolation by Flux
+# Note: Authelia vars should be escaped with ${VAR_NAME} to avoid interpolation by Flux
 authentication_backend:
   ldap:
     address: ldap://lldap.default.svc.cluster.local:38
@@ -28,10 +28,10 @@ session:
   expiration: 1h
   remember_me: 1M
   cookies:
-    - name: $${SECRET_DOMAIN}_session
-      domain: $${SECRET_DOMAIN}
-      authelia_url: https://auth.$${SECRET_DOMAIN}
-      default_redirection_url: https://$${SECRET_DOMAIN}
+    - name: ${SECRET_DOMAIN}_session
+      domain: ${SECRET_DOMAIN}
+      authelia_url: https://auth.${SECRET_DOMAIN}
+      default_redirection_url: https://${SECRET_DOMAIN}
   redis:
     database_index: 2
     host: dragonfly.database.svc.cluster.local
@@ -39,12 +39,12 @@ session:
 notifier:
   disable_startup_check: true
   smtp:
-    username: "$${SECRET_MAIL_USERNAME}"
+    username: "${SECRET_MAIL_USERNAME}"
     # Password can also be set using a secret: https://www.authelia.com/configuration/methods/secrets/
-    password: "$${SECRET_MAIL_PASSWORD}"
-    sender: "$${SECRET_DOMAIN} auth <auth@$${SECRET_DOMAIN}>"
-    host: "$${SECRET_MAIL_HOST}"
-    port: "$${SECRET_MAIL_PORT}"
+    password: "${SECRET_MAIL_PASSWORD}"
+    sender: "${SECRET_DOMAIN} auth <auth@${SECRET_DOMAIN}>"
+    host: "${SECRET_MAIL_HOST}"
+    port: "${SECRET_MAIL_PORT}"
 
 totp:
   disable: false
