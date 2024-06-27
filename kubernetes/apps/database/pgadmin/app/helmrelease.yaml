@@ -47,6 +47,7 @@ spec:
               PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
               PGADMIN_DEFAULT_EMAIL: ${SECRET_PGADMIN_USERNAME}
               PGADMIN_DEFAULT_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
+              PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 10
             resources:
               requests:
                 cpu: 50m
