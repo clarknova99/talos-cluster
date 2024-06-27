@@ -16,6 +16,7 @@ resources:
   - ./openebs.yaml
   - ./postfinance.yaml
   - ./prometheus-community.yaml
+  - ./runix.yaml
   - ./spegel.yaml
   - ./stakater.yaml
   - ./stevehipwell.yaml
