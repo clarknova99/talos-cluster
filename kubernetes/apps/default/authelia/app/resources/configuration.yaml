@@ -1,5 +1,6 @@
 ---
-# Note: Authelia vars should be escaped with ${VAR_NAME} to avoid interpolation by Flux
+  # To allow sign in both with username and email, one can use a filter like
+  #  users_filter: (&(|({username_attribute}={input})({mail_attribute}={input}))(objectClass=person))
 authentication_backend:
   ldap:
     address: ldap://lldap.default.svc.cluster.local:389
@@ -7,11 +8,11 @@ authentication_backend:
     timeout: 5s
     start_tls: false
     base_dn: dc=home,dc=arpa
-    additional_users_dn: ou=people,ou=users
-    users_filter: (&({username_attribute}={input})(objectClass=posixAccount))
-    additional_groups_dn: ou=users
-    groups_filter: (&(uniqueMember={dn})(objectClass=posixGroup))
-    user: cn=search,ou=svcaccts,ou=users,dc=home,dc=arpa
+    additional_users_dn: ou=people
+    users_filter: (&({username_attribute}={input})(objectClass=person))
+    additional_groups_dn: ou=groups
+    groups_filter: (member={dn})
+    user: uid=admin,ou=people,dc=home,dc=arpa
     attributes:
       username: uid
       display_name: displayName
