@@ -33,6 +33,7 @@ spec:
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
       GF_SERVER_ROOT_URL: https://grafana.${SECRET_DOMAIN}
+      GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}
     grafana.ini:
       analytics:
         check_for_updates: false
@@ -57,7 +58,6 @@ spec:
         token_url: https://auth.${SECRET_DOMAIN}/api/oidc/token
         api_url: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
         client_id: grafana
-        client_secret: ${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}
       auth.basic:
         enabled: false        
     dashboardProviders:
