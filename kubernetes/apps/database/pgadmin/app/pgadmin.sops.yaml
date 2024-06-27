@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: pgadmin-secret-auth
+## sops --encrypt --in-place ./kubernetes/apps/database/pgadmin/app/pgadmin.sops.yaml
+## sops --decrypt ./kubernetes/apps/database/pgadmin/app/pgadmin.sops.yaml | kubectl apply -f -    
+stringData:
+    config_local.py: ENC[AES256_GCM,data:d2I8/oR5YP6ZSMshIjjtwCS5r3PkryfbWU381BMm0CPz8QSTExXrTw11vzt4izVZWO+ZYVFhxZmIvoOqqB+HoV4Ky7vJ7TOgZ2pNIK48B+qu+s7TdVqOb5tEZ0tscnv9gpHDXKU2g6O7yci07hg1WRNqGkDTYyZDtx5O662ptf8U0GIlWBm+/XzGHMwOxI2dpURq6AqACLvL2642KbNSc2J/mo5pW0HZRpV/gDcImtGRbqYLakF2DhFuPgy7dFVG4/Bvz0/ELb3BrSFmUMWKgUrUZtAjLvCzYDB7J38sjgOU1AS/xBekjhAauAfa+bfpj0dzUO1X+bq8KGnVRZiUjBx2r7dXK/GFQOJvcdThm0dH8/Ptgbf9Kc/slCN84BQKrX65F/BFedaXvr25rvpqAuXIGIwtdOhRLN3QFkh5mCWKk8KpFc3DdE7gw7uqLu7QmA3/6UBLhhe4uvqM0jhOpEXoi9iKPHVXnR6kGCBCIPCQe0FTorWZvNQB7KGSO9BvR8ZGocIuWviNZ1BYvgIn8jels2QJEJCuVCgELoNqcrCly8nVl4qxqhuztFQV6KUFMO/WTNazT4IyqE+nFGjK5tQODV1FIi2EJ7A/33xUN8Gh/0x7ro0Q8cxb4pEnL9ZzpwB+wwh6oL1/KmCrQux3WUslkKb62xMY44QjBWEZUCXbuemJnKNJBaP1UqoA0pGUxNVxRgcbwWoBJ744LXEBG4GVkUIpaHMvjhijeyjZz5Su99JqoCZC8QonBwSxzsS4Y3o1fd7m1abEX6LMvr9npSpOE/Yv1Dm0jxccsTal3TD+PMvy4LjjxbPR/2bneJqETHvsIsXQ6EvVlygeWd+ipSL+b8czKXAdtOQ4MMx2lbiA/yviSdZNsFdt09+ik7vcsMngGr5CI8qmokcbdOYWU5oTz3hFv53+1wBJ3PGj9q8aXItodgO/vlFqmJSYR81e7KyzYYZg2rBwOgBy8FpCIY5mJ9+cOMxbgdUM0yh+1abRpcg1Df4VbTURilHatHi3FuPs6DDQULcfCgxMvo2g/DDwZ5HDKDghk9g9BBgAzQ4vHSDuZTOH13phZA==,iv:pZam2jsw/EkhgMsFgIM5Vfh+5THomM3KW1aU6wJFKbE=,tag:5ECohsIBwS4r+VxC4yORMA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBhTzF0NzgyTVBPdnFOYmdN
+            VTdscjliL2JkME1IekIwd3k0RG5HU2ZFeDJ3CmFkcnEvRW9wd1o2WTFqM1JDQ3ZW
+            NjNZcXZFaEplUkZBb1FsZHd3RG82ZWcKLS0tIFdQSEt6Tlp4MEFESElQc0lOelh0
+            MFJKZ1RDV1hWNWV4WEtoS0JySkh5UUUKI463QS7ue51oeIHJ660i/dAwYdR2I3bZ
+            Py/txP+XPVu+B+dcnkfHTUOonxVnGknBfaFasYrRuKjkS9oKSzqDdw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-06-27T16:59:32Z"
+    mac: ENC[AES256_GCM,data:cweudMEghCfD+BBeIShpvSr60MyJlECFG67M4HcJPun+MEvQEkV//6teSoHtIS0mZfQMbzBa9NYm2dUbXlLwmCIAmbejSiZWnGRDQAj+WKhW/5e0NEkD/6FZMfSMh/Zr2FZKlaV+4fXsElcftStKlwgk0UtJ7womih6jtSdZXfI=,iv:QbSNXRyOVSvsOl3wTs3fkZ9WUtcErXEkvY6mtPlCYeA=,tag:w5n3Jjtwp1CtVMdGUNV/Bw==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1

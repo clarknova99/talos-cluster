@@ -93,6 +93,15 @@ identity_providers:
         redirect_uris: ["https://minio.${SECRET_DOMAIN}/oauth_callback"]
         scopes: ["openid", "profile", "groups", "email"]
         userinfo_signing_algorithm: none
+      - client_id: pgadmin
+        client_name: pgAdmin
+        client_secret: ${SECRET_OAUTH_CLIENT_SECRET}
+        public: false
+        authorization_policy: one_factor
+        redirect_uris: https://pgadmin.${SECRET_DOMAIN}/oauth2/authorize
+        scopes: ["openid", "profile", "groups", "email"]
+        userinfo_signed_response_alg: none
+        token_endpoint_auth_method: client_secret_basic      
       # - id: headlamp
       #   description: Headlamp
       #   secret: "${SECRET_HEADLAMP_OAUTH_CLIENT_SECRET}"
