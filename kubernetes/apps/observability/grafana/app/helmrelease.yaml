@@ -59,6 +59,7 @@ spec:
         token_url: https://auth.${SECRET_DOMAIN}/api/oidc/token
         api_url: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
         client_id: grafana
+        allow_assign_grafana_admin: true
       auth.generic_oauth.group_mapping:
         role_attribute_path: |
           contains(groups[*], 'grafana-admin') && 'Admin' || contains(groups[*], 'people') && 'Viewer'      
