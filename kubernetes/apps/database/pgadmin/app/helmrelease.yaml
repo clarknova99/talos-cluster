@@ -48,6 +48,7 @@ spec:
               PGADMIN_DEFAULT_EMAIL: ${SECRET_PGADMIN_USERNAME}
               PGADMIN_DEFAULT_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
               PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 10
+              PGADMIN_CONFIG_AUTHENTICATION_SOURCES: "['oauth2']"
             resources:
               requests:
                 cpu: 50m
