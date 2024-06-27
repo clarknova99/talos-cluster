@@ -41,9 +41,9 @@ spec:
         reporting_enabled: false
       news:
         news_feed_enabled: false
-      auth:
-        oauth_auto_login: true
-        oauth_allow_insecure_email_lookup: true
+      # auth:
+      #   oauth_auto_login: true
+      #   oauth_allow_insecure_email_lookup: true
       auth.generic_oauth:
         enabled: true
         name: Authelia
@@ -58,8 +58,8 @@ spec:
         token_url: https://auth.${SECRET_DOMAIN}/api/oidc/token
         api_url: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
         client_id: grafana
-      auth.basic:
-        enabled: false        
+      # auth.basic:
+      #   enabled: false        
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
