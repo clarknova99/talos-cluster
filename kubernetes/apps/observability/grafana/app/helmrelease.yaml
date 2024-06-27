@@ -40,6 +40,26 @@ spec:
         reporting_enabled: false
       news:
         news_feed_enabled: false
+      auth:
+        oauth_auto_login: true
+        oauth_allow_insecure_email_lookup: true
+      auth.generic_oauth:
+        enabled: true
+        name: Authelia
+        icon: signin
+        scopes: openid profile email groups
+        empty_scopes: false
+        login_attribute_path: preferred_username
+        groups_attribute_path: groups
+        name_attribute_path: name
+        use_pkce: true
+        auth_url: https://auth.${SECRET_DOMAIN}/api/oidc/authorization
+        token_url: https://auth.${SECRET_DOMAIN}/api/oidc/token
+        api_url: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
+        client_id: grafana
+        client_secret: ${SECRET_GRAFANA_OAUTH_CLIENT_SECRET}
+      auth.basic:
+        enabled: false        
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -238,6 +258,11 @@ spec:
       enabled: true
       annotations:
         external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        nginx.ingress.kubernetes.io/auth-method: GET
+        nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
+        nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN}?rm=$request_method
+        nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+        nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;            
       ingressClassName: internal
       hosts: ["grafana.${SECRET_DOMAIN}"]
     persistence:
