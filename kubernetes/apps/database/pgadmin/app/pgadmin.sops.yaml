@@ -5,7 +5,7 @@ metadata:
 ## sops --encrypt --in-place ./kubernetes/apps/database/pgadmin/app/pgadmin.sops.yaml
 ## sops --decrypt ./kubernetes/apps/database/pgadmin/app/pgadmin.sops.yaml | kubectl apply -f -    
 stringData:
-    config_local.py: ENC[AES256_GCM,data:h2Vt1ZxzZY2rb92xYqfcszQH/0e57eTmHZpk3iLK6us8gVQnO+5rhB28RlFuU2u6s/K22+ONvxTs+lSs2iqM0Geq3y7KIbeovp/5rq6zaVdi8XKVEgF7mQA+yifBAajW2emLwW2C54o+oVX5O0VIz8Rbzp9QUBSH+YvknU6Zg+bRLB0zlIPkCzxrnJLc62eUavGKnnikEyC+ENkiXEU6FCKH2BqHKaOkBZW7mcKbyKvqCWGkhjX37zCvRnSVnVwz28ag9v3v6Iv3C7VPOKyby5xr9kwghtOQQvSEfiQlpTDyE+9e/NCW+peaQ4exeoHSd3aUC2vfJjEyiNN7E1rbyQYtr8fWZeKFyjlaaZovhndl9+hTj3VYeqRhS13Q0z+kUQJOhe5WpuMq5W9Sgf4eUakfIvVTPsl7sx71DW2sVirGOhOwj5n6rFSWzBze11kBOnrUDKuKb1tavRI00LYXkpIuBDxWqJdPncs6iQN29sHDw1h3/mMriBq7bj+dyst+ej/p0WvhIw/lV/XsZo+sd0eiBqTS1QBxLi5B2b032V9qcpy3W0MazrQN2djcBfj09RAMI8NDLUtu8orKi2vSS5TD8ctt6ziwKNjw14EaB2tTBfcEbReYkjSPPnAkLTdODmnot5PxpvrV6qRzEVGNl35Ge6zQu6IMIRQRRfjbN4gmndqbSfGXQvjl9LzEHtkPVU2NisGbgYiW/ddHYr4RVbz2sH5dtsPavh9CVmi75GWl3zO22i0eoX1PG1pmw293IfIwSJ3fjENFE8J6YaOBFM64SANh9wDGGEN+u2N7BeWN8tvlQ4HLJZsytc0HDZ47TnNQLHYd0LVRJZXAPEaynrJ3IbXDBnVCu5aS65BJHVOsrscHJyMANsknxnlrxPOP2X4EXXj7a0MHK5YHK7oNnpCqike7QoGWcpW+kjLxtaiXAy293lYxA8tCYZfvl19SuG0iXpPEumRH8XBz0DxGWFt5m2U5yc0VYhojKUwealmCJCRsHYdiJSuyhGTQH3WT6uY1ZWwRosGuvUM+1iEWvQ/1HVUUBH3rgR1c3e6HVUTG08zRor4=,iv:amAl3qG0RTXVEHBApr+aH5BV88PdqLvugQmCGJ98Xl0=,tag:DArKf/wLfUDzCLv4DK+qVg==,type:str]
+    config_local.py: ENC[AES256_GCM,data:5uXK/wb4VvuPdctElNcUlkiMZYE40etzaXVeALqaZlT2nZoqkqCp8Vbe69yr0z/2oTN4ClQ9mpP/fuq4HO/GjQ4Q+Bj4p73OciGu8XPoGF6GO1jlnxkF/koOjA09iT2sPYg8MgyF3i+Sl4vzhSULWEzvlTBUk2v1QFz/56OZikvucRW5hbuLIrm5o2bBF1zoT24XgIRAZf9XubuUk0xPMoc/KDy3rOnF+kjC5oQK001JBjNyIXixqLbK2wC06bNvRUxIlGRZ1P7hChpgr2tnG2EpTVfoBxCM+qZuDsgZI0uQNtfnDOBEcmuxs68blguAqaKrmHWAJFx5YSGU+0AcuBce3hAt7KokP+e2ggZjuUqrRDCY834zH/snQF3CCVJTlBRJcFwlw5jnPbHmIce9zPEb7QIr3lh7Fx/3yvfpdaz2tZ4KTU+Ks3qImkZiK/AUoxmqg5eMK5y85K27WXjGAEqzCdF20diqo298rgLu4zEOrAgFuMWyvUPCIihRcYq8h9EGC3+lYH344n4Sm4Qu0p9naYA3P9pQXesCDLWP90cmvL2eQCF/L1JM2CmVKOMtfImGFeLRPOivydl+7W8OQQFTiGLgZublSRj/CFfH7vQ899rt8dADHesgSIMTzGz9FwJFC/V3eW4ZKM+OMkrnjHn3aWdda2oRbMIEbXBdO0jWPjXPEM80YT9EuGzUySzrkwlSxyZkh6yPlTEZo4YPY8THsteofMnBr2ToKZSg2e0lx0Q291Oe1Zq6MRwFECP9m5ByHDZIqApzm5zDQC0zE+LwAqcQ6qlzBSElQvS4cuFZfzvVENnG/nN5SMf9uyweGBvD0q19eo0yGqEYxJDp6ojEgNGMOG+qkwU1xVf+bONr0osrurNi1yq0wSTPnezKI7vxwaKs/Ott9yMIdpfmPr5saoYCKyF5DPLZa++KICow0f5lrelOw4dzmEz6TJ6BphYqEipXxjwtk+tXfFOF13j6ZZHDiF2HUU5FKyqm+w+pQWCns7aZFgBwXc50Yda3JKGqi5i2fFskgmajhmgQNhHQ+pk9VIGHf/XRuxeEqvxI5lKW7jIK0esW8beAgaqZtzTOOd5WpIImw6WhGgzlXNlmZn6wKXAWbq088Q==,iv:B8Iaq0K5Nq0PK0t7EqY7oeqEvCO2Elqgy6PLvL7PvEk=,tag:B+qRBpmAT35/5KTlgW+DYg==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -21,8 +21,8 @@ sops:
             MFJKZ1RDV1hWNWV4WEtoS0JySkh5UUUKI463QS7ue51oeIHJ660i/dAwYdR2I3bZ
             Py/txP+XPVu+B+dcnkfHTUOonxVnGknBfaFasYrRuKjkS9oKSzqDdw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-27T17:45:18Z"
-    mac: ENC[AES256_GCM,data:VDEC0E/NkVypyAfrgjHgyiljXwH2l9d6GYUEggQXBZvQ2qOFqA/srwVjk1ZLKjV4OY4HOVij1x9EljCsw9mlXtmngJYvvXFkHtUmroo3cxAblTsaJbBXTY0xuau/f+gJnrPLhvUXm4F2W/lhLNgCWkZDVuXzs9Zdvnwq72M0z+I=,iv:C6cVtPPmNjY2Lq8Kn5j7aQLwdBaIBmG/2IUv7bmhIRw=,tag:HP+BgQ1hBrlBhiRW+iTkGQ==,type:str]
+    lastmodified: "2024-06-27T18:07:27Z"
+    mac: ENC[AES256_GCM,data:aAIf+LAWqFq9j3fxuEAyXPkgb27ABU2YOQgKQZQFwwsNqCI48GSR9yRFOsqJsEr/o8PjUpuk3gA89spl4Lht3nfe1WPdQ8QvHm5H/FUpfRSggZA7YZr6oOMSSoQ7RsCzN/nDlwN/eeVh6yEB0OqwgjBcz6ZfMRBePc9oJ9y6bCc=,iv:jAWRePX5ubEvY/qurZybZ5BwgsNU4DVgZIrVEtvQROc=,tag:jVxqq7hY/4RijhO8fDlvLQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
