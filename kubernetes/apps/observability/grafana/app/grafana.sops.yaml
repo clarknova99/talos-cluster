@@ -5,7 +5,7 @@ metadata:
 ## sops --encrypt --in-place ./kubernetes/apps/observability/grafana/app/grafana.sops.yaml
 ## sops --decrypt ./kubernetes/apps/observability/grafana/app/grafana.sops.yaml | kubectl apply -f -    
 stringData:
-    admin-user: ENC[AES256_GCM,data:W9lz8jpWig==,iv:+9VrbPAsaco7DC9lJNxcvKcthjcPxp2lR5Nw5SP0cYw=,tag:9wfSzz5immQRCAw8bCfyxg==,type:str]
+    admin-user: ENC[AES256_GCM,data:R0z+cARCbFi7KaJdbA==,iv:317Ezi21n806Wz3baoSDgDB+SwK2ynnuCJ4O4dTCvQ4=,tag:F80XGnmxIGRdDoGHfy7sDA==,type:str]
     admin-password: ENC[AES256_GCM,data:LYsWtQ6VhMJ2,iv:EeIRi50DoB3Upj4Y4HnyXHrwzdOp/eIX/Ylpy7TQmt4=,tag:vzZQZ/jc8Vze8pp5ZKta6A==,type:str]
 sops:
     kms: []
@@ -22,8 +22,8 @@ sops:
             TC84RXRBdzZJQUJFbTF0a3cxeVFvSzAKrIEI7DJKXVaBBG9CkVbRdO4UTlSwroAk
             jiCs6A69UVabrtJvDs4x3zmIYDE0Fnro02FPaLL293aU2+P5HYdnnA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-21T16:38:53Z"
-    mac: ENC[AES256_GCM,data:Md2tqmR1Dqu6Xe2EcqZKcun3tmlkPd28aeT8GojEbq/Tn9dj2qiofqXpFrjxpIyBj+Fsp1PCeqD7l/MsUvZ5yyg7XnfhPvrRm+xrT4UgBKuPhd4FNZSBnhKFA08vntBEr+Q+YkH0C4X+YXlhWiUj0EyF9P6lJYMH7RuPaBXHaVI=,iv:eBkad7evx7zm2T6ccpsqArKvDg8ag798vKxz8km7HvE=,tag:WreA2OCA977JX8bDWS+WCg==,type:str]
+    lastmodified: "2024-06-27T20:55:55Z"
+    mac: ENC[AES256_GCM,data:yx8bX54rSbUWUES5zyWOSZOsEYl3BWKn1UuBg8FoL2oUklbXeRsKzJnmNz/x3xiEFFGLvv8ypzDyr2heTh3p1TSj0aGkCKKvAGNW7P1rcHqI7opptDuQa+dUjfjUH2DwnMs2JuDEzEwo2PADTenvYFwWyVnlEjJ4fH+GkwP2zL8=,iv:540cI/JBmegsc+8PurWJxOW0ucX8KhiQFpA/0UvjUFQ=,tag:EKd2Cnnyzy2nGWMEDJVesA==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
