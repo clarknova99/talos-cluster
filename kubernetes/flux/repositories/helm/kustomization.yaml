@@ -15,6 +15,7 @@ resources:
   - ./metrics-server.yaml
   - ./openebs.yaml
   - ./postfinance.yaml
+  - ./prefect.yaml
   - ./prometheus-community.yaml
   - ./runix.yaml
   - ./spegel.yaml
