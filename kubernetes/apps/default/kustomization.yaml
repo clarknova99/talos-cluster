@@ -7,5 +7,5 @@ resources:
   - ./authelia/ks.yaml
   - ./hajimari/ks.yaml
   - ./lldap/ks.yaml
-  - ./prefect/ks.yaml
+  #- ./prefect/ks.yaml
   - ./website/ks.yaml
