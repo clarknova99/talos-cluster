@@ -32,24 +32,21 @@ spec:
   # valuesFrom:
   #   - kind: Secret
   #     name: &db_secret prefect-db-secrets
-  #     valuesKey: connection-string
-  #     targetPath: postgresql.auth.existingSecret
+  #     valuesKey: host
+  #     targetPath: postgresql.externalHostname
   #   - kind: Secret
   #     name: *db_secret
-  #     valuesKey: LOGIN
+  #     valuesKey: username
   #     targetPath: postgresql.auth.username
   #   - kind: Secret
   #     name: *db_secret
-  #     valuesKey: PASSWORD
+  #     valuesKey: password
   #     targetPath: postgresql.auth.password
   #   - kind: Secret
   #     name: *db_secret
   #     valuesKey: HOST
   #     targetPath: postgresql.externalHostname
   values:
-    envFrom:
-      - secretRef:
-          name: prefect-db-secrets  
     server:
       image:
         repository: prefecthq/prefect
@@ -127,4 +124,9 @@ spec:
     # https://discourse.prefect.io/t/how-to-use-external-postgres-when-deploy-by-helm-chart/2501/4
     postgresql:
       enabled: false
-      existingSecret: prefect-db-secrets
+      auth:
+        existingSecret: prefect-db-secrets
+      # externalHostname: 
+      # auth.username:
+      # auth.password: 
+      # existingSecret: prefect-db-secrets
