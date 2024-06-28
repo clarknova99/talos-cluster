@@ -47,6 +47,9 @@ spec:
   #     valuesKey: HOST
   #     targetPath: postgresql.externalHostname
   values:
+    envFrom:
+      - secretRef:
+          name: prefect-db-secrets  
     server:
       image:
         repository: prefecthq/prefect
