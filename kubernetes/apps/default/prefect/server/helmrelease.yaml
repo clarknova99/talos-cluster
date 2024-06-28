@@ -29,11 +29,11 @@ spec:
           - /spec/containers/resources/limits
         target:
           kind: Pod
-  valuesFrom:
-    - kind: Secret
-      name: &db_secret prefect-db-secrets
-      valuesKey: connection-string
-      targetPath: postgresql.auth.existingSecret
+  # valuesFrom:
+  #   - kind: Secret
+  #     name: &db_secret prefect-db-secrets
+  #     valuesKey: connection-string
+  #     targetPath: postgresql.auth.existingSecret
   #   - kind: Secret
   #     name: *db_secret
   #     valuesKey: LOGIN
@@ -124,4 +124,4 @@ spec:
     # https://discourse.prefect.io/t/how-to-use-external-postgres-when-deploy-by-helm-chart/2501/4
     postgresql:
       enabled: false
-      existingSecret: *db_secret
+      existingSecret: prefect-db-secrets
