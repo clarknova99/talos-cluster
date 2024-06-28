@@ -6,6 +6,10 @@ metadata:
 ## sops --decrypt ./kubernetes/apps/default/prefect/server/prefectdb.sops.yaml | kubectl apply -f -
 stringData:
     connection-string: ENC[AES256_GCM,data:KtPW9qmrjRNQge1R6vMvCPYSBJSbklqVunCqHTQ14QK/47WvepTh1bvE0oNhB9fYHI6q2WfhvGpAdikLviApNOE4yfA3QVDmbgfOc9mJGQauuyAW0oDFqw==,iv:vZCR0uczU7h+WuhfWlhPZIpzoouVQ31mQzSpSIYOF3g=,tag:pJqAyP/j9AOY9AqQdo3iOw==,type:str]
+    host: ENC[AES256_GCM,data:5nv7uH8GeCp8IhnloC52xRwCRp0Z1Y6KjsePepgzPRL5XbEHU7+87Q==,iv:MzD20adGUmm9MZWXnLk6EQIYxIRVM+cwB4Hr/4pq8go=,tag:kfMDyezB+B0aG8FVI7o8dA==,type:str]
+    username: ENC[AES256_GCM,data:CALXMZ2NBns=,iv:SLjsdj/GKIqRzRkYiKvqPF5KcXfC44aqh71qEOvm/iY=,tag:8jFeImoEkpDhaKVgmbaNzg==,type:str]
+    password: ENC[AES256_GCM,data:BYbtIyj+Tr8Y,iv:dN6XmdFP+PYMmGj0U+/4jRJnBYWit4nljSruCqE/U4s=,tag:emaDekV2xT/86QTwvFr2dQ==,type:str]
+    database: ENC[AES256_GCM,data:ZSRCnbmOUA==,iv:OactaF/aRZO7twWj3PsjA4JdQe2FQG7jZwALSrPBKLs=,tag:qKdimQrLPtQsxgSpStAuGA==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -21,8 +25,8 @@ sops:
             WGR4RzN3cjJBeStDZHlWcTBkdEE1Ym8K0FnNxK7kOkPf+CT01qvUI/CSk9QUM1hi
             Z85rdKcwCWNXFx/NnSOekPsd1CEXprXnaGib2tifsQvt9ZJHSKx0jQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-28T17:40:50Z"
-    mac: ENC[AES256_GCM,data:oCxYyCXfJDfozbUQ7sExc1RKtPcPmuz2xADNQYzYC6CdLen2Y36l196vA28i/+JFnJtiPRC9VhwbLIfacv7ZqNBXHaAPREbchaT84xr8fTOloGuUqWDw9gnYZA8kls/x93l4l+N9N1JA+O4bcR+4x0NbjwYTsaTxrdu2c6bVRkY=,iv:+zGMDUrHSz5/QOy+uh0PuduDwfevDspN61oSE9t4BOU=,tag:22lBXtvksKjqK2xpNW8g+g==,type:str]
+    lastmodified: "2024-06-28T18:34:50Z"
+    mac: ENC[AES256_GCM,data:LBQ7QGKWe7OOG8GLT6Y4rT4NmOUCB+ThcQZQ9bgcdTNBZ7//hqagIz4b/WViTo3qWAjYMA1x8U6a/FLHFZ7ad06SyomNIRuZLYUWbq45mTGYLQbDeh3dEDD7e/y1DBnzcT4iYq1iKbfO6xW7pYZVlPdC61rnpmYsz1OrKAETRss=,iv:i9l4wLGrSuvvkjE7Xf8yjZDzinJMOLpfh0eUd7ZQOSs=,tag:s6qFtITHLwQAC7YTvFXbAA==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
