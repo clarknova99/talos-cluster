@@ -16,7 +16,7 @@ authentication_backend:
     attributes:
       username: uid
       display_name: displayName
-      group_name: ou
+      group_name: cn
       mail: mail
       member_of: memberOf
   password_reset:
@@ -75,7 +75,7 @@ identity_providers:
       endpoints: ["authorization", "token", "revocation", "introspection"]
       allowed_origins_from_client_redirect_uris: true
     clients:
-      - id: grafana
+      - client_id: grafana
         client_name: grafana
         description: Grafana
         secret: "${SECRET_OAUTH_GRAFANA_CLIENT_SECRET}"
@@ -86,7 +86,7 @@ identity_providers:
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris: ["https://grafana.${SECRET_DOMAIN}/login/generic_oauth"]
         userinfo_signing_algorithm: none
-      - id: minio
+      - client_id: minio
         description: Minio
         secret: "${SECRET_OAUTH_MINIO_CLIENT_SECRET}"  # The digest of 'insecure_secret'.
         public: false
