@@ -1,0 +1,118 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app prefect-worker
+spec:
+  chart:
+    spec:
+      chart: prefect-worker
+      version: 2024.6.28162841
+      sourceRef:
+        kind: HelmRepository
+        name: prefect
+        namespace: flux-system
+  interval: 15m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths:
+          - /spec/containers/resources/limits
+        target:
+          kind: Pod
+  values:
+    worker:
+      # -- unique cluster identifier, if none is provided this value will be inferred at time of helm install
+      clusterUid: ""
+
+      image:
+        repository: prefecthq/prefect
+        prefectTag: 2-python3.11-kubernetes
+        debug: false
+
+      ## general configuration of the agent
+      config:
+        # -- name of prefect work pool the worker will poll
+        workPool: default
+        # -- how often the worker will query for runs
+        queryInterval: 5
+        # -- when querying for runs, how many seconds in the future can they be scheduled
+        prefetchSeconds: 10
+        # -- connect using HTTP/2 if the server supports it (experimental)
+        http2: true
+        ## You can set the worker type here.
+        ## The default image includes only the type "kubernetes".
+        ## Custom workers must be properly registered with the prefect cli.
+        ## See the guide here: https://docs.prefect.io/2.11.3/guides/deployment/developing-a-new-worker-type/
+        # -- specify the worker type
+        type: kubernetes
+        ## one of 'always', 'if-not-present', 'never', 'prompt'
+        # --  install policy to use workers from Prefect integration packages.
+        installPolicy: prompt
+        # -- the name to give to the started worker. If not provided, a unique name will be generated.
+        name:
+        # -- maximum number of flow runs to start simultaneously (default: unlimited)
+        limit:
+
+      ## connection settings
+      # -- one of 'cloud' or 'server'
+      apiConfig: server
+      # selfHostedCloudApiConfig:
+      #   accountId: ""
+      #   workspaceId: ""
+      #   apiKeySecret:
+      #     name: prefect-api-key
+      #     key: key
+      #   cloudUrl: https://api.prefect.cloud/api
+      # selfHostedCloudApiConfig:
+      #   apiUrl: "" # (PREFECT_API_URL)
+      #   accountId: ""
+      #   workspaceId: ""
+      #   apiKeySecret:
+      #     # -- prefect API secret name
+      #     key: key
+      #   uiUrl: ""
+      serverApiConfig:
+        # -- prefect API url (PREFECT_API_URL); should be in-cluster URL if the worker is deployed in the same cluster as the API
+        apiUrl: http://prefect-server.datasci.svc.cluster.local:4200/api
+        # uiUrl: http://localhost:4200
+
+      replicaCount: 1
+
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 100m
+        limits:
+          memory: 1Gi
+
+      ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+      podSecurityContext:
+        runAsUser: 1000
+        runAsNonRoot: true
+        fsGroup: 1002
+      ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+      containerSecurityContext:
+        runAsUser: 1000
+        runAsNonRoot: true
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+
+    ## Role configuration
+    role:
+      ## List of extra role permissions
+      ## e.g:
+      ## extraPermissions:
+      ##  - apiGroups: [""]
+      ##    resources: ["pods", "services"]
+      ##    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+      extraPermissions: []

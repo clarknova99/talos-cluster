@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: prefect-db-secrets
+## sops --encrypt --in-place ./kubernetes/apps/default/prefect/server/prefectdb.sops.yaml
+## sops --decrypt ./kubernetes/apps/default/prefect/server/prefectdb.sops.yaml | kubectl apply -f -
+stringData:
+    connection-string: ENC[AES256_GCM,data:KtPW9qmrjRNQge1R6vMvCPYSBJSbklqVunCqHTQ14QK/47WvepTh1bvE0oNhB9fYHI6q2WfhvGpAdikLviApNOE4yfA3QVDmbgfOc9mJGQauuyAW0oDFqw==,iv:vZCR0uczU7h+WuhfWlhPZIpzoouVQ31mQzSpSIYOF3g=,tag:pJqAyP/j9AOY9AqQdo3iOw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBSZEhUSjQyVi9IdXB6VUpQ
+            K3pVb1hZQk02b2NKNmJwbm9EaE51RG5pcFFNCmJsM29BdVlyaFVma25pbENMamhQ
+            MEpaYXJSQ3BpRHQ3MVNWZ0NleXduT1EKLS0tIC9DVE1vMFJudXJHTmI4NmZUSXd2
+            WGR4RzN3cjJBeStDZHlWcTBkdEE1Ym8K0FnNxK7kOkPf+CT01qvUI/CSk9QUM1hi
+            Z85rdKcwCWNXFx/NnSOekPsd1CEXprXnaGib2tifsQvt9ZJHSKx0jQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-06-28T17:40:50Z"
+    mac: ENC[AES256_GCM,data:oCxYyCXfJDfozbUQ7sExc1RKtPcPmuz2xADNQYzYC6CdLen2Y36l196vA28i/+JFnJtiPRC9VhwbLIfacv7ZqNBXHaAPREbchaT84xr8fTOloGuUqWDw9gnYZA8kls/x93l4l+N9N1JA+O4bcR+4x0NbjwYTsaTxrdu2c6bVRkY=,iv:+zGMDUrHSz5/QOy+uh0PuduDwfevDspN61oSE9t4BOU=,tag:22lBXtvksKjqK2xpNW8g+g==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
