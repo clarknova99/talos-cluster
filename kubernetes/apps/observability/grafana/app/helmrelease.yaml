@@ -42,9 +42,9 @@ spec:
         reporting_enabled: false
       news:
         news_feed_enabled: false
-      # auth:
+      auth:
       #   oauth_auto_login: true
-      #   oauth_allow_insecure_email_lookup: true
+        oauth_allow_insecure_email_lookup: true
       auth.generic_oauth:
         enabled: true
         name: Authelia
