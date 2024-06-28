@@ -5,7 +5,7 @@ metadata:
 ## sops --encrypt --in-place ./kubernetes/apps/default/prefect/server/prefectdb.sops.yaml
 ## sops --decrypt ./kubernetes/apps/default/prefect/server/prefectdb.sops.yaml | kubectl apply -f -
 stringData:
-    connection-string: ENC[AES256_GCM,data:KtPW9qmrjRNQge1R6vMvCPYSBJSbklqVunCqHTQ14QK/47WvepTh1bvE0oNhB9fYHI6q2WfhvGpAdikLviApNOE4yfA3QVDmbgfOc9mJGQauuyAW0oDFqw==,iv:vZCR0uczU7h+WuhfWlhPZIpzoouVQ31mQzSpSIYOF3g=,tag:pJqAyP/j9AOY9AqQdo3iOw==,type:str]
+    connection-string: ENC[AES256_GCM,data:n2zzFJqzP8QtLzFQA3H3yhQ2IaoFiJq1xTEi1v1kboIl9Nt5MX6Eqkfi0S/rc7IoIDBDSfmQAYW5fV5q+rWfqHBoF5oo3Pe3YvKfWrL1To9+CkDns/foTbbkI78g,iv:xyR1AsznyzIvz2aHjiZkEd2r1jZbaDvM8JtnUnNMbN0=,tag:adZ+qIHOWsF0zHr0mfE1dw==,type:str]
     host: ENC[AES256_GCM,data:5nv7uH8GeCp8IhnloC52xRwCRp0Z1Y6KjsePepgzPRL5XbEHU7+87Q==,iv:MzD20adGUmm9MZWXnLk6EQIYxIRVM+cwB4Hr/4pq8go=,tag:kfMDyezB+B0aG8FVI7o8dA==,type:str]
     username: ENC[AES256_GCM,data:CALXMZ2NBns=,iv:SLjsdj/GKIqRzRkYiKvqPF5KcXfC44aqh71qEOvm/iY=,tag:8jFeImoEkpDhaKVgmbaNzg==,type:str]
     password: ENC[AES256_GCM,data:BYbtIyj+Tr8Y,iv:dN6XmdFP+PYMmGj0U+/4jRJnBYWit4nljSruCqE/U4s=,tag:emaDekV2xT/86QTwvFr2dQ==,type:str]
@@ -26,8 +26,8 @@ sops:
             WGR4RzN3cjJBeStDZHlWcTBkdEE1Ym8K0FnNxK7kOkPf+CT01qvUI/CSk9QUM1hi
             Z85rdKcwCWNXFx/NnSOekPsd1CEXprXnaGib2tifsQvt9ZJHSKx0jQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-28T18:47:59Z"
-    mac: ENC[AES256_GCM,data:w+OmbJcC481CkU940dDRrlKlVRJRbTIeWh0HZDyaq5A/i1mMbrEm0HYHMpS4kkFCoRhFDYerU0cMHqDLbf8cXvLFhNkDQS7TfOxX++O1L0gcu99/vQCBhDxmRdcBF4m4bxB3RcnfSgMibz+QugEBsj8mbZGXxw6AxBapwBWN3PY=,iv:0DmW2VvvNtH6gND2WtXoKh1biQ4b9m9HvBBAHxZzL4A=,tag:On8Ry7bsB2xJ0ed+/DCDiw==,type:str]
+    lastmodified: "2024-06-28T18:56:15Z"
+    mac: ENC[AES256_GCM,data:pGY7e12OjyU8vE2Is31tVycwAXg4fHIuGv67z+iyLMOB7Mm04PBmTCtCj7386PYEGuxu1a1WJgnraKnHeoITAWbEI8bKjIHng0uH/vp/4yWZgmhxg2fVWJnFO5zkGBKcCm805T6ozL6j2UruSESwtyDIpbJ0x8X2vxIrV4ACD8I=,iv:iCzmZrwaHKv66coXvoDAu5GDYDUVXiEsKkSvczb7wQ0=,tag:Tr5Ang5TRcO32cUj3UdUoA==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1

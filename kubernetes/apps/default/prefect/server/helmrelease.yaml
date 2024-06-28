@@ -29,27 +29,27 @@ spec:
           - /spec/containers/resources/limits
         target:
           kind: Pod
-  valuesFrom:
-    - kind: Secret
-      name: &db_secret prefect-db-secrets
-      valuesKey: host
-      targetPath: postgresql.externalHostname
-    - kind: Secret
-      name: *db_secret
-      valuesKey: username
-      targetPath: postgresql.auth.username
-    - kind: Secret
-      name: *db_secret
-      valuesKey: password
-      targetPath: postgresql.auth.password
-    - kind: Secret
-      name: *db_secret
-      valuesKey: database
-      targetPath: postgresql.auth.database
-    - kind: Secret
-      name: *db_secret
-      valuesKey: port
-      targetPath: postgresql.containerPorts.postgresql      
+  # valuesFrom:
+  #   - kind: Secret
+  #     name: &db_secret prefect-db-secrets
+  #     valuesKey: host
+  #     targetPath: postgresql.externalHostname
+  #   - kind: Secret
+  #     name: *db_secret
+  #     valuesKey: username
+  #     targetPath: postgresql.auth.username
+  #   - kind: Secret
+  #     name: *db_secret
+  #     valuesKey: password
+  #     targetPath: postgresql.auth.password
+  #   - kind: Secret
+  #     name: *db_secret
+  #     valuesKey: database
+  #     targetPath: postgresql.auth.database
+  #   - kind: Secret
+  #     name: *db_secret
+  #     valuesKey: port
+  #     targetPath: postgresql.containerPorts.postgresql      
   values:
     server:
       image:
