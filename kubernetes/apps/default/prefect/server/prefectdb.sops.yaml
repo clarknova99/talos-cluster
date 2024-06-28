@@ -10,6 +10,7 @@ stringData:
     username: ENC[AES256_GCM,data:CALXMZ2NBns=,iv:SLjsdj/GKIqRzRkYiKvqPF5KcXfC44aqh71qEOvm/iY=,tag:8jFeImoEkpDhaKVgmbaNzg==,type:str]
     password: ENC[AES256_GCM,data:BYbtIyj+Tr8Y,iv:dN6XmdFP+PYMmGj0U+/4jRJnBYWit4nljSruCqE/U4s=,tag:emaDekV2xT/86QTwvFr2dQ==,type:str]
     database: ENC[AES256_GCM,data:ZSRCnbmOUA==,iv:OactaF/aRZO7twWj3PsjA4JdQe2FQG7jZwALSrPBKLs=,tag:qKdimQrLPtQsxgSpStAuGA==,type:str]
+    port: ENC[AES256_GCM,data:+FgNrw==,iv:krA7zkmr3C26q/zSFU6LEm7gK0iCDyI8CIRx9jPDKfQ=,tag:quVzKzgioaGnhj2d+f64iw==,type:int]
 sops:
     kms: []
     gcp_kms: []
@@ -25,8 +26,8 @@ sops:
             WGR4RzN3cjJBeStDZHlWcTBkdEE1Ym8K0FnNxK7kOkPf+CT01qvUI/CSk9QUM1hi
             Z85rdKcwCWNXFx/NnSOekPsd1CEXprXnaGib2tifsQvt9ZJHSKx0jQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-28T18:34:50Z"
-    mac: ENC[AES256_GCM,data:LBQ7QGKWe7OOG8GLT6Y4rT4NmOUCB+ThcQZQ9bgcdTNBZ7//hqagIz4b/WViTo3qWAjYMA1x8U6a/FLHFZ7ad06SyomNIRuZLYUWbq45mTGYLQbDeh3dEDD7e/y1DBnzcT4iYq1iKbfO6xW7pYZVlPdC61rnpmYsz1OrKAETRss=,iv:i9l4wLGrSuvvkjE7Xf8yjZDzinJMOLpfh0eUd7ZQOSs=,tag:s6qFtITHLwQAC7YTvFXbAA==,type:str]
+    lastmodified: "2024-06-28T18:46:00Z"
+    mac: ENC[AES256_GCM,data:i7Tj6oX4eHwTdXzl7HJxc0qV+K6uZm4gGCMaDa1EA4hTObQmRcr1a2s2KdrbPqoqIOrGTVR8Te7NGBopfwWrHJ2uk/0rSjtwvAUW6LjHVYmrLMv1+xlno916YyQflDwu5hXowUIgY4gwDumBHr1bHE17IZLsYZCaEkqiBBAjwQU=,iv:tyoyq4MDyaivw7MjBeLAdNqkOV3oTw89FmEJeh9NNew=,tag:tZ/I5YFaLdrc1M0XHdT5WQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
