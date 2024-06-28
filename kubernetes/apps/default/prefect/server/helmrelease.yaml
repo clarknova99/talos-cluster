@@ -58,8 +58,9 @@ spec:
         prefectTag: 2-python3.11-kubernetes
         debug: true
 
-      publicApiUrl: https://prefect.${SECRET_DOMAIN}/api
-      prefectApiUrl: http://prefect-server.default.svc.cluster.local:4200/api
+      #publicApiUrl: https://prefect.${SECRET_DOMAIN}/api
+      #prefectApiUrl: http://prefect-server.default.svc.cluster.local:4200/api
+      prefectApiUrl: https://prefect.${SECRET_DOMAIN}/api
 
       # https://docs.prefect.io/latest/concepts/settings/
       env:
