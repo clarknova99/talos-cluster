@@ -124,6 +124,13 @@ spec:
             jsonData:
               timeInterval: 1m
             isDefault: true
+          - name: influxdb
+            type: influxdb
+            uid: influxdb
+            access: proxy
+            url: http://influxdb.database.svc.cluster.local:8086
+            jsonData:
+              dbName: brad            
           # - name: Loki
           #   type: loki
           #   uid: loki
