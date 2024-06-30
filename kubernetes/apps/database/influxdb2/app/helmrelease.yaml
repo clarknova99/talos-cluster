@@ -36,8 +36,8 @@ spec:
     persistence:
       enabled: true
       #useExisting: true
-      existingClaim: pvc-influxdb
-      name: pvc-influxdb
+      existingClaim: pvc-influxdb2
+      name: pvc-influxdb2
 
     service:
       type: LoadBalancer
