@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: influxdb2-secrets
+## sops --encrypt --in-place ./kubernetes/apps/database/cloudnative-pg/app/cnpg.sops.yaml
+## sops --decrypt ./kubernetes/apps/database/cloudnative-pg/app/cnpg.sops.yaml | kubectl apply -f -    
+stringData:
+    admin-password: ENC[AES256_GCM,data:G8G6A4xwb1Bn,iv:dYdzXCDgjKT3gVcMRZXfVgETYdMID/je0gjH5Hmdyqk=,tag:4MoYAwvrtU1PSo6zC0EXJg==,type:str]
+    admin-token: ENC[AES256_GCM,data:pn5AQFt5,iv:KqYZyN/NbGmARTSD/4JktH8FbIvMaFWRkqWDzep+duM=,tag:pO/BsScs4fq07dvjLPIRGQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBCVVJMQlVPR0ExMWl0NjBI
+            ckRMcitLRTJ0OWNYUnUrUlBWMnZqVVlGWFM4CjBjT2x0dVEwc29adDFXeHNseDd6
+            QkFLWUZzaHFicktDQm11VDBaODN4MVEKLS0tIDlNbUNJT1NIYUY3bTdiTWpKNUNE
+            WEhMSTVuWmVad3lXbWhLNXVpb1JmWW8Kf7PL5pkzBs6Mm1gKOXxfrK47qndw+xjk
+            28bECQkANs3glfyq3jcLJvd5iErZ426kv+40xqcqjztGFaEG1YuCVA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-06-30T21:10:50Z"
+    mac: ENC[AES256_GCM,data:Tm5iAlajDUvmLWdXhkXFTFullzmmfYu/xLQ/NjEwMRyeJQWCa+gRhsPsmoW6UMAwO0zjwCSu1NX4/DfG6rwAbCYADOxprn07Q2p2Dr1IhoNNB/awraNWOnSTNacpYg0gpXeAPzIdZYLsMSJrfAnTgBdx9dJ3qYuslym03plnB50=,iv:PVoqL4c2//dnaktrHjWAoDKWpeVIdxjBo2x05winigI=,tag:7Uhr729coR2Jc5K0MW3KdA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
