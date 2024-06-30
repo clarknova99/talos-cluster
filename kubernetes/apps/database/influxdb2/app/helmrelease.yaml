@@ -30,7 +30,7 @@ spec:
       organization: "default"
       user: "admin"
       bucket: "brad"
-      existingSecret: "influxdb-secrets"
+      existingSecret: "influxdb2-secrets"
 
 
     persistence:
