@@ -131,13 +131,13 @@ spec:
             url: http://influxdb.database.svc.cluster.local:8086
             jsonData:
               dbName: brad            
-          # - name: Loki
-          #   type: loki
-          #   uid: loki
-          #   access: proxy
-          #   url: http://loki-gateway.observability.svc.cluster.local
-          #   jsonData:
-          #     maxLines: 250
+          - name: Loki
+            type: loki
+            uid: loki
+            access: proxy
+            url: http://loki-gateway.observability.svc.cluster.local
+            jsonData:
+              maxLines: 250
           # - name: Alertmanager
           #   type: alertmanager
           #   uid: alertmanager
