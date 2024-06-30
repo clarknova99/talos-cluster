@@ -6,4 +6,4 @@ resources:
   - ./influxdb2.sops.yaml
   - ./helmrelease.yaml
   #- ./ingress.yaml
-  #- ./pvc.yaml
+  - ./pvc.yaml
