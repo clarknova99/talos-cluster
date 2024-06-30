@@ -5,10 +5,10 @@ metadata:
   name: influxdb
   namespace: database
   annotations:
-    # nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    # ingress.kubernetes.io/proxy-ssl-verify: "off"
-    # ingress.kubernetes.io/force-ssl-redirect: "false"
-    # ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    ingress.kubernetes.io/proxy-ssl-verify: "off"
+    ingress.kubernetes.io/force-ssl-redirect: "false"
+    ingress.kubernetes.io/ssl-redirect: "false"
     external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
     hajimari.io/enable: "false"
 spec:
