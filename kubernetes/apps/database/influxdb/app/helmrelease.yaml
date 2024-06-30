@@ -43,10 +43,8 @@ spec:
     ##
     persistence:
       enabled: true
-      type: nfs
-      server: 192.168.1.2
-      path: /volume1/network-storage/network-storage/influxdb
-      globalMounts:
-        - path: /opt/bitnami/nginx/html
+      #useExisting: true
+      existingClaim: pvc-influxdb
+      name: pvc-influxdb
     nodeSelector:
       kubernetes.io/arch: amd64

@@ -6,4 +6,4 @@ namespace: database
 resources:
   - ./helmrelease.yaml
   - ./ingress.yaml
-  #- ./pvc.yaml
+  - ./pvc.yaml
