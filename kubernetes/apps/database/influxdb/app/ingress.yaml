@@ -24,6 +24,6 @@ spec:
                 name: influxdb
                 port:
                   number: 8086
-  tls:
-    - hosts:
-        - "influxdb-brad.${SECRET_DOMAIN}"
+  # tls:
+  #   - hosts:
+  #       - "influxdb-brad.${SECRET_DOMAIN}"
