@@ -56,9 +56,9 @@ spec:
                 service:
                   identifier: app
                   port: 8086
-        tls:
-          - hosts:
-              - influxdb-brad.${SECRET_DOMAIN}
+        # tls:
+        #   - hosts:
+        #       - influxdb-brad.${SECRET_DOMAIN}
 
     persistence:
       config:
