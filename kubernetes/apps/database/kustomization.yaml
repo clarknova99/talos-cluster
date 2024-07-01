@@ -6,6 +6,6 @@ resources:
   - ./namespace.yaml
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
-  - ./influxdb/ks.yaml
+  #- ./influxdb/ks.yaml
   - ./influxdb2/ks.yaml  
   - ./pgadmin/ks.yaml
