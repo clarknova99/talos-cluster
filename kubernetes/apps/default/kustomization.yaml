@@ -9,4 +9,4 @@ resources:
   - ./lldap/ks.yaml
   - ./prefect/ks.yaml
   - ./website/ks.yaml
-  - ./whoami/ks.yaml
+ # - ./whoami/ks.yaml
