@@ -52,7 +52,7 @@ spec:
                 service:
                   identifier: app
                   port: 80
-        tls:
-          - hosts:
-              - whoami.${SECRET_DOMAIN}
+        # tls:
+        #   - hosts:
+        #       - whoami.${SECRET_DOMAIN}
 
