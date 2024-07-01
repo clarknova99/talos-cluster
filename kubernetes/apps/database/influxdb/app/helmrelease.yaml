@@ -44,6 +44,10 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:ip-network
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          nginx.ingress.kubernetes.io/ssl-redirect: "false"
+          ingress.kubernetes.io/proxy-ssl-verify: "off"
+          ingress.kubernetes.io/force-ssl-redirect: "false"
+          ingress.kubernetes.io/ssl-redirect: "false"          
         className: external
         hosts:
           - host: influxdb-brad.${SECRET_DOMAIN}
