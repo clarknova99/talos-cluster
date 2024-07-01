@@ -6,45 +6,61 @@ metadata:
   name: influxdb
   namespace: database
 spec:
-  interval: 60m
+  interval: 15m
   chart:
     spec:
-      chart: influxdb
-      version: 4.12.1
+      chart: app-template
+      version: 3.2.1
       sourceRef:
         kind: HelmRepository
-        name: influxdata
+        name: bjw-s
         namespace: flux-system
-      interval: 60m
-  # Values link: https://github.com/influxdata/helm-charts/blob/master/charts/influxdb/values.yaml
-  # delete _internal if panics occur
+      interval: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
-    image:
-      repository: influxdb
-      #tag: 1.8.5-alpine
-      tag: 1.8.10
-    pdb:
-      create: false
+    controllers:
+      influxdb:
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: docker.io/influxdb
+              tag: 1.8.10-alpine
     service:
-      type: LoadBalancer
-      # annotations:
-      #   metallb.universe.tf/loadBalancerIPs: |-
-      #     192.168.1.66
-    env:
-      - name: TZ
-        value: America/New_York
-    resources:
-      limits:
-        memory: 500Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-    ## Persist data to a persistent volume
-    ##
+      app:
+        controller: influxdb
+        ports:
+          http:
+            port: 8086
+    ingress:
+      app:
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:ip-network
+          #external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        className: external
+        hosts:
+          - host: influxdb-brad.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: 8086
+        tls:
+          - hosts:
+              - influxdb-brad.${SECRET_DOMAIN}
+
     persistence:
-      enabled: true
-      #useExisting: true
-      existingClaim: pvc-influxdb
-      name: pvc-influxdb
-    nodeSelector:
-      kubernetes.io/arch: amd64
+      config:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/influxdb
+        globalMounts:
+          - path: /var/lib/influxdb
