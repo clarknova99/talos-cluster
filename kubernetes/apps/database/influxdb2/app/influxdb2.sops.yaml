@@ -6,7 +6,7 @@ metadata:
 ## sops --decrypt ./kubernetes/apps/database/cloudnative-pg/app/cnpg.sops.yaml | kubectl apply -f -    
 stringData:
     admin-password: ENC[AES256_GCM,data:G8G6A4xwb1Bn,iv:dYdzXCDgjKT3gVcMRZXfVgETYdMID/je0gjH5Hmdyqk=,tag:4MoYAwvrtU1PSo6zC0EXJg==,type:str]
-    admin-token: ENC[AES256_GCM,data:pn5AQFt5,iv:KqYZyN/NbGmARTSD/4JktH8FbIvMaFWRkqWDzep+duM=,tag:pO/BsScs4fq07dvjLPIRGQ==,type:str]
+    admin-token: ENC[AES256_GCM,data:VlYLxEtutxfELoTusHBVbv4AlP+bu+w08FzaxaWnN31x7MPcVVe5RVJ223wZOtGwLapjBSFj/s8xA/AD4eupCmF9MSVxI4zasUm/8Rx0xx3aVv4/zgHfKPhyScIg9wL7OdriEiKoh42PQOfh8g4I,iv:KNFuZvOUGApWWt+G8vCHOdFFJaTFNrcnCPCjKqTXzms=,tag:zNSUQYOIvpdq4sCRvBR4Mg==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -22,8 +22,8 @@ sops:
             WEhMSTVuWmVad3lXbWhLNXVpb1JmWW8Kf7PL5pkzBs6Mm1gKOXxfrK47qndw+xjk
             28bECQkANs3glfyq3jcLJvd5iErZ426kv+40xqcqjztGFaEG1YuCVA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-30T21:10:50Z"
-    mac: ENC[AES256_GCM,data:Tm5iAlajDUvmLWdXhkXFTFullzmmfYu/xLQ/NjEwMRyeJQWCa+gRhsPsmoW6UMAwO0zjwCSu1NX4/DfG6rwAbCYADOxprn07Q2p2Dr1IhoNNB/awraNWOnSTNacpYg0gpXeAPzIdZYLsMSJrfAnTgBdx9dJ3qYuslym03plnB50=,iv:PVoqL4c2//dnaktrHjWAoDKWpeVIdxjBo2x05winigI=,tag:7Uhr729coR2Jc5K0MW3KdA==,type:str]
+    lastmodified: "2024-06-30T23:57:04Z"
+    mac: ENC[AES256_GCM,data:Zo5vkbFAna/oJIV5QgEniObh95YNr8FD/x73Pxu3BGh3KtMJaiJJW6KEaUbbgcMaCVat6Crrtz8z4iIQqinC+HDkk0Vp+7TcGYw2KiHGIUPjv0l4iR4aMKOXNkJbxezL9x2ONTLpEorL8Zrcdf8OI1ok/7L3CJv8pZJe9jZU9qk=,iv:zHaJzkelssmNSPrn1N1OOehOvzxyoH9xsRgIPfb1T70=,tag:h1o/BdK0nlo5MlSXyggHbg==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
