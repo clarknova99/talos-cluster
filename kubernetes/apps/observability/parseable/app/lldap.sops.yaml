@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: lldap-secrets
+    namespace: default
+# ## sops --encrypt --in-place ./kubernetes/apps/default/lldap/app/lldap.sops.yaml
+# ## sops --decrypt ./kubernetes/apps/default/lldap/app/lldap.sops.yaml | kubectl apply -f -
+stringData:
+    LLDAP_JWT_SECRET: ENC[AES256_GCM,data:BNrNUEtlLA2CUWkOZPd1W5OmZTepYkHDbgH0IAm9xmUQ/obDV/yGNUghNZKES8BROfPan8bbXRCPdS+vKyLRMg==,iv:tBlWRrm/ZptS9xeOs2pBOV8LVfC1/Pg8uBRj1ptNffs=,tag:wnEgtRgZeKsGs6OnW2EUOA==,type:str]
+    LLDAP_LDAP_USER_PASS: ENC[AES256_GCM,data:W9P3p6hOQcAF,iv:yttR5NtxX3qWPtX00y78mkFFzH5zm3ctOpV9mE/tvMo=,tag:AoPDi6DCXElFsbNBA9DwVw==,type:str]
+    LLDAP_USER_DN: ENC[AES256_GCM,data:MfZniOt1Y4Om3bUy9GzghN/CzbFjIsF6J9YOhwJ+GAQAnS4=,iv:zt9Y7dSlglqnYSSvk2l4MMdsemb+WWBSCC+8w3Db85Y=,tag:MW+s3ZbOKsVsV5q2ngzxow==,type:str]
+    LLDAP_LDAP_USER_EMAIL: ENC[AES256_GCM,data:e/X9orRFU+XCptQ96Td4LcJzLi5j,iv:wUAVHvtQgAyectRgd0Ur5OUj/jBWXpvh0M/vN1Y2J7s=,tag:rb/UbpeMZUrhg14A0d7lGg==,type:str]
+    LLDAP_SERVER_KEY_SEED: ENC[AES256_GCM,data:lsZjfZRyO/ub,iv:F6RrNOKv5BzwjIgHqlh+2kawTtU4AJ3XEsvqmcfol5c=,tag:xIX3tFOKGW2dtOA9csBVhQ==,type:str]
+    LLDAP_DATABASE_URL: ENC[AES256_GCM,data:HKzjilt0mcQZLF8gxAMiuSt3049ASgGF6OZ7mq8jraTAORivGpNwLsVwGkizswxJGkPMsaOy46hxnKlW4BP9eKOkHG2ORbsI6isx/JxukMHe,iv:tnRM/htLgkoFnzAUeCZC/87PqTvnotatOf/gwysqy98=,tag:Byu3ak0GWZlEzcqBe6Ah2A==,type:str]
+    #ENC[AES256_GCM,data:XExZzIk9iDMoO08G/oY=,iv:6LpcPktVtglrLKgnXPFStb/wtPm3PVN/cly5gqNUkVc=,tag:WYuq6k8miko8nLFkWN38yg==,type:comment]
+    INIT_POSTGRES_DBNAME: ENC[AES256_GCM,data:8BLCsYo=,iv:iupU96ehenAb5zhsWsrf4Y6MIfHOphJsOlJtvueWJzA=,tag:4XUbeNN3nlIyQ08slBkzyQ==,type:str]
+    INIT_POSTGRES_HOST: ENC[AES256_GCM,data:0//M2noMKSlphV/Ura1dQVijeDLhgz5wFdUXGWoGaOl8PdNPUQY1Ng==,iv:WD/rG2cYyUXUK4Gano2M+sa2cENfu9kjitDb04UwzT0=,tag:4Dxd47fPtnVf3i3zwL9DTQ==,type:str]
+    INIT_POSTGRES_USER: ENC[AES256_GCM,data:eLRo261i5YY=,iv:pGfC8ci+zU7ZSLDsEqNPXZHaZWj6CWoK0xsrrE8wJUQ=,tag:uhqAjGDXH0wf2YAZVeipDA==,type:str]
+    INIT_POSTGRES_PASS: ENC[AES256_GCM,data:G+IQL7LubtOg,iv:tWt8DUELK/UPGgzS2fZj9sqVusRhUKXcou4tbbtlvEg=,tag:2i7qMBdtqqpNCcgoVXN69A==,type:str]
+    INIT_POSTGRES_SUPER_PASS: ENC[AES256_GCM,data:GYomTExXqN9z,iv:P0o5RFHb48MZBr2zAW/XhKDPhWALgOTrLvJpA1tBXig=,tag:rCKshDyAbEWKFZU+cQKz9g==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAwNHB6TGNjdlR6OFlmWG1s
+            K0ZvK2hyUVRkU3QrenVIZWdZU21oYXUxa0FnCndNL3FpempsV0d5N3poMTFZdXRs
+            N1FMT1pNQTcyeXY0bHRNQzliUUVyaXcKLS0tIGU0R1hRejAzT2hycEROb21MMWhL
+            QktEZ2F3TlFaeXlLYXdJWURvaXpxNHMKKn+TZy2D4OxznFDETFXceZkcIq08IZpx
+            cQqqNxGbiEgEc7Z3zen0ourv1xCFE9/+nDA2PEQVZUuElZCwyv21yA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-06-27T15:32:27Z"
+    mac: ENC[AES256_GCM,data:PUyX5KmJskqtZD7KDm7JX2tdSS9Czx9TBsehlTwEtGX8VCnXUqzeNbCNOvUCD78nb1YvLHMJ8mBz6iXYyAoLIr2DAGCTqQRIqwU8QLyJeSAY4AP61yfx6Ux4WAYo04wD0PqNLOC1QqLN1KRD+tvdfu+4sYNg3zVWfjQMj6FlMeI=,iv:3/av7glm0S3HFKNH96KmrEN3w78xnPq0aW5/ZtL6lFI=,tag:pydt0GUK5hL6aPpO+V21Eg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
