@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: loki-secrets
+## sops --encrypt --in-place ./kubernetes/apps/observability/loki/app/loki.sops.yaml
+## sops --decrypt ./kubernetes/apps/observability/loki/app/loki.sops.yaml | kubectl apply -f -        
+stringData:
+    s3_bucket_name: ENC[AES256_GCM,data:sIPAHA==,iv:R5/XXTACRFIALyG1sZ5XR8l8n9GXM0K86tlWz+k7JyU=,tag:bk0l0nau2g3n1e2Byy0LcQ==,type:str]
+    s3_bucket_host: ENC[AES256_GCM,data:ckoSPqntqjHM/EUQBSOZDfjX6N5eVOMTJq7GcePGY+8i5ZFDG7S4Rw==,iv:Dx/U6vlwPLNceFn/CoSDnDEfvJVq0Ju+zyWcu3Gvovc=,tag:vGNtQalK6ozY+I1fh70TvQ==,type:str]
+    s3_bucket_region: ENC[AES256_GCM,data:bXLtQC6EQ0ZM,iv:tBc8uZh21ldrzhq/iXpTEzIqusPpQB1Ze69cj44turI=,tag:R2bVF9AzxfxdCf/3BZ9U5A==,type:str]
+    access_key: ENC[AES256_GCM,data:QFXsd81g4T+jwgMA9jeAHrtK1rE=,iv:R986cHdMPKpU6OPvPm40wtj0seU0EJKXQ4D9Obifgdo=,tag:mMUptImiuKCwO3f7GhD8YQ==,type:str]
+    secret_key: ENC[AES256_GCM,data:wNL6JPpYOMj2b2ie/XaUJRtyW73XXHMC3ca++pXM+dDRW7UeNzrI4Q==,iv:0QSpwFdfQqyS/pY8d6c8Mavd8VhKntX/EuiBFeNxQT8=,tag:2q/fgHmE7Ra5SsrZgpbXhg==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBadWU3VXFJamU2QUJQcksx
+            ZTQ1WlBGaWMrT2NFQmd4QTFldDVPbVRheENNCmhSY1o5elNlSkNmbU5Pa1FtN0hn
+            VXpnMTY5U1hSUkhzZTdHQmc5S3JOREEKLS0tIFRORmplL2FPcy9rWmozNEI1TFJE
+            Z05FaXFlblNLeWdOaGU5WVg5MjZIVHcK9HXkdPcg7EcAV9WyxUZ1tL64oPSRXrhA
+            By5a7SSdxyFT19HrvTwCl2YcqwqbZFeeiS5pokzfoB624EUTjtxbjQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-07-04T16:24:17Z"
+    mac: ENC[AES256_GCM,data:qNO1YSr2i6SatIsA4CcMR0evXo2d0T+rDvQbfVp5PmsXdoBYt5UGlWt+OG+eu4RPwkapHBvAVt6ZF55KwvmMyZH+LgPQ3fH/gDJ4O+pVC2v4lqvWd2YRiEPbT0mBeE2/yjd1dmbtdThnVCRgtCF8FMW7XFgapafEq088A/dQh80=,iv:VX3gLqAWwGutr8S3CVMiBh5dbwyhNHqNa7KzNxMVRiU=,tag:8nf3Yw0JyOhOyumFsseozg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
