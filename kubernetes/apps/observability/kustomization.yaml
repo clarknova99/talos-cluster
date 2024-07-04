@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  #- ./fluent-bit/ks.yaml
+  - ./fluent-bit/ks.yaml
   - ./grafana/ks.yaml
   - ./loki/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
