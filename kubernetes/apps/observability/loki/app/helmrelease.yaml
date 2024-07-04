@@ -170,18 +170,18 @@ spec:
 
   valuesFrom:
     - kind: Secret
-      name: loki-secret
+      name: loki-secrets
       valuesKey: s3_bucket_host
       targetPath: loki.storage.s3.endpoint
     - kind: Secret
-      name: loki-secret
+      name: loki-secrets
       valuesKey: s3_bucket_region
       targetPath: loki.storage.s3.region
     - kind: Secret
-      name: loki-secret
+      name: loki-secrets
       valuesKey: access_key
       targetPath: loki.storage.s3.accessKeyId
     - kind: Secret
-      name: loki-secret
+      name: loki-secrets
       valuesKey: secret_key
       targetPath: loki.storage.s3.secretAccessKey
