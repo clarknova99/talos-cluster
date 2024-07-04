@@ -133,7 +133,7 @@ spec:
       replicas: 1
 
     backend:
-      replicas: 1
+      replicas: 3
       persistence:
         storageClass: openebs-hostpath
         size: 20Gi
