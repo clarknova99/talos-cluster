@@ -104,7 +104,7 @@ spec:
           insecure: false
 
     gateway:
-      replicas: 1
+      replicas: 2
       enabled: true
       image:
         registry: ghcr.io
@@ -134,13 +134,13 @@ spec:
                 pathType: Prefix
         tls: []
     write:
-      replicas: 1
+      replicas: 2
       persistence:
         storageClass: openebs-hostpath
         size: 10Gi
 
     read:
-      replicas: 1
+      replicas: 2
 
     backend:
       replicas: 2
