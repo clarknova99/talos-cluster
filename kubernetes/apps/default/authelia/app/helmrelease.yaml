@@ -122,13 +122,13 @@ spec:
             add_header X-Frame-Options "SAMEORIGIN";
             add_header X-XSS-Protection "1; mode=block";
         hosts:
-          - host: &host auth.${SECRET_DOMAIN}
+          - host: auth.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-          - host: &host2 auth.${SECRET_DOMAIN_TWO}
+          - host: auth.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
                 service:
@@ -136,8 +136,8 @@ spec:
                   port: http                  
         tls:
           - hosts:
-              - *host
-              - *host2
+              - auth.${SECRET_DOMAIN}
+              - auth.${SECRET_DOMAIN_TWO}
     persistence:
       config:
         enabled: true
