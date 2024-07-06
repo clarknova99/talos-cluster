@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./authelia.sops.yaml
   - ./helmrelease.yaml
+  - ./ingress.yaml
 configMapGenerator:
   - name: authelia-configmap
     files:
