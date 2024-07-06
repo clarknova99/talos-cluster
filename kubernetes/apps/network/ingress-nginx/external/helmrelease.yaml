@@ -29,7 +29,7 @@ spec:
       maxmindLicenseKey: ${SECRET_MAXMIND_LICENSE_KEY}
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN} external.${SECRET_DOMAIN_TWO}"
           io.cilium/lb-ipam-ips: "192.168.3.23"
         externalTrafficPolicy: Cluster
       ingressClassResource:
