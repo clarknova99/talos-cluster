@@ -33,6 +33,10 @@ session:
       domain: ${SECRET_DOMAIN}
       authelia_url: https://auth.${SECRET_DOMAIN}
       default_redirection_url: https://${SECRET_DOMAIN}
+    - name: ${SECRET_DOMAIN_TWO}_session
+      domain: ${SECRET_DOMAIN_TWO}
+      authelia_url: https://auth.${SECRET_DOMAIN_TWO}
+      default_redirection_url: https://${SECRET_DOMAIN_TWO}      
   redis:
     database_index: 2
     host: dragonfly.database.svc.cluster.local
