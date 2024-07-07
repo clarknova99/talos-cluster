@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: docker.io/clarknova9/sensei
-              tag: 0.0.3
+              tag: 0.0.4
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
         pod:
