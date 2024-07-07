@@ -1,7 +1,7 @@
 ---
 originRequest:
   http2Origin: true
-  
+
 ingress:
   - hostname: "${SECRET_DOMAIN}"
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
@@ -11,10 +11,11 @@ ingress:
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
     originRequest:
       originServerName: "external.${SECRET_DOMAIN}"
+
   - hostname: "${SECRET_DOMAIN_TWO}"
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
     originRequest:
-      originServerName: "external.${SECRET_DOMAIN}"
+      originServerName: "external.${SECRET_DOMAIN_TWO}"
   - hostname: "*.${SECRET_DOMAIN_TWO}"
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
     originRequest:
