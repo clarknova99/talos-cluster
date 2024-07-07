@@ -115,7 +115,7 @@ spec:
         className: external
         annotations:
           #external-dns.alpha.kubernetes.io/hostname: external.${SECRET_DOMAIN}, external.${SECRET_DOMAIN_TWO}
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}, external.${SECRET_DOMAIN_TWO}
           hajimari.io/icon: mdi:shield-account
           nginx.ingress.kubernetes.io/configuration-snippet: |
             add_header Cache-Control "no-store";
@@ -129,16 +129,16 @@ spec:
                 service:
                   identifier: app
                   port: http
-          # - host: auth.${SECRET_DOMAIN_TWO}
-          #   paths:
-          #     - path: /
-          #       service:
-          #         identifier: app
-          #         port: http                  
+          - host: auth.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http                  
         tls:
           - hosts:
               - auth.${SECRET_DOMAIN}
-              # - auth.${SECRET_DOMAIN_TWO}
+              - auth.${SECRET_DOMAIN_TWO}
     persistence:
       config:
         enabled: true
