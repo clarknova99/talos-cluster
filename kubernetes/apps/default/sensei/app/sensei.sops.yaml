@@ -7,7 +7,7 @@ type: kubernetes.io/dockerconfigjson
 ## sops --encrypt --in-place ./kubernetes/apps/default/sensei/app/sensei.sops.yaml
 ## sops --decrypt ./kubernetes/apps/default/sensei/app/sensei.sops.yaml | kubectl apply -f -
 data:
-    .dockerconfigjson: ENC[AES256_GCM,data:uxdLpNQuvU1Kg05SOnL8TBzTeSXo3aGbq0+ECZNfgS4edrs1tzwXA4nANs3TOwnJH+MSPsuAshGEWYoYaqtmOO1HLncboKia8NOSZ2QqltZD4XotZNbgXBg5T2YYcczuQnRNJgqt18ncRGp20oVxJIk6I96VEmtm8J+x0D9Cm/vMLVt5bhscW7xnqfAFKVCCMYWed8ytb0ZLCJMShQWUAVkvwGRP/gyC5u5nlvZzcorWhiVTpuYFm7YjJA7N9QGjmmeEvDZ4Iib9xphfS6k7OHOqZc4=,iv:zETOjBMgDqlUOqYNuyaafEdTDVy6gJlL1QYNyxJCZLM=,tag:OzqrsC4CvS453Cx0XdhoHA==,type:str]
+    .dockerconfigjson: ENC[AES256_GCM,data:lj82njToV5A7ZybPlu8FsounOGuKB/ZfRu0g+nc8EJ3fP+HjmIV05SD7kAfGgpcE+cXJx5GYkOlaSpMSkdwN3/90eKNA4WKNChhVx6ptdg1NcRJPAHhU6RueOPWpMOt3yxffTH4n1VjkIdf0KLJA/8/EUKu9yRwuJXUQsH8ZSbVuwdalEma4uOyADvi0PrrokWNVlwKVbrzZUN4hxog96uGtnEbfFF2bypy7MujCQI1Qh9JGJc/xOJbwuT6jDqejTiQ46KbWOFg4HfII6lQbJvIiWX4mCalacmEBgLaCxeTvTxlNY0dpxg==,iv:rm997GO/l4nbAH0bBAqSxZBEXd2kCbX4WNw02Ub7ZPw=,tag:U7aYIEUBRXp7N5vYI1tVcg==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -23,8 +23,8 @@ sops:
             OUpsalBnM01VaFM5blQxZXNhblV3WUUKoHDxccQBoUt15TGbs8JLMVgdZFVAvRAD
             SYFJNXWQgHbZIyOXSr3uDWvmP4BG9zzLOb5t+EosSZu3Iup6C2vzPA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-07-06T21:53:35Z"
-    mac: ENC[AES256_GCM,data:t4IlrYM2ZwZF9L1jLfekuauRa8BS1anw3b8O4dmg4NjFxzm8QvdPt9MGnYjtsUbNQlecRKiYANR5NxCW1JUDa1qXqCDKYuaaHVGPowAUG2UR46eA3xuLH53tcngCG+JslNJINVS7MsVYrYen10459yqRhhStMxrDXZTbSgfQzRY=,iv:4g5EU7yHmcjhSK6HjbC7NuyVbyggPtp54sDFwO6m4mY=,tag:FxIQ2k7CJoD3Ui+L2B1J5w==,type:str]
+    lastmodified: "2024-07-08T20:42:04Z"
+    mac: ENC[AES256_GCM,data:ARL1Hk3Poigo+ITwHvnFjWOLWohh5lZPYMa4JsT2XSHuOa1PSie58YFSD0onj0UGbkt9TkzSKWIr6AQdDr9gP/KHz5PwFqZw7FpakQ52KEJ65JcMdRaShI8XPavm19t8tL3hnQx5+vTgPhjMBm9281SvJJZs3vNKB7DtsNUjrxc=,iv:MdvnWEQ3Ik0jtF4r0g5aMY74PCIKumyFn2+wUHAoHoQ=,tag:YpTaIMUuy9AxgRErOYLbvg==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
