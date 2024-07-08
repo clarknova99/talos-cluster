@@ -55,4 +55,4 @@ NOTE: Slowly migrating to talos from my [k3s cluster](https://github.com/clarkno
 
 ---
 
-Thanks to [onedr0p](https://github.com/onedr0p) and his awesome [flux template](https://github.com/onedr0p)
+Based on[onedr0p](https://github.com/onedr0p) [flux template](https://github.com/onedr0p/cluster-template)
