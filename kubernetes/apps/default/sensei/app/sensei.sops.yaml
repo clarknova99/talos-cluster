@@ -7,7 +7,7 @@ type: kubernetes.io/dockerconfigjson
 ## sops --encrypt --in-place ./kubernetes/apps/default/sensei/app/sensei.sops.yaml
 ## sops --decrypt ./kubernetes/apps/default/sensei/app/sensei.sops.yaml | kubectl apply -f -
 data:
-    .dockerconfigjson: ENC[AES256_GCM,data:lj82njToV5A7ZybPlu8FsounOGuKB/ZfRu0g+nc8EJ3fP+HjmIV05SD7kAfGgpcE+cXJx5GYkOlaSpMSkdwN3/90eKNA4WKNChhVx6ptdg1NcRJPAHhU6RueOPWpMOt3yxffTH4n1VjkIdf0KLJA/8/EUKu9yRwuJXUQsH8ZSbVuwdalEma4uOyADvi0PrrokWNVlwKVbrzZUN4hxog96uGtnEbfFF2bypy7MujCQI1Qh9JGJc/xOJbwuT6jDqejTiQ46KbWOFg4HfII6lQbJvIiWX4mCalacmEBgLaCxeTvTxlNY0dpxg==,iv:rm997GO/l4nbAH0bBAqSxZBEXd2kCbX4WNw02Ub7ZPw=,tag:U7aYIEUBRXp7N5vYI1tVcg==,type:str]
+    .dockerconfigjson: ENC[AES256_GCM,data:aAPyEEdaEIkJp8pfcEMv2TvFP3pz6njEDfsnyAQaQ1hoL8juLClW75rhz73KbdBBWUrbM9BEOAIwzPvKmNXjImGJ4behq+Qo/1wRSQ01G3L+T+ZQmMr91Bi82i3GgW9y5D5vTctT2UoKk4a/dT3Zwl/s7JR8UTjiA/2t5bjAceyfTLIcr0XeiWvhOyfa39STbjoQtYSb0cXPFZ/PkTNMJb7R+tulFbMYnD3RhPwY7/efM3JXhJLBZHIOFefufVhN2r+oYLjAiEnPgDMNIQTsY6B/TYK7Tzikvwa46OS8ZR0ic0A1eH1g2C/8Mf91hQCQ94XwvNeRgl89Gx22n7Ds+dtXooK27vPDkz6dDlbnthtvD0XwWAEF79eJESyvQjXU,iv:M30W0XnV4ceWKsWgF54IT0PfU4fMtaoOvaT2TJXelBw=,tag:x7o2GnixaEz5XdcXtf6gLg==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -23,8 +23,8 @@ sops:
             OUpsalBnM01VaFM5blQxZXNhblV3WUUKoHDxccQBoUt15TGbs8JLMVgdZFVAvRAD
             SYFJNXWQgHbZIyOXSr3uDWvmP4BG9zzLOb5t+EosSZu3Iup6C2vzPA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-07-08T21:43:48Z"
-    mac: ENC[AES256_GCM,data:NCuyN4KUYOuPq3oty077GcahEFYvoMqeHehNkMQBnQf2hPaiYoPvVY9XNomV9N+9bsyinqY/FUrdmpqriYLQUGs4RaaIHVk2NxqIgIO8XnoW3wm0v6O1yVwHfjHCGQ+ct/GmUUWag6F1wLxfUlEJ5jneQzHF4vzfD3akGPVYGGI=,iv:GOmUgWzjZyRIz+NwcQG9Bq8mrm3T8k4/W4yR8nylbHE=,tag:l694HuDCSdEPGK1PGZuF8w==,type:str]
+    lastmodified: "2024-07-08T21:53:50Z"
+    mac: ENC[AES256_GCM,data:FJxN/zjFB9ucKyn9ssV1f3fJFV/iBxSL+MKgQMLq7OGX+Dkn7I1HwapLugBn9C0nBL4xqzfkKiXdttV0VPObkq99tar3MqyWFCXFgHbvIF/nBGaHkU15s/0VmWu2NoFtdAw5pdO0Fli2JK/OVfocRgCfXYYLJyFDyrTza61mxYE=,iv:tfnziDiX6iYzdm11Zup+mMxFbcWCZt7IGCKwpppl0is=,tag:TXHnXjhfRviqVb8z2cmS0Q==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
