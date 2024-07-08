@@ -32,7 +32,8 @@ spec:
             image:
               #repository: docker.io/clarknova9/sensei
               repository: ghcr.io/clarknova99/project-sensei/senseichess
-              tag: latest@sha256:d67ca64f58bb9b3ee254adaa963e3ffec1b2f41f36f39afea672ed2d56530ab7
+              #tag: latest@sha256:d67ca64f58bb9b3ee254adaa963e3ffec1b2f41f36f39afea672ed2d56530ab7
+              tag: latest
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
         pod:
