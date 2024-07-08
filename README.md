@@ -22,17 +22,20 @@
 ## :book:&nbsp; Overview
 
 The repo is home for the code to automate the provisioning and management of my Kubernetes cluster.
-* [ansible](https://www.ansible.com) for provisioning & bootstrapping debian servers with [K3s](https://k3s.io).
+
+NOTE: Slowly migrating to talos from my [k3s cluster](https://github.com/clarknova99/home-cluster) 
+
 * [flux](https://toolkit.fluxcd.io)  watches this git repo and applies changes to Kubernetes when they are pushed to the repo.
-* [flux schemas](https://github.com/fluxcd-community/flux2-schemas/) flux schemas used for yaml validation
 * [renovate](https://github.com/renovatebot/renovate) monitors the repo, creating pull requests when it finds updates to dependencies.
+
 
 ## :gear: Core Components
 * [cilium](https://cilium.io/) for networking within the cluster and load balancer for exposed services
 * [cert-manager](https://cert-manager.io) to request SSL certificates to store as Kubernetes resources
-* [sops](https://github.com/mozilla/sops) with [age](https://github.com/FiloSottile/age) to encrypt secrets used in Ansible & Flux
+* [sops](https://github.com/mozilla/sops) with [age](https://github.com/FiloSottile/age) to encrypt secrets before publishing to the repo
+* [cloudflared](https://github.com/cloudflare/cloudflared): Enables Cloudflare secure access to ingresses.
+* [external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically syncs ingress DNS records to a DNS provider.
 * [ingress-nginx](https://github.com/kubernetes/ingress-nginx): Kubernetes ingress controller used for HTTP reverse proxy of service ingresses
-* [longhorn](https://longhorn.io/): Replicated, persisted storage
 * [minio](https://min.io/): Object Storage for PVC & Database backups
 
 
