@@ -50,8 +50,8 @@ spec:
           bookmarks:
             - name: kubesearch
               url: "https://kubesearch.dev/"
-            - name: Home-Cluster
-              url: "https://github.com/clarknova99/home-cluster"
+            - name: talos-cluster
+              url: "https://github.com/clarknova99/talos-cluster"
             - name: onedr0p
               url: "https://github.com/onedr0p/home-ops"
             - name: onedr0p-flux-cluster-template
