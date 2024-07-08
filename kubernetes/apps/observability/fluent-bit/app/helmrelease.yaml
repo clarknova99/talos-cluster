@@ -39,8 +39,6 @@ spec:
           Health_Check On
 
       ## https://docs.fluentbit.io/manual/pipeline/inputs
-      ## originally in [FILTER] after add source kubernetes: remove logtag
-       
       inputs: |
         [INPUT]
           name tail
@@ -50,6 +48,7 @@ spec:
           tag kubernetes.*
 
       ## https://docs.fluentbit.io/manual/pipeline/filters
+      ## remote after add source kubernetes: remove logtag
       filters: |
         [FILTER]
           name kubernetes
@@ -63,7 +62,8 @@ spec:
           k8s-logging.exclude on
           namespace_labels off
           annotations on
-         [FILTER]
+
+        [FILTER]
           name modify
           match kubernetes.*
           add source kubernetes
