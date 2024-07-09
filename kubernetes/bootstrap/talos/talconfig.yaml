@@ -73,16 +73,16 @@ nodes:
         vip:
           ip: "192.168.3.20"
   - hostname: "mars"
-    ipAddress: "192.168.3.224"
+    ipAddress: "192.168.3.102"
     installDisk: "/dev/sdb"
     talosImageURL: factory.talos.dev/installer/5b3717ebb1bc80ddea39bb8ae3cfd3294bfcfb13e05dcd6f1aa54b8e8f9dbcc1
     controlPlane: false
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "a0:ce:c8:8a:6b:0c"
+          hardwareAddr: "94:c6:91:af:37:fd"
         dhcp: false
         addresses:
-          - "192.168.3.224/24"
+          - "192.168.3.102/24"
         routes:
           - network: 0.0.0.0/0
             gateway: "192.168.3.1"
