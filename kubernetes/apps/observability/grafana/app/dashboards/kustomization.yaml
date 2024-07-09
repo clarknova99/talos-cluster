@@ -8,7 +8,10 @@ configMapGenerator:
       - temperatures.json
   - name: iotawatt-dashboard
     files:
-      - iotawatt.json      
+      - iotawatt.json
+  - name: ingress-logs
+    files:
+      - ingress-logs.json     
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
