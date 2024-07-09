@@ -9,4 +9,5 @@ resources:
   - ./minio/ks.yaml
   - ./reloader/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
+  - ./node-feature-discovery/ks.yaml
   - ./spegel/ks.yaml
