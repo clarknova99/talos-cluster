@@ -41,17 +41,17 @@ NOTE: Slowly migrating to talos from my [k3s cluster](https://github.com/clarkno
 
 
 ## 🔧 Hardware
-| Device | Count | Ram | Operating System | Purpose |
+| Device | Count | Ram |  Purpose |
 | --- | --- | --- | --- | --- |
-| Intel NUC11PAHi7 | 1   | 64GB | debian | Control Plane / Worker |
-| Intel NUC8i5BEH | 1   | 32GB | debian | Control Plane / Worker |
-| Alienware Aurora | 1   | 24GB | debian | Kubernetes Worker |
-| Alienware X51  | 1   | 16GB | debian | Control Plane / Worker |
-| Raspberry Pi 4 | 4   | 8GB | debian | Kubernetes Workers |
-| Synology 1513+ | 1   | 8GB | - | NAS |
-| Firewalla Gold | 1   | - | Ubuntu | Router |
-| Zyxel GS1900-24E Switch | 1   | -   | -   | Network Switch |
-| APC SMT1500C | 1   | -   | -   | UPS |
+| Intel NUC11PAHi7 | 1   | 64GB |  Control Plane / Worker |
+| Intel NUC8i5BEH | 1   | 32GB |  Control Plane / Worker |
+| Alienware Aurora | 1   | 24GB |  Kubernetes Worker |
+| Alienware X51  | 1   | 16GB |  Control Plane / Worker |
+| Raspberry Pi 4 | 4   | 8GB |  Kubernetes Workers |
+| Synology 1513+ | 1   | 8GB | NAS |
+| Firewalla Gold | 1   | - | Router |
+| Zyxel GS1900-24E Switch | 1   | -   | Network Switch |
+| APC SMT1500C | 1   | -   | UPS |
 
 ---
 
