@@ -42,7 +42,7 @@ NOTE: Slowly migrating to talos from my [k3s cluster](https://github.com/clarkno
 
 ## 🔧 Hardware
 | Device | Count | Ram |  Purpose |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | Intel NUC11PAHi7 | 1   | 64GB |  Control Plane / Worker |
 | Intel NUC8i5BEH | 1   | 32GB |  Control Plane / Worker |
 | Alienware Aurora | 1   | 24GB |  Kubernetes Worker |
