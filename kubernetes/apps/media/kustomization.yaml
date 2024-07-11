@@ -5,6 +5,6 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./invidious/ks.yaml
-  - ./radarr/ks.yaml  
+ # - ./radarr/ks.yaml  
   - ./youtubedl/ks.yaml
 
