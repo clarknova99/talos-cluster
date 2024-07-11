@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: invidious-secrets
+    namespace: media
+## sops --encrypt --in-place ./kubernetes/apps/media/invidious/app/inv.sops.yaml
+## sops --decrypt ./kubernetes/apps/media/invidious/app/inv.sops.yaml | kubectl apply -f -
+stringData:
+    INIT_POSTGRES_DBNAME: ENC[AES256_GCM,data:wvfHVoqvZ0rz,iv:XSQyyPgXZDO0mJ8xgdTEFKPAXIY4HDVQP7/Xp6rCwE0=,tag:564bYvSQ2xZDc4ktX35DtA==,type:str]
+    INIT_POSTGRES_HOST: ENC[AES256_GCM,data:pGjnSSIEJJAGfzgvWrWKCV49dysYiF5Z6gKIrchTr59+gqWsJ2BbOllYdSevrLIPsg==,iv:lq78HlhLyW0ps1SlM0sbbs7hPWA4UQ2TJtWHUr67aWQ=,tag:5WlzDJv6W+JaTTC6RQq2sA==,type:str]
+    INIT_POSTGRES_USER: ENC[AES256_GCM,data:7UxPmznQnHs=,iv:43yBfLcWMbs8uZJqMKExiYyhWkYQWkUwuV+muT3gEOo=,tag:twPm69MmFM2mgKjSzkCu+w==,type:str]
+    INIT_POSTGRES_PASS: ENC[AES256_GCM,data:dAgq02WfFuoz,iv:EORHDQ+aNUT5bfjA/F7Z7kour0Hj9A56TRpmhnsCD/8=,tag:MrqQ7pZoaWkp98WUbjtCHw==,type:str]
+    INIT_POSTGRES_SUPER_PASS: ENC[AES256_GCM,data:JXC568Igih0K,iv:ChNaz3l+pqvSdCbVY/TqLQEV0DK05FO3Bfns1I4UkMI=,tag:P1MCKWYx0kRF8dfQNZG5pA==,type:str]
+    INVIDIOUS_CONFIG: ENC[AES256_GCM,data:dgv4u9Z0O4e/tm/i6QGGHMIRIJggZhgJbQ+jho7q0iGKiDfdOgOB2FXDifg0/4zZmtLPipQF0C27VHNL8fQdSV4uL+CsuNo5VhKxMY7H0tPjXYxEJn+KgZecQR/Nk2l3bMM+w9/4oxJn3xMU8lC48pVcKjSPEZchNGcGSOmlq9WFntl7Ej5DLdAhsN3ZfMuj4P+aj8rfOXV8BgKI983dfEiDpkvPJ1mFJmr8bRJR42s524+74VHWais/jb2hRBlEQsZ6/ynOsJKBXClGnAKvrYPi74w7HuCtQ2uBpWtncB/ltjSRl66EH6oddhxBxGYaF+rJeEujtShkPRN+OkuKRZTFbQ+ztaPsqZhYFVqy7OPHCjSZbOWCOymJx2jejbvS+ID3qua9kD+jWplSsBeRKW3T0RrXkI3cdrCzX01SoQ==,iv:MqIb5pSEJuVF8yOlhUHUY+O2wBcI9RWQgDaPegs/Y24=,tag:PmOd4/zTkUGctjdTusVLzw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA1NTdadFFueGhUcy8yZUNj
+            ampzOERRczcwWTBnWnhtS0pDRU55V2RDYUQ0Cmx0L1J2cDFreWxTazlqeERvaTMv
+            RW5DaGsvaXJEMHNLaHFyYmpSdmlubkEKLS0tIFhYLysyV25oemI5WXpmYitWWlVs
+            cVNHMGY0aEhMQUNIN1JNY1I1UEUrYzAKawZFtq0WCeE3tiVD+ESFlFcYwUqfLRft
+            wg6xMXq0VJ4aaHSR5TPSVeHLYKiW0DY290uz8G8XsAaSXte8h7gtxA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-07-11T14:57:44Z"
+    mac: ENC[AES256_GCM,data:inCrtdlnjGpYhpu8CEiuB4OxD7QdbeWoTCdBHizE+yf6uG6tSZwgNElhuRcEopChoK74x06zeXZCae4u81XW92rp5kIZYPMQMk4xqAoVSvbehWpBKJZGxITwUBNSKPNdbfJolHpFRGx6E3KyrvTwnnc2RJo+hXo375LPAFUJO8g=,iv:y6fGGMejGKCDEnXIHQgmz3GPlT5BvDHqzj8bk/seOAM=,tag:YUOlsC0UaH8+98ZPROX9NQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
