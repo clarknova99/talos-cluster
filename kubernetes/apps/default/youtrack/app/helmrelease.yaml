@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: youtrack
+  namespace: default
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      youtrack:
+        replicas: 2
+        containers:
+          app:
+            image:
+              repository: jetbrains/youtrack
+              tag: 2024.2.37269
+    service:
+      app:
+        controller: youtrack
+        ports:
+          http:
+            port: 8080
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:web
+        className: external
+        hosts:
+          - host: youtrack.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: 8080
+        tls:
+          - hosts:
+              - youtrack.${SECRET_DOMAIN_TWO}
+    persistence:
+      conf:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/youtrack/conf
+        globalMounts:
+          - path: /opt/youtrack/conf
+      data:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/youtrack/data
+        globalMounts:
+          - path: /opt/youtrack/data
+      logs:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/youtrack/logs
+        globalMounts:
+          - path: /opt/youtrack/logs     
+      backup:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/youtrack/backup
+        globalMounts:
+          - path: /opt/youtrack/backup                 

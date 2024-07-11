@@ -2,13 +2,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: default
 resources:
-  - ./namespace.yaml
-  - ./authelia/ks.yaml
-  - ./hajimari/ks.yaml
-  - ./lldap/ks.yaml
-  - ./prefect/ks.yaml
-  - ./sensei/ks.yaml
-  - ./website/ks.yaml
- # - ./whoami/ks.yaml
-  - ./youtrack/ks.yaml
+  - ./helmrelease.yaml
