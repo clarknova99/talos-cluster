@@ -41,7 +41,8 @@ spec:
                 sabnzbd.defamediault.svc,
                 sabnzbd.media.svc.cluster,
                 sabnzbd.media.svc.cluster.local,
-                sabnzbd.${SECRET_DOMAIN}
+                sabnzbd.${SECRET_DOMAIN},
+                sab.${SECRET_DOMAIN}
             probes:
               liveness: &probes
                 enabled: true
