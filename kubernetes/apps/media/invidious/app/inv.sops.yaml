@@ -6,11 +6,11 @@ metadata:
 ## sops --decrypt ./kubernetes/apps/media/invidious/app/inv.sops.yaml | kubectl apply -f -
 stringData:
     INIT_POSTGRES_DBNAME: ENC[AES256_GCM,data:wvfHVoqvZ0rz,iv:XSQyyPgXZDO0mJ8xgdTEFKPAXIY4HDVQP7/Xp6rCwE0=,tag:564bYvSQ2xZDc4ktX35DtA==,type:str]
-    INIT_POSTGRES_HOST: ENC[AES256_GCM,data:pGjnSSIEJJAGfzgvWrWKCV49dysYiF5Z6gKIrchTr59+gqWsJ2BbOllYdSevrLIPsg==,iv:lq78HlhLyW0ps1SlM0sbbs7hPWA4UQ2TJtWHUr67aWQ=,tag:5WlzDJv6W+JaTTC6RQq2sA==,type:str]
+    INIT_POSTGRES_HOST: ENC[AES256_GCM,data:bpNDjYHL7BZFqf2/a1yI1jghxmiMNts6hu9CdyjCJBfUthRVJGM7PA==,iv:2f00/SHtKHdhOurq3D4doE3pUC8Yjn1cQpGdzMnYcsI=,tag:URHJIlxrnmaLYJ9onEg4HQ==,type:str]
     INIT_POSTGRES_USER: ENC[AES256_GCM,data:7UxPmznQnHs=,iv:43yBfLcWMbs8uZJqMKExiYyhWkYQWkUwuV+muT3gEOo=,tag:twPm69MmFM2mgKjSzkCu+w==,type:str]
     INIT_POSTGRES_PASS: ENC[AES256_GCM,data:dAgq02WfFuoz,iv:EORHDQ+aNUT5bfjA/F7Z7kour0Hj9A56TRpmhnsCD/8=,tag:MrqQ7pZoaWkp98WUbjtCHw==,type:str]
     INIT_POSTGRES_SUPER_PASS: ENC[AES256_GCM,data:JXC568Igih0K,iv:ChNaz3l+pqvSdCbVY/TqLQEV0DK05FO3Bfns1I4UkMI=,tag:P1MCKWYx0kRF8dfQNZG5pA==,type:str]
-    INVIDIOUS_CONFIG: ENC[AES256_GCM,data:dgv4u9Z0O4e/tm/i6QGGHMIRIJggZhgJbQ+jho7q0iGKiDfdOgOB2FXDifg0/4zZmtLPipQF0C27VHNL8fQdSV4uL+CsuNo5VhKxMY7H0tPjXYxEJn+KgZecQR/Nk2l3bMM+w9/4oxJn3xMU8lC48pVcKjSPEZchNGcGSOmlq9WFntl7Ej5DLdAhsN3ZfMuj4P+aj8rfOXV8BgKI983dfEiDpkvPJ1mFJmr8bRJR42s524+74VHWais/jb2hRBlEQsZ6/ynOsJKBXClGnAKvrYPi74w7HuCtQ2uBpWtncB/ltjSRl66EH6oddhxBxGYaF+rJeEujtShkPRN+OkuKRZTFbQ+ztaPsqZhYFVqy7OPHCjSZbOWCOymJx2jejbvS+ID3qua9kD+jWplSsBeRKW3T0RrXkI3cdrCzX01SoQ==,iv:MqIb5pSEJuVF8yOlhUHUY+O2wBcI9RWQgDaPegs/Y24=,tag:PmOd4/zTkUGctjdTusVLzw==,type:str]
+    INVIDIOUS_CONFIG: ENC[AES256_GCM,data:nNEAYphjxLeWser7tKbVU2BxSDj50qp7lJFNrWm3JbmnAiiYROMcAfZvPdv4/80UfSADPeCwhiXV/pgqYG5EKWDGoV/ttxTyr8ZyRfS8wgJARtCNWGWrKzK9hhU/I2j7L7diDkd1gVXOr0aDIpnDtj8dK/h/pU7aVMAQb2wojkoExMK+Cx0l72JUPG8HQdE/AnshcHxIbod9yoa86fyVX7ru4gwKgx4mH/ASQ7thbOSavNMHIhIiQrn4KEZaWyZLUUiuMon0Lms1EbuQxlPzx580yoTUB8YwgVNNv+dDdSnf+RaAvxbxbEgg6SEuo+JrSHWpv8fAQZHNnN8KABRGCO2nXYC+JfUrZR/DqPkHp0mPSFpXaDEV1RVLDLqlUJ1nM/VJxcsC/E5MshQ0HlIX,iv:67RCJhh+xv94hrwO4hx8F92gsX9Mp9gCd+K0xYOruQo=,tag:TGNPnK64khAC5nbjOLy1gg==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -26,8 +26,8 @@ sops:
             cVNHMGY0aEhMQUNIN1JNY1I1UEUrYzAKawZFtq0WCeE3tiVD+ESFlFcYwUqfLRft
             wg6xMXq0VJ4aaHSR5TPSVeHLYKiW0DY290uz8G8XsAaSXte8h7gtxA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-07-11T15:01:55Z"
-    mac: ENC[AES256_GCM,data:YaAkmPeSkk399fFsLnfkcBcoCIylP6rIc5eFI0cgyzh9R9De5xZdaJLkNR4YSThIuYXB9UEGUhJzIQThu6bEiE5THXZ2wWKTcyCawzYQM5cEDXnc1Aoj8tgc3e3C14Hht875ZRhde+5Wvtar8xlUAcrihTkSBGSaSd7pwxyI4uw=,iv:AhlMtn8Nn2oOEl38C+qHSGfeVMio87mLUw/s5K1OLYo=,tag:75DFBhTpXcr7L6Kav4BsHg==,type:str]
+    lastmodified: "2024-07-11T15:06:50Z"
+    mac: ENC[AES256_GCM,data:hdOcwUBSwtwlf4FrtFW5mdmmdEztHaUGIdmut26kdWIYCg2vAXTRmtB19cSD+s7AqKo/adoNJdeyXwsfUEGpWPGOWkNIQ88WEc5vADsZJwftgroaoCWuiMPm4h6cLMYfCTjd2pOAIaj12cQ057k20l84UHzqimxOxLAydAVybs4=,iv:PZb/6XbGRObYo5D6GJolYYSgl2PmiIRkZcK99frk3Fs=,tag:I93xgmTZGKeJp6E/nPd6CQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1

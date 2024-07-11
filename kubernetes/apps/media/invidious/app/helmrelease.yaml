@@ -62,7 +62,7 @@ spec:
         annotations:
           hajimari.io/icon: mdi:youtube
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: invidious.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -70,4 +70,4 @@ spec:
                   port: http
         tls:
           - hosts:
-              - *host
+              - invidious.${SECRET_DOMAIN}"
