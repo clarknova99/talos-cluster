@@ -41,8 +41,7 @@ spec:
     ingress:
       app:
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:ip-network
+          hajimari.io/enable: "false"
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           nginx.ingress.kubernetes.io/ssl-redirect: "false"
           ingress.kubernetes.io/proxy-ssl-verify: "off"
