@@ -2,10 +2,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: media
 resources:
-  - ./namespace.yaml
-  - ./invidious/ks.yaml
- # - ./radarr/ks.yaml  
-  - ./sabnzbd/ks.yaml
-  - ./youtubedl/ks.yaml
-
+  # - ./pvc.yaml
+  # - ./pvc-downloads.yaml
+  # - ./pvc-movies.yaml
+  # - ./pvc-tv.yaml
+  - ./helmrelease.yaml
+  - ./ingress.yaml
