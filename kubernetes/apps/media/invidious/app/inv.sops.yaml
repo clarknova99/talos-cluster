@@ -2,7 +2,6 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: invidious-secrets
-    namespace: media
 ## sops --encrypt --in-place ./kubernetes/apps/media/invidious/app/inv.sops.yaml
 ## sops --decrypt ./kubernetes/apps/media/invidious/app/inv.sops.yaml | kubectl apply -f -
 stringData:
@@ -27,8 +26,8 @@ sops:
             cVNHMGY0aEhMQUNIN1JNY1I1UEUrYzAKawZFtq0WCeE3tiVD+ESFlFcYwUqfLRft
             wg6xMXq0VJ4aaHSR5TPSVeHLYKiW0DY290uz8G8XsAaSXte8h7gtxA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-07-11T14:57:44Z"
-    mac: ENC[AES256_GCM,data:inCrtdlnjGpYhpu8CEiuB4OxD7QdbeWoTCdBHizE+yf6uG6tSZwgNElhuRcEopChoK74x06zeXZCae4u81XW92rp5kIZYPMQMk4xqAoVSvbehWpBKJZGxITwUBNSKPNdbfJolHpFRGx6E3KyrvTwnnc2RJo+hXo375LPAFUJO8g=,iv:y6fGGMejGKCDEnXIHQgmz3GPlT5BvDHqzj8bk/seOAM=,tag:YUOlsC0UaH8+98ZPROX9NQ==,type:str]
+    lastmodified: "2024-07-11T15:01:55Z"
+    mac: ENC[AES256_GCM,data:YaAkmPeSkk399fFsLnfkcBcoCIylP6rIc5eFI0cgyzh9R9De5xZdaJLkNR4YSThIuYXB9UEGUhJzIQThu6bEiE5THXZ2wWKTcyCawzYQM5cEDXnc1Aoj8tgc3e3C14Hht875ZRhde+5Wvtar8xlUAcrihTkSBGSaSd7pwxyI4uw=,iv:AhlMtn8Nn2oOEl38C+qHSGfeVMio87mLUw/s5K1OLYo=,tag:75DFBhTpXcr7L6Kav4BsHg==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
