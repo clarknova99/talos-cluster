@@ -6,6 +6,6 @@ resources:
   - ./namespace.yaml
   - ./invidious/ks.yaml
  # - ./radarr/ks.yaml  
-  - ./sabnzbd/ks.yaml
+  #- ./sabnzbd/ks.yaml
   - ./youtubedl/ks.yaml
 
