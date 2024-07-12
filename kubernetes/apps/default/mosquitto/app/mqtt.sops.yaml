@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: mosquitto-secret
+# ## sops --encrypt --in-place ./kubernetes/apps/default/mosquitto/app/mqtt.sops.yaml
+stringData:
+    username: ENC[AES256_GCM,data:kfED5JmjAg==,iv:dyr+/hfHlavSrIJVDhvTOBPhttcTPHII9lTbC5oXBwI=,tag:CUWlFZORrRlnhHmMIhlpxw==,type:str]
+    password: ENC[AES256_GCM,data:dRq7s6d/S+89,iv:wyS2hEc95KrqT9KBo+RXUzwMqQSSWIcfJpA21V9hlY8=,tag:CLdBNDRku+BKWGdwHty2jg==,type:str]
+    mosquitto_pwd: ENC[AES256_GCM,data:bikVlxNrqHD3g7IQ8Fc/xcmB,iv:qNgOLGroPA7w8/lgrOx8o7gzV8IULDut9I36mXdsJHw=,tag:qx/fDQoc865bPbnogpXK7g==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3cEUrM0lOZjZRVTBwMyt3
+            VUVRQVBZMnV6N3l0STNoa0J5aFBlMzJjZ2lBCndERHF4WWo3SzkwVjN2OFl0S2I1
+            TDdmb0xyNE5OZWVEdFVxTG45OFN3cHcKLS0tIFpCYUtLVUJrcThFa2JJcnM0Q2hm
+            MUlNU3NYMHlYc2RZaEpxZENwS2sra1UK2a9e3bItjON4zgVlGcrWy+w8hNNXsLMQ
+            KusjMskA1i7lnSj1VdDObA3uCpwPOsCh8jl4OwaoGsMIO3ey29+Yzw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-07-12T23:24:14Z"
+    mac: ENC[AES256_GCM,data:w6c5BrL2GV+cBiWSQmSYzJ9TMuxXz3SxGKSvtbMiquI3CjlMYqugsu3Tc9Otsee9OT4uY9yUxJlJb1Kdj8msz176rYdEq+GJAdsfqvJiqgqJ3lXxqrGzwvjiSd6uZDB2sWkXp2yHpZQ2cCD+UZ/AEBKf/IV0sz18qSyq2mLbMts=,iv:bz7mX4PLYdQEF27D7PVqS07OIotUvPtU66xZ//xC284=,tag:Aow9s6JNP+aW6EnQJB+Sqw==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1

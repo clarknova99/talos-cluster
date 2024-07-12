@@ -1,0 +1,165 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: frigate
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: intel-device-plugin-gpu
+      namespace: kube-system
+    - name: mosquitto
+      namespace: default
+  values:
+    controllers:
+      frigate:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/blakeblackshear/frigate
+              tag: 0.13.2@sha256:2906991ccad85035b176941f9dedfd35088ff710c39d45ef1baa9a49f2b16734
+            env:
+              TZ: America/New_York
+              #LIBVA_DRIVER_NAME: i965
+              PLUS_API_KEY: ${SECRET_FRIGATE_PLUS_KEY}
+              # Mosquitto
+              FRIGATE_MQTT_USERNAME: ${SECRET_MQTT_USERNAME}
+              FRIGATE_MQTT_PASSWORD: ${SECRET_MQTT_PASSWORD}
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: &port 5000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                gpu.intel.com/i915: "1"
+                cpu: 1000m
+              limits:
+                gpu.intel.com/i915: "1"
+                memory: 8Gi
+        pod:
+          nodeSelector:
+            intel.feature.node.kubernetes.io/gpu: "true"
+            google.feature.node.kubernetes.io/coral: "true"
+            kubernetes.io/hostname: "nuc11"
+    service:
+      app:
+        controller: frigate
+        annotations:
+          io.cilium/lb-ipam-ips: ${SVC_FRIGATE_ADDR}
+        type: LoadBalancer
+        #loadBalancerIP: ${SVC_FRIGATE_ADDR}
+        externalTrafficPolicy: Cluster
+        ports:
+          http:
+            port: *port
+          rtsp:
+            port: 8554
+            protocol: TCP
+          rtsp-udp:
+            port: 8554
+            protocol: UDP
+          webrtc:
+            enabled: true
+            port: 8555
+            protocol: TCP
+          webrtc-udp:
+            enabled: true
+            port: 8555
+            protocol: UDP
+    ingress:
+      app:
+        enabled: true
+        className: internal
+        annotations:
+          hajimari.io/icon: mdi:cctv
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Apps
+          gethomepage.dev/icon: mdi-cctv
+          gethomepage.dev/name: frigate
+          gethomepage.dev/widget.type: frigate
+          gethomepage.dev/widget.url: https://frigate.${SECRET_DOMAIN}
+          gethomepage.dev/siteMonitor: https://frigate.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/frigate/data
+        globalMounts:
+          - path: /data
+      media:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/frigate/media
+      # config:
+      #   enabled: true
+      #   existingClaim: pvc-frigate-data
+      #   globalMounts:
+      #     - path: /data
+      # media:
+      #   existingClaim: pvc-frigate-media
+      config-file:
+        type: configMap
+        name: frigate-configmap
+        globalMounts:
+          - path: /config/config.yml
+            subPath: config.yml
+            readOnly: true
+      cache:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 8Gi
+        globalMounts:
+          - path: /dev/shm
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/bus/usb
+        hostPathType: Directory
+        globalMounts:
+          - path: /dev/bus/usb
