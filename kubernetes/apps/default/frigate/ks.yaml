@@ -2,13 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: frigate
+  name: &app frigate
   namespace: flux-system
 spec:
   targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: mosquitto
   path: ./kubernetes/apps/default/frigate/app
   prune: true
   sourceRef:
