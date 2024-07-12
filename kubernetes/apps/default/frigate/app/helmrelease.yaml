@@ -77,9 +77,8 @@ spec:
       app:
         controller: frigate
         annotations:
-          io.cilium/lb-ipam-ips: ${SVC_FRIGATE_ADDR}
+          io.cilium/lb-ipam-ips: 192.168.3.34
         type: LoadBalancer
-        #loadBalancerIP: ${SVC_FRIGATE_ADDR}
         externalTrafficPolicy: Cluster
         ports:
           http:
@@ -104,13 +103,6 @@ spec:
         className: internal
         annotations:
           hajimari.io/icon: mdi:cctv
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Apps
-          gethomepage.dev/icon: mdi-cctv
-          gethomepage.dev/name: frigate
-          gethomepage.dev/widget.type: frigate
-          gethomepage.dev/widget.url: https://frigate.${SECRET_DOMAIN}
-          gethomepage.dev/siteMonitor: https://frigate.${SECRET_DOMAIN}
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
