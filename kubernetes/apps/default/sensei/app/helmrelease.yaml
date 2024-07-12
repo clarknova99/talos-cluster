@@ -38,7 +38,7 @@ spec:
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
         pod:
-          imagePullPolicy: Always
+          # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-secret
           nodeSelector:
