@@ -8,7 +8,7 @@ resources:
   - ./hajimari/ks.yaml
   - ./lldap/ks.yaml
   - ./prefect/ks.yaml
-  - ./sensei/ks.yaml
+  #- ./sensei/ks.yaml
   - ./website/ks.yaml
  # - ./whoami/ks.yaml
   - ./youtrack/ks.yaml
