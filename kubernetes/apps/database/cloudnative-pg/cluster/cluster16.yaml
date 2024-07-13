@@ -57,10 +57,6 @@ spec:
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
-    initdb:
-      postInitSQL:
-        - ALTER SYSTEM SET search_path TO "$user", public, vectors;
-        - CREATE EXTENSION IF NOT EXISTS "vectors";  
     recovery:
       source: &previousCluster postgres16-v1
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
