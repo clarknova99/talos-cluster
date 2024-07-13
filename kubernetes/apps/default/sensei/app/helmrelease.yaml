@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sensei_dev
+  name: sensei
   namespace: default
 spec:
   interval: 15m
@@ -25,14 +25,18 @@ spec:
       retries: 5
   values:
     controllers:
-      sensei_dev:
+      sensei:
         replicas: 1
         containers:
           app:
             image:
               repository: docker.io/clarknova9/sensei
               tag: 0.0.6
+              # repository: ghcr.io/clarknova99/project-sensei/senseichess
+              #tag: latest@sha256:d67ca64f58bb9b3ee254adaa963e3ffec1b2f41f36f39afea672ed2d56530ab7
+              # tag: 0.0.1@sha256:a40eec0849ae8b445f8422b375132e2cbae600a86699a06c4ea3518d114d9c17
               pullPolicy: Always
+              
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
         pod:
@@ -43,7 +47,7 @@ spec:
             kubernetes.io/arch: amd64
     service:
       app:
-        controller: sensei_dev
+        controller: sensei
         ports:
           http:
             port: 8501
