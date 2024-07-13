@@ -6,7 +6,7 @@ metadata:
   name: postgres16
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.3-4
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.3-7
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -31,9 +31,9 @@ spec:
   monitoring:
     enablePodMonitor: true
     # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501
-    podMonitorMetricRelabelings:
-      - { sourceLabels: ["cluster"], targetLabel: cnpg_cluster, action: replace }
-      - { regex: cluster, action: labeldrop }
+    # podMonitorMetricRelabelings:
+    #   - { sourceLabels: ["cluster"], targetLabel: cnpg_cluster, action: replace }
+    #   - { regex: cluster, action: labeldrop }
   backup:
     retentionPolicy: 30d
     barmanObjectStore: &barmanObjectStore
