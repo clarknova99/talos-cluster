@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: docker.io/clarknova9/sensei
-              tag: 0.0.6@sha256:27652b3401b8c0cd3d4e341aa0d7d93de279100e4f070e4ad93ec980fc3f767a
+              tag: 0.0.6@sha256:3e9822a4651b56cd78283b9da20770e61aac231c194f602482955680e287437e
               # repository: ghcr.io/clarknova99/project-sensei/senseichess
               #tag: latest@sha256:d67ca64f58bb9b3ee254adaa963e3ffec1b2f41f36f39afea672ed2d56530ab7
               # tag: 0.0.1@sha256:a40eec0849ae8b445f8422b375132e2cbae600a86699a06c4ea3518d114d9c17
