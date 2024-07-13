@@ -6,7 +6,7 @@ metadata:
   name: sensei-stage
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/default/sensei_stage/app
+  path: ./kubernetes/apps/default/sensei-stage/app
   prune: true
   sourceRef:
     kind: GitRepository
