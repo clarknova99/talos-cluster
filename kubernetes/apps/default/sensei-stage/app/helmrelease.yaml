@@ -33,7 +33,7 @@ spec:
               #repository: docker.io/clarknova9/sensei
               repository: ghcr.io/clarknova99/project-sensei/senseichess
               #tag: latest@sha256:d67ca64f58bb9b3ee254adaa963e3ffec1b2f41f36f39afea672ed2d56530ab7
-              tag: 0.0.1@sha256:ed70b9c9728afbc91626fbd2b3acc1c285a51c7147a8e6903221fb2bfec97cce
+              tag: 0.0.1@sha256:f5c7a61564b154941f45cf87a080618ba171a7bc8aecca11d9e6ae6dec43e01f
               pullPolicy: Always
               
             env:
