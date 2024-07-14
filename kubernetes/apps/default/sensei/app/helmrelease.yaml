@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: docker.io/clarknova9/sensei
-              tag: 0.0.7@sha256:268ad6d72a6a530f0f939c8464bbf7566c5a40eb5c435f96c10f48384173f186
+              tag: 0.0.8@sha256:addf87dc0887c8dc1e83c073a82d43074ab47ccd376681561f57fae6efa3286e
               pullPolicy: Always
               
             env:
