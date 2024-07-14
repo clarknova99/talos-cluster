@@ -34,6 +34,11 @@ spec:
     # podMonitorMetricRelabelings:
     #   - { sourceLabels: ["cluster"], targetLabel: cnpg_cluster, action: replace }
     #   - { regex: cluster, action: labeldrop }
+ # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  bootstrap:
+    recovery:
+      source: &previousCluster postgres16-v1
   backup:
     retentionPolicy: 30d
     barmanObjectStore: &barmanObjectStore
@@ -55,11 +60,7 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secrets
           key: AWS_SECRET_ACCESS_KEY
-  # Note: previousCluster needs to be set to the name of the previous
-  # cluster when recovering from an existing cnpg cluster
-  bootstrap:
-    recovery:
-      source: &previousCluster postgres16-v1
+ 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *previousCluster
