@@ -31,21 +31,13 @@ spec:
           app:
             image:
               repository: docker.io/clarknova9/sensei
-              tag: 0.0.6@sha256:27652b3401b8c0cd3d4e341aa0d7d93de279100e4f070e4ad93ec980fc3f767a
-              # repository: ghcr.io/clarknova99/project-sensei/senseichess
-              #tag: latest@sha256:d67ca64f58bb9b3ee254adaa963e3ffec1b2f41f36f39afea672ed2d56530ab7
-              # tag: 0.0.1@sha256:a40eec0849ae8b445f8422b375132e2cbae600a86699a06c4ea3518d114d9c17
+              tag: 0.0.7@sha256:268ad6d72a6a530f0f939c8464bbf7566c5a40eb5c435f96c10f48384173f186
               pullPolicy: Always
               
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
               PG_URI: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@192.168.3.40:5432/sensei
-        pod:
-          # imagePullPolicy: Always
-          # imagePullSecrets:
-          #   - name: sensei-secret
-          nodeSelector:
-            kubernetes.io/arch: amd64
+              PG_SEARCH_PATH: prod
     service:
       app:
         controller: sensei
