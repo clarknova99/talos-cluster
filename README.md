@@ -43,7 +43,7 @@ NOTE: Slowly migrating to talos from my [k3s cluster](https://github.com/clarkno
 ## 🔧 Hardware
 | Device | Count | Ram |  Purpose |
 | --- | --- | --- | --- |
-| Beelink EQ13 | 3   | 16GB |  Control Planes |
+| Beelink EQ13 | 3   | 32GB |  Control Planes |
 | Intel NUC11PAHi7 | 1   | 64GB |  Worker |
 | Intel NUC8i5BEH | 1   | 32GB |  Worker |
 | Alienware Aurora | 1   | 24GB |  Worker |
