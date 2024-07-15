@@ -31,12 +31,12 @@ spec:
           app:
             image:
               repository: docker.io/clarknova9/sensei
-              tag: 0.0.8@sha256:addf87dc0887c8dc1e83c073a82d43074ab47ccd376681561f57fae6efa3286e
+              tag: 0.0.9@sha256:5a32a1019e9796cf96cfcfda0a62a5ed058ed8337876c9b2564f12372a8a1f91
               pullPolicy: Always
               
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
-              PG_URI: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@192.168.3.41:5432/sensei
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.41:5432/sensei
     service:
       app:
         controller: sensei
