@@ -36,7 +36,7 @@ spec:
               
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
-              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.40:5432/sensei-stage
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.41:5432/sensei-stage
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
