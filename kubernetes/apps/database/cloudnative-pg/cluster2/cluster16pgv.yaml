@@ -6,7 +6,9 @@ metadata:
   name: postgres16pgv
 spec:
   instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.3-7
+  #https://blog.pgvecto.rs/pgvector-vs-pgvectors-in-2024-a-comprehensive-comparison-for-vector-search-in-postgresql
+  #https://github.com/tensorchord/pgvecto.rs
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.3-v0.3.0
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -18,9 +20,10 @@ spec:
     parameters:
       max_connections: "400"
       shared_buffers: 256MB
+      pg_stat_statements.max: "10000"
+      pg_stat_statements.track: all      
     shared_preload_libraries:
       - "vectors.so"
-      - "pg_stat_statements"   
   nodeMaintenanceWindow:
     inProgress: false
     reusePVC: true
