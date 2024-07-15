@@ -24,6 +24,7 @@ spec:
       pg_stat_statements.track: all      
     shared_preload_libraries:
       - "vectors.so"
+      - "pg_stat_statements"
   nodeMaintenanceWindow:
     inProgress: false
     reusePVC: true
