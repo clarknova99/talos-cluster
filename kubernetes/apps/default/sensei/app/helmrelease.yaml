@@ -36,8 +36,7 @@ spec:
               
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
-              PG_URI: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@192.168.3.40:5432/sensei
-              PG_SEARCH_PATH: prod
+              PG_URI: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@192.168.3.41:5432/sensei
     service:
       app:
         controller: sensei
