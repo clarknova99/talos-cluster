@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sensei-stage-app
+  name: sensei-stage-api
   namespace: default
 spec:
   interval: 15m
@@ -25,13 +25,13 @@ spec:
       retries: 5
   values:
     controllers:
-      sensei-stage-app:
+      sensei-stage-api:
         replicas: 1
         containers:
           app:
             image:
-              repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: 0.1.0@sha256:5ab563794ae395efced77ccdbe36e556ee080671a937a35348083d302ed187fa
+              repository: ghcr.io/clarknova99/project-sensei/backend
+              tag: 0.1.0@sha256:9b478a725913735d920b9adff1ae50ec639bfc2baab8cde45e93a205ed6bf23f
               pullPolicy: Always
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
@@ -42,7 +42,7 @@ spec:
             - name: sensei-secret
     service:
       app:
-        controller: sensei-stage-app
+        controller: sensei-stage-api
         ports:
           http:
             port: 8501
@@ -59,7 +59,7 @@ spec:
           hajimari.io/icon: mdi:math-compass
         className: external
         hosts:
-          - host: stage.${SECRET_DOMAIN_TWO}
+          - host: stageapi.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
                 service:
@@ -67,4 +67,4 @@ spec:
                   port: 8501
         tls:
           - hosts:
-              - stage.${SECRET_DOMAIN_TWO}
+              - stageapi.${SECRET_DOMAIN_TWO}
