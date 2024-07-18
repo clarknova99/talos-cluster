@@ -28,27 +28,39 @@ spec:
       sensei-stage:
         replicas: 1
         containers:
-          app:
+          sense_api:
             image:
-              repository: ghcr.io/clarknova99/project-sensei/senseichess
-              tag: 0.0.1@sha256:a916be70a4ed3b44cbe76061c5bdb00be70d3709613e7348c542ae222444e3d9
+              repository: ghcr.io/clarknova99/project-sensei/backend
+              tag: 0.1.0@sha256:9b478a725913735d920b9adff1ae50ec639bfc2baab8cde45e93a205ed6bf23f
               pullPolicy: Always
-              
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.41:5432/sensei-stage
+          sense_app:
+            image:
+              repository: ghcr.io/clarknova99/project-sensei/frontend
+              tag: 0.1.0@sha256:5ab563794ae395efced77ccdbe36e556ee080671a937a35348083d302ed187fa
+              pullPolicy: Always
+            env:
+              API_HOST: sense_api.default
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.41:5432/sensei-stage
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
-            - name: sensei-secret
+            - name: sensei-secret            
     service:
-      app:
+      sense_api:
+        controller: sensei-stage
+        ports:
+          http:
+            port: 3001
+      sense_app:
         controller: sensei-stage
         ports:
           http:
             port: 8501
     ingress:
-      app:
+      sense_api:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
           # nginx.ingress.kubernetes.io/auth-method: GET
@@ -60,12 +72,28 @@ spec:
           hajimari.io/icon: mdi:math-compass
         className: external
         hosts:
+          - host: api-stage.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: sense_api
+                  port: 8501
+        tls:
+          - hosts:
+              - api-stage.${SECRET_DOMAIN_TWO}
+      sense_app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:math-compass
+        className: external
+        hosts:
           - host: stage.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: sense_app
                   port: 8501
         tls:
           - hosts:
-              - stage.${SECRET_DOMAIN_TWO}
+              - stage.${SECRET_DOMAIN_TWO}              
