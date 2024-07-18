@@ -11,7 +11,7 @@ resources:
   - ./mosquitto/ks.yaml
   - ./prefect/ks.yaml
   - ./sensei/ks.yaml
-  #- ./sensei-stage/ks.yaml  
+  - ./sensei-stage/ks.yaml  
   - ./website/ks.yaml
  # - ./whoami/ks.yaml
   - ./youtrack/ks.yaml
