@@ -34,8 +34,7 @@ spec:
               tag: 0.1.0@sha256:2bdb4320571f41ed879aa01061c7099a8b658ad2bc98b6d481ef9c2452e832f1
               pullPolicy: Always
             env:
-              GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
-              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.41:5432/sensei-stage
+              API_HOST: sensei-stage-api.default.svc.cluster.local
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
