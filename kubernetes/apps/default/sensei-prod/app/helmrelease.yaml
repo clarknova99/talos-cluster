@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: 0.1.0@sha256:784f8ce5169611baf0d8aebdfbbb3df606560bb8d6c8a56964b363dc5aacc3de
+              tag: main-0.1.0@0f3353c26f12903c8bab31b109576a455404e300811248d4b6b4edf0da138292
               pullPolicy: Always
             env:
               API_HOST: sensei-prod-api.default.svc.cluster.local
@@ -64,12 +64,12 @@ spec:
                 service:
                   identifier: app
                   port: 8501
-          # - host: ${SECRET_DOMAIN_TWO}
-          #   paths:
-          #     - path: /
-          #       service:
-          #         identifier: app
-          #         port: 8501
+                  # - host: ${SECRET_DOMAIN_TWO}
+                  #   paths:
+                  #     - path: /
+                  #       service:
+                  #         identifier: app
+                  #         port: 8501
         tls:
           - hosts:
               - prod.${SECRET_DOMAIN_TWO}
