@@ -12,7 +12,7 @@ resources:
   - ./prefect/ks.yaml
   - ./sensei/ks.yaml
   - ./sensei-prod/ks.yaml
-  - ./sensei-stage/ks.yaml  
+#  - ./sensei-stage/ks.yaml  
   - ./website/ks.yaml
  # - ./whoami/ks.yaml
   - ./youtrack/ks.yaml
