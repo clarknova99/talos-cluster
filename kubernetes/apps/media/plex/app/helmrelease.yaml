@@ -42,27 +42,27 @@ spec:
               # See https://support.plex.tv/articles/201105343-advanced-hidden-server-settings/
               TZ: America/New_York
               ADVERTISE_IP: "https://plex.${SECRET_DOMAIN},http://192.168.3.50:32400"
-              #ALLOWED_NETWORKS: "192.168.0.0/16,10.69.0.0/16,10.43.0.0/16"
+              # ALLOWED_NETWORKS: "192.168.0.0/16,10.69.0.0/16,10.96.0.0/16"
               PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
               HOSTNAME: plex.${SECRET_DOMAIN}
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /identity
-                    port: 32400
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /identity
+            #         port: 32400
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probes
+            #   startup:
+            #     enabled: true
+            #     spec:
+            #       failureThreshold: 30
+            #       periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
