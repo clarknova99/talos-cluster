@@ -31,13 +31,13 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: main-0.1.0@sha256:0948922fb27781ff36f133ab6b6af61c539456539b87931ad362e74225c56139
+              tag: main-0.1.0@sha256:4f078b39e1d329c7a3a2abdafb0694b9807efef398c8513ab1910cd3048b08be
               pullPolicy: Always
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
               GROQ_MODEL: llama3-8b-8192
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.41:5432/sensei-prod
-              DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}                
+              DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               ENVIRONMENT: Production
         pod:
           # imagePullPolicy: Always
