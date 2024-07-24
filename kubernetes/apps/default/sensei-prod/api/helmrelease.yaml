@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: main-0.1.0@sha256:3af77771c6dfa2546f7b7da190778b2ac968223d6511daf90cc4c3f13e3ca683
+              tag: main-0.1.0@sha256:0948922fb27781ff36f133ab6b6af61c539456539b87931ad362e74225c56139
               pullPolicy: Always
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
