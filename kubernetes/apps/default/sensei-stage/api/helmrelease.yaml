@@ -31,13 +31,13 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:50a622453e11769ff93dc76144588d2eaa2527c3443ec397bd89de9e21c6c2e0
+              tag: stage-latest@sha256:0a7925c7395409a1b74242fca6db06cccc4642ce7913b44768248e35b597177c
               pullPolicy: Always
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
               GROQ_MODEL: llama3-8b-8192
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.41:5432/sensei-stage
-              ENVIRONMENT: Stage              
+              ENVIRONMENT: Stage
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
