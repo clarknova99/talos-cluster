@@ -35,7 +35,7 @@ spec:
               pullPolicy: Always
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
-              GROQ_MODEL: llama3-8b-8192
+              GROQ_MODEL: llama3-70b-8192
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.41:5432/sensei-prod
               DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               ENVIRONMENT: Production
