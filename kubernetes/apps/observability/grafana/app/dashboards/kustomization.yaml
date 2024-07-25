@@ -11,7 +11,10 @@ configMapGenerator:
       - iotawatt.json
   - name: ingress-logs
     files:
-      - ingress-logs.json     
+      - ingress-logs.json
+  - name: smartctl-health
+    files:
+      - smartctl-exporter.json            
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
