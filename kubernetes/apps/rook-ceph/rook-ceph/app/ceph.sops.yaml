@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: rook-ceph-dashboard
+## sops --encrypt --in-place ./kubernetes/apps/default/authelia/app/authelia-secrets.sops.yaml
+## sops --decrypt ./kubernetes/apps/default/authelia/app/authelia.sops.yaml | kubectl apply -f -
+stringData:
+    password: ENC[AES256_GCM,data:vdFlOT5+f/Qd,iv:EA13+W6z8hMnpacc1I+lecjbZb6+STunf5c05IQYr9o=,tag:HRkhn4TzVal4QeM+foZrAg==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBvUURYRGpycEFVclVsTTl4
+            SndMa3ZGam9HVHZEbTlLamxZKzJjSk9QTkNJCmhwQWZsVm1tc2EyZ1RxS3g4aVZv
+            ZUJPVHBHM3MzamVqM21WWTk1TXJTSUEKLS0tIEhwUHZQWS9BRlgvRWxJdnl2REVy
+            TExSSTNXVjJuak95OTFaNFZIMEhuQ1UK+WGgrUID1FGqegMyoM2DFqoGOOHIiBgx
+            wrNKabS7994K+HdWmzs0iCAOUWVrZ+cOLqw2n4oyt1G9TtkReoOY9w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-07-25T13:36:42Z"
+    mac: ENC[AES256_GCM,data:h9XGYd4VoCRD/ERgGMBf9MUf6qPI1nAPzdmCNrvMJpdhnvUUpNabmDkP5BonPf8pcE2Q9fLYvCRyFHi/+wyRDgPbcDpi9LAIQN1pkYOr5bj33hZqdWKQPa2e7dJ1A901oXl5CPksTD2lWpDvwpWhSiskANNtR+pcTju8cVsxRkY=,iv:La0Eu+oC7xnRRrmaU2B6ph91QTxYOLOyNvJ3WxaZbVM=,tag:0E8UeZMemrYv6Ulmw5YA5w==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
