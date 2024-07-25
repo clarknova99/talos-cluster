@@ -21,6 +21,7 @@ resources:
   - ./postfinance.yaml
   - ./prefect.yaml
   - ./prometheus-community.yaml
+  - ./rook-ceph.yaml  
   - ./runix.yaml
   - ./spegel.yaml
   - ./stakater.yaml
