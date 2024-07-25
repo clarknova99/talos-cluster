@@ -225,5 +225,5 @@ spec:
             nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
           ingressClassName: internal
           host:
-            name: rgw${SECRET_DOMAIN}
+            name: rgw.${SECRET_DOMAIN}
             path: /
