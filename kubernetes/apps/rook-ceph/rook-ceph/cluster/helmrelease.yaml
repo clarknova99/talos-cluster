@@ -35,10 +35,11 @@ spec:
     ingress:
       dashboard:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.devbu.io
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          hajimari.io/icon: mdi:chess-rook
         ingressClassName: internal
         host:
-          name: rook.devbu.io
+          name: rook.${SECRET_DOMAIN}
           path: /
     toolbox:
       enabled: true
@@ -69,15 +70,15 @@ spec:
         deviceFilter: nvme0n1
         config:
           osdsPerDevice: "1"
-      placement:
-        mgr: &placement
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - key: node-role.kubernetes.io/control-plane
-                      operator: Exists
-        mon: *placement
+      # placement:
+      #   mgr: &placement
+      #     nodeAffinity:
+      #       requiredDuringSchedulingIgnoredDuringExecution:
+      #         nodeSelectorTerms:
+      #           - matchExpressions:
+      #               - key: node-role.kubernetes.io/control-plane
+      #                 operator: Exists
+      #   mon: *placement
       resources:
         mgr:
           requests:
@@ -219,10 +220,10 @@ spec:
         ingress:
           enabled: true
           annotations:
-            external-dns.alpha.kubernetes.io/target: internal.devbu.io
+            external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
             nginx.ingress.kubernetes.io/proxy-body-size: "0"
             nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
           ingressClassName: internal
           host:
-            name: rgw.devbu.io
+            name: rgw${SECRET_DOMAIN}
             path: /
