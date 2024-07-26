@@ -27,6 +27,10 @@ metrics:
       - { color: "orange", min: 36, max: 75 }
       - { color: "red", min: 76, max: 9999 }
 
+  - name: cluster_cpu_core_total
+    query: sum(machine_cpu_cores)
+    suffix: "GiB"
+
   - name: cluster_memory_usage
     query: round(sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / sum(node_memory_MemTotal_bytes) * 100, 0.1)
     suffix: "%"
