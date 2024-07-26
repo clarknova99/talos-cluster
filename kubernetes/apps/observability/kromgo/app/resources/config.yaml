@@ -35,6 +35,13 @@ metrics:
       - { color: orange, min: 36, max: 75 }
       - { color: red, min: 76, max: 9999 }
 
+  - name: cluster_memory_total
+    query: round(sum(node_memory_MemTotal_bytes) / 2 ^ 30)
+    suffix: "GiB"
+    label: memory_total
+
+#sum(machine_memory_bytes) / 1024
+
   - name: cluster_age_days
     query: round((time() - min(kube_node_created) ) / 86400)
     suffix: "d"
