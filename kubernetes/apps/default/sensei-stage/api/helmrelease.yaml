@@ -38,6 +38,7 @@ spec:
               GROQ_MODEL: llama3-70b-8192
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.41:5432/sensei-stage
               DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
+              OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: Stage
         pod:
           # imagePullPolicy: Always
