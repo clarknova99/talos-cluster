@@ -65,6 +65,12 @@ spec:
           http:
             port: 1883
     persistence:
+      data:
+        existingClaim: mosquitto-data
+        advancedMounts:
+          mosquitto:
+            app:
+              - path: /data    
       # config:
       #   enabled: true
       #   existingClaim: mosquitto
