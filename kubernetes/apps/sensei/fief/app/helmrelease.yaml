@@ -36,8 +36,8 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: fief-secret
-            env:
-#              EMAIL_PROVIDER_PARAMS: "{'host': '', 'username': '', 'password': ''}"         
+#             env:
+# #              EMAIL_PROVIDER_PARAMS: "{'host': '', 'username': '', 'password': ''}"         
           worker:
             image:
               repository: ghcr.io/fief-dev/fief
