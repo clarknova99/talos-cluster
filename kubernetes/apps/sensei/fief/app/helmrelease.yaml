@@ -28,7 +28,7 @@ spec:
       fief:
         replicas: 1
         containers:
-          server:
+          fief:
             image:
               repository: ghcr.io/fief-dev/fief
               tag: 0.28.6@sha256:b42dd251a734be308ecfa83ec05ad0be4f096bae28cf91972de3a12f366e364b
@@ -52,7 +52,7 @@ spec:
           http:
             port: 8000
     ingress:
-      app:
+      fief:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
           nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -68,7 +68,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: server
+                  identifier: fief
                   port: 8000
         tls:
           - hosts:
