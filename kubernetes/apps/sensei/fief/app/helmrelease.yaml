@@ -37,7 +37,7 @@ spec:
               - secretRef:
                   name: fief-secret
             env:
-              EMAIL_PROVIDER_PARAMS: "{'host': 'smtp.bretagne.duchy', 'username': 'anne', 'password': 'herminetincture'}"         
+#              EMAIL_PROVIDER_PARAMS: "{'host': '', 'username': '', 'password': ''}"         
           worker:
             image:
               repository: ghcr.io/fief-dev/fief
