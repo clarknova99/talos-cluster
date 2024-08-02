@@ -37,7 +37,13 @@ spec:
               - secretRef:
                   name: fief-secret
             env:
-              EMAIL_PROVIDER_PARAMS: {"host": "${SECRET_MAIL_HOST}", "username": "${SECRET_MAIL_USERNAME}", "password": "${SECRET_MAIL_PASSWORD}", "port": "587" }      
+              # EMAIL_PROVIDER_PARAMS: {"host": "${SECRET_MAIL_HOST}", "username": "${SECRET_MAIL_USERNAME}", "password": "${SECRET_MAIL_PASSWORD}", "port": "587" }   
+              EMAIL_PROVIDER_PARAMS:    
+                - host: ${SECRET_MAIL_HOST}
+                - username: ${SECRET_MAIL_USERNAME}
+                - password: ${SECRET_MAIL_PASSWORD}
+                - port: "587"
+                
           worker:
             image:
               repository: ghcr.io/fief-dev/fief
