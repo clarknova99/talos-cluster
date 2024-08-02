@@ -35,9 +35,13 @@ spec:
       log_level: info
       avatars: "gravatar,initials"
       email:
-        host: smtp-relay.default.svc.cluster.local
-        port: 2525
-        from: "Access <access@outsideour.casa>"
+        host: ${SECRET_MAIL_HOST}
+        # -- SMTP credentials. When left empty, no authentication will be done.
+        username: "${SECRET_MAIL_USERNAME}"
+        # -- SMTP credentials. When left empty, no authentication will be done.
+        password: "${SECRET_MAIL_PASSWORD}"        
+        port: 587
+        from: "Big Man <bigman@${SECRET_DOMAIN_TWO}>"
       error_reporting:
         enable: false
         send_pii: false
@@ -62,14 +66,14 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.ok8.sh
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
         hosts:
-          - &host id.ok8.sh
+          - auth.${SECRET_DOMAIN_TWO}
         paths:
           - /
         tls:
           - hosts:
-              - *host
+              - auth.${SECRET_DOMAIN_TWO}
     geoip:
       enabled: false
       existingSecret:
