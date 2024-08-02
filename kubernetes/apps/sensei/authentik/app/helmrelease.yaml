@@ -45,6 +45,9 @@ spec:
       error_reporting:
         enable: false
         send_pii: false
+      redis:
+        host: dragonfly.database.svc.cluster.local
+        db: 1        
       outposts:
         container_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
       # https://github.com/goauthentik/authentik/pull/7118
