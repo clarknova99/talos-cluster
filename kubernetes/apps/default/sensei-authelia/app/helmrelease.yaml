@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app authelia
+  name: &app sensei-authelia
   namespace: default
 spec:
   interval: 30m
@@ -123,15 +123,15 @@ spec:
             add_header X-Frame-Options "SAMEORIGIN";
             add_header X-XSS-Protection "1; mode=block";
         hosts:
-          - host: auth.${SECRET_DOMAIN}
+          - host: auth.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
                 service:
                   identifier: app
-                  port: http              
+                  port: http                  
         tls:
           - hosts:
-              - auth.${SECRET_DOMAIN}
+              - auth.${SECRET_DOMAIN_TWO}
     persistence:
       config:
         enabled: true
