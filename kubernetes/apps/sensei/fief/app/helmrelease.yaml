@@ -41,8 +41,8 @@ spec:
               repository: ghcr.io/fief-dev/fief
               tag: 0.28.6@sha256:b42dd251a734be308ecfa83ec05ad0be4f096bae28cf91972de3a12f366e364b
               pullPolicy: Always
-              command: ["fief", "run-worker"]
-              args: ["-p", "1", "-t", "1"]
+            command: ["fief", "run-worker"]
+            args: ["-p", "1", "-t", "1"]
             envFrom: *envFrom
 
     service:
