@@ -26,6 +26,10 @@ stringData:
     FORWARDED_ALLOW_IPS: ENC[AES256_GCM,data:FA==,iv:UHUUsB2cohbvw6iJEN0qzfG2X+MIFM9koEQiO3GNq9U=,tag:63JVFnLvQsUWiXxARqpW2g==,type:str]
     EMAIL_PROVIDER: ENC[AES256_GCM,data:JPURaQ==,iv:hihoLcJAFIHGgM6DYCGA/jI+NpzrmzxHZRim1seiQLM=,tag:krAFNGjJ/R4fdtJhARmd0g==,type:str]
     EMAIL_PROVIDER_PARAMS: ENC[AES256_GCM,data:vMSLLTF2elq/KAe7KOvEkMJnvNzaZWfbpl9BKCh2u1tdnjisFxH8FtpOWyebvueWCoTo70kB2wYpqWfJtfwEunQnsJile27x/5B4DDLMVPfefJU+9UeqDR/p28r9f3dv08RsSnpzVKMB3uWPluh37s2DhA0rSPxvYvaXKm3s/O5ZdONM/qT2lwBc6tQ=,iv:g9rN5m2UEu6AjRR1T9cqRRZQPFHsgXOwgGiI73aemog=,tag:u7hy6JSY9wmjeez6gTuq1Q==,type:str]
+    CSRF_COOKIE_SECURE: ENC[AES256_GCM,data:jM28rtA=,iv:ylTXkLqqWbzwmJlId7grzoQzKPLozcN9ZYr2jR+qYdE=,tag:Uq5GiCoxw/HyHJfWGNFz0Q==,type:str]
+    LOGIN_SESSION_COOKIE_SECURE: ENC[AES256_GCM,data:cXXHP4Q=,iv:GZQI5POKTzIC/c7SYf+T0SipekZeyEYP+0D2WXWO0XU=,tag:ewRCpdwRSIZ2oPOvNfiPMQ==,type:str]
+    SESSION_COOKIE_SECURE: ENC[AES256_GCM,data:PEEmCNA=,iv:SWZ3xnrCvP2jdwa/7sZQKEQcJWO8EARepn4kfgaMwd0=,tag:Fs03UhRle74PovK9XIZALg==,type:str]
+    FIEF_ADMIN_SESSION_COOKIE_SECURE: ENC[AES256_GCM,data:ZfN8DCo=,iv:cEXMzkUFfD9B53fghynAqSvhQt7kENZBdNQSy+55hxM=,tag:nr2AahjQGSOa8S9gytmI4A==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -41,8 +45,8 @@ sops:
             OUpsalBnM01VaFM5blQxZXNhblV3WUUKoHDxccQBoUt15TGbs8JLMVgdZFVAvRAD
             SYFJNXWQgHbZIyOXSr3uDWvmP4BG9zzLOb5t+EosSZu3Iup6C2vzPA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-08-02T19:10:05Z"
-    mac: ENC[AES256_GCM,data:/U+j2dQAziO50t/FDgWMbRWaVp6C+AAGbZy2jzRZxdRgGsWFpDZxxujAIPGrbMQca5xi4hby6W2JrhjZ/9Soe+WH38td29LQ40P3zm19BiV8ZWQn6yzvgJ7ZWGvxYRkqnVdhWjWlpkLTCTcL54IrOWFlXcqHOwb/GmNRr5VyHks=,iv:uGYPIgpSCp5hVr4Je06StCV8tk9Tbhv52lnZOpIjq2M=,tag:Cir1dAsgLKl8ya7uz0lq6Q==,type:str]
+    lastmodified: "2024-08-02T19:26:09Z"
+    mac: ENC[AES256_GCM,data:MXeBeBOMRnad16tqdd15W+JGjq38khuazVedRC0IGFJV92lOn7H7CVZUNEAoJKKj5MIVXx+tbzvUlRNFkhhweLPR3BrW3lUEXmoo0w03t5W8hzWhwrfgSRExoJ0ri4HQB79+p2EA3nC1Qe4V2XOD5kgUP3ASsMTSxtFdW3atIHo=,iv:CCJi+9CRhfKldK4rGb0HHsVHkUcCAF0dc3CxCK8+8A0=,tag:nBrQe1xcpvsqZIWMRhbjEw==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
