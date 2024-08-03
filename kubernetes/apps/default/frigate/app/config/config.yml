@@ -121,8 +121,9 @@ cameras:
         #     - detect
     detect:
       enabled: true # <---- disable detection until you have a working camera feed
-      width: 1920 # <---- update for your camera's resolution
-      height: 1080 # <---- update for your camera's resolution
+      # width: 1920 # <---- update for your camera's resolution
+      # height: 1080 # <---- update for your camera's resolution
+      fps: 5
     # objects:
     #   filters:
     #     person:
@@ -143,8 +144,9 @@ cameras:
       password: ${SECRET_BACKYARDCAM_PASSWORD}
     detect:
       enabled: true # <---- disable detection until you have a working camera feed
-      width: 1920 # <---- update for your camera's resolution
-      height: 1080 # <---- update for your camera's resolution
+      # width: 1920 # <---- update for your camera's resolution
+      # height: 1080 # <---- update for your camera's resolution
+      fps: 5      
   backyard:
     ffmpeg:
       inputs:
@@ -164,9 +166,9 @@ cameras:
       password: ${SECRET_WIFICAM_PASSWORD}
     detect:
       enabled: true # <---- disable detection until you have a working camera feed
-      width: 1920 # <---- update for your camera's resolution
-      height: 1080 # <---- update for your camera's resolution
-
+      # width: 1920 # <---- update for your camera's resolution
+      # height: 1080 # <---- update for your camera's resolution
+      fps: 5
 
 # Optional: Telemetry configuration
 telemetry:
