@@ -129,7 +129,7 @@ cameras:
   frontdoor:
     ffmpeg:
       inputs:
-        - path: rtsp://127.0.0.1:8554/frontdoor_lq
+        - path: rtsp://127.0.0.1:8554/frontdoor_hq
           input_args: preset-rtsp-restream
           roles:
             - detect
