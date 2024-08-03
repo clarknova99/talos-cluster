@@ -36,12 +36,15 @@ birdseye:
 go2rtc:
   streams:
     frontyard_hq:
-      - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream1#timeout=20
+      - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream1#timeout=20        
       # - "ffmpeg:backyard#video=h264"
-    # frontyard_lq:
+    frontyard_lq:
+      - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream2#timeout=20    
     #   - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream2
     frontdoor_hq:
       - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_0.264#timeout=20
+    frontdoor_lq:
+      - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_1.264#timeout=20      
     # basement_hq:
     #   - ffmpeg:rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.206:554/ch0_0.264#timeout=20
       # - "ffmpeg:backyard#video=h264"
@@ -51,8 +54,8 @@ go2rtc:
     backyard_hq:
       - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_WIFICAM_PASSWORD}@192.168.1.201:10554/tcp/av0_0#timeout=20
       # - "ffmpeg:backyard#video=h264"
-    # backyard_lq:
-    #   - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_WIFICAM_PASSWORD}@192.168.1.201:10554/tcp/av0_1
+    backyard_lq:
+      - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_WIFICAM_PASSWORD}@192.168.1.201:10554/tcp/av0_1#timeout=20
   webrtc:
     listen: ":8555"
     candidates:
@@ -105,7 +108,7 @@ cameras:
   frontyard:
     ffmpeg:
       inputs:
-        - path: rtsp://127.0.0.1:8554/frontyard_hq
+        - path: rtsp://127.0.0.1:8554/frontyard_lq
           input_args: preset-rtsp-restream
           roles:
             - detect
@@ -118,15 +121,15 @@ cameras:
       enabled: true # <---- disable detection until you have a working camera feed
       width: 1920 # <---- update for your camera's resolution
       height: 1080 # <---- update for your camera's resolution
-    objects:
-      filters:
-        person:
-          mask:
-            - 1049,606,1086,454,973,486,899,500,885,616
+    # objects:
+    #   filters:
+    #     person:
+    #       mask:
+    #         - 1049,606,1086,454,973,486,899,500,885,616
   frontdoor:
     ffmpeg:
       inputs:
-        - path: rtsp://127.0.0.1:8554/frontdoor_hq
+        - path: rtsp://127.0.0.1:8554/frontdoor_lq
           input_args: preset-rtsp-restream
           roles:
             - detect
@@ -143,7 +146,7 @@ cameras:
   backyard:
     ffmpeg:
       inputs:
-        - path: rtsp://127.0.0.1:8554/backyard_hq
+        - path: rtsp://127.0.0.1:8554/backyard_lq
           input_args: preset-rtsp-restream
           roles:
             - record
