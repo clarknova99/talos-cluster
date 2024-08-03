@@ -108,6 +108,8 @@ objects:
 cameras:
   frontyard:
     ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-copy    
       inputs:
         - path: rtsp://127.0.0.1:8554/frontyard_lq
           input_args: preset-rtsp-restream
@@ -130,6 +132,8 @@ cameras:
     #         - 1049,606,1086,454,973,486,899,500,885,616
   frontdoor:
     ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-copy
       inputs:
         - path: rtsp://127.0.0.1:8554/frontdoor_hq
           input_args: preset-rtsp-restream
@@ -148,6 +152,8 @@ cameras:
       fps: 5      
   backyard:
     ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-copy
       inputs:
         - path: rtsp://127.0.0.1:8554/backyard_lq
           input_args: preset-rtsp-restream
