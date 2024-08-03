@@ -7,8 +7,8 @@ logger:
     frigate.record.maintainer: debug
     frigate.video: debug
 
-    # ffmpeg.frontyard_hq: error
-    # ffmpeg.backyard_hq: error
+    ffmpeg.frontyard_hq: error
+    ffmpeg.backyard_hq: error
     #frigate.ptz.onvif: debug
 
 mqtt:
@@ -29,7 +29,6 @@ birdseye:
   enabled: True
   restream: true
   mode: continuous
-
 
 # Optional: Restream configuratio
 # Uses https://github.com/AlexxIT/go2rtc (v1.2.0)
@@ -59,7 +58,7 @@ go2rtc:
   webrtc:
     listen: ":8555"
     candidates:
-      - ${SVC_FRIGATE_ADDR}:8555 # <--- enter frigate host IP here
+      - 192.168.3.34:8555 # <--- enter frigate host IP here
       - stun:8555
 ffmpeg:
   global_args: ["-hide_banner", "-loglevel", "warning"]
