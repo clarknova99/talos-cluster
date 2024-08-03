@@ -66,6 +66,7 @@ ffmpeg:
   hwaccel_args: preset-intel-qsv-h264
   #hwaccel_args: preset-vaapi
   #hwaccel_args: ["-hwaccel", "vaapi", "-hwaccel_device", "/dev/dri/renderD128", "-hwaccel_output_format", "yuv420p"]
+  
   output_args:
     #record: preset-record-generic-audio-aac
     record: preset-record-generic-audio-copy
