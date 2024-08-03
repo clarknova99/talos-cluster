@@ -107,6 +107,8 @@ objects:
   #     threshold: 0.7
 cameras:
   frontyard:
+    live:
+      stream_name: frontyard  
     ffmpeg:
       output_args:
         record: preset-record-generic-audio-copy    
