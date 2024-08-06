@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: frigate-restart-deployment
 spec:
-  schedule: "0 */6 * * *"  # Runs every 6 hours
+  schedule: "0 */3 * * *"  # Runs every 3 hours
   jobTemplate:
     spec:
       template:
