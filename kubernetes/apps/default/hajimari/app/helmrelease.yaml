@@ -41,10 +41,12 @@ spec:
         matchNames:
           - default
           - database
-          - observability
-          - network
-          - media
           - kube-system
+          - media
+          - network
+          - observability
+          - rook-ceph
+          - sensei
       globalBookmarks:
         - group: Daily
           bookmarks:
