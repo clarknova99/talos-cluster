@@ -56,8 +56,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: sensei-stage-dotcom
   path: ./kubernetes/apps/sensei/sensei-stage/dotcom
   prune: true
   sourceRef:
