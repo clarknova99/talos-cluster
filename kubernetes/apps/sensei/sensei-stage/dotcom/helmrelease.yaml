@@ -33,9 +33,9 @@ spec:
               repository: ghcr.io/clarknova99/project-sensei/dotcom
               tag: stage-latest@sha256:746a66e8cd888e8a38e550180cf5205a790e6ed7239b27e7c5a6e8b05ccf4de1
               pullPolicy: Always
-            command: >
-              sh -c "npx tailwindcss -i ./app/static/css/style.css -o ./app/static/css/output.css --watch &
-              uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+            # command: >
+            #   sh -c "npx tailwindcss -i ./app/static/css/style.css -o ./app/static/css/output.css --watch &
+            #   uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
             env:
               API_HOST: sensei-stage-api.sensei.svc.cluster.local
         pod:
