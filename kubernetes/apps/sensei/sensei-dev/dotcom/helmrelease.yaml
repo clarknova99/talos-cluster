@@ -1,0 +1,71 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sensei-dev-app
+  namespace: sensei
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.3.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      sensei-dev-app:
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: ghcr.io/clarknova99/project-sensei/frontend
+              tag: dev-latest@sha256:a22c30673fe2ca87b312c0f2b88b126a40fe4854d06a8359e0c574c0542cdab6
+              pullPolicy: Always
+            env:
+              API_HOST: sensei-dev-api.sensei.svc.cluster.local
+              GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-dev
+        pod:
+          # imagePullPolicy: Always
+          imagePullSecrets:
+            - name: sensei-secret
+    service:
+      app:
+        controller: sensei-dev-app
+        ports:
+          http:
+            port: 8501
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          # nginx.ingress.kubernetes.io/auth-method: GET
+          # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
+          # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN_TWO}?rm=$request_method
+          # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+          # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:math-compass
+        className: external
+        hosts:
+          - host: dev.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: 8501
+        tls:
+          - hosts:
+              - dev.${SECRET_DOMAIN_TWO}
