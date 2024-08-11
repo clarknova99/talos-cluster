@@ -39,6 +39,7 @@ spec:
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.41:5432/sensei-prod
               DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               ENVIRONMENT: Production
+              OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
