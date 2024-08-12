@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: jetbrains/youtrack
-              tag: 2024.2.37269
+              tag: 2024.2.40106
     service:
       app:
         controller: youtrack
