@@ -15,4 +15,4 @@ resources:
   # - ./sensei-stage/ks.yaml  
   - ./website/ks.yaml
  # - ./whoami/ks.yaml
-  - ./youtrack/ks.yaml
+  #- ./youtrack/ks.yaml
