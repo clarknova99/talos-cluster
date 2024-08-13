@@ -116,13 +116,13 @@ spec:
       #   path: /volume1/network-storage/sonarr
       #   globalMounts:
       #     - path: /config
-      # downloads:
-      #   enabled: true
-      #   type: nfs
-      #   server: 192.168.1.2
-      #   path: /volume1/Downloads
-      #   globalMounts:
-      #     - path: /downloads
+      downloads:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/Downloads
+        globalMounts:
+          - path: /downloads
       videos:
         enabled: true
         type: nfs
