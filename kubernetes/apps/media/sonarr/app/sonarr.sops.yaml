@@ -10,7 +10,7 @@ stringData:
     SONARR__POSTGRES_PORT: ENC[AES256_GCM,data:uCL60g==,iv:KA/D5KhStTQGhRsLTx47pQrAhF2j7wGGCBu12XG5oFs=,tag:DmGpnOZEdSoYb8fDjlXalA==,type:str]
     SONARR__POSTGRES_USER: ENC[AES256_GCM,data:VHsKmW90hwQ=,iv:2q0zzQcSkHOXMXaz173vYwAW9ENYdZR3YhgRSMnr10k=,tag:uLkuUMQP9qsVW8wHuoA+TA==,type:str]
     SONARR__POSTGRES_PASSWORD: ENC[AES256_GCM,data:bR5R556zq65l,iv:6uFvXYycnMK2/Uo8vAhJw9bI25Y259T9pHHx85aOXcs=,tag:puI0Nwf8WYE+bhjzpgNvpA==,type:str]
-    SONARR__POSTGRES_MAIN_DB: ENC[AES256_GCM,data:jUGlSvdAutRmc84=,iv:tXXep03awaeiqFBy/mcCl4Vx03mOxWUldoMhY3cg/Io=,tag:om72pN1JulNi08cgzA3lGA==,type:str]
+    SONARR__POSTGRES__MAINDB: ENC[AES256_GCM,data:pPBtodKqORiPnsg=,iv:/o17MB4vqOXp7rDKEjSjxGOph/8C8jAS2P5fyeHnkVg=,tag:OaYC77xliMIRdF/cRSWCBg==,type:str]
     #ENC[AES256_GCM,data:S1r5+lu3YYafgKXwo0c=,iv:vdQoH5wJ+gB2iLDyuwkPiI/4OuPVujLd8S7Ryi/0Ctg=,tag:/kwHZBuIML5GLOr8//+BSQ==,type:comment]
     INIT_POSTGRES_DBNAME: ENC[AES256_GCM,data:ebR8XOrO+VBL9ls=,iv:a/86Wplcpo/0BLzjk+/dxxIp9oWFZbhzOl9oorYRJVk=,tag:AbQavADY7gs71BtWOXESBw==,type:str]
     INIT_POSTGRES_HOST: ENC[AES256_GCM,data:wDYU9mFblIBbPNgJbJEBtfxQUxXsSxIXcNFafV6Z1KNTQNhmnVk6yw==,iv:lgOSPwWGTAs6RbJDlYjc2jVccxfl0UgO5CDn957ZAxI=,tag:2ukpA1wxjejTPYxsajwlZQ==,type:str]
@@ -32,8 +32,8 @@ sops:
             Nnd2dldlVXQwN3JscVlReVNPc0RheTQKiOeLp9Z8eqGMb7Z2GxQBFzDta1fPqdmL
             iECzYnjD6+KsIaDtgHZCKk7dfgulwEv3RKRaTKO5/CoiQUqpe+C6aQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-08-13T03:24:50Z"
-    mac: ENC[AES256_GCM,data:buafaLo/RGChw3f8dtYarIQH1zgd9V9eMGoXV2WQpVRSQppGS2iRe+G7dtGeoyEb4MHpenz1FnF7t90WOGMREVazeK5UzFMfAwJtnYyeYPfVAXATXjPrmsDrLGiRMpG8I+UCpKxFrylB4Fq09HufxZVCTRf1Gj8DbOSCmvyqZ6E=,iv:yzuY4QZF9J+hoV6tQTLAyqZ53uOb34S7f7jja7gCnNk=,tag:ahlUw2fV3D4fpra95hbe0A==,type:str]
+    lastmodified: "2024-08-13T03:51:51Z"
+    mac: ENC[AES256_GCM,data:wVDzy6DnOQlYtgxeSLtIErep3Iv2cf5XfK+fRh/gXndD+Ns/t0kpcwdXhQ9oh2NZa7ElMMrEj4dCLzUdyzJX4VEp9+Lg/HXpzaRLE4ufx1QTMsCLIyPskbgRLbcSQh2M4rzCKydF6qIJBjlyj63737c1qU33dYmvISe7l2SwhyQ=,iv:Tovm1TkTPZ/agNkdZsIeJwmiFghaLNiG2hNa2PNYGVI=,tag:3HzwUMcLEz50YVNQ1Agz2A==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
