@@ -41,7 +41,6 @@ spec:
               repository: ghcr.io/onedr0p/sonarr-develop
               tag: 4.0.8.2093@sha256:83bbdf166ba7430a82eed0e8e35e0fa1b071b0ea618e2c80386756bbb71eb818
             env:
-
               SONARR__INSTANCE_NAME: Sonarr
               SONARR__AUTHENTICATION_METHOD: External
               SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
