@@ -109,6 +109,7 @@ spec:
               - sonarr.${SECRET_DOMAIN}
     persistence:
       config:
+        enabled: true
         existingClaim: sonarr    
       # config:
       #   enabled: true
