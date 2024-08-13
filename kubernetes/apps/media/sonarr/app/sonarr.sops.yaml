@@ -5,11 +5,11 @@ metadata:
 ## sops --encrypt --in-place ./kubernetes/apps/media/sonarr/app/sonarr.sops.yaml
 stringData:
     #ENC[AES256_GCM,data:5dODVQ==,iv:Wyzt+MycdVyqNCocnMZSgRCd2nFahGh7NzB70qpOh90=,tag:SWHzfjbDSH98AATGPVkOUQ==,type:comment]
-    SONARR__API_KEY: ENC[AES256_GCM,data:NkZuhr0yJmtN3gW+Fdh4oHN1Bc4EW+LXlYYvOTB1eqo=,iv:/hhk15vHA8+kodKSjCd9T5ftCakAIIzZtqUhfd7K6BM=,tag:52oOSYW5L6vZnBAe72AtiQ==,type:str]
-    SONARR__POSTGRES_HOST: ENC[AES256_GCM,data:1vqo0J9bdDuK88vFq/ziU7v3T1W8v/QaWtkoggNv2SCo9XZFIkr2xA==,iv:gErmzfeT5+pQcF+8kcGFxnjA+6m3vqcE2mLEQBw6F9s=,tag:F9/JAW0xQeM8Sgx+HWsYbw==,type:str]
-    SONARR__POSTGRES_PORT: ENC[AES256_GCM,data:uCL60g==,iv:KA/D5KhStTQGhRsLTx47pQrAhF2j7wGGCBu12XG5oFs=,tag:DmGpnOZEdSoYb8fDjlXalA==,type:str]
-    SONARR__POSTGRES_USER: ENC[AES256_GCM,data:VHsKmW90hwQ=,iv:2q0zzQcSkHOXMXaz173vYwAW9ENYdZR3YhgRSMnr10k=,tag:uLkuUMQP9qsVW8wHuoA+TA==,type:str]
-    SONARR__POSTGRES_PASSWORD: ENC[AES256_GCM,data:bR5R556zq65l,iv:6uFvXYycnMK2/Uo8vAhJw9bI25Y259T9pHHx85aOXcs=,tag:puI0Nwf8WYE+bhjzpgNvpA==,type:str]
+    SONARR__AUTH__APIKEY: ENC[AES256_GCM,data:RCwUi5WKYEVaBo/3rbaXP9MCPDmAfsfgyuRgSm15JJo=,iv:swroVxFEFYTQZ/5CK+yX2sfaGaJP4gtdU8PdSZDcR00=,tag:xbjXa0Ati9R/uatLk3j+cA==,type:str]
+    SONARR__POSTGRES__HOST: ENC[AES256_GCM,data:YzkT23Ht9YBWnFDc6UcYq5A8JVj9Zb0ckeXyeJ9HlD/sjKplLx0sNA==,iv:hYWvG0DvnT6JDAV8po0PBm3MAIwVd8ZLN6yD5IwSgpo=,tag:BWi7UzyxM2ISwRiaqplwgg==,type:str]
+    SONARR__POSTGRES__PORT: ENC[AES256_GCM,data:86B+UA==,iv:IAhDEiK7UAVF8BfbbBLEfkd+K+eSQWZK+uLMkiTCRRg=,tag:GUhkkwXHlPc2VxiMj1K62w==,type:str]
+    SONARR__POSTGRES__USER: ENC[AES256_GCM,data:CgO2b72Um3Q=,iv:UfRfOCSoh/CiLp+jiQEj8vf8wor/WUiPNsDrvJ0aqt4=,tag:5PfkvTPwCvGQBDp3LGrgkw==,type:str]
+    SONARR__POSTGRES__PASSWORD: ENC[AES256_GCM,data:K1QrY3QzZq7t,iv:aRCyVDITrRz/eHr6axSRlg+nBFI9jHwbkYGbTnJJXws=,tag:vsyzRByI5mvg776kPMfVrg==,type:str]
     SONARR__POSTGRES__MAINDB: ENC[AES256_GCM,data:pPBtodKqORiPnsg=,iv:/o17MB4vqOXp7rDKEjSjxGOph/8C8jAS2P5fyeHnkVg=,tag:OaYC77xliMIRdF/cRSWCBg==,type:str]
     #ENC[AES256_GCM,data:S1r5+lu3YYafgKXwo0c=,iv:vdQoH5wJ+gB2iLDyuwkPiI/4OuPVujLd8S7Ryi/0Ctg=,tag:/kwHZBuIML5GLOr8//+BSQ==,type:comment]
     INIT_POSTGRES_DBNAME: ENC[AES256_GCM,data:ebR8XOrO+VBL9ls=,iv:a/86Wplcpo/0BLzjk+/dxxIp9oWFZbhzOl9oorYRJVk=,tag:AbQavADY7gs71BtWOXESBw==,type:str]
@@ -32,8 +32,8 @@ sops:
             Nnd2dldlVXQwN3JscVlReVNPc0RheTQKiOeLp9Z8eqGMb7Z2GxQBFzDta1fPqdmL
             iECzYnjD6+KsIaDtgHZCKk7dfgulwEv3RKRaTKO5/CoiQUqpe+C6aQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-08-13T03:51:51Z"
-    mac: ENC[AES256_GCM,data:wVDzy6DnOQlYtgxeSLtIErep3Iv2cf5XfK+fRh/gXndD+Ns/t0kpcwdXhQ9oh2NZa7ElMMrEj4dCLzUdyzJX4VEp9+Lg/HXpzaRLE4ufx1QTMsCLIyPskbgRLbcSQh2M4rzCKydF6qIJBjlyj63737c1qU33dYmvISe7l2SwhyQ=,iv:Tovm1TkTPZ/agNkdZsIeJwmiFghaLNiG2hNa2PNYGVI=,tag:3HzwUMcLEz50YVNQ1Agz2A==,type:str]
+    lastmodified: "2024-08-13T15:43:48Z"
+    mac: ENC[AES256_GCM,data:th2bUGJ/8gG4nA0cv6dl143eki3vFKzQY7wOMgMEOVVffmgPnpuKuLEe2qS5nmO8NaeCgY0yI/IpAE8/0g9PpZzht8L8jKSocVrEYZCKQvpevHn72zFEPSOz5tokPU86pj1qXSKN1OiFsY5NutzNMHrqePJbzkBmmKWlgnXyyz4=,iv:xOBUw2FBvKAQC4JjGIIxY4xUnBECVR6+wGc6+/z4dH8=,tag:rC77faRuAgrbSjfjBgVzlw==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1

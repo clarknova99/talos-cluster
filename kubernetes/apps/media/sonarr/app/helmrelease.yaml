@@ -27,32 +27,29 @@ spec:
       sonarr:
         annotations:
           reloader.stakater.com/auto: "true"
-        # initContainers:
-        #   init-db:
-        #     image:
-        #       repository: ghcr.io/onedr0p/postgres-init
-        #       tag: 16
-        #     envFrom: &envFrom
-        #       - secretRef:
-        #           name: sonarr-secrets
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: sonarr-secret
         containers:
           app:
             image:
               repository: ghcr.io/onedr0p/sonarr-develop
               tag: 4.0.8.2093@sha256:83bbdf166ba7430a82eed0e8e35e0fa1b071b0ea618e2c80386756bbb71eb818
             env:
-              SONARR__INSTANCE_NAME: Sonarr
-              SONARR__AUTHENTICATION_METHOD: External
-              SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              SONARR__PORT: &port 80
-              SONARR__LOG__DBENABLED: "False"
-              SONARR__LOG__LEVEL: debug
-              SONARR__THEME: dark
+              SONARR__APP__INSTANCENAME: Sonarr
+              SONARR__APP__THEME: dark
+              SONARR__AUTH__METHOD: External
+              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              SONARR__LOG__LEVEL: info
+              SONARR__SERVER__PORT: &port 80
               SONARR__UPDATE__BRANCH: develop
               TZ: America/New_York
-            envFrom: &envFrom
-              - secretRef:
-                  name: sonarr-secrets
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true
