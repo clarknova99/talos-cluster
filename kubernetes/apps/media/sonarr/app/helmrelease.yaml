@@ -27,14 +27,14 @@ spec:
       sonarr:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: sonarr-secrets
+        # initContainers:
+        #   init-db:
+        #     image:
+        #       repository: ghcr.io/onedr0p/postgres-init
+        #       tag: 16
+        #     envFrom: &envFrom
+        #       - secretRef:
+        #           name: sonarr-secrets
         containers:
           app:
             image:
@@ -140,5 +140,7 @@ spec:
       # incomplete:
       #   enabled: true
       #   type: emptyDir
+      add-ons:
+        type: emptyDir
       tmp:
         type: emptyDir
