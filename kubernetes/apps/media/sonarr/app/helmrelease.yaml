@@ -51,7 +51,9 @@ spec:
               SONARR__THEME: dark
               SONARR__UPDATE__BRANCH: develop
               TZ: America/New_York
-            envFrom: *envFrom
+            envFrom: &envFrom
+              - secretRef:
+                  name: sonarr-secrets
             probes:
               liveness: &probes
                 enabled: true
