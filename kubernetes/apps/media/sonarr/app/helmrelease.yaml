@@ -49,6 +49,7 @@ spec:
               SONARR__LOG__DBENABLED: "False"
               SONARR__LOG__LEVEL: info
               SONARR__THEME: dark
+              SONARR__UPDATE__BRANCH: develop
               TZ: America/New_York
             envFrom: *envFrom
             probes:
@@ -72,7 +73,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 4Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -107,26 +108,28 @@ spec:
               - sonarr.${SECRET_DOMAIN}
     persistence:
       config:
+        existingClaim: sonarr    
+      # config:
+      #   enabled: true
+      #   type: nfs
+      #   server: 192.168.1.2
+      #   path: /volume1/network-storage/sonarr
+      #   globalMounts:
+      #     - path: /config
+      # downloads:
+      #   enabled: true
+      #   type: nfs
+      #   server: 192.168.1.2
+      #   path: /volume1/Downloads
+      #   globalMounts:
+      #     - path: /downloads
+      videos:
         enabled: true
         type: nfs
         server: 192.168.1.2
-        path: /volume1/network-storage/sonarr
+        path: /volume1/Video
         globalMounts:
-          - path: /config
-      downloads:
-        enabled: true
-        type: nfs
-        server: 192.168.1.2
-        path: /volume1/Downloads
-        globalMounts:
-          - path: /downloads
-      movies:
-        enabled: true
-        type: nfs
-        server: 192.168.1.2
-        path: /volume1/Video/Movies
-        globalMounts:
-          - path: /movies
+          - path: /video
       tv:
         enabled: true
         type: nfs
@@ -134,8 +137,8 @@ spec:
         path: /volume1/Video/TV
         globalMounts:
           - path: /tv
-      incomplete:
-        enabled: true
-        type: emptyDir
+      # incomplete:
+      #   enabled: true
+      #   type: emptyDir
       tmp:
         type: emptyDir

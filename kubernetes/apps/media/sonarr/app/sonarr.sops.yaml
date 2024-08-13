@@ -11,7 +11,6 @@ stringData:
     SONARR__POSTGRES_USER: ENC[AES256_GCM,data:VHsKmW90hwQ=,iv:2q0zzQcSkHOXMXaz173vYwAW9ENYdZR3YhgRSMnr10k=,tag:uLkuUMQP9qsVW8wHuoA+TA==,type:str]
     SONARR__POSTGRES_PASSWORD: ENC[AES256_GCM,data:bR5R556zq65l,iv:6uFvXYycnMK2/Uo8vAhJw9bI25Y259T9pHHx85aOXcs=,tag:puI0Nwf8WYE+bhjzpgNvpA==,type:str]
     SONARR__POSTGRES_MAIN_DB: ENC[AES256_GCM,data:jUGlSvdAutRmc84=,iv:tXXep03awaeiqFBy/mcCl4Vx03mOxWUldoMhY3cg/Io=,tag:om72pN1JulNi08cgzA3lGA==,type:str]
-    SONARR__POSTGRES_LOG_DB: ENC[AES256_GCM,data:fIVjdAQGlaZCHg==,iv:+mIE2EtTj7R79A/3Kf7xuKrFpunfOAoRwWO0+YXPMIE=,tag:2dQFkReEf301llAmudFE0A==,type:str]
     #ENC[AES256_GCM,data:S1r5+lu3YYafgKXwo0c=,iv:vdQoH5wJ+gB2iLDyuwkPiI/4OuPVujLd8S7Ryi/0Ctg=,tag:/kwHZBuIML5GLOr8//+BSQ==,type:comment]
     INIT_POSTGRES_DBNAME: ENC[AES256_GCM,data:3cdPVBvVi5TFjhu2m+e3ozxnrJEBsw==,iv:qCAzJtObSf0A+BiouazYkPgxlhGYSkL6lIw0rbQdlTg=,tag:hMFcK0pamAbf1GfrwBNpzw==,type:str]
     INIT_POSTGRES_HOST: ENC[AES256_GCM,data:wDYU9mFblIBbPNgJbJEBtfxQUxXsSxIXcNFafV6Z1KNTQNhmnVk6yw==,iv:lgOSPwWGTAs6RbJDlYjc2jVccxfl0UgO5CDn957ZAxI=,tag:2ukpA1wxjejTPYxsajwlZQ==,type:str]
@@ -33,8 +32,8 @@ sops:
             Nnd2dldlVXQwN3JscVlReVNPc0RheTQKiOeLp9Z8eqGMb7Z2GxQBFzDta1fPqdmL
             iECzYnjD6+KsIaDtgHZCKk7dfgulwEv3RKRaTKO5/CoiQUqpe+C6aQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-07-11T17:05:01Z"
-    mac: ENC[AES256_GCM,data:x3Q617BVR4k0M9TaiioGXq64338m1HeXkzS0M2hXmZJAgT+rG444l4kWCKBeRptE6Zhvo95ZlHs3l0RSbumI+qP504Sy2LNBKVPO7vJNDN8tsZgCj9+DEr+XWOnzNak66+03imrbx3I8cdS2bxUh4U0WEN0du8s0YuXK/WSV+4I=,iv:dnCuUx/lf7nCrDx2KJdUy8xy/4U8ncrJZERCg9pZmHo=,tag:5N8ujhPGu1r0ZDcUSRJBPw==,type:str]
+    lastmodified: "2024-08-13T03:13:16Z"
+    mac: ENC[AES256_GCM,data:cmtnxjjkBF/6y1PaNlokdEJVIzGixHWaDEyLW6B2X6a9xxj3bwRyXztMLdKO8E6JysHYrx+7BkecDdzak4uDAY+hEvD29HnHNjQ5NczL7YCjS57nP986Woa3yk0SDieWYJ8hou0gZ4xycpCnPd+Ge0wFPCkqjtA281kvPCXRZ2w=,iv:6NgOGogPHMyVydeZmlmunFopkUlpevhJ4RP2Kay2rN8=,tag:igf/Iz8dYdiYvEugt39YNA==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
