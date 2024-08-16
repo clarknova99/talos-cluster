@@ -38,6 +38,9 @@ spec:
             #   uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
             env:
               API_HOST: sensei-stage-api.sensei.svc.cluster.local
+              GOOGLE_CLIENT_ID: ${SECRET_GOOGLE_CLIENT_ID}
+              GOOGLE_CLIENT_SECRET: ${SECRET_GOOGLE_CLIENT_SECRET}
+              GOOGLE_REDIRECT_URI: ${SECRET_GOOGLE_REDIRECT_URI}
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
