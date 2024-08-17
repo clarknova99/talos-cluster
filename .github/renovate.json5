@@ -199,5 +199,13 @@
       ],
       "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}"
     }
-  ]
+  ],
+  "hostRules": [
+    {
+      "hostType": "docker",
+      "matchHost": "ghcr.io",
+      "username": "clarknova99",
+      "token": "{{ secrets.RENOVATE_TOKEN }}"
+    }
+  ]  
 }
