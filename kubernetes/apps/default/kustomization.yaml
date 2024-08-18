@@ -9,6 +9,5 @@ resources:
   - ./hajimari/ks.yaml
   - ./lldap/ks.yaml
   - ./mosquitto/ks.yaml
-  #- ./prefect/ks.yaml
   - ./website/ks.yaml
  # - ./whoami/ks.yaml
