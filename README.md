@@ -46,8 +46,6 @@ NOTE: Slowly migrating to talos from my [k3s cluster](https://github.com/clarkno
 | Beelink EQ13 | 3   | 32GB |  Control Planes |
 | Intel NUC11PAHi7 | 1   | 64GB |  Worker |
 | Intel NUC8i5BEH | 1   | 32GB |  Worker |
-| Alienware Aurora | 1   | 24GB |  Worker |
-| Alienware X51  | 1   | 16GB | Worker |
 | Synology 1513+ | 1   | 8GB | NAS |
 | Firewalla Gold | 1   | - | Router |
 | Zyxel GS1900-24E Switch | 1   | -   | Network Switch |
