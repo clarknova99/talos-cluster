@@ -33,14 +33,13 @@ spec:
         containers:
         pod:
           affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: plex-target
-                    operator: In
-                    values:
-                    - "true"
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: plex-target
+                  operator: In
+                  values:
+                  - "true"
               # preferredDuringSchedulingIgnoredDuringExecution:
               # - weight: 1
               #   preference:
