@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: docker.io/traefik/whoami
-              tag: v1.10.2
+              tag: v1.10.3
     service:
       app:
         controller: whoami
