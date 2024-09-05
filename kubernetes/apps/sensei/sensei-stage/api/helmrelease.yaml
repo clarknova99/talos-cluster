@@ -47,8 +47,9 @@ spec:
               tag: stage-latest@sha256:0744c6b72480e4fdfce2f83094204c8c8fce066371778d484fdd4618b6c02740
               pullPolicy: Always
             # command: ["python3", "/app/worker.py"]
-            command: ["/bin/sh", "-c"]
-            args: ["python3 /app/worker.py"]
+            # command: ["/bin/sh", "-c"]
+            # args: ["python3 /app/worker.py"]
+            command: ["/bin/sh", "-c", "python3 /app/worker.py"]
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
               GROQ_MODEL: llama3-70b-8192
