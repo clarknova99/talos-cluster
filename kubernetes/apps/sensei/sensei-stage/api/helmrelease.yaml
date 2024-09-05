@@ -44,7 +44,7 @@ spec:
           worker:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:0744c6b72480e4fdfce2f83094204c8c8fce066371778d484fdd4618b6c02740
+              tag: stage-latest@sha256:03411d900591d0638ca3acd8cb33a6c99bf20f377c18c226bf7e75f44f488afd
               pullPolicy: Always
             # command: ["python3", "/app/worker.py"]
             # command: ["/bin/sh", "-c"]
