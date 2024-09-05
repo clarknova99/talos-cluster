@@ -48,7 +48,7 @@ spec:
               pullPolicy: Always
             # command: ["python3", "/app/worker.py"]
             command: ["/bin/sh", "-c"]
-            args: ["python3 worker.py"]
+            args: ["python3 /app/worker.py"]
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
               GROQ_MODEL: llama3-70b-8192
