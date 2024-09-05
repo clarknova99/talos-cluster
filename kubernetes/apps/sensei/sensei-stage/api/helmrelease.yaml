@@ -46,9 +46,6 @@ spec:
               repository: ghcr.io/clarknova99/project-sensei/backend
               tag: stage-latest@sha256:03411d900591d0638ca3acd8cb33a6c99bf20f377c18c226bf7e75f44f488afd
               pullPolicy: Always
-            # command: ["python3", "/app/worker.py"]
-            # command: ["/bin/sh", "-c"]
-            # args: ["python3 /app/worker.py"]
             command: ["/bin/sh", "-c", "python3 /app/worker.py"]
             env:
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
@@ -72,11 +69,6 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          # nginx.ingress.kubernetes.io/auth-method: GET
-          # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
-          # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN_TWO}?rm=$request_method
-          # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-          # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:math-compass
         className: external
