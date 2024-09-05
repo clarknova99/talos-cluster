@@ -40,6 +40,21 @@ spec:
               DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: Stage
+          worker:
+            image:
+              repository: ghcr.io/clarknova99/project-sensei/backend
+              tag: stage-latest@sha256:0744c6b72480e4fdfce2f83094204c8c8fce066371778d484fdd4618b6c02740
+              pullPolicy: Always
+            command: >
+              "python3 worker.py"
+            env:
+              GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
+              GROQ_MODEL: llama3-70b-8192
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
+              DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
+              OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
+              ENVIRONMENT: Stage        
+              REDIS_HOST: dragonfly.database.svc.cluster.local                   
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
