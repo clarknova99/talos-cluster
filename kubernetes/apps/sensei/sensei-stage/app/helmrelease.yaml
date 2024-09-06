@@ -37,6 +37,7 @@ spec:
               API_HOST: sensei-stage-api.sensei.svc.cluster.local
               GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
+              REDIS_HOST: dragonfly.database.svc.cluster.local
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
