@@ -18,6 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
+    "id": 67,
     "links": [],
     "panels": [
       {
@@ -55,8 +56,8 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 7,
-          "w": 10,
+          "h": 5,
+          "w": 4,
           "x": 0,
           "y": 0
         },
@@ -104,80 +105,6 @@
         "fieldConfig": {
           "defaults": {
             "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "neutral": -1
-            },
-            "fieldMinMax": false,
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "#EAB839",
-                  "value": 75
-                }
-              ]
-            },
-            "unit": "percent"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 7,
-          "w": 10,
-          "x": 10,
-          "y": 0
-        },
-        "id": 4,
-        "options": {
-          "minVizHeight": 75,
-          "minVizWidth": 75,
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": false,
-          "sizing": "auto"
-        },
-        "pluginVersion": "11.2.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "prometheus"
-            },
-            "editorMode": "code",
-            "expr": "100 * (1 - sum(node_memory_MemAvailable_bytes) / sum(node_memory_MemTotal_bytes))",
-            "instant": false,
-            "legendFormat": "__auto",
-            "range": true,
-            "refId": "A"
-          }
-        ],
-        "title": "Memory Usage",
-        "type": "gauge"
-      },
-      {
-        "datasource": {
-          "default": true,
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
               "mode": "thresholds"
             },
             "mappings": [],
@@ -195,10 +122,10 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 5,
-          "w": 5,
+          "h": 3,
+          "w": 2,
           "x": 0,
-          "y": 7
+          "y": 5
         },
         "id": 1,
         "options": {
@@ -262,10 +189,10 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 5,
-          "w": 5,
-          "x": 5,
-          "y": 7
+          "h": 3,
+          "w": 2,
+          "x": 2,
+          "y": 5
         },
         "id": 2,
         "options": {
@@ -313,6 +240,80 @@
         "fieldConfig": {
           "defaults": {
             "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "neutral": -1
+            },
+            "fieldMinMax": false,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 75
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 0,
+          "y": 8
+        },
+        "id": 4,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": false,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.2.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "editorMode": "code",
+            "expr": "100 * (1 - sum(node_memory_MemAvailable_bytes) / sum(node_memory_MemTotal_bytes))",
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Memory Usage",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "default": true,
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
               "mode": "thresholds"
             },
             "mappings": [],
@@ -330,10 +331,10 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 5,
-          "w": 5,
-          "x": 10,
-          "y": 7
+          "h": 3,
+          "w": 2,
+          "x": 0,
+          "y": 13
         },
         "id": 6,
         "options": {
@@ -398,10 +399,10 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 5,
-          "w": 5,
-          "x": 15,
-          "y": 7
+          "h": 3,
+          "w": 2,
+          "x": 2,
+          "y": 13
         },
         "id": 5,
         "options": {
@@ -469,7 +470,7 @@
           "h": 5,
           "w": 5,
           "x": 0,
-          "y": 12
+          "y": 16
         },
         "id": 7,
         "options": {
@@ -536,8 +537,8 @@
         "gridPos": {
           "h": 5,
           "w": 5,
-          "x": 5,
-          "y": 12
+          "x": 0,
+          "y": 21
         },
         "id": 8,
         "options": {
@@ -588,6 +589,7 @@
     "timepicker": {},
     "timezone": "browser",
     "title": "Kubernetes Metrics",
-    "version": 0,
+    "uid": "edxn40tn7quioc",
+    "version": 1,
     "weekStart": ""
   }
