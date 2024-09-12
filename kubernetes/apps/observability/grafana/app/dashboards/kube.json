@@ -116,8 +116,7 @@
                   "value": null
                 }
               ]
-            },
-            "unit": "decgbytes"
+            }
           },
           "overrides": []
         },
@@ -153,7 +152,7 @@
               "uid": "prometheus"
             },
             "editorMode": "code",
-            "expr": "sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / (1024^3)",
+            "expr": "sum(rate(node_cpu_seconds_total{mode!~\"idle|iowait|steal\"}[$__rate_interval]))",
             "instant": false,
             "legendFormat": "__auto",
             "range": true,
