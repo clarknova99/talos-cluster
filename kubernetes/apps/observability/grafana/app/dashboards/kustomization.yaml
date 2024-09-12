@@ -12,6 +12,9 @@ configMapGenerator:
   - name: ingress-logs
     files:
       - ingress-logs.json
+  - name: kube-dash
+    files:
+      - kube.json      
   - name: smartctl-health
     files:
       - smartctl-exporter.json            
