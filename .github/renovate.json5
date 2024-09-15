@@ -208,6 +208,10 @@
       "encrypted": {
         "password": "wcFMA/xDdHCJBTolAQ//VbjJr420j0pEvox/JzczG7kafiH04P/Cc8b1dR5F0fyD2HjSQ2dJSzouCeeMDt6Sg/EQb/6pRCxx3p8sQ0Ndn21fDYXxKN/W1Tcfq0c/1XzXMFcZ7ZEU3f/6KohHdxZE/v6vfbTnSwev1bMlrPw1cdiBGNNa6Xy4yPLItYrKlycoreX9IwvMv/fi9HWPWRk2todBe26AEMid2q1ZGKSbR727n2hgQ3ALFdGxmjzFDPq7UYzaQ6yO+D+JGGiNntfq9fJxwLgjo2MryE+TqhngOd4YySlwF9ryWgQ5wUVxKf33Qtidg1Of46WSfeWvccOEGOCxE3n3a0J6aHuFvN1OWVnDSwAC0TBWnp5jeGoU+hUAwNAjSF2HTPian+WVWLR7kGcZtL3NFNbsqn5Uyfvr/ASVTAZ2s39l5NYBcuLV95Dqba8/vgSQmHEW0rSvmZK6R4UuQF96r9KYixj8BRUk+H6JwjMhKAH2j5vDnTmtsWXcim4dYoBI8qiHMGA9Nl23c1ll2Qb66rcrfllgN0gN3PZ1UBI/ovdJ3qWz4jtqY+gzeBP/dcxg+oCx5LiNxG4C3jZZ7C0TKdanLCtbYWBtQZap18yob0pU2cLaDUeQhSs1z7nkren36X8i0lK1ssBsOd+EGpmorMin8POYWukFmaCCzFZAWmiwqPmi9comjDDSegHoekd3TPBQiPXtpgAT3DXSxDk7iCfsTDBH31uZQaeeDkwlHfehzO79tC32uEKbHzjHO7JDcA9KXve0aeCDKn5SfbJBHjzyL8ujtsnCzp+NyKiwSrmyVE/agAWEiq3UyFnDiTArxSznGzPDz/ZAZaxw7PGU3o0CWZgJ"
       }
+    },
+    {
+      "matchHost": "github.com",
+      "token": "{{ secrets.MEND_TOKEN }}"
     }
   ]  
 }
