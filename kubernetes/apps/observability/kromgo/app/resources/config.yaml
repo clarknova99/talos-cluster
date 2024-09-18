@@ -40,7 +40,7 @@ metrics:
   - name: cluster_memory_total
     title: "Cluster Memory"
     query: round(sum(node_memory_MemTotal_bytes) / 2 ^ 30)
-    suffix: "GiB"      
+    suffix: " GB"      
 
   - name: cluster_network_transmit_usage
     title: "Network Tx"
