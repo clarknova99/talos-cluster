@@ -15,10 +15,10 @@
 <div align="center">
 <div align="center">
 
-[![Cluster-Age](https://kromgo.bigwang.org/cluster_age_days?format=badge&style=flat-square)](https://github.com/clarknova99/talos-cluster/)&nbsp;
-[![Nodes](https://kromgo.bigwang.org/cluster_node_count?format=badge&style=flat-square)]()&nbsp;
-[![CPUs](https://kromgo.bigwang.org/cluster_cpu_core_total?format=badge&style=flat-square)]()&nbsp;
-[![Memory](https://kromgo.bigwang.org/cluster_memory_total?format=badge&style=flat-square)]()&nbsp;
+[![Cluster-Age](https://kromgo.bigwang.org/cluster_age_days?format=badge)](https://github.com/clarknova99/talos-cluster/)&nbsp;
+[![Nodes](https://kromgo.bigwang.org/cluster_node_count?format=badge)]()&nbsp;
+[![CPUs](https://kromgo.bigwang.org/cluster_cpu_core_total?format=badge)]()&nbsp;
+[![Memory](https://kromgo.bigwang.org/cluster_memory_total?format=badge)]()&nbsp;
 
 
 </div>
