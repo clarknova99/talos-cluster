@@ -46,6 +46,7 @@ metrics:
 
   - name: cluster_age_days
     query: round((time() - min(kube_node_created) ) / 86400)
+    label: "Cluster Age"
     suffix: " days"
     colors:
       - { color: "green", min: 0, max: 99999 }
