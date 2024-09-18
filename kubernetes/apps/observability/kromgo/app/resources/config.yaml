@@ -11,6 +11,7 @@ metrics:
     label: git_version
 
   - name: cluster_cpu_usage
+    label: "CPU Usage"
     query: round(cluster:node_cpu:ratio_rate5m * 100, 0.1)
     suffix: "%"
     colors:
