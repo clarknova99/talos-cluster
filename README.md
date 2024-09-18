@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/clarknova99/talos-cluster/assets.kube.png" align="center" width="144px" height="144px"/>
+  <img src="https://raw.githubusercontent.com/clarknova99/talos-cluster/main/assets/kube.png" align="center" width="144px" height="144px"/>
 </div>
 
 <div align="center">
