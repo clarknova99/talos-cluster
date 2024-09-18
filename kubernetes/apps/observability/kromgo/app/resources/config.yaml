@@ -1,9 +1,9 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/kashalls/kromgo/main/config.schema.json
 badge:
-  font: Verdana.ttf # Relative to /kromgo - Verdana.ttf is available in the container
+  font: Verdana.ttf
   size: 12
-  
+
 metrics:
   - name: talos_version
     title: "Talos Version"
@@ -15,7 +15,6 @@ metrics:
     label: git_version
 
   - name: cluster_cpu_usage
-    label: "CPU Usage"
     query: round(cluster:node_cpu:ratio_rate5m * 100, 0.1)
     suffix: "%"
     colors:
@@ -51,7 +50,6 @@ metrics:
 
   - name: cluster_age_days
     query: round((time() - min(kube_node_created) ) / 86400)
-    label: "Cluster Age"
     suffix: " days"
     colors:
       - { color: "green", min: 0, max: 99999 }
