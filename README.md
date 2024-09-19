@@ -8,21 +8,16 @@
 
 <div align="center">
 
-[![Talos](https://kromgo.bigwang.org/talos_version?format=badge&style=flat-square)](https://www.talos.dev/)&nbsp;&nbsp;
-[![Kubernetes](https://kromgo.bigwang.org/kubernetes_version?format=badge&style=flat-square)](https://www.talos.dev/)&nbsp;&nbsp;
+  [![Talos](https://kromgo.bigwang.org/talos_version?format=badge&style=flat-square)](https://www.talos.dev/)&nbsp;&nbsp;
+  [![Kubernetes](https://kromgo.bigwang.org/kubernetes_version?format=badge&style=flat-square)](https://www.talos.dev/)&nbsp;&nbsp;
 </div>
 
 <div align="center">
-<div align="center">
 
-[![Cluster-Age](https://kromgo.bigwang.org/cluster_age_days?format=badge)](https://github.com/clarknova99/talos-cluster/)&nbsp;
-[![Nodes](https://kromgo.bigwang.org/cluster_node_count?format=badge)]()&nbsp;
-[![CPUs](https://kromgo.bigwang.org/cluster_cpu_core_total?format=badge)]()&nbsp;
-[![Memory](https://kromgo.bigwang.org/cluster_memory_total?format=badge)]()&nbsp;
-
-
-</div>
-
+  [![Cluster-Age](https://kromgo.bigwang.org/cluster_age_days?format=badge)](https://github.com/clarknova99/talos-cluster/)&nbsp;
+  [![Nodes](https://kromgo.bigwang.org/cluster_node_count?format=badge)]()&nbsp;
+  [![CPUs](https://kromgo.bigwang.org/cluster_cpu_core_total?format=badge)]()&nbsp;
+  [![Memory](https://kromgo.bigwang.org/cluster_memory_total?format=badge)]()&nbsp;
 </div>
 
 ---
