@@ -34,27 +34,29 @@ spec:
               tag: stage-latest@sha256:03411d900591d0638ca3acd8cb33a6c99bf20f377c18c226bf7e75f44f488afd
               pullPolicy: Always
             env:
-              GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
+              GROQ_API_KEY: ${GROQ_API_KEY_LLM}
+              GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
               GROQ_MODEL: llama3-70b-8192
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
               DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: Stage
               REDIS_HOST: dragonfly.database.svc.cluster.local
-          worker:
-            image:
-              repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:03411d900591d0638ca3acd8cb33a6c99bf20f377c18c226bf7e75f44f488afd
-              pullPolicy: Always
-            command: ["/bin/sh", "-c", "python3 /app/worker.py"]
-            env:
-              GROQ_API_KEY: ${SECRET_GROQ_API_KEY}
-              GROQ_MODEL: llama3-70b-8192
-              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
-              DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
-              OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
-              ENVIRONMENT: Stage        
-              REDIS_HOST: dragonfly.database.svc.cluster.local                   
+          # worker:
+          #   image:
+          #     repository: ghcr.io/clarknova99/project-sensei/backend
+          #     tag: stage-latest@sha256:03411d900591d0638ca3acd8cb33a6c99bf20f377c18c226bf7e75f44f488afd
+          #     pullPolicy: Always
+          #   command: ["/bin/sh", "-c", "python3 /app/worker.py"]
+          #   env:
+          #     GROQ_API_KEY: ${GROQ_API_KEY_PGN_TEXT}
+          #     GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}              
+          #     GROQ_MODEL: llama3-70b-8192
+          #     PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
+          #     DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
+          #     OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
+          #     ENVIRONMENT: Stage        
+          #     REDIS_HOST: dragonfly.database.svc.cluster.local                   
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
