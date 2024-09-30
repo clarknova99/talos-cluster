@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/dotcom
-              tag: stage-latest@sha256:f92d053a92e6c9854ef24017a289c43adb6b4551d55f94382bf2b8d11645468c
+              tag: stage-latest@sha256:3a38abd1ac8c408141da7330e7e85cd671db4dfb18a30c2bfcf553b8dc817fc6
               pullPolicy: Always
             # command: >
             #   sh -c "npx tailwindcss -i ./app/static/css/style.css -o ./app/static/css/output.css --watch &
