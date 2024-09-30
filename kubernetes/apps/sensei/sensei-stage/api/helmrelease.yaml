@@ -42,6 +42,7 @@ spec:
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: Stage
               REDIS_HOST: dragonfly.database.svc.cluster.local
+              LICHESS_API_TOKEN: ${LICHESS_API_TOKEN}
           worker-pgn-to-text:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
