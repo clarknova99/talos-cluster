@@ -50,7 +50,7 @@ spec:
         controller: sensei-stage-app
         ports:
           http:
-            port: 8501
+            port: 8000
     ingress:
       app:
         annotations:
@@ -69,7 +69,7 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: 8501
+                  port: 8000
         tls:
           - hosts:
               - stage.${SECRET_DOMAIN_TWO}
