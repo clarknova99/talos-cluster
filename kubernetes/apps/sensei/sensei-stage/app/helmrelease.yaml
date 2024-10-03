@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: stage-latest@sha256:6a5a5d7cdc7b89f1d09c3b613ff1cbbcaedfad0c335c4a3662381f36bdcc861d
+              tag: stage-latest@sha256:785c591f4e7f773ac7aa3b769363721ae5aeb7fdac22a9b8a444fd61f4ee4879
               pullPolicy: Always
             env:
               API_HOST: sensei-stage-api.sensei.svc.cluster.local
@@ -40,7 +40,7 @@ spec:
               # REDIS_HOST: dragonfly.database.svc.cluster.local
               GOOGLE_CLIENT_ID: ${SECRET_GOOGLE_CLIENT_ID}
               GOOGLE_CLIENT_SECRET: ${SECRET_GOOGLE_CLIENT_SECRET}
-              GOOGLE_REDIRECT_URI: ${SECRET_GOOGLE_REDIRECT_URI}              
+              GOOGLE_REDIRECT_URI: ${SECRET_GOOGLE_REDIRECT_URI}
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
