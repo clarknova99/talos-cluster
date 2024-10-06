@@ -34,15 +34,16 @@ spec:
               tag: stage-latest@sha256:1c18dcfb2cc84f8b36c31dfa3aa98037ec53b50f357d479fa480d226881b778b
               pullPolicy: Always
             env:
-              GROQ_API_KEY: ${GROQ_API_KEY_LLM}
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
-              GROQ_MODEL: llama3-70b-8192
-              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
-              DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
+              GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT} 
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: Stage
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
               REDIS_HOST: dragonfly.database.svc.cluster.local
+              DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               LICHESS_API_TOKEN: ${LICHESS_API_TOKEN}
+              GROQ_API_KEY: ${GROQ_API_KEY_LLM}
+              #GROQ_MODEL: llama3-70b-8192
           worker-pgn-to-text:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
