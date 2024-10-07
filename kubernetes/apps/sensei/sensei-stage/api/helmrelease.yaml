@@ -31,11 +31,11 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:1c18dcfb2cc84f8b36c31dfa3aa98037ec53b50f357d479fa480d226881b778b
+              tag: stage-latest@sha256:94caf5d3a77e8baa13fa82915e2f8b138e9d3e0f87953102328ae073399c7ec1
               pullPolicy: Always
             env:
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
-              GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT} 
+              GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: Stage
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
@@ -47,7 +47,7 @@ spec:
           worker-pgn-to-text:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:1c18dcfb2cc84f8b36c31dfa3aa98037ec53b50f357d479fa480d226881b778b
+              tag: stage-latest@sha256:94caf5d3a77e8baa13fa82915e2f8b138e9d3e0f87953102328ae073399c7ec1
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_pgn_to_text.py"]
             env:
@@ -62,7 +62,7 @@ spec:
           worker-llm-requests:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:1c18dcfb2cc84f8b36c31dfa3aa98037ec53b50f357d479fa480d226881b778b
+              tag: stage-latest@sha256:94caf5d3a77e8baa13fa82915e2f8b138e9d3e0f87953102328ae073399c7ec1
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_llm_requests.py"]
             env:
@@ -77,7 +77,7 @@ spec:
           worker-game-imports:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:1c18dcfb2cc84f8b36c31dfa3aa98037ec53b50f357d479fa480d226881b778b
+              tag: stage-latest@sha256:94caf5d3a77e8baa13fa82915e2f8b138e9d3e0f87953102328ae073399c7ec1
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_import.py"]
             env:
