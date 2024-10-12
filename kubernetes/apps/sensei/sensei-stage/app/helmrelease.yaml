@@ -31,11 +31,11 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: stage-latest@sha256:55e9f602a0a8cdca4b2564a860d5ca1bf53def8e0ee96c05f9d8daa8e720be0b
+              tag: stage-latest@sha256:1734bf7a510ac314104c6b6ea7fe6f33500ea46c9aaf8feb4e116c76175aa06f
               pullPolicy: Always
             env:
               API_HOST: sensei-stage-api.sensei.svc.cluster.local
-              ENVIRONMENT: stage              
+              ENVIRONMENT: stage
               GOOGLE_CLIENT_ID: ${SECRET_GOOGLE_CLIENT_ID}
               GOOGLE_CLIENT_SECRET: ${SECRET_GOOGLE_CLIENT_SECRET}
               GOOGLE_REDIRECT_URI: ${SECRET_GOOGLE_REDIRECT_URI}
