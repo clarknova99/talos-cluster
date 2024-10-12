@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:94caf5d3a77e8baa13fa82915e2f8b138e9d3e0f87953102328ae073399c7ec1
+              tag: stage-latest@sha256:798f5caea6f772877cdb03c3efee4ab62e9ba6a8c3c311a92714497841713ea4
               pullPolicy: Always
             env:
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
@@ -48,7 +48,7 @@ spec:
           worker-pgn-to-text:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:94caf5d3a77e8baa13fa82915e2f8b138e9d3e0f87953102328ae073399c7ec1
+              tag: stage-latest@sha256:798f5caea6f772877cdb03c3efee4ab62e9ba6a8c3c311a92714497841713ea4
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_pgn_to_text.py"]
             env:
@@ -64,7 +64,7 @@ spec:
           worker-llm-requests:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:94caf5d3a77e8baa13fa82915e2f8b138e9d3e0f87953102328ae073399c7ec1
+              tag: stage-latest@sha256:798f5caea6f772877cdb03c3efee4ab62e9ba6a8c3c311a92714497841713ea4
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_llm_requests.py"]
             env:
@@ -76,11 +76,11 @@ spec:
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: stage
               REDIS_HOST: dragonfly.database.svc.cluster.local
-              REDIS_DB: 0              
+              REDIS_DB: 0
           worker-game-imports:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:94caf5d3a77e8baa13fa82915e2f8b138e9d3e0f87953102328ae073399c7ec1
+              tag: stage-latest@sha256:798f5caea6f772877cdb03c3efee4ab62e9ba6a8c3c311a92714497841713ea4
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_import.py"]
             env:
