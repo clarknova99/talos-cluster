@@ -33,7 +33,7 @@ spec:
               repository: ghost
               tag: 5.96.1
             env:
-              NODE_ENV: production
+              NODE_ENV: development
     service:
       app:
         controller: sensei-prod-blog
