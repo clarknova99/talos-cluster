@@ -31,11 +31,11 @@ spec:
           app:
             image:
               repository: ghost
-              tag: 5.96.1
+              tag: 5.96.1              
             env:
               NODE_ENV: development
               TZ: "America/New_York"
-              url: "https://blog.${SECRET_DOMAIN_TWO}"              
+              url: "https://blog.${SECRET_DOMAIN_TWO}"
     service:
       app:
         controller: sensei-prod-blog

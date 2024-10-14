@@ -5,3 +5,4 @@ kind: Kustomization
 namespace: sensei
 resources:
   - ./helmrelease.yaml
+  - ./mariadb.yaml
