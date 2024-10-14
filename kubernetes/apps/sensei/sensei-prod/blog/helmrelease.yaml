@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sensei-prod-blog
+  namespace: sensei
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      sensei-prod-blog:
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: ghost
+              tag: 5.96.1
+            env:
+              NODE_ENV: production
+    service:
+      app:
+        controller: sensei-prod-blog
+        ports:
+          http:
+            port: 2368
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: image-multiple
+        className: external
+        hosts:
+          - host: blog.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: 2368
+        tls:
+          - hosts:
+              - blog.${SECRET_DOMAIN_TWO}
+    persistence:
+      content:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/ghost
+        globalMounts:
+          - path: /var/lib/ghost/content
