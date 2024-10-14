@@ -21,6 +21,7 @@ spec:
       username: ${SECRET_GHOST_DB_USER}
       password: ${SECRET_GHOST_DB_PASSWORD}
       database: ${SECRET_GHOST_DB_DB}
-    primary:
-      persistence:
-        existingClaim: ghost-mariadb
+    persistence:
+      storageClass: ceph-block
+      size: 5Gi
+
