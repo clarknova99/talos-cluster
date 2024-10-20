@@ -43,6 +43,7 @@ spec:
               REDIS_DB: 1
               DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               LICHESS_API_TOKEN: ${LICHESS_API_TOKEN}
+              STOCKFISH_PATH: /usr/games/stockfish
               GROQ_API_KEY: ${GROQ_API_KEY_LLM}
               #GROQ_MODEL: llama3-70b-8192
           worker-pgn-to-text:
