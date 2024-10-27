@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:d1e9b0314065bc139b49c5f246b95698055cce305ef8e9e34d653094522548c1
+              tag: stage-latest@sha256:55cc488c074b5027023a5490d4b21a198074d1ef47d63b9ca1a88a16582ed867
               pullPolicy: Always
             env:
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
@@ -61,7 +61,7 @@ spec:
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: stage
               REDIS_HOST: dragonfly.database.svc.cluster.local
-              REDIS_DB: 0              
+              REDIS_DB: 0
           # worker-pgn-to-text:
           #   image:
           #     repository: ghcr.io/clarknova99/project-sensei/backend
@@ -97,7 +97,7 @@ spec:
           worker-game-imports:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:d1e9b0314065bc139b49c5f246b95698055cce305ef8e9e34d653094522548c1
+              tag: stage-latest@sha256:55cc488c074b5027023a5490d4b21a198074d1ef47d63b9ca1a88a16582ed867
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_import.py"]
             env:
@@ -110,6 +110,12 @@ spec:
               ENVIRONMENT: stage
               REDIS_HOST: dragonfly.database.svc.cluster.local
               REDIS_DB: 0
+          worker-pgn-to-text:
+            image:
+              tag: stage-latest@sha256:55cc488c074b5027023a5490d4b21a198074d1ef47d63b9ca1a88a16582ed867
+          worker-llm-requests:
+            image:
+              tag: stage-latest@sha256:55cc488c074b5027023a5490d4b21a198074d1ef47d63b9ca1a88a16582ed867
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
