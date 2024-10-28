@@ -110,12 +110,6 @@ spec:
               ENVIRONMENT: stage
               REDIS_HOST: dragonfly.database.svc.cluster.local
               REDIS_DB: 0
-          worker-pgn-to-text:
-            image:
-              tag: stage-latest@sha256:02c0e1611b6ae18b8c9dc31e50c3e72654d4d8f3aa70ed5fed254953e3f42e29
-          worker-llm-requests:
-            image:
-              tag: stage-latest@sha256:02c0e1611b6ae18b8c9dc31e50c3e72654d4d8f3aa70ed5fed254953e3f42e29
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
