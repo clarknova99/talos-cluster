@@ -62,42 +62,10 @@ spec:
               ENVIRONMENT: stage
               REDIS_HOST: dragonfly.database.svc.cluster.local
               REDIS_DB: 0
-          # worker-pgn-to-text:
-          #   image:
-          #     repository: ghcr.io/clarknova99/project-sensei/backend
-          #     tag: stage-latest@sha256:d1e9b0314065bc139b49c5f246b95698055cce305ef8e9e34d653094522548c1
-          #     pullPolicy: Always
-          #   command: ["/bin/sh", "-c", "python3 /app/worker_pgn_to_text.py"]
-          #   env:
-          #     GROQ_API_KEY: ${GROQ_API_KEY_PGN_TEXT}
-          #     GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
-          #     GROQ_MODEL: llama3-70b-8192
-          #     PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
-          #     DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
-          #     OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
-          #     ENVIRONMENT: stage
-          #     REDIS_HOST: dragonfly.database.svc.cluster.local
-          #     REDIS_DB: 0
-          # worker-llm-requests:
-          #   image:
-          #     repository: ghcr.io/clarknova99/project-sensei/backend
-          #     tag: stage-latest@sha256:d1e9b0314065bc139b49c5f246b95698055cce305ef8e9e34d653094522548c1
-          #     pullPolicy: Always
-          #   command: ["/bin/sh", "-c", "python3 /app/worker_llm_requests.py"]
-          #   env:
-          #     GROQ_API_KEY: ${GROQ_API_KEY_LLM}
-          #     GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
-          #     GROQ_MODEL: llama3-70b-8192
-          #     PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
-          #     DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
-          #     OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
-          #     ENVIRONMENT: stage
-          #     REDIS_HOST: dragonfly.database.svc.cluster.local
-          #     REDIS_DB: 0
           worker-game-imports:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:d54f715b3947ce69276600c943e392d6ecd3fc9e6b429241bc76808b4a9dcbbc
+              tag: sha256:b9da4cb225e90978d88ce409a9db0a3a9dac78b74b0bcf300dfe283b6dba38d4
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_import.py"]
             env:

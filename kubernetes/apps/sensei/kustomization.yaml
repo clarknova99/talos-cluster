@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./sensei-prod/ks.yaml
-  - ./sensei-stage/ks.yaml
+#  - ./sensei-stage/ks.yaml
