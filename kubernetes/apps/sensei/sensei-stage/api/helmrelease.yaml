@@ -65,7 +65,7 @@ spec:
           worker-game-imports:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: sha256:b9da4cb225e90978d88ce409a9db0a3a9dac78b74b0bcf300dfe283b6dba38d4
+              tag: sha256:d54f715b3947ce69276600c943e392d6ecd3fc9e6b429241bc76808b4a9dcbbc
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_import.py"]
             env:
