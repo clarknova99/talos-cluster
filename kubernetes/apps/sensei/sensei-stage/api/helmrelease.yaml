@@ -62,7 +62,6 @@ spec:
               ENVIRONMENT: stage
               REDIS_HOST: dragonfly.database.svc.cluster.local
               REDIS_DB: 0
-              RESTART_TRIGGER: "2024-11-08T10:01:12"
           worker-game-imports:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
