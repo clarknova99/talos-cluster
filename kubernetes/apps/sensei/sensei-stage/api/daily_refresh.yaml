@@ -10,6 +10,10 @@ spec:
         spec:
           containers:
           - name: stage-daily-user-refresh
-            image: ghcr.io/clarknova99/project-sensei/backend:stage-latest
+            image: ghcr.io/clarknova99/project-sensei/backend
+            tag: stage-latest
             command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
           restartPolicy: OnFailure
+          imagePullPolicy: Always
+          imagePullSecrets:
+          - name: sensei-secret
