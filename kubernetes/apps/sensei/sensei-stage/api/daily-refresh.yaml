@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sensei-stage-daily-refresh
+spec:
+  schedule: "0 1 * * *"  # 1AM every day
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: stage-daily-user-refresh
+            image: ghcr.io/clarknova99/project-sensei/backend
+            tag: stage-latest
+            command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
+            env:
+            - name: GROQ_API_KEY_LLM
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-stage-daily-refresh-secrets
+                  key: GROQ_API_KEY_LLM
+            - name: GROQ_API_KEY_PGN_TEXT
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-stage-daily-refresh-secrets
+                  key: GROQ_API_KEY_PGN_TEXT       
+            - name: PG_URI
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-stage-daily-refresh-secrets
+                  key: PG_URI       
+            - name: DISCORD_WEBHOOK
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-stage-daily-refresh-secrets
+                  key: DISCORD_WEBHOOK 
+            - name: LICHESS_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-stage-daily-refresh-secrets
+                  key: LICHESS_API_TOKEN 
+            - name: GROQ_MODEL
+              value: "llama3-70b-8192"
+            - name: ENVIRONMENT
+              value: "stage"
+            - name: REDIS_HOST
+              value: "dragonfly.database.svc.cluster.local"
+            - name: REDIS_DB
+              value: "0"
+          restartPolicy: OnFailure
+          imagePullPolicy: Always
+          imagePullSecrets:
+          - name: sensei-secret
