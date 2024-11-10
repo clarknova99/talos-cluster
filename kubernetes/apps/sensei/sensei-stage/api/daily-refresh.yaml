@@ -10,8 +10,7 @@ spec:
         spec:
           containers:
           - name: stage-daily-user-refresh
-            image: ghcr.io/clarknova99/project-sensei/backend
-            tag: stage-latest
+            image: ghcr.io/clarknova99/project-sensei/backend:stage-latest
             command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
             env:
             - name: GROQ_API_KEY_LLM
