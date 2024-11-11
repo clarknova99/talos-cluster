@@ -82,6 +82,14 @@ spec:
           # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-secret
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - jupiter              
     service:
       app:
         controller: sensei-stage-api
