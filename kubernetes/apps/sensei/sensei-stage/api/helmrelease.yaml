@@ -24,17 +24,6 @@ spec:
     remediation:
       retries: 5
   values:
-    defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              preference:
-                matchExpressions:
-                - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - jupiter   
     controllers:
       sensei-stage-api:
         replicas: 1
@@ -93,7 +82,16 @@ spec:
           # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-secret
-           
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: "In"
+                    values: ["jupiter"]
     service:
       app:
         controller: sensei-stage-api
