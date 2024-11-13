@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:c5afc220b74b8c0a940054e1dfb384363322aa3b8ee74ee9a68112d17e18a69a
+              tag: stage-latest@sha256:6f039fbf53a385b7d40feb1d372cbd9365ea38aff017e6ff45f4ade90bf22d4b
               pullPolicy: Always
             env:
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
@@ -49,7 +49,7 @@ spec:
           worker-game-processing:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:c5afc220b74b8c0a940054e1dfb384363322aa3b8ee74ee9a68112d17e18a69a
+              tag: stage-latest@sha256:6f039fbf53a385b7d40feb1d372cbd9365ea38aff017e6ff45f4ade90bf22d4b
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
             env:
