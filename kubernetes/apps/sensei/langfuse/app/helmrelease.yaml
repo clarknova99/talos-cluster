@@ -38,6 +38,7 @@ spec:
               NEXTAUTH_SECRET: ${SECRET_LANGFUSE_SECRET}
               SALT: ${SECRET_LANGFUSE_SALT}
               ENCRYPTION_KEY: ${SECRET_LANGFUSE_ENCRYPTION_KEY}
+              HOSTNAME: 0.0.0.0
     service:
       app:
         controller: langfuse
@@ -56,6 +57,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:math-compass
         className: internal
+        enabled: true
         hosts:
           - host: langfuse.${SECRET_DOMAIN_TWO}
             paths:
