@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app sensei-stage-api
+  name: &app langfuse
   namespace: flux-system
 spec:
   targetNamespace: sensei
@@ -12,30 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cloudnative-pg-cluster  
-  path: ./kubernetes/apps/sensei/sensei-stage/api
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-kubernetes
-  wait: false
-  interval: 30m
-  retryInterval: 1m
-  timeout: 1m
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app sensei-stage-app
-  namespace: flux-system
-spec:
-  targetNamespace: sensei
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: sensei-stage-api
-  path: ./kubernetes/apps/sensei/sensei-stage/app
+  path: ./kubernetes/apps/sensei/langfuse/app
   prune: true
   sourceRef:
     kind: GitRepository

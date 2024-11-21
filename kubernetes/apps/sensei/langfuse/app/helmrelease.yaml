@@ -30,7 +30,7 @@ spec:
         containers:
           app:
             image:
-              repository: langfuse
+              repository: docker.io/langfuse/langfuse
               tag: main@sha256:400336c6ad98c36c558fef600beb678ff8b622502a774e971654a9df20321f59
             env:
               DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse
