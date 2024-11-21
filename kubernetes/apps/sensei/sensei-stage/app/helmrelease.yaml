@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: stage-latest@sha256:f6b1b54d6262c8e0383a06b9bd12ed05226b0202fc1df9a2cc40f8ecece9ae9f
+              tag: stage-latest@sha256:afdb0e28adacac0cc48bb251120862814a635247206f28dd169d0fa3e1864e43
               pullPolicy: Always
             env:
               API_HOST: sensei-stage-api.sensei.svc.cluster.local
