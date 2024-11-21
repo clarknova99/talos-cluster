@@ -64,7 +64,7 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: 3000
+                  port: http
         tls:
           - hosts:
               - langfuse.${SECRET_DOMAIN_TWO}
