@@ -56,7 +56,7 @@ spec:
           # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:math-compass
-        className: internal
+        className: external
         enabled: true
         hosts:
           - host: langfuse.${SECRET_DOMAIN_TWO}
@@ -64,7 +64,7 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: http
+                  port: 3000
         tls:
           - hosts:
               - langfuse.${SECRET_DOMAIN_TWO}
