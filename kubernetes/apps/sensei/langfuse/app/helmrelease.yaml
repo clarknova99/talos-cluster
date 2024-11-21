@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: langfuse
+  namespace: sensei
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      langfuse:
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: langfuse
+              tag: main@sha256:400336c6ad98c36c558fef600beb678ff8b622502a774e971654a9df20321f59
+            env:
+              DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse
+              NEXTAUTH_URL: https://langfuse.${SECRET_DOMAIN_TWO}
+              NEXTAUTH_SECRET: ${SECRET_LANGFUSE_SECRET}
+              SALT: ${SECRET_LANGFUSE_SALT}
+              ENCRYPTION_KEY: ${SECRET_LANGFUSE_ENCRYPTION_KEY}
+    service:
+      app:
+        controller: langfuse
+        ports:
+          http:
+            port: 3000
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          # nginx.ingress.kubernetes.io/auth-method: GET
+          # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
+          # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN_TWO}?rm=$request_method
+          # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+          # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:math-compass
+        className: internal
+        hosts:
+          - host: langfuse.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: 3000
+        tls:
+          - hosts:
+              - langfuse.${SECRET_DOMAIN_TWO}
