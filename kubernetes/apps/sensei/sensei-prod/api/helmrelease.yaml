@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: main-0.1.0@sha256:03d347f7da61d827e8f01e2ade959c1fd604839ff6e60822663f6a81e7bc7c37
+              tag: main-0.1.0@sha256:3689952f89b95988d0e367e18fb17574f4e011ff008b1fe0212ef75bc54f9436
               pullPolicy: Always
             env:
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
@@ -46,7 +46,6 @@ spec:
               STOCKFISH_PATH: /usr/games/stockfish
               GROQ_API_KEY: ${GROQ_API_KEY_LLM}
               #GROQ_MODEL: llama3-70b-8192
-
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
@@ -74,4 +73,3 @@ spec:
         tls:
           - hosts:
               - api.${SECRET_DOMAIN_TWO}
-
