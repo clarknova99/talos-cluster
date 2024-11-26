@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghost
-              tag: 5.96.1              
+              tag: 5.101.4              
             env:
               NODE_ENV: development
               TZ: "America/New_York"
