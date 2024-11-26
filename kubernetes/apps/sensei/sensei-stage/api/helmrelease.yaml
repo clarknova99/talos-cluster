@@ -44,20 +44,20 @@ spec:
               GROQ_API_KEY: ${GROQ_API_KEY_LLM}
               STOCKFISH_PATH: /usr/games/stockfish
               #GROQ_MODEL: llama3-70b-8192
-          worker-game-processing:
-            image:
-              repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:17ad33950486a98dbd3dbf63585c8e9f5b569260ff93e4fe9ae5fe99be5dfe49
-              pullPolicy: Always
-            command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
-            env:
-              GROQ_API_KEY: ${GROQ_API_KEY_PGN_TEXT}
-              GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
-              GROQ_MODEL: llama3-70b-8192
-              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
-              DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
-              OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
-              ENVIRONMENT: stage
+          # worker-game-processing:
+          #   image:
+          #     repository: ghcr.io/clarknova99/project-sensei/backend
+          #     tag: stage-latest@sha256:17ad33950486a98dbd3dbf63585c8e9f5b569260ff93e4fe9ae5fe99be5dfe49
+          #     pullPolicy: Always
+          #   command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
+          #   env:
+          #     GROQ_API_KEY: ${GROQ_API_KEY_PGN_TEXT}
+          #     GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
+          #     GROQ_MODEL: llama3-70b-8192
+          #     PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
+          #     DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
+          #     OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
+          #     ENVIRONMENT: stage
               # worker-game-imports:
               #   image:
               #     repository: ghcr.io/clarknova99/project-sensei/backend
