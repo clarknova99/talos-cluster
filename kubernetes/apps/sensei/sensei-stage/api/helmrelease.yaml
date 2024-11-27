@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:1a8d0490c799349f59a200245cf74f6b7e7fa3bb349e98cc8182452c4acfbd9d
+              tag: stage-latest@sha256:d9cb41de71705265754854ce82821a1c2cf0c60c1ae30116cb0a9e60aff3cd32
               pullPolicy: Always
             env:
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
@@ -45,7 +45,7 @@ spec:
               STOCKFISH_PATH: /usr/games/stockfish
               LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
               LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
-              LANGFUSE_HOST:               
+              LANGFUSE_HOST:
               #GROQ_MODEL: llama3-70b-8192
           # worker-game-processing:
           #   image:
