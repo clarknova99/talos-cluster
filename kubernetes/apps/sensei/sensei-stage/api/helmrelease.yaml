@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:d9cb41de71705265754854ce82821a1c2cf0c60c1ae30116cb0a9e60aff3cd32
+              tag: stage-latest@sha256:3b5103cdcd43e0e67f0808a228fe274c75a2874b552fe78edc560c7ca60f22d2
               pullPolicy: Always
             env:
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
@@ -45,12 +45,12 @@ spec:
               STOCKFISH_PATH: /usr/games/stockfish
               LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
               LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
-              LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local   
+              LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local
               #GROQ_MODEL: llama3-70b-8192
           worker-game-processing:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:17ad33950486a98dbd3dbf63585c8e9f5b569260ff93e4fe9ae5fe99be5dfe49
+              tag: stage-latest@sha256:3b5103cdcd43e0e67f0808a228fe274c75a2874b552fe78edc560c7ca60f22d2
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
             env:
@@ -61,22 +61,22 @@ spec:
               DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: stage
-          # worker-game-imports:
-          #   image:
-          #     repository: ghcr.io/clarknova99/project-sensei/backend
-          #     tag: stage-latest@sha256:bb7f6288a95bea7618343841024b1bb40ffa9581002117de5095a34310b2e4a2
-          #     pullPolicy: Always
-          #   command: ["/bin/sh", "-c", "python3 /app/worker_game_import.py"]
-          #   env:
-          #     GROQ_API_KEY: ${GROQ_API_KEY_LLM}
-          #     GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
-          #     GROQ_MODEL: llama3-70b-8192
-          #     PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
-          #     DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
-          #     OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
-          #     ENVIRONMENT: stage
-          #     REDIS_HOST: dragonfly.database.svc.cluster.local
-          #     REDIS_DB: 0
+              # worker-game-imports:
+              #   image:
+              #     repository: ghcr.io/clarknova99/project-sensei/backend
+              #     tag: stage-latest@sha256:bb7f6288a95bea7618343841024b1bb40ffa9581002117de5095a34310b2e4a2
+              #     pullPolicy: Always
+              #   command: ["/bin/sh", "-c", "python3 /app/worker_game_import.py"]
+              #   env:
+              #     GROQ_API_KEY: ${GROQ_API_KEY_LLM}
+              #     GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
+              #     GROQ_MODEL: llama3-70b-8192
+              #     PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
+              #     DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
+              #     OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
+              #     ENVIRONMENT: stage
+              #     REDIS_HOST: dragonfly.database.svc.cluster.local
+              #     REDIS_DB: 0
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
