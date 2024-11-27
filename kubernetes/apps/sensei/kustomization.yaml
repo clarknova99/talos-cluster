@@ -6,4 +6,4 @@ resources:
   - ./namespace.yaml
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
-#  - ./langfuse/ks.yaml
+  - ./langfuse/ks.yaml
