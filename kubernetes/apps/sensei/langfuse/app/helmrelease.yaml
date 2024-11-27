@@ -47,6 +47,9 @@ spec:
               AUTH_CUSTOM_NAME: authelia
               AUTH_CUSTOM_ISSUER: https://auth.${SECRET_DOMAIN}
               AUTH_DISABLE_SIGNUP: true
+              LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: true
+              LANGFUSE_LOG_LEVEL: trace
+              
     service:
       app:
         controller: langfuse
