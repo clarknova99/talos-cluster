@@ -45,7 +45,7 @@ spec:
               STOCKFISH_PATH: /usr/games/stockfish
               LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
               LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
-              LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local
+              LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000
               #GROQ_MODEL: llama3-70b-8192
           worker-game-processing:
             image:
