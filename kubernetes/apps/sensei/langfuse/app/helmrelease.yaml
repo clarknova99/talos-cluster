@@ -49,7 +49,6 @@ spec:
               AUTH_DISABLE_SIGNUP: true
               LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: true
               LANGFUSE_LOG_LEVEL: trace
-              LANGFUSE_AUTO_POSTGRES_MIGRATION_DISABLED: true
 
     service:
       app:
