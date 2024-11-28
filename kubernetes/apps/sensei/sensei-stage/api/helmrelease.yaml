@@ -61,6 +61,9 @@ spec:
               DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: stage
+              LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
+              LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
+              LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000              
           # worker-game-imports:
           #   image:
           #     repository: ghcr.io/clarknova99/project-sensei/backend
