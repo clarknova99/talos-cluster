@@ -55,7 +55,7 @@ spec:
         controller: langfuse
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: langfuse.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/hostname: langfuse.${SECRET_DOMAIN_TWO}
           io.cilium/lb-ipam-ips: 192.168.3.31        
         ports:
           http:
