@@ -30,10 +30,10 @@ spec:
         containers:
           app:
             image:
-              # repository: docker.io/langfuse/langfuse
-              # tag: latest@sha256:e05899b92666f7b9102482292f64245477808ae2ab03cb011e6dea9981054e0b
-              repository: ghcr.io/langfuse/langfuse
-              tag: 2.93.0@sha256:e05b4b389a07aba93a94d3a19c24c104b125b023792ff612706137e26067c23f
+              repository: docker.io/langfuse/langfuse
+              tag: 2.93@sha256:e05b4b389a07aba93a94d3a19c24c104b125b023792ff612706137e26067c23f
+              # repository: ghcr.io/langfuse/langfuse
+              # tag: 2.93.0@sha256:e05b4b389a07aba93a94d3a19c24c104b125b023792ff612706137e26067c23f
             env:
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse
               NEXTAUTH_URL: https://langfuse.${SECRET_DOMAIN_TWO}
