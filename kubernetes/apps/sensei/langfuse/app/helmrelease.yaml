@@ -46,7 +46,7 @@ spec:
               AUTH_CUSTOM_SCOPE: openid profile email groups
               AUTH_CUSTOM_NAME: authelia
               AUTH_CUSTOM_ISSUER: https://auth.${SECRET_DOMAIN}
-              AUTH_DISABLE_SIGNUP: true
+              #AUTH_DISABLE_SIGNUP: true
               LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: true
               LANGFUSE_LOG_LEVEL: trace
 
