@@ -47,23 +47,23 @@ spec:
               LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
               LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000
               #GROQ_MODEL: llama3-70b-8192
-          # worker-game-processing:
-          #   image:
-          #     repository: ghcr.io/clarknova99/project-sensei/backend
-          #     tag: stage-latest@sha256:e370f2a03f9129c88b27127ebfb3eaed74321cf981c5220d3e8f08efb3313743
-          #     pullPolicy: Always
-          #   command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
-          #   env:
-          #     GROQ_API_KEY: ${GROQ_API_KEY_PGN_TEXT}
-          #     GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
-          #     GROQ_MODEL: llama3-70b-8192
-          #     PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
-          #     DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
-          #     OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
-          #     ENVIRONMENT: stage
-          #     LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
-          #     LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
-          #     LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000              
+          worker-game-processing:
+            image:
+              repository: ghcr.io/clarknova99/project-sensei/backend
+              tag: stage-latest@sha256:e370f2a03f9129c88b27127ebfb3eaed74321cf981c5220d3e8f08efb3313743
+              pullPolicy: Always
+            command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
+            env:
+              GROQ_API_KEY: ${GROQ_API_KEY_PGN_TEXT}
+              GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
+              GROQ_MODEL: llama3-70b-8192
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
+              DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
+              OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
+              ENVIRONMENT: stage
+              LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
+              LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
+              LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000              
           # worker-game-imports:
           #   image:
           #     repository: ghcr.io/clarknova99/project-sensei/backend
