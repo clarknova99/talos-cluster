@@ -10,12 +10,13 @@ spec:
     spec:
       template:
         spec:
+          imagePullSecrets:
+          - name: sensei-secret        
           containers:
           - name: stage-daily-user-refresh
             image: ghcr.io/clarknova99/project-sensei/backend:stage-latest
             imagePullPolicy: Always
-            imagePullSecrets:
-            - name: sensei-secret
+
             command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
             env:
             - name: GROQ_API_KEY_LLM
