@@ -6,8 +6,8 @@ metadata:
 ## sops --encrypt --in-place ./kubernetes/apps/default/authelia/app/authelia-secrets.sops.yaml
 ## sops --decrypt ./kubernetes/apps/default/authelia/app/authelia.sops.yaml | kubectl apply -f -
 stringData:
-    GROQ_API_KEY_LLM: ENC[AES256_GCM,data:Q7KIxny2t/3a9LfG9VdkbEDpLKcJHcJ+wKqlbZ6VeQ1oR2qbuCzi0uBgVbkl4PcZ43ltL4Q0VAg=,iv:B4AtpsAcoaibrgrxktsa1DYvIXa4A16eWDchsCwsaPE=,tag:drn4DfkRduGHMHo3Rbd0rA==,type:str]
-    GROQ_API_KEY_PGN_TEXT: ENC[AES256_GCM,data:Hz5bzwkYy/6HLj0VdPfZ4SaGH3zKKMTPODYsJcHqDTXSwxwtW4aJFkaynj2D6x4VgLrLhJLEoUM=,iv:tK9AnnUq/5DZWj39wacIw41a0sCAhpa7eKrlESwFEDk=,tag:0JeVPmvXQpU2a8SvmDYbKQ==,type:str]
+    GROQ_API_KEY_LLM: ENC[AES256_GCM,data:AvttGlBAYgys8jKsJyEm+XLdxNDHovvD5tVDJ7hTKn1JoGVTbkKFF57NDqu5KKKNjjx710wmoZw=,iv:B8S01cIAbqZo9xrBVpWa/fu0iGNglFqUu0/BdBqNboM=,tag:7FR4+TnZ31kovg0S5/e/+Q==,type:str]
+    GROQ_API_KEY_PGN_TEXT: ENC[AES256_GCM,data:WRiHLEQY7ShjD1fgosSWKlF6ALpdLJnln96epgMjKC/9YEhuDxZllezELdWUi9e0YkWnJkh3hNI=,iv:Zj65p9h7GiUv2CoYpVL6fZrJ8vOviQI3L8/EMjrqG1Y=,tag:FXWdWLL3iQMcdza/g2659Q==,type:str]
     PG_URI: ENC[AES256_GCM,data:4f5SASwPksI7bwY6acS6ExqFLYnKMb3HHdj70KBBuKrCwwojLLaulVMj8KLLKYVHpoDkHFXAe4vweBRAiYQ=,iv:DNhkaY04r/4A7C8zJjbUbIAtamjK0lPBimDdlq/S87k=,tag:v1yZtKtdgVSnItKyGzoR5g==,type:str]
     DISCORD_WEBHOOK: ENC[AES256_GCM,data:9+E32CO25q5bC/b8Fuer3PSRhvU7yE6IHFIkQZFH0hikuMqyz7t5WUcb2GZREdBhy3shWxYQrf0D9kJTEqiRCIYO0nSraqrVpXq5JN3V47ocmDGRFrn1eL2FLjOZar7r5TcCyKvAbhWD16qQDPJvReWwtj/KADoqKg==,iv:jIjqytgZcPixx3tBn8FEEH9l1eCUDfxqdCuSCGhQTdk=,tag:esGGpLtmp27r+1IWXzN0tQ==,type:str]
     LICHESS_API_TOKEN: ENC[AES256_GCM,data:Ze9VzyUpKkVZgo77x2sWZ6dsHZuuyoC8,iv:eMv5aZaSZDaUf1fR3CGDNJQ6fkaG0fRjSwyAgQhfpQw=,tag:IODPWcIrCL3bD1OkHgxw7A==,type:str]
@@ -26,8 +26,8 @@ sops:
             TExSSTNXVjJuak95OTFaNFZIMEhuQ1UK+WGgrUID1FGqegMyoM2DFqoGOOHIiBgx
             wrNKabS7994K+HdWmzs0iCAOUWVrZ+cOLqw2n4oyt1G9TtkReoOY9w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-11-08T16:03:25Z"
-    mac: ENC[AES256_GCM,data:Ghs05i8B21C+eKku1BHWGlmx3PnvTXZ3F2kH+FyJcIknN3bhJKjMxNxyIA7iJec8l7UDMMdOMXzqt73rVPvADNdFdRvU1mW6lOozXQGSNnb1chEf8TZCpi/iVEBqilFHBmcF0cbCoLoqVhNRA74orNe2p1Wr/d7syPz+YJ0kaKs=,iv:qaMfG5jSrpsUHbiuJefABTX7OIr9S9X0OAYw7VIhlgI=,tag:rf3/4iwjeFvSKtr07x3xEA==,type:str]
+    lastmodified: "2024-12-06T15:43:54Z"
+    mac: ENC[AES256_GCM,data:rtoPicy7Hy9WV35AYbP7J19NAs9wRXnCrQhqKokAqdCjGywgKn4I2f2Yd+OzonC+Rgf/AuBimNIiyfL+ZqvyazwWanLORcuLgCxnpalj4XOgvjTWoGdl3kYkmbQGcYQvxdQGONVCBgAy2ZnJuJrOZZCt/QfpUxfGDxarUqgO044=,iv:vIA8pZ8lPKN2UusSj4dg+PUI7vK7mSkeFF9mxu7+N2Q=,tag:79YWQu7zC2O66vHyOL3bLg==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
