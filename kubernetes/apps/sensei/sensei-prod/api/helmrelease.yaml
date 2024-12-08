@@ -39,17 +39,46 @@ spec:
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: prod
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-prod
-              REDIS_HOST: dragonfly.database.svc.cluster.local
-              REDIS_DB: 1
               DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               LICHESS_API_TOKEN: ${LICHESS_API_TOKEN}
-              STOCKFISH_PATH: /usr/games/stockfish
               GROQ_API_KEY: ${GROQ_API_KEY_LLM}
-              #GROQ_MODEL: llama3-70b-8192
+              STOCKFISH_PATH: /usr/games/stockfish
+              LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
+              LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
+              LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000
+          worker-game-processing:
+            image:
+              repository: ghcr.io/clarknova99/project-sensei/backend
+              tag: main-0.1.0@sha256:3689952f89b95988d0e367e18fb17574f4e011ff008b1fe0212ef75bc54f9436
+              pullPolicy: Always
+            command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
+            env:
+              GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
+              GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
+              OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
+              ENVIRONMENT: prod
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-prod
+              DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
+              LICHESS_API_TOKEN: ${LICHESS_API_TOKEN}
+              GROQ_API_KEY: ${GROQ_API_KEY_LLM}
+              STOCKFISH_PATH: /usr/games/stockfish
+              LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
+              LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
+              LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000              
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-secret
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: "In"
+                    values: ["jupiter"]            
     service:
       app:
         controller: sensei-prod-api

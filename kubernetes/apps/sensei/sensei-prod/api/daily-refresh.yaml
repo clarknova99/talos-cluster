@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sensei-prod-daily-refresh
+  namespace: sensei
+spec:
+  schedule: "0 1 * * *"  # 1AM every day
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          imagePullSecrets:
+          - name: sensei-secret        
+          containers:
+          - name: stage-daily-user-refresh
+            image: ghcr.io/clarknova99/project-sensei/backend:stage-latest
+            imagePullPolicy: Always
+
+            command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
+            env:
+            - name: GROQ_API_KEY_LLM
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-prod-daily-refresh-secrets
+                  key: GROQ_API_KEY_LLM
+            - name: GROQ_API_KEY_PGN_TEXT
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-prod-daily-refresh-secrets
+                  key: GROQ_API_KEY_PGN_TEXT       
+            - name: PG_URI
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-prod-daily-refresh-secrets
+                  key: PG_URI       
+            - name: DISCORD_WEBHOOK
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-prod-daily-refresh-secrets
+                  key: DISCORD_WEBHOOK 
+            - name: LICHESS_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-prod-daily-refresh-secrets
+                  key: LICHESS_API_TOKEN 
+            - name: ENVIRONMENT
+              value: "prod"
+          restartPolicy: OnFailure
+
