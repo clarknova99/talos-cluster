@@ -33,6 +33,11 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: discord
+        description: "healthcheck failed"
+        send-on-resolved: true
+              
   - name: sensei backend
     group: sensei
     url: https://api.${SECRET_DOMAIN_TWO}
@@ -41,6 +46,10 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: discord
+        description: "healthcheck failed"
+        send-on-resolved: true
 
   ## Services  
   - name: postgresql
@@ -52,6 +61,10 @@ endpoints:
       hide-url: true
     conditions:
       - "[CONNECTED] == true"
+    alerts:
+      - type: discord
+        description: "healthcheck failed"
+        send-on-resolved: true
 
   - name: langfuse
     group: services
