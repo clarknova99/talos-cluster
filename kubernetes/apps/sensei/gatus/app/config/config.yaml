@@ -57,7 +57,14 @@ endpoints:
     group: services
     url: https://langfuse.${SECRET_DOMAIN_TWO}
     interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true    
     client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: discord
+        description: "healthcheck failed"
+        send-on-resolved: true
