@@ -120,6 +120,9 @@ spec:
                 service:
                   identifier: app
                   port: http            
+        tls:
+          - hosts:
+              - status.${SECRET_DOMAIN_TWO}
 
     serviceAccount:
       create: true
