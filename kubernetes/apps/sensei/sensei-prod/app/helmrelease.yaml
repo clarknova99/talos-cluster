@@ -53,6 +53,9 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180s"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "180s"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "180s"          
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:math-compass
         className: external
@@ -73,79 +76,3 @@ spec:
           - hosts:
               - www.${SECRET_DOMAIN_TWO}
               - ${SECRET_DOMAIN_TWO}
-# ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
-# apiVersion: helm.toolkit.fluxcd.io/v2
-# kind: HelmRelease
-# metadata:
-#   name: sensei-prod-app
-#   namespace: sensei
-# spec:
-#   interval: 15m
-#   chart:
-#     spec:
-#       chart: app-template
-#       version: 3.4.0
-#       sourceRef:
-#         kind: HelmRepository
-#         name: bjw-s
-#         namespace: flux-system
-#       interval: 15m
-#   maxHistory: 3
-#   install:
-#     remediation:
-#       retries: 5
-#   upgrade:
-#     remediation:
-#       retries: 5
-#   values:
-#     controllers:
-#       sensei-prod-app:
-#         replicas: 1
-#         containers:
-#           app:
-#             image:
-#               repository: ghcr.io/clarknova99/project-sensei/frontend
-#               tag: main-0.1.0@sha256:3dbb43a200fc90323d868bb1a01199527fbdf1c93a863f8eb91543b536f7111e
-#               pullPolicy: Always
-#             env:
-#               API_HOST: sensei-prod-api.sensei.svc.cluster.local
-#         pod:
-#           # imagePullPolicy: Always
-#           imagePullSecrets:
-#             - name: sensei-secret
-#     service:
-#       app:
-#         controller: sensei-prod-app
-#         ports:
-#           http:
-#             port: 8501
-#     ingress:
-#       app:
-#         annotations:
-#           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-#           # nginx.ingress.kubernetes.io/auth-method: GET
-#           # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
-#           # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN_TWO}?rm=$request_method
-#           # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-#           # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
-#           hajimari.io/enable: "true"
-#           hajimari.io/icon: mdi:math-compass
-#         className: external
-#         hosts:
-#           - host: www.${SECRET_DOMAIN_TWO}
-#             paths:
-#               - path: /
-#                 service:
-#                   identifier: app
-#                   port: 8501
-#           - host: ${SECRET_DOMAIN_TWO}
-#             paths:
-#               - path: /
-#                 service:
-#                   identifier: app
-#                   port: 8501
-#         tls:
-#           - hosts:
-#               - www.${SECRET_DOMAIN_TWO}
-#               - ${SECRET_DOMAIN_TWO}
