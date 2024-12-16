@@ -8,8 +8,8 @@ storage:
 metrics: true
 debug: false
 ui:
-  title: status
-  header: status
+  title: sensei chess service status
+  header: sensei chess service status
   logo: "https://senseichess.com/static/images/hero.png"
 alerting:
   discord:
