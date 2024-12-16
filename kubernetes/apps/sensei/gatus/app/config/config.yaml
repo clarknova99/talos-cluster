@@ -3,7 +3,7 @@ web:
   port: 80
 storage:
   type: postgres
-  path: postgres://${SECRET_POSTGRES_USERNAME}:${SECRET_POSTGRES_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/gatus?sslmode=disable
+  path: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/gatus?sslmode=disable
   caching: true
 metrics: true
 debug: false
