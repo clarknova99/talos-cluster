@@ -4,17 +4,18 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: gatus
-  namespace: monitoring
+  namespace: sensei
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: app-template
-      version: 3.0.4
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+      interval: 15m        
   maxHistory: 2
   install:
     remediation:
@@ -34,49 +35,15 @@ spec:
           init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: 16.3
-              pullPolicy: IfNotPresent
+              tag: 16
             envFrom: &envFrom
               - secretRef:
-                  name: gatus-secrets
-          # TODO: Convert this to a proper 'sidecar' container someday
+                  name: gatus-secret
           init-config:
             dependsOn: init-db
-            image: &configSyncImage
-              repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.27.4
-              pullPolicy: IfNotPresent
-            env:
-              FOLDER: /config
-              LABEL: gatus.io/enabled
-              NAMESPACE: ALL
-              RESOURCE: both
-              UNIQUE_FILENAMES: true
-              METHOD: LIST
-            resources: &configSyncResources
-              requests:
-                cpu: 10m
-                memory: 10Mi
-              limits:
-                memory: 128Mi
-        containers:
-          app:
             image:
-              repository: ghcr.io/twin/gatus
-              tag: v5.11.0
-            env:
-              TZ: America/New_York
-              GATUS_CONFIG_PATH: /config
-              CUSTOM_WEB_PORT: &port 80
-            envFrom: *envFrom
-            resources:
-              requests:
-                cpu: 10m
-                memory: 256M
-              limits:
-                memory: 512M
-          config-sync:
-            image: *configSyncImage
+              repository: ghcr.io/kiwigrid/k8s-sidecar
+              tag: 1.28.1@sha256:707875abfd38af450ff420c6f271e883fc28e9ce4d3742741af993b25ae93f85
             env:
               FOLDER: /config
               LABEL: gatus.io/enabled
@@ -84,13 +51,50 @@ spec:
               RESOURCE: both
               UNIQUE_FILENAMES: true
               METHOD: WATCH
-            resources: *configSyncResources
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
+            restartPolicy: Always
+            resources: &resources
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+        containers:
+          app:
+            image:
+              repository: ghcr.io/twin/gatus
+              tag: v5.13.1@sha256:24842a8adebd3dd4bd04a4038ffa27cb2fe72bb50631415e0fb2915063fc1993
+            env:
+              TZ: America/New_York
+              GATUS_CONFIG_PATH: /config
+              CUSTOM_WEB_PORT: &port 80
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources: *resources
+
+    defaultPodOptions:
+      dnsConfig:
+        options:
+          - { name: ndots, value: "1" }
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: gatus
@@ -108,40 +112,22 @@ spec:
             scrapeTimeout: 10s
     ingress:
       app:
-        enabled: true
         className: external
         annotations:
-          hajimari.io/icon: mdi:cog-outline
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Monitoring
-          gethomepage.dev/icon: mdi-cog-outline
-          gethomepage.dev/name: gatus
-          gethomepage.dev/widget.url: https://gatus.${SECRET_DOMAIN}
-          gethomepage.dev/siteMonitor: https://gatus.${SECRET_DOMAIN}
+          hajimari.io/icon: mdi:cog-outline        
         hosts:
-          - host: &host1 status.${SECRET_DOMAIN}
+          - host: status.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
                 service:
                   identifier: app
-                  port: http
-          # - host: &host2 status.${SECRET_DOMAIN2}
-          #   paths:
-          #     - path: /
-          #       service:
-          #         identifier: app
-          #         port: http
-        tls:
-          - hosts:
-              - *host1
-              # - *host2
+                  port: http            
+
     serviceAccount:
       create: true
       name: gatus
     persistence:
       config:
-        enabled: true
         type: emptyDir
       config-file:
         type: configMap

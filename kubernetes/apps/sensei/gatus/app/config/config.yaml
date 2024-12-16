@@ -3,17 +3,17 @@ web:
   port: 80
 storage:
   type: postgres
-  path: postgres://${SECRET_POSTGRES_USERNAME}:${SECRET_POSTGRES_PASSWORD}@cloudnative-pg-cluster.database.svc.cluster.local:5432/gatus?sslmode=disable
+  path: postgres://${SECRET_POSTGRES_USERNAME}:${SECRET_POSTGRES_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/gatus?sslmode=disable
   caching: true
 metrics: true
 debug: false
 ui:
   title: status
   header: status
-  logo: "https://www.bigwang.org/content/video3/images/ev.jpg"
+  logo: "https://senseichess.com/static/images/hero.png"
 alerting:
   discord:
-    webhook-url: $${GATUS_DISCORD_WEBHOOK}
+    webhook-url: ${SECRET_SENSE_DISCORD_WEBHOOK}
     default-alert:
       description: healthcheck failed
       send-on-resolved: true
@@ -25,276 +25,39 @@ connectivity:
     interval: 1m
 endpoints:
   ## services
-  - name: authentication
-    group: services
-    url: https://auth.${SECRET_DOMAIN}
+  - name: sensei frontend
+    group: sensei
+    url: https://www.${SECRET_DOMAIN_TWO}
     interval: 1m
     client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
-  - name: lldap
-    group: services
-    url: https://lldap.${SECRET_DOMAIN}
-    interval: 1m
-    client:
-      dns-resolver: tcp://192.168.2.1:53
-    conditions:
-      - "[STATUS] == 200"
-  - name: minio-admin
-    group: services
-    url: "tcp://minio.kube-system.svc.cluster.local:9001"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: minio-s3
-    group: services
-    url: "tcp://minio.kube-system.svc.cluster.local:9000"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: website
-    group: services
-    url: "tcp://website-nginx.default.svc.cluster.local:80"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: website - external connections
-    group: services
-    url: https://www.${SECRET_DOMAIN}
+  - name: sensei backend
+    group: sensei
+    url: https://api.${SECRET_DOMAIN_TWO}
     interval: 1m
     client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
 
-  ## Monitoring
-  - name: status
-    group: monitoring
-    url: "tcp://gatus.monitoring.svc.cluster.local:80"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: status - external connections
-    group: monitoring
-    url: https://status.${SECRET_DOMAIN}
-    interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 200"
-
-  - name: grafana
-    group: monitoring
-    url: "tcp://grafana.monitoring.svc.cluster.local:80"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: grafana - external connections
-    group: monitoring
-    url: https://grafana.${SECRET_DOMAIN}
-    interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 200"
-  - name: loki
-    group: monitoring
-    url: "tcp://loki-gateway.monitoring.svc.cluster.local:80"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: prometheus
-    group: monitoring
-    url: "tcp://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-
-  ## Database
+  ## Services  
   - name: postgresql
-    group: database
-    url: "tcp://cloudnative-pg-cluster.database.svc.cluster.local:5432"
+    group: services
+    url: "tcp://192.168.3.42:5432"
     interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
     conditions:
       - "[CONNECTED] == true"
-  - name: postgresql-admin
-    group: database
-    url: https://pgadmin.${SECRET_DOMAIN}
+
+  - name: langfuse
+    group: services
+    url: https://langfuse.${SECRET_DOMAIN_TWO}
     interval: 1m
-    client:
-      dns-resolver: tcp://192.168.2.1:53
-    conditions:
-      - "[STATUS] == 200"
-  - name: redis
-    group: database
-    url: "tcp://redis-master.database.svc.cluster.local:6379"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: mongodb
-    group: database
-    url: "tcp://mongodb.database.svc.cluster.local:27017"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: couchdb
-    group: database
-    url: "tcp://couchdb.database.svc.cluster.local:5984"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: influxdb
-    group: database
-    url: "tcp://influxdb.database.svc.cluster.local:8086"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: influxdb - external connections
-    group: database
-    url: https://influxdb-brad.${SECRET_DOMAIN}/health
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
     client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
-
-  ## APPS
-  - name: bazarr
-    group: apps
-    url: "tcp://bazarr.media.svc.cluster.local:6767"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: radarr
-    group: apps
-    url: "tcp://radarr.media.svc.cluster.local:80"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: hydra
-    group: apps
-    url: "tcp://hydra.media.svc.cluster.local:5076"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: prowlarr
-    group: apps
-    url: "tcp://prowlarr.media.svc.cluster.local:80"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: sonarr
-    group: apps
-    url: "tcp://sonarr.media.svc.cluster.local:80"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: youtube-dl
-    group: apps
-    url: "tcp://youtubedl.media.svc.cluster.local:17442"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: appsmith
-    group: apps
-    url: "tcp://appsmith.default.svc.cluster.local:80"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: baserow
-    group: apps
-    url: "tcp://baserow-frontend.default.svc.cluster.local:3000"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: home-assistant
-    group: apps
-    url: "tcp://home-assistant.default.svc.cluster.local:8123"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: n8n
-    group: apps
-    url: "tcp://n8n.default.svc.cluster.local:80"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
-  - name: sabnzbd
-    group: apps
-    url: "tcp://sabnzbd.media.svc.cluster.local:8085"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: sensei-gatus-secrets
-    namespace: default
+    namespace: sensei
 # ## sops --encrypt --in-place ./kubernetes/apps/default/lldap/app/lldap.sops.yaml
 # ## sops --decrypt ./kubernetes/apps/default/lldap/app/lldap.sops.yaml | kubectl apply -f -
 stringData:
@@ -27,8 +27,8 @@ sops:
             QktEZ2F3TlFaeXlLYXdJWURvaXpxNHMKKn+TZy2D4OxznFDETFXceZkcIq08IZpx
             cQqqNxGbiEgEc7Z3zen0ourv1xCFE9/+nDA2PEQVZUuElZCwyv21yA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-12-16T16:11:06Z"
-    mac: ENC[AES256_GCM,data:3DzRw3ID8vTTvF5uQy9KDWh04KvQkkp5m+s0fBNxvPVPb3uT9DtvL/we7ABBPXlQWEA33/Qurv4XrpNSHKO7R9rWB+8qfprhDpjqJ633MDRTKUADoypSsZMV7adGYW9lnscXpF5tHLuRfHIuJirVbNGWK7abeyz3AJh8rEf+8ik=,iv:wkSmcu16c0v7w8OuHf9Hdn3dGGHH/ghN9MY8x/yNhkc=,tag:Yn4jVP4L6sXjP/Oyx/3MoQ==,type:str]
+    lastmodified: "2024-12-16T16:37:51Z"
+    mac: ENC[AES256_GCM,data:udJ9IW3ixfIB5u7IuMt0XERUFIWkQ3LdHPab6qWo3ItaS78LpPsORSzUP2+4jNQXrbPQWuxpsKKJwPkA1hw0yD4ouvZ1KySmNGn04VHP3V6pR/bUXjg0kznJNdmZlzyOoXKk3LAMtwr+r+w7SM04J54+v5P92qduV6GtKfhW+t4=,iv:veSPVXdqJV2Um5V+FFmDyLDalH90VO+PAlFGP/ROX3U=,tag:oEMxP9T+fPQWUqlcKY69Hg==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
