@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: main-0.1.0@sha256:d69651ec917cb7acdb197c27b1b7370c1eb69934a85a36b2fedd272720a6ca72
+              tag: main-0.1.0@sha256:d685780d5f4afcec7a7b09060fd6ea52abd1e836394e3ba0022ca8010d4086a7
               pullPolicy: Always
             env:
               API_HOST: sensei-prod-api.sensei.svc.cluster.local
@@ -55,7 +55,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
           nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
-          nginx.ingress.kubernetes.io/proxy-send-timeout: "240"          
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:math-compass
         className: external
