@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: docker.io/arizephoenix/phoenix
-              tag: latest@sha256:02be73e6fa5e3d9b9ddb8e17f8767ef914a2165a163cb78f113d6f3eafbde54c
+              tag: latest@sha256:97640281a3195ec0923419daf99570d1574af5b16a3ec3211e04bc1936ab17d7
             env:
               PHOENIX_SQL_DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/phoenix
     service:
