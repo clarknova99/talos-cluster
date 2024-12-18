@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:fa52bc59b652f059ae5f853ad7dc5e65b90ab40f8e25701d2b47747db743861e
+              tag: stage-latest@sha256:7b8fda554ffa3ed0d384f34ca30ba6b2624bbedfdda3e5abd42f03122c195d70
               pullPolicy: Always
             env:
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
@@ -50,7 +50,7 @@ spec:
           worker-game-processing:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:fa52bc59b652f059ae5f853ad7dc5e65b90ab40f8e25701d2b47747db743861e
+              tag: stage-latest@sha256:7b8fda554ffa3ed0d384f34ca30ba6b2624bbedfdda3e5abd42f03122c195d70
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
             env:
@@ -108,7 +108,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
           nginx.ingress.kubernetes.io/proxy-read-timeout: "180"
-          nginx.ingress.kubernetes.io/proxy-send-timeout: "180"          
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "180"
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:math-compass
         className: external
