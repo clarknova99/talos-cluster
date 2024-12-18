@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: main-0.1.0@sha256:bf52adb9cd69a02208a262cbeb4c9eac7b05da276a31a56c23f9dcdce7774c23
+              tag: main-0.1.0@sha256:ad5b17ee278ab3b33d28f741896b43d17f2e54a95e64a27f3495e37ec029405d
               pullPolicy: Always
             env:
               API_HOST: sensei-prod-api.sensei.svc.cluster.local
