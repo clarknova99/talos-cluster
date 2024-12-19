@@ -108,6 +108,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/prometheus-folder
+          - name: sensei
+            orgId: 1
+            folder: sensei
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/sensei-folder              
     datasources:
       datasources.yaml:
         apiVersion: 1
