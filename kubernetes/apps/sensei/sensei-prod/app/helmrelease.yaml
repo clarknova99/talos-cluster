@@ -34,6 +34,7 @@ spec:
               tag: main-0.1.0@sha256:56b6b1bcf2643c8f51546895ab975036c91f63573f2b19b6b8c396e7cd0d7804
               pullPolicy: Always
             env:
+              SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
               API_HOST: sensei-prod-api.sensei.svc.cluster.local
               ENVIRONMENT: prod
               GOOGLE_CLIENT_ID: ${SECRET_GOOGLE_CLIENT_ID}

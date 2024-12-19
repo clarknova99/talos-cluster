@@ -34,6 +34,7 @@ spec:
               tag: stage-latest@sha256:84e34d12ec6e3672480992948c6a4d0e7fb105a41f125b73a361d31b4124b244
               pullPolicy: Always
             env:
+              SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
               GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}

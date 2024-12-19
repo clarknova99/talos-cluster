@@ -34,6 +34,7 @@ spec:
               tag: stage-latest@sha256:848d14896319e823ae9fcd88dd06cc2e5ccf71f8975562fa5cf56987b3174a27
               pullPolicy: Always
             env:
+              SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
               API_HOST: sensei-stage-api.sensei.svc.cluster.local
               ENVIRONMENT: stage
               GOOGLE_CLIENT_ID: ${SECRET_GOOGLE_CLIENT_ID}
