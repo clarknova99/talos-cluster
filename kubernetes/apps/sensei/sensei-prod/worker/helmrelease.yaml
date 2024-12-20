@@ -25,10 +25,10 @@ spec:
       retries: 5
   values:
     controllers:
-      sensei-prod-api:
+      sensei-worker:
         replicas: 1
         containers:
-          sensei-worker:
+          app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
               tag: main-0.1.0@sha256:ceb0808510877dbd95a7d1bca7156be99bc27faec8a4808d49cd75bd2f3a030f
