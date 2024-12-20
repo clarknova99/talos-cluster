@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: main-0.1.0@sha256:ceb0808510877dbd95a7d1bca7156be99bc27faec8a4808d49cd75bd2f3a030f
+              tag: main-0.1.0@sha256:417191f18d97c37ae0cc7967ad2984d56ecac2d07fe347fdabff1e55092def57
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
             env:
@@ -62,4 +62,3 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: "In"
                     values: ["jupiter"]
-                    
