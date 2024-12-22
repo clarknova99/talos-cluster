@@ -50,7 +50,7 @@ spec:
               RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 80
-              RADARR__LOG_LEVEL: info
+              RADARR__LOG_LEVEL: trace
               RADARR__UPDATE__BRANCH: develop
             envFrom: *envFrom
             probes:

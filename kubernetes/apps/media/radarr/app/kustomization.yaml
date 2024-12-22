@@ -7,4 +7,3 @@ resources:
   - ./radarr.sops.yaml
   - ./pvc.yaml
   - ./helmrelease.yaml
-
