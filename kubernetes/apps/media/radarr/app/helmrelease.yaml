@@ -51,7 +51,7 @@ spec:
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 80
               RADARR__LOG__DBENABLED: "False"
-              RADARR__LOG_LEVEL: trace
+              RADARR__LOG_LEVEL: debug
               RADARR__UPDATE__BRANCH: develop
             envFrom: *envFrom
             probes:
@@ -66,13 +66,7 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
-              readiness: *probes
-            # securityContext:
-            #   privileged: true
-            #   capabilities:
-            #     add:
-            #       - NET_ADMIN
-            #       - NET_RAW              
+              readiness: *probes           
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
