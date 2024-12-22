@@ -149,3 +149,5 @@ spec:
       incomplete:
         enabled: true
         type: emptyDir
+      tmp:
+        type: emptyDir        
