@@ -50,6 +50,7 @@ spec:
               RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
               RADARR__INSTANCE_NAME: Radarr
               RADARR__PORT: &port 80
+              RADARR__LOG__DBENABLED: "False"
               RADARR__LOG_LEVEL: trace
               RADARR__UPDATE__BRANCH: develop
             envFrom: *envFrom
@@ -88,7 +89,6 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [65534, 1000, 10000]
         seccompProfile: { type: RuntimeDefault }            
     service:
       app:
@@ -146,8 +146,5 @@ spec:
         path: /volume1/Video/TV
         globalMounts:
           - path: /tv
-      incomplete:
-        enabled: true
-        type: emptyDir
       tmp:
         type: emptyDir        
