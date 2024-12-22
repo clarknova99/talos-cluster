@@ -105,11 +105,15 @@ spec:
     persistence:
       config:
         enabled: true
-        type: nfs
-        server: 192.168.1.2
-        path: /volume1/network-storage/radarr
-        globalMounts:
-          - path: /config
+        existingClaim: radarr                  
+    # persistence:
+    #   config:
+    #     enabled: true
+    #     type: nfs
+    #     server: 192.168.1.2
+    #     path: /volume1/network-storage/radarr
+    #     globalMounts:
+    #       - path: /config
       downloads:
         enabled: true
         type: nfs
