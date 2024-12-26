@@ -4,7 +4,7 @@ metadata:
   name: sensei-prod-daily-refresh
   namespace: sensei
 spec:
-  schedule: "0 1 * * *"  # 1AM every day
+  schedule: "0 6 * * *"  # 1AM every day
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
