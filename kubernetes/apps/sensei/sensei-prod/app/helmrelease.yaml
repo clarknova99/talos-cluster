@@ -41,24 +41,30 @@ spec:
               GOOGLE_CLIENT_SECRET: ${SECRET_GOOGLE_CLIENT_SECRET}
               GOOGLE_REDIRECT_URI: ${SECRET_GOOGLE_REDIRECT_URI}
             probes:
-                liveness:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
                   httpGet:
                     path: /health
                     port: 3001
-                  initialDelaySeconds: 30  
+                  initialDelaySeconds: 30
                   periodSeconds: 10
-                  timeoutSeconds: 5        # Added: how long before probe times out
-                  failureThreshold: 3      # Added: number of failures before restart
-                  successThreshold: 1      # Added: number of successes needed
-                readiness:
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+                  successThreshold: 1
+              readiness:
+                enabled: true
+                custom: true
+                spec:
                   httpGet:
                     path: /health
                     port: 3001
                   initialDelaySeconds: 5
                   periodSeconds: 5
-                  timeoutSeconds: 3        # Added: shorter timeout for readiness
-                  failureThreshold: 2      # Added: faster removal from service
-                  successThreshold: 1                
+                  timeoutSeconds: 3
+                  failureThreshold: 2
+                  successThreshold: 1               
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
