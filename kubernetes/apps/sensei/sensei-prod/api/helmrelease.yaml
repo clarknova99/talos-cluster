@@ -26,7 +26,7 @@ spec:
   values:
     controllers:
       sensei-prod-api:
-        replicas: 1
+        replicas: 3
         containers:
           app:
             image:
@@ -72,16 +72,25 @@ spec:
           # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-secret
+    # defaultPodOptions:
+    #   affinity:
+    #     nodeAffinity:
+    #       preferredDuringSchedulingIgnoredDuringExecution:
+    #         - weight: 1
+    #           preference:
+    #             matchExpressions:
+    #               - key: kubernetes.io/hostname
+    #                 operator: "In"
+    #                 values: ["jupiter"]
     defaultPodOptions:
       affinity:
         nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              preference:
-                matchExpressions:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
                   - key: kubernetes.io/hostname
-                    operator: "In"
-                    values: ["jupiter"]
+                    operator: NotIn
+                    values: ["mars"]                    
     service:
       app:
         controller: sensei-prod-api
