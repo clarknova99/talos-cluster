@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: main-0.1.0@sha256:1b212893b6d4c08a71f8e572a428207a6cb55f7edba223efc0fa0dadd7156219
+              tag: main-0.1.0@sha256:b250b83b6a910ff161d402cf2aa39401f7eeb3051253ac10e019d768e8939787
               pullPolicy: Always
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
@@ -53,7 +53,7 @@ spec:
                 matchExpressions:
                   - key: kubernetes.io/hostname
                     operator: "In"
-                    values: ["jupiter"]            
+                    values: ["jupiter"]
     service:
       app:
         controller: sensei-prod-app
