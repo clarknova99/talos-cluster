@@ -13,7 +13,7 @@ ui:
   logo: "https://senseichess.com/static/images/hero.png"
 alerting:
   discord:
-    webhook-url: ${SECRET_SENSE_DISCORD_WEBHOOK}
+    webhook-url: ${SECRET_SENSEI_DISCORD_WEBHOOK}
     default-alert:
       description: healthcheck failed
       send-on-resolved: true
