@@ -40,7 +40,7 @@ endpoints:
               
   - name: sensei backend
     group: sensei
-    url: https://api.${SECRET_DOMAIN_TWO}
+    url: http://sensei-prod-api.sensei.svc.cluster.local:3001
     interval: 1m
     client:
       dns-resolver: tcp://1.1.1.1:53
