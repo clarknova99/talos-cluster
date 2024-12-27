@@ -40,12 +40,12 @@ endpoints:
               
   - name: sensei backend
     group: sensei
-    url: http://sensei-prod-api.sensei.svc.cluster.local:3001
-    interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
+    url: "tcp://sensei-prod-api.sensei.svc.cluster.local:3001"
+    ui:
+      hide-hostname: true
+      hide-url: true
     conditions:
-      - "[STATUS] == 200"
+      - "[CONNECTED] == true"      
     alerts:
       - type: discord
         description: "healthcheck failed"
