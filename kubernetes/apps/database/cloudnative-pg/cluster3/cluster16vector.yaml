@@ -36,12 +36,7 @@ spec:
     #   - { regex: cluster, action: labeldrop }
  # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
-  bootstrap:
-    # initdb:
-    #   postInitSQL:
-    #   - create EXTENSION vector
-    recovery:
-      source: &previousCluster postgres16vector-v1
+
   backup:
     retentionPolicy: 30d
     barmanObjectStore: &barmanObjectStore
@@ -64,16 +59,16 @@ spec:
           name: cloudnative-pg-secrets
           key: AWS_SECRET_ACCESS_KEY
  
-  # bootstrap:
-  #   # initdb:
-  #   #   postInitSQL:
-  #   #   - create EXTENSION vector
+  bootstrap:
+    initdb:
+      postInitSQL:
+      - create EXTENSION vector
   #   recovery:
   #     source: &previousCluster postgres16vector-v1
 
-  # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  externalClusters:
-    - name: *previousCluster
-      barmanObjectStore:
-        <<: *barmanObjectStore
-        serverName: *previousCluster
+  # # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  # externalClusters:
+  #   - name: *previousCluster
+  #     barmanObjectStore:
+  #       <<: *barmanObjectStore
+  #       serverName: *previousCluster
