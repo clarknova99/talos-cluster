@@ -60,9 +60,9 @@ spec:
           key: AWS_SECRET_ACCESS_KEY
  
   bootstrap:
-    initdb:
-      postInitSQL:
-      - create EXTENSION vector
+    # initdb:
+    #   postInitSQL:
+    #   - create EXTENSION vector
     recovery:
       source: &previousCluster postgres16vector-v1
 
