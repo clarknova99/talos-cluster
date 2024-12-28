@@ -50,7 +50,7 @@ spec:
       endpointURL: http://minio.kube-system.svc.cluster.local:9000
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres16vector-v1
+      serverName: &currentCluster postgres16vector-v2
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secrets
@@ -63,12 +63,12 @@ spec:
     initdb:
       postInitSQL:
       - create EXTENSION vector
-  #   recovery:
-  #     source: &previousCluster postgres16vector-v1
+    recovery:
+      source: &previousCluster postgres16vector-v1
 
-  # # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  # externalClusters:
-  #   - name: *previousCluster
-  #     barmanObjectStore:
-  #       <<: *barmanObjectStore
-  #       serverName: *previousCluster
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  externalClusters:
+    - name: *previousCluster
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
