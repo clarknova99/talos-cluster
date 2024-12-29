@@ -61,9 +61,24 @@ spec:
         client_id: grafana
         allow_assign_grafana_admin: true
         role_attribute_path: |
-          contains(groups, 'grafana-admin') && 'GrafanaAdmin' || contains(groups, 'people') && 'Viewer'  
+          contains(groups, 'grafana-admin') && 'GrafanaAdmin' || 
+          contains(groups, 'sensei-dashboards') && 'Viewer' ||
+          contains(groups, 'people') && 'Viewer' 
+      teams:
+        sensei_viewers:
+          name: "Sensei Viewers"
+          org_id: 1
+          folder_permission: "View"          
       log.console:
         level: debug    
+    provisioning:
+      teams:
+        - name: "Sensei Viewers"
+          orgId: 1
+          folder: "sensei"
+          permissions:
+            - permission: 1  # 1 = View, 2 = Edit, 4 = Admin
+              teamId: "sensei_viewers"
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
