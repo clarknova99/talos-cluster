@@ -66,13 +66,13 @@ spec:
           contains(groups, 'people') && 'Viewer' 
       log.console:
         level: debug    
-      teams:
-        - name: "Sensei Viewers"
-          orgId: 1
-          folder: "sensei"
-          permissions:
-            - permission: 1  # 1 = View, 2 = Edit, 4 = Admin
-              teamId: "sensei_viewers"
+      # teams:
+      #   - name: "Sensei Viewers"
+      #     orgId: 1
+      #     folder: "sensei"
+      #     permissions:
+      #       - permission: 1  # 1 = View, 2 = Edit, 4 = Admin
+      #         teamId: "sensei_viewers"
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
