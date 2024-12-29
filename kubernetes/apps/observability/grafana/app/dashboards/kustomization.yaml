@@ -20,10 +20,16 @@ configMapGenerator:
       - smartctl-exporter.json
   - name: sensei-logs
     files:
-      - sensei.json     
+      - sensei.json
+    options:
+      annotations:
+        grafana_folder: "sensei"           
   - name: sensei-metrics
     files:
-      - sensei-postgres-metrics.json                        
+      - sensei-postgres-metrics.json
+    options:
+      annotations:
+        grafana_folder: "sensei"                            
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
