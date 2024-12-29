@@ -49,8 +49,8 @@ spec:
                     path: /health
                     port: 8000
                   initialDelaySeconds: 45
-                  periodSeconds: 30
-                  timeoutSeconds: 5
+                  periodSeconds: 45
+                  timeoutSeconds: 10
                   failureThreshold: 3
                   successThreshold: 1
               readiness:
@@ -61,8 +61,8 @@ spec:
                     path: /health
                     port: 8000
                   initialDelaySeconds: 5
-                  periodSeconds: 30
-                  timeoutSeconds: 5
+                  periodSeconds: 45
+                  timeoutSeconds: 10
                   failureThreshold: 2
                   successThreshold: 1
         pod:
