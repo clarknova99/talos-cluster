@@ -66,7 +66,6 @@ spec:
           contains(groups, 'people') && 'Viewer' 
       log.console:
         level: debug    
-    provisioning:
       teams:
         - name: "Sensei Viewers"
           orgId: 1
