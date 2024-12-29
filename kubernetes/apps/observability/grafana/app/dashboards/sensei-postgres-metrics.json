@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 70,
+  "id": 69,
   "links": [],
   "panels": [
     {
@@ -238,6 +238,6 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
