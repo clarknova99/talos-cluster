@@ -175,6 +175,7 @@
         "y": 0
       },
       "id": 1,
+      "interval": "1d",
       "options": {
         "legend": {
           "calcs": [],
@@ -229,15 +230,13 @@
     "list": []
   },
   "time": {
-    "from": "2024-11-30T00:00:00.000Z",
-    "to": "2024-12-29T00:00:00.000Z"
+    "from": "now-30d",
+    "to": "now"
   },
-  "timepicker": {
-    "hidden": true
-  },
+  "timepicker": {},
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
