@@ -20,7 +20,10 @@ configMapGenerator:
       - smartctl-exporter.json
   - name: sensei-logs
     files:
-      - sensei.json                    
+      - sensei.json     
+  - name: sensei-metrics
+    files:
+      - sensei-postgres-metrics.json                        
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
