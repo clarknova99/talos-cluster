@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg-cluster  
+    - name: cloudnative-pg-cluster3 
   path: ./kubernetes/apps/sensei/sensei-prod/api
   prune: true
   sourceRef:
@@ -57,7 +57,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg-cluster
+    - name: cloudnative-pg-cluster3
   path: ./kubernetes/apps/sensei/sensei-prod/worker
   prune: true
   sourceRef:
