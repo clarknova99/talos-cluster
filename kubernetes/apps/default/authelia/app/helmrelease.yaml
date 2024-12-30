@@ -128,10 +128,18 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: http              
+                  port: http 
+          - host: auth.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http 
+
         tls:
           - hosts:
               - auth.${SECRET_DOMAIN}
+              - auth.${SECRET_DOMAIN_TWO}
     persistence:
       config:
         enabled: true
