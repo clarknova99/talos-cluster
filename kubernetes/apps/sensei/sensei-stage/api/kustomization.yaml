@@ -6,5 +6,5 @@ namespace: sensei
 resources:
   - ./sensei.sops.yaml
   - ./helmrelease.yaml
-  - ./daily-refresh.yaml
+  # - ./daily-refresh.yaml
   - ./dailyrefresh.sops.yaml
