@@ -60,8 +60,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 18,
-        "w": 10,
+        "h": 13,
+        "w": 13,
         "x": 0,
         "y": 0
       },
@@ -136,9 +136,9 @@
         "view": {
           "allLayers": true,
           "id": "coords",
-          "lat": 36.523503,
-          "lon": -98.108814,
-          "zoom": 3.85
+          "lat": 25.475173,
+          "lon": 9.654596,
+          "zoom": 2.43
         }
       },
       "pluginVersion": "11.4.0",
@@ -178,6 +178,132 @@
     },
     {
       "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "requests"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 11,
+        "x": 13,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "requests"
+          }
+        ]
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "editorMode": "code",
+          "expr": "sum by (city_name, country_code) (count_over_time({instance=\"ingress-nginx-external\"} | json | city_name != \"\" | vhost =~ `senseichess.com` |  __error__=\"\" [24h]))",
+          "legendFormat": "{{city_name}} {{country_code}}",
+          "queryType": "instant",
+          "refId": "A",
+          "step": ""
+        }
+      ],
+      "title": "Requests by Location",
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Metric": "host",
+              "Time": "",
+              "Value": "requests",
+              "Value #A": "requests",
+              "city_name": "city",
+              "country_code": "country",
+              "vhost": "host"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
         "type": "grafana-postgresql-datasource",
         "uid": "P44368ADAD746BC27"
       },
@@ -201,9 +327,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 13,
-        "x": 10,
-        "y": 0
+        "w": 10,
+        "x": 0,
+        "y": 13
       },
       "id": 2,
       "options": {
@@ -335,9 +461,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 13,
+        "w": 14,
         "x": 10,
-        "y": 8
+        "y": 13
       },
       "id": 1,
       "interval": "1d",
@@ -394,7 +520,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 21
       },
       "id": 5,
       "panels": [],
@@ -402,121 +528,122 @@
       "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 22
       },
       "id": 4,
-      "panels": [],
-      "title": "Jobs",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "fixed"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "locale"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 20
-      },
-      "id": 3,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
+      "panels": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
             "uid": "P44368ADAD746BC27"
           },
-          "editorMode": "code",
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "select \njob_type, \ncount(*) filter (where job_status = 'queued') as queued,\ncount(*) filter (where job_status = 'processing') as processing,\ncount(*) filter (where job_status = 'completed') as completed\nfrom job_queue \ngroup by job_type\norder by job_type",
-          "refId": "A",
-          "sql": {
-            "columns": [
-              {
-                "parameters": [],
-                "type": "function"
-              }
-            ],
-            "groupBy": [
-              {
-                "property": {
-                  "type": "string"
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
                 },
-                "type": "groupBy"
-              }
-            ],
-            "limit": 50
-          }
-        }
-      ],
-      "title": "Job Queue",
-      "transformations": [
-        {
-          "id": "organize",
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "locale"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 23
+          },
+          "id": 3,
           "options": {
-            "excludeByName": {},
-            "includeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "completed": "Completed",
-              "job_type": "Job Type",
-              "processing": "Processing",
-              "queued": "Queued"
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "11.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P44368ADAD746BC27"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "select \njob_type, \ncount(*) filter (where job_status = 'queued') as queued,\ncount(*) filter (where job_status = 'processing') as processing,\ncount(*) filter (where job_status = 'completed') as completed\nfrom job_queue \ngroup by job_type\norder by job_type",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
             }
-          }
+          ],
+          "title": "Job Queue",
+          "transformations": [
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "completed": "Completed",
+                  "job_type": "Job Type",
+                  "processing": "Processing",
+                  "queued": "Queued"
+                }
+              }
+            }
+          ],
+          "type": "table"
         }
       ],
-      "type": "table"
+      "title": "Jobs",
+      "type": "row"
     }
   ],
   "preload": false,
@@ -533,6 +660,6 @@
   "timezone": "",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 4,
+  "version": 1,
   "weekStart": ""
 }
