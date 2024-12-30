@@ -88,7 +88,7 @@ identity_providers:
         authorization_policy: one_factor
         pre_configured_consent_duration: 1y
         scopes: ["openid", "profile", "groups", "email"]
-        redirect_uris: ["https://grafana.${SECRET_DOMAIN}/login/generic_oauth"]
+        redirect_uris: ["https://grafana.${SECRET_DOMAIN_TWO}/login/generic_oauth"]
         userinfo_signing_algorithm: none
       - client_id: minio
         description: Minio
