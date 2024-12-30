@@ -127,7 +127,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 2,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -136,12 +136,12 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
+            "lineWidth": 2,
+            "pointSize": 10,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "always",
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -151,26 +151,36 @@
               "mode": "off"
             }
           },
+          "displayName": "Users",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "blue",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "join_date"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "YYYY-MM-DD"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 13,
         "x": 4,
         "y": 0
       },
@@ -198,7 +208,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "\nWITH daily_users AS (\n    SELECT \n        DATE(joined_at) AS join_date,\n        COUNT(*) AS users_joined\n    FROM \n        sensei_users\n    WHERE \n        joined_at >= NOW() - INTERVAL '30 days'\n    GROUP BY \n        DATE(joined_at)\n), all_days AS (\n    SELECT \n        generate_series(\n            CURRENT_DATE - INTERVAL '29 days', \n            CURRENT_DATE, \n            '1 day'\n        )::DATE AS join_date\n)\nSELECT \n    ad.join_date,\n    COALESCE(SUM(du.users_joined) OVER (ORDER BY ad.join_date), 0) AS total_users\nFROM \n    all_days ad\nLEFT JOIN \n    daily_users du\nON \n    ad.join_date = du.join_date\nORDER BY \n    ad.join_date;",
+          "rawSql": "WITH daily_counts AS (\n    SELECT \n        DATE_TRUNC('day', joined_at) AS joined_date,\n        COUNT(*) AS daily_count\n    FROM sensei_users\n    GROUP BY DATE_TRUNC('day', joined_at)\n),\nrunning_totals AS (\n    SELECT \n        joined_date,\n        daily_count,\n        SUM(daily_count) OVER (ORDER BY joined_date) AS running_total\n    FROM daily_counts\n)\nSELECT date(joined_date) as join_date, running_total\nFROM running_totals\nWHERE joined_date >= NOW() - INTERVAL '21 days'\nORDER BY joined_date;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -220,6 +230,7 @@
         }
       ],
       "title": "Total Users",
+      "transparent": true,
       "type": "timeseries"
     }
   ],
@@ -230,13 +241,13 @@
     "list": []
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-14d",
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "browser",
+  "timezone": "",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
