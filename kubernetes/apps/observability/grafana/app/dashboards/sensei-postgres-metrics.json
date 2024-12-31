@@ -515,7 +515,7 @@
       "type": "timeseries"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -559,8 +559,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -647,6 +646,7 @@
     }
   ],
   "preload": false,
+  "refresh": "30s",
   "schemaVersion": 40,
   "tags": [],
   "templating": {
@@ -660,6 +660,6 @@
   "timezone": "",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
