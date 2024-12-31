@@ -48,11 +48,11 @@
               },
               {
                 "color": "#EAB839",
-                "value": 50
+                "value": 35
               },
               {
                 "color": "red",
-                "value": 75
+                "value": 65
               }
             ]
           }
@@ -74,7 +74,7 @@
         },
         "controls": {
           "mouseWheelZoom": true,
-          "showAttribution": true,
+          "showAttribution": false,
           "showDebug": false,
           "showMeasure": false,
           "showScale": false,
@@ -83,51 +83,21 @@
         "layers": [
           {
             "config": {
-              "showLegend": true,
-              "style": {
-                "color": {
-                  "field": "Value #A",
-                  "fixed": "dark-green"
-                },
-                "opacity": 0.4,
-                "rotation": {
-                  "fixed": 0,
-                  "max": 360,
-                  "min": -360,
-                  "mode": "mod"
-                },
-                "size": {
-                  "field": "Value #A",
-                  "fixed": 5,
-                  "max": 7,
-                  "min": 5
-                },
-                "symbol": {
-                  "fixed": "img/icons/marker/circle.svg",
-                  "mode": "fixed"
-                },
-                "text": {
-                  "field": "Value #A",
-                  "fixed": "",
-                  "mode": "field"
-                },
-                "textConfig": {
-                  "fontSize": 12,
-                  "offsetX": 0,
-                  "offsetY": -10,
-                  "textAlign": "center",
-                  "textBaseline": "middle"
-                }
+              "blur": 8,
+              "radius": 4,
+              "weight": {
+                "fixed": 1,
+                "max": 1,
+                "min": 0
               }
             },
             "location": {
-              "latitude": "lat",
-              "longitude": "lon",
-              "mode": "coords"
+              "mode": "auto"
             },
             "name": "Requests",
+            "opacity": 0.2,
             "tooltip": true,
-            "type": "markers"
+            "type": "heatmap"
           }
         ],
         "tooltip": {
@@ -149,7 +119,7 @@
             "uid": "loki"
           },
           "editorMode": "code",
-          "expr": "sum by (lat, lon, city_name, geoip_country_code) (\n  count_over_time({instance=\"ingress-nginx-external\"} \n  | json \n  | lat != \"\"\n  | vhost =~ `senseichess.com`\n  |__error__=``[$__range])\n) > 50",
+          "expr": "sum by (lat, lon, city_name, country_name) (\n  count_over_time({instance=\"ingress-nginx-external\"} \n  | json \n  | lat != \"\"\n  | vhost =~ `senseichess.com`\n  |__error__=``[$__range])\n) > 20",
           "legendFormat": "{{ip_address}}",
           "queryType": "instant",
           "refId": "A"
@@ -660,6 +630,6 @@
   "timezone": "",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
