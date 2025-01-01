@@ -867,7 +867,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select \njob_type, \ncount(*) filter (where job_status = 'queued') as queued,\ncount(*) filter (where job_status = 'processing') as processing,\ncount(*) filter (where job_status = 'completed') as completed\nfrom job_queue \ngroup by job_type\norder by job_type",
+          "rawSql": "select \njob_type, \ncount(*) filter (where job_status = 'queued') as queued,\ncount(*) filter (where job_status = 'processing') as processing,\ncount(*) filter (where job_status = 'completed') as completed,\ncount(*) filter (where job_status = 'failed') as failed\nfrom job_queue \ngroup by job_type\norder by job_type",
           "refId": "A",
           "sql": {
             "columns": [
@@ -923,6 +923,6 @@
   "timezone": "",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
