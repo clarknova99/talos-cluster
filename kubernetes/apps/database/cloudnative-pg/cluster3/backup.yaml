@@ -1,0 +1,9 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/backup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Backup
+metadata:
+  name: postgres16vector
+spec:
+  cluster:
+    name: postgres16vector
