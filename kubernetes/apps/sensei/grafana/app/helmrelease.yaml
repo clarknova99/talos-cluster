@@ -58,18 +58,11 @@ spec:
         auth_url: https://auth.${SECRET_DOMAIN}/api/oidc/authorization
         token_url: https://auth.${SECRET_DOMAIN}/api/oidc/token
         api_url: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
-        client_id: grafana
+        client_id: grafana-sensei
         allow_assign_grafana_admin: true
         role_attribute_path: contains(groups, 'grafana-admin') && 'GrafanaAdmin' || contains(groups, 'sensei-dashboards') && 'Viewer' || contains(groups, 'people') && 'Viewer' 
       log.console:
         level: debug    
-      # teams:
-      #   - name: "Sensei Viewers"
-      #     orgId: 1
-      #     folder: "sensei"
-      #     permissions:
-      #       - permission: 1  # 1 = View, 2 = Edit, 4 = Admin
-      #         teamId: "sensei_viewers"
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
