@@ -133,7 +133,7 @@ spec:
       datasources:
         enabled: true
         searchNamespace: sensei
-        labelValue: ""
+        labelValue: "sensei"
     plugins:
       - grafana-clock-panel
       - grafana-piechart-panel
