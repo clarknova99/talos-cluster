@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 66.7.1
+      version: 67.5.0
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -26,7 +26,7 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: prometheus-operator-crds
+    - name: kube-prometheus-stack-crds
       namespace: observability
     - name: openebs
       namespace: openebs-system
@@ -81,18 +81,15 @@ spec:
         hosts: ["prometheus.${SECRET_DOMAIN}"]
         pathType: Prefix
       prometheusSpec:
-        scrapeInterval: 1m # Must match interval in Grafana Helm chart
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
+        ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
         enableFeatures:
-          - auto-gomemlimit
           - memory-snapshot-on-shutdown
-          - new-service-discovery-manager
         retention: 14d
         retentionSize: 50GB
         resources:
@@ -107,8 +104,6 @@ spec:
               resources:
                 requests:
                   storage: 55Gi
-    nodeExporter:
-      enabled: true
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       prometheus:
@@ -120,8 +115,6 @@ spec:
               replacement: $1
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
-    kubeStateMetrics:
-      enabled: true
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
       metricLabelsAllowlist:
