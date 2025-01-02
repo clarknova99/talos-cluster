@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 68,
+  "id": 3,
   "links": [],
   "panels": [
     {
@@ -295,13 +295,13 @@
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Sensei Logs",
   "uid": "ce8ept3lfrjswf",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
