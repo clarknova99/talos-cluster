@@ -121,19 +121,19 @@ spec:
               connMaxLifetime: 14400 # Grafana v5.4+
               postgresVersion: 1000 # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10
               timescaledb: false                        
-    sidecar:
-      dashboards:
-        enabled: true
-        searchNamespace: ALL
-        label: grafana_dashboard
-        folderAnnotation: grafana_folder
-        provider:
-          disableDelete: true
-          foldersFromFilesStructure: true
-      datasources:
-        enabled: true
-        searchNamespace: ALL
-        labelValue: ""
+    # sidecar:
+    #   dashboards:
+    #     enabled: true
+    #     searchNamespace: ALL
+    #     label: grafana_dashboard
+    #     folderAnnotation: grafana_folder
+    #     provider:
+    #       disableDelete: true
+    #       foldersFromFilesStructure: true
+    #   datasources:
+    #     enabled: true
+    #     searchNamespace: ALL
+    #     labelValue: ""
     plugins:
       - grafana-clock-panel
       - grafana-piechart-panel
