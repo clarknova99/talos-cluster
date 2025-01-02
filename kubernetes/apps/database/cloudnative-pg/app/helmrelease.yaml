@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: cloudnative-pg
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: cloudnative-pg
@@ -22,6 +22,8 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false      
   dependsOn:
     - name: openebs
       namespace: openebs-system
