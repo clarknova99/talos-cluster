@@ -172,6 +172,7 @@
         "y": 1
       },
       "id": 11,
+      "interval": "1d",
       "options": {
         "barRadius": 0,
         "barWidth": 0.97,
@@ -206,7 +207,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select date(joined_at) as join_date, count(*) as new_users\nfrom sensei_users \nwhere joined_at >= now() - interval '7 days'\ngroup by date(joined_at)\norder by date(joined_at)",
+          "rawSql": "select date(joined_at) as join_date, count(*) as new_users\nfrom sensei_users \nwhere joined_at >= now() - interval '168 hours'\ngroup by date(joined_at)\norder by date(joined_at)",
           "refId": "A",
           "sql": {
             "columns": [
@@ -224,12 +225,41 @@
             "groupBy": [
               {
                 "property": {
+                  "name": "joined_at",
                   "type": "string"
                 },
                 "type": "groupBy"
               }
             ],
-            "limit": 50
+            "limit": 50,
+            "whereJsonTree": {
+              "children1": [
+                {
+                  "id": "8b9a98aa-cdef-4012-b456-719427c3af73",
+                  "properties": {
+                    "field": "joined_at",
+                    "fieldSrc": "field",
+                    "operator": "greater_or_equal",
+                    "value": [
+                      "2025-01-02 00:00:00"
+                    ],
+                    "valueError": [
+                      null
+                    ],
+                    "valueSrc": [
+                      "value"
+                    ],
+                    "valueType": [
+                      "datetime"
+                    ]
+                  },
+                  "type": "rule"
+                }
+              ],
+              "id": "99ba99a9-0123-4456-b89a-b19427b43d08",
+              "type": "group"
+            },
+            "whereString": "joined_at >= '2025-01-02 00:00:00.000'"
           },
           "table": "sensei_users"
         }
@@ -364,12 +394,150 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "P44368ADAD746BC27"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-purples"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "user_count"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Days with Events"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 0,
+        "y": 9
+      },
+      "id": 13,
+      "options": {
+        "cellHeight": "md",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P44368ADAD746BC27"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH user_days AS (\n    SELECT \n        sensei_user_id,\n        COUNT(DISTINCT DATE(event_timestamp)) AS days_with_events\n    FROM \n        events\n    GROUP BY \n        sensei_user_id\n)\nSELECT \n    days_with_events,\n    COUNT(sensei_user_id) AS user_count\nFROM \n    user_days\nGROUP BY \n    days_with_events\nORDER BY \n    days_with_events;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "days_with_events": "Days with Events",
+              "user_count": "User Count"
+            }
+          }
+        },
+        {
+          "id": "seriesToRows",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 17
       },
       "id": 5,
       "panels": [],
@@ -418,7 +586,7 @@
         "h": 13,
         "w": 13,
         "x": 0,
-        "y": 10
+        "y": 18
       },
       "id": 6,
       "options": {
@@ -563,7 +731,7 @@
         "h": 13,
         "w": 11,
         "x": 13,
-        "y": 10
+        "y": 18
       },
       "id": 7,
       "options": {
@@ -634,7 +802,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 31
       },
       "id": 4,
       "panels": [],
@@ -668,7 +836,7 @@
         "h": 6,
         "w": 5,
         "x": 0,
-        "y": 24
+        "y": 32
       },
       "id": 8,
       "options": {
@@ -765,7 +933,7 @@
         "h": 6,
         "w": 5,
         "x": 5,
-        "y": 24
+        "y": 32
       },
       "id": 9,
       "options": {
@@ -863,7 +1031,7 @@
         "h": 6,
         "w": 7,
         "x": 10,
-        "y": 24
+        "y": 32
       },
       "id": 10,
       "options": {
@@ -972,7 +1140,7 @@
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 30
+        "y": 38
       },
       "id": 3,
       "options": {
@@ -1050,7 +1218,7 @@
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "",
+  "timezone": "utc",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
   "version": 1,
