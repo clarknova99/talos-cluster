@@ -1,0 +1,167 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana-sensei
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: grafana
+      version: 8.8.2
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    deploymentStrategy:
+      type: Recreate
+    admin:
+      existingSecret: grafana-admin-secrets
+    env:
+      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
+      GF_EXPLORE_ENABLED: true
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
+      GF_FEATURE_TOGGLES_ENABLE: ssoSettingsApi, dashgpt, toggleLabelsInLogsUI
+      GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
+      GF_SERVER_ROOT_URL: https://grafana.${SECRET_DOMAIN_TWO}
+      GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ${SECRET_OAUTH_CLIENT_SECRET}
+    grafana.ini:
+      analytics:
+        check_for_updates: false
+        check_for_plugin_updates: false
+        reporting_enabled: false
+      news:
+        news_feed_enabled: false
+      auth:
+      #   oauth_auto_login: true
+        oauth_allow_insecure_email_lookup: true
+      auth.generic_oauth:
+        enabled: true
+        name: Authelia
+        icon: signin
+        scopes: openid profile email groups
+        empty_scopes: false
+        login_attribute_path: preferred_username
+        groups_attribute_path: groups
+        name_attribute_path: name
+        use_pkce: true
+        auth_url: https://auth.${SECRET_DOMAIN}/api/oidc/authorization
+        token_url: https://auth.${SECRET_DOMAIN}/api/oidc/token
+        api_url: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
+        client_id: grafana
+        allow_assign_grafana_admin: true
+        role_attribute_path: contains(groups, 'grafana-admin') && 'GrafanaAdmin' || contains(groups, 'sensei-dashboards') && 'Viewer' || contains(groups, 'people') && 'Viewer' 
+      log.console:
+        level: debug    
+      # teams:
+      #   - name: "Sensei Viewers"
+      #     orgId: 1
+      #     folder: "sensei"
+      #     permissions:
+      #       - permission: 1  # 1 = View, 2 = Edit, 4 = Admin
+      #         teamId: "sensei_viewers"
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: default
+            orgId: 1
+            folder: ""
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default-folder
+          - name: sensei
+            orgId: 1
+            folder: sensei
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/sensei-folder              
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        deleteDatasources:
+          - { name: Alertmanager, orgId: 1 }
+          - { name: Loki, orgId: 1 }
+          - { name: Prometheus, orgId: 1 }
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            uid: prometheus
+            access: proxy
+            url: http://prometheus-operated.observability.svc.cluster.local:9090
+            jsonData:
+              timeInterval: 1m
+            isDefault: true         
+          - name: Loki
+            type: loki
+            uid: loki
+            access: proxy
+            url:  http://loki-headless.observability.svc.cluster.local:3100
+            jsonData:
+              maxLines: 250
+          - name: Postgres
+            type: postgres
+            url: 192.168.3.42:5432
+            user: ${SECRET_PGADMIN_USER}
+            secureJsonData:
+              password: ${SECRET_PGADMIN_PASSWORD}
+            jsonData:
+              database: sensei-prod
+              sslmode: 'disable' # disable/require/verify-ca/verify-full
+              maxOpenConns: 100 # Grafana v5.4+
+              maxIdleConns: 100 # Grafana v5.4+
+              maxIdleConnsAuto: true # Grafana v9.5.1+
+              connMaxLifetime: 14400 # Grafana v5.4+
+              postgresVersion: 1000 # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10
+              timescaledb: false                        
+    sidecar:
+      dashboards:
+        enabled: true
+        searchNamespace: ALL
+        label: grafana_dashboard
+        folderAnnotation: grafana_folder
+        provider:
+          disableDelete: true
+          foldersFromFilesStructure: true
+      datasources:
+        enabled: true
+        searchNamespace: ALL
+        labelValue: ""
+    plugins:
+      - grafana-clock-panel
+      - grafana-piechart-panel
+      - grafana-worldmap-panel
+      - natel-discrete-panel
+      - pr0ps-trackmap-panel
+      - vonage-status-panel
+    serviceMonitor:
+      enabled: true
+    ingress:
+      enabled: true
+      annotations:
+        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        # nginx.ingress.kubernetes.io/auth-method: GET
+        # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
+        # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN}?rm=$request_method
+        # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+        # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;            
+      ingressClassName: external
+      hosts: ["grafana.${SECRET_DOMAIN_TWO}"]
+    persistence:
+      enabled: false
+    testFramework:
+      enabled: false
