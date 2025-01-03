@@ -369,6 +369,7 @@
         "y": 46
       },
       "id": 6,
+      "interval": "24h",
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -382,8 +383,8 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": true,
-            "displayName": "Value"
+            "desc": false,
+            "displayName": "status"
           }
         ]
       },
@@ -395,25 +396,59 @@
             "uid": "loki"
           },
           "editorMode": "code",
-          "expr": "sum by (country_name, status) (\n  count_over_time({instance=\"ingress-nginx-external\"} \n  | json \n  | country_name != \"\"\n  | status != \"\" [24h])\n)",
+          "expr": "sum(\n  count_over_time({instance=\"ingress-nginx-external\"} \n  | json \n  | country_name != \"\"\n  | status != \"\" \n  | status != \"200\"\n  [24h])\n\n) by (country_name, status)",
           "legendFormat": "",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Panel Title",
+      "title": "Request Status Codes",
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {}
+        },
+        {
+          "id": "extractFields",
+          "options": {
+            "keepTime": false,
+            "replace": false,
+            "source": "Metric"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Metric": true,
+              "Time": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Metric": 1,
+              "Time": 0,
+              "Value": 4,
+              "country_name": 2,
+              "status": 3
+            },
+            "renameByName": {
+              "Value": ""
+            }
+          }
+        }
+      ],
       "type": "table"
     }
   ],
   "preload": false,
-  "refresh": "",
+  "refresh": "30s",
   "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
