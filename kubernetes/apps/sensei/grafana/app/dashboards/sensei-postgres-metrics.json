@@ -603,6 +603,18 @@
                 "value": 150
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "User Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 803
+              }
+            ]
           }
         ]
       },
@@ -623,7 +635,8 @@
           ],
           "show": false
         },
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "11.4.0",
       "targets": [
@@ -635,7 +648,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH user_days AS (\n    SELECT \n        sensei_user_id,\n        COUNT(DISTINCT DATE(event_timestamp)) AS days_with_events\n    FROM \n        events\n    GROUP BY \n        sensei_user_id\n)\nSELECT \n    days_with_events,\n    COUNT(sensei_user_id) AS user_count\nFROM \n    user_days\nGROUP BY \n    days_with_events\nORDER BY \n    days_with_events;",
+          "rawSql": "WITH user_days AS (\n    SELECT \n        e.sensei_user_id,\n        COUNT(DISTINCT DATE(e.event_timestamp)) AS days_with_events\n    FROM \n        events e\n    JOIN \n        sensei_users su ON e.sensei_user_id = su.sensei_user_id\n    WHERE su.sensei_user_id > 2\n--    AND joined_at >= '2024-12-30'\n    GROUP BY \n        e.sensei_user_id\n), total_users AS (\n    SELECT COUNT(sensei_user_id) AS total_user_count \n    FROM sensei_users \n    WHERE joined_at >= '2024-12-30'\n)\nSELECT \n    ud.days_with_events,\n    COUNT(ud.sensei_user_id) AS user_count,\n    ROUND((COUNT(ud.sensei_user_id) * 100.0) / tu.total_user_count, 2) AS user_percentage\nFROM \n    user_days ud\nJOIN \n    total_users tu ON 1=1\nGROUP BY \n    ud.days_with_events, tu.total_user_count\nORDER BY \n    ud.days_with_events;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -666,7 +679,8 @@
             "indexByName": {},
             "renameByName": {
               "days_with_events": "Days with Events",
-              "user_count": "User Count"
+              "user_count": "User Count",
+              "user_percentage": "%"
             }
           }
         },
@@ -1469,8 +1483,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1596,8 +1609,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1727,8 +1739,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           }
@@ -1824,8 +1835,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           }
@@ -1921,8 +1931,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -2026,8 +2035,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2124,6 +2132,6 @@
   "timezone": "utc",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
