@@ -70,7 +70,7 @@ spec:
                   httpGet:
                     path: /identity
                     port: 32400
-                  initialDelaySeconds: 0
+                  initialDelaySeconds: 30
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
@@ -89,7 +89,7 @@ spec:
                 cpu: 100m
               limits:
                 gpu.intel.com/i915: 1
-                memory: 16Gi
+                memory: 10Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
