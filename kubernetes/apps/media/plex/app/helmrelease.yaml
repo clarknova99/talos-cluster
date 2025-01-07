@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.5.1
+      version: 3.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -30,16 +30,16 @@ spec:
       plex:
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: plex-target
-                    operator: In
-                    values:
-                    - "true"
+        # pod:
+        #   affinity:
+        #     nodeAffinity:
+        #       requiredDuringSchedulingIgnoredDuringExecution:
+        #         nodeSelectorTerms:
+        #         - matchExpressions:
+        #           - key: plex-target
+        #             operator: In
+        #             values:
+        #             - "true"
               # preferredDuringSchedulingIgnoredDuringExecution:
               # - weight: 1
               #   preference:
@@ -52,36 +52,34 @@ spec:
         containers:
           app:
             image:
-              # repository: docker.io/plexinc/pms-docker
-              # tag: 1.32.8.7639-fb6452ebf
               repository: ghcr.io/onedr0p/plex
               tag: 1.41.3.9314-a0bfb8370@sha256:a4f890b838bdefa1187f08afa78682e4204182efab4cdf2388f104fc70027639
               #tag: plexpass
             env:
               # See https://support.plex.tv/articles/201105343-advanced-hidden-server-settings/
               TZ: America/New_York
-              ADVERTISE_IP: "https://plex.${SECRET_DOMAIN},http://192.168.3.50:32400"
+              ADVERTISE_IP: "https://plex.${SECRET_DOMAIN}:443,http://192.168.3.50:32400"
               ALLOWED_NETWORKS: "192.168.0.0/16,10.69.0.0/16,10.96.0.0/16"
               PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
               HOSTNAME: plex.${SECRET_DOMAIN}
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /identity
-            #         port: 32400
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
-            #   startup:
-            #     enabled: true
-            #     spec:
-            #       failureThreshold: 30
-            #       periodSeconds: 10
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -158,15 +156,22 @@ spec:
               - *host
     persistence:
       config:
-        type: nfs
-        server: 192.168.1.2
-        path: /volume1/network-storage/plex
+        existingClaim: plex
         globalMounts:
-          - path: /config
+          - path: /config/Library/Application Support/Plex Media Server          
+        # type: nfs
+        # server: 192.168.1.2
+        # path: /volume1/network-storage/plex
+        # globalMounts:
+        #   - path: /config
       cache:
         existingClaim: plex-cache
         globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Cache          
+          - path: /config/Library/Application Support/Plex Media Server/Cache
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Logs                    
       tmp:
         type: emptyDir
       transcode:
