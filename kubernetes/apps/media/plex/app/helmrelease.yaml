@@ -114,22 +114,22 @@ spec:
             port: 32400
           # GDM Network discovery
           # https://support.plex.tv/articles/200430283-network/
-          gdm-1-udp:
-            enabled: true
-            port: 32410
-            protocol: UDP
-          gdm-2-udp:
-            enabled: true
-            port: 32412
-            protocol: UDP
-          gdm-3-udp:
-            enabled: true
-            port: 32413
-            protocol: UDP
-          gdm-4-udp:
-            enabled: true
-            port: 32414
-            protocol: UDP
+          # gdm-1-udp:
+          #   enabled: true
+          #   port: 32410
+          #   protocol: UDP
+          # gdm-2-udp:
+          #   enabled: true
+          #   port: 32412
+          #   protocol: UDP
+          # gdm-3-udp:
+          #   enabled: true
+          #   port: 32413
+          #   protocol: UDP
+          # gdm-4-udp:
+          #   enabled: true
+          #   port: 32414
+          #   protocol: UDP
     ingress:
       app:
         enabled: true
