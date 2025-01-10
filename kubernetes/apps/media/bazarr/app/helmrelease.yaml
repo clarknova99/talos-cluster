@@ -105,7 +105,7 @@ spec:
         path: /volume1/network-storage/bazarr
         globalMounts:
           - path: /config    
-      add-ons:
+      subcleaner:
         type: emptyDir
       cache:
         type: emptyDir
