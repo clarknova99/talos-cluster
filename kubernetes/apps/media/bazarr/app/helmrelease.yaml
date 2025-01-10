@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.4.0
+      version: 3.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/bazarr
-              tag: 1.5.1@sha256:4f3f5f42e552979d75cf2f168d9f053134eefa11e9e42b4878bded3bb69978d4
+              tag: 1.5.1@sha256:dab8017cadadece962e775cc096e0be18848c700bd08183fe18c0feec60cff28
             env:
               TZ: America/New_York
             probes:
@@ -59,12 +59,12 @@ spec:
           subcleaner:
             image:
               repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.3.0@sha256:5813a7da0ccd58f6dfb9d5e48480e2877355e6bb3d7d81c8908eb1adc3a23b6e
+              tag: v4.4.0@sha256:0330739a707a2969d617e859f096659ab6d149212658ac0ad7e550b59482ebf0
             env:
               GITSYNC_REPO: https://github.com/KBlixt/subcleaner
               GITSYNC_REF: master
               GITSYNC_PERIOD: 24h
-              GITSYNC_ROOT: /add-ons
+              GITSYNC_ROOT: /subcleaner
             resources:
               requests:
                 cpu: 10m
@@ -74,11 +74,10 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
