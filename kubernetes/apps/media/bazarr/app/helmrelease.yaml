@@ -126,20 +126,27 @@ spec:
         path: /volume1/Downloads
         globalMounts:
           - path: /downloads
-      movies:
+      videos:
         enabled: true
         type: nfs
         server: 192.168.1.2
-        path: /volume1/Video/Movies
+        path: /volume1/Video
         globalMounts:
-          - path: /movies
-      tv:
-        enabled: true
-        type: nfs
-        server: 192.168.1.2
-        path: /volume1/Video/TV
-        globalMounts:
-          - path: /tv
+          - path: /video          
+      # movies:
+      #   enabled: true
+      #   type: nfs
+      #   server: 192.168.1.2
+      #   path: /volume1/Video/Movies
+      #   globalMounts:
+      #     - path: /movies
+      # tv:
+      #   enabled: true
+      #   type: nfs
+      #   server: 192.168.1.2
+      #   path: /volume1/Video/TV
+      #   globalMounts:
+      #     - path: /tv
       incomplete:
         enabled: true
         type: emptyDir
