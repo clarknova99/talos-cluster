@@ -52,6 +52,7 @@ spec:
               tag: v1.0.0
             env:
               POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
+              POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
               REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
               MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
@@ -65,6 +66,7 @@ spec:
               tag: v1.0.0
             env:
               POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
+              POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
               REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
               MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
@@ -78,6 +80,7 @@ spec:
               tag: v1.0.0
             env:
               POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
+              POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092
 
           openreplay-sink:
@@ -86,6 +89,7 @@ spec:
               tag: v1.0.0
             env:
               POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
+              POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
               REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
               MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
@@ -114,6 +118,7 @@ spec:
               tag: v1.0.0
             env:
               POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
+              POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092     
 
           openreplay-ender:
