@@ -64,6 +64,7 @@ spec:
               KAFKA_USE_SSL: 'false'
               WS_ENDPOINT: wss://openreplay.${SECRET_DOMAIN_TWO}/ws
               TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
+              TOKEN_SECRET: a3f7f13f53473c286f6c14539ea443524f65a0394ba8594ea9cc99cb2b3689bed8a48ceae452
               BUCKET_NAME: uxtesting-records
 
           # openreplay-frontend:
