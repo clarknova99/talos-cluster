@@ -53,7 +53,7 @@ spec:
               tag: v1.0.0
             env:
               POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
-              REDIS_STRING: redis://dragonfly.database.svc.cluster.local:6379/50
+              REDIS_STRING: redis://dragonfly.database.svc.cluster.local:6379/1
               MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
               MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
