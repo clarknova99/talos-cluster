@@ -53,7 +53,7 @@ spec:
             env:
               POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
               REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
-              MINIO_ENDPOINT: http://YOUR_MINIO_HOST:9000
+              MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
               MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092
@@ -70,6 +70,7 @@ spec:
               MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
               MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092
+              API_URL: https://api.openreplay.${SECRET_DOMAIN_TWO}
 
           openreplay-storage:
             image:
@@ -161,6 +162,9 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+          nginx.ingress.kubernetes.io/websocket-services: "openreplay-frontend"          
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:math-compass
         className: external
@@ -172,14 +176,17 @@ spec:
                 service:
                   identifier: openreplay-frontend
                   port: 8080
-              - path: /api
-                service:
-                  identifier: openreplay-api
-                  port: 8080 
               - path: /ws
                 service:
                   identifier: openreplay-frontend
-                  port: 8080                                   
+                  port: 8080    
+          - host: api.openreplay.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: openreplay-api
+                  port: 8080                                                 
         tls:
           - hosts:
               - openreplay.${SECRET_DOMAIN_TWO}
+              - api.openreplay.${SECRET_DOMAIN_TWO}

@@ -9,4 +9,4 @@ resources:
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
   - ./langfuse/ks.yaml
-  # - ./langflow/ks.yaml
+  - ./openreplay/ks.yaml
