@@ -59,6 +59,7 @@ spec:
               MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092
               WS_ENDPOINT: wss://openreplay.${SECRET_DOMAIN_TWO}/ws
+              TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
 
           openreplay-frontend:
             image:
@@ -73,6 +74,7 @@ spec:
               MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092
               API_URL: https://api.openreplay.${SECRET_DOMAIN_TWO}
+              TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
 
           openreplay-storage:
             image:
@@ -82,6 +84,7 @@ spec:
               POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
               POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092
+              TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
 
           openreplay-sink:
             image:
@@ -95,6 +98,7 @@ spec:
               MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
               MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092
+              TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
 
           openreplay-spot:
             image:
@@ -102,6 +106,7 @@ spec:
               tag: v1.0.0
             env:
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092         
+              TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
 
           openreplay-assets:
             image:
@@ -111,6 +116,8 @@ spec:
               MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
               MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}           
+              TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
+
 
           openreplay-heuristics:
             image:
@@ -120,6 +127,7 @@ spec:
               POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
               POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092     
+              TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
 
           openreplay-ender:
             image:
@@ -127,6 +135,7 @@ spec:
               tag: v1.0.0
             env:
               KAFKA_URL: kafka.sensei.svc.cluster.local:9092
+              TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
     service:
       kafka:
         controller: openreplay
