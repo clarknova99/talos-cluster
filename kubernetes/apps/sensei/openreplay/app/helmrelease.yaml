@@ -1,0 +1,185 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openreplay
+  namespace: sensei
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      openreplay:
+        replicas: 1
+        containers:
+          kafka:
+            image:
+              repository: bitnami/kafka:3.4.0
+              tag: latest@sha256:02be73e6fa5e3d9b9ddb8e17f8767ef914a2165a163cb78f113d6f3eafbde54c
+            env:
+              KAFKA_BROKER_ID: 1
+              KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper.sensei.svc.cluster.local:2181
+              KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
+              KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka.sensei.svc.cluster.local:9092
+              ALLOW_PLAINTEXT_LISTENER: "yes"            
+              
+          zookeeper:
+            image:
+              repository: bitnami/zookeeper:3.8
+              tag: latest@sha256:02be73e6fa5e3d9b9ddb8e17f8767ef914a2165a163cb78f113d6f3eafbde54c
+            env:
+              ALLOW_ANONYMOUS_LOGIN: "yes"
+
+          openreplay-api:
+            image:
+              repository: clarknova9/http
+              tag: v1.0.0
+            env:
+              POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
+              REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
+              MINIO_ENDPOINT: http://YOUR_MINIO_HOST:9000
+              MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
+              MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
+              KAFKA_URL: kafka.sensei.svc.cluster.local:9092
+              WS_ENDPOINT: wss://openreplay.${SECRET_DOMAIN_TWO}/ws
+
+          openreplay-frontend:
+            image:
+              repository: clarknova9/frontend
+              tag: v1.0.0
+            env:
+              POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
+              REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
+              MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
+              MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
+              MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
+              KAFKA_URL: kafka.sensei.svc.cluster.local:9092
+
+          openreplay-storage:
+            image:
+              repository: clarknova9/storage
+              tag: v1.0.0
+            env:
+              POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
+              KAFKA_URL: kafka.sensei.svc.cluster.local:9092
+
+          openreplay-sink:
+            image:
+              repository: clarknova9/sink
+              tag: v1.0.0
+            env:
+              POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
+              REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
+              MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
+              MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
+              MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
+              KAFKA_URL: kafka.sensei.svc.cluster.local:9092
+
+          openreplay-spot:
+            image:
+              repository: clarknova9/spot
+              tag: v1.0.0
+            env:
+              KAFKA_URL: kafka.sensei.svc.cluster.local:9092         
+
+          openreplay-assets:
+            image:
+              repository: clarknova9/assets
+              tag: v1.0.0
+            env:
+              MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
+              MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
+              MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}           
+
+          openreplay-heuristics:
+            image:
+              repository: clarknova9/heuristics
+              tag: v1.0.0
+            env:
+              POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
+              KAFKA_URL: kafka.sensei.svc.cluster.local:9092     
+
+          openreplay-ender:
+            image:
+              repository: clarknova9/ender
+              tag: v1.0.0
+            env:
+              KAFKA_URL: kafka.sensei.svc.cluster.local:9092
+    service:
+      kafka:
+        controller: openreplay
+        ports:
+          http:
+            port: 9092
+      zookeeper:
+        controller: openreplay
+        ports:
+          http:
+            port: 2181  
+      openreplay-sink:
+        controller: openreplay
+        ports:
+          http:
+            port: 9000              
+      openreplay-frontend:
+        controller: openreplay
+        ports:
+          http:
+            port: 8080
+      openreplay-api:
+        controller: openreplay
+        ports:
+          http:
+            port: 8080            
+      openreplay-heuristics:
+        controller: openreplay
+        ports:
+          http:
+            port: 9004
+      openreplay-ender:
+        controller: openreplay
+        ports:
+          http:
+            port: 9005                                 
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:math-compass
+        className: external
+        enabled: true
+        hosts:
+          - host: openreplay.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: openreplay-frontend
+                  port: 8080
+              - path: /api
+                service:
+                  identifier: openreplay-api
+                  port: 8080 
+              - path: /ws
+                service:
+                  identifier: openreplay-frontend
+                  port: 8080                                   
+        tls:
+          - hosts:
+              - openreplay.${SECRET_DOMAIN_TWO}
