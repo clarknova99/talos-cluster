@@ -34,9 +34,9 @@ spec:
               tag: 3.9.0
             env:
               KAFKA_BROKER_ID: 1
-              KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper.sensei.svc.cluster.local:2181
+              KAFKA_CFG_ZOOKEEPER_CONNECT: openreplay-zookeeper.sensei.svc.cluster.local:2181
               KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
-              KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka.sensei.svc.cluster.local:9092
+              KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://openreplay-kafka.sensei.svc.cluster.local:9092
               ALLOW_PLAINTEXT_LISTENER: "yes"            
               
           zookeeper:
