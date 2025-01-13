@@ -187,35 +187,35 @@ spec:
       #   ports:
       #     http:
       #       port: 9005                                 
-    ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-          nginx.ingress.kubernetes.io/websocket-services: "openreplay-frontend"          
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:math-compass
-        className: external
-        enabled: true
-        hosts:
-          - host: openreplay.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                service:
-                  identifier: openreplay-frontend
-                  port: 8080
-              - path: /ws
-                service:
-                  identifier: openreplay-frontend
-                  port: 8080    
-          - host: api.openreplay.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                service:
-                  identifier: openreplay-api
-                  port: 8080                                                 
-        tls:
-          - hosts:
-              - openreplay.${SECRET_DOMAIN_TWO}
-              - api.openreplay.${SECRET_DOMAIN_TWO}
+    # ingress:
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    #       nginx.ingress.kubernetes.io/websocket-services: "openreplay-frontend"          
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:math-compass
+    #     className: external
+    #     enabled: true
+    #     hosts:
+    #       - host: openreplay.${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: openreplay-frontend
+    #               port: 8080
+    #           - path: /ws
+    #             service:
+    #               identifier: openreplay-frontend
+    #               port: 8080    
+    #       - host: api.openreplay.${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: openreplay-api
+    #               port: 8080                                                 
+    #     tls:
+    #       - hosts:
+    #           - openreplay.${SECRET_DOMAIN_TWO}
+    #           - api.openreplay.${SECRET_DOMAIN_TWO}
