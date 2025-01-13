@@ -45,6 +45,7 @@ spec:
               tag: 3.9.3
             env:
               ALLOW_ANONYMOUS_LOGIN: "yes"
+              ZOO_ADMINSERVER_ENABLED: "false"
 
           openreplay-api:
             image:
