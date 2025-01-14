@@ -36,7 +36,7 @@ spec:
               
           zookeeper:
             image:
-              repository: bitnami/zookeeper
+              repository: zookeeper
               tag: 3.7.0
 
           kafka-ui:
