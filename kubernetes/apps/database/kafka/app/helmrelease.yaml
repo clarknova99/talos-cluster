@@ -38,6 +38,8 @@ spec:
             image:
               repository: zookeeper
               tag: 3.7.0
+            env:
+              ALLOW_ANONYMOUS_LOGIN: "yes"
 
           kafka-ui:
             image:
