@@ -39,13 +39,13 @@ spec:
               repository: bitnami/zookeeper
               tag: 3.7.0
 
-          kafka_ui:
+          kafka-ui:
             image:
               repository: provectuslabs/kafka-ui
               tag: latest
             env:
                 KAFKA_CLUSTERS_0_NAME: local
-                KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+                KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka.database.svc.cluster.local:9092
                 DYNAMIC_CONFIG_ENABLED: 'true'
     service:
       kafka:
