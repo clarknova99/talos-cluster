@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.6.1/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kafka
+  namespace: database
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        namespace: flux-system
+        name: bjw-s
+  interval: 1h
+  driftDetection:
+    mode: enabled
+  values:
+    controllers:
+      kafka:
+        replicas: 1
+        containers:
+          kafka:
+            image:
+              repository: ghcr.io/posthog/kafka-container
+              tag: v2.8.2
+            env:
+              KAFKA_BROKER_ID: 1001
+              KAFKA_CFG_RESERVED_BROKER_MAX_ID: 1001
+              KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
+              KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka.database.svc.cluster.local:9092
+              KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper.database.svc.cluster.local:2181
+              ALLOW_PLAINTEXT_LISTENER: "true"            
+              
+          zookeeper:
+            image:
+              repository: bitnami/zookeeper
+              tag: 3.7.0
+
+          kafka_ui:
+            image:
+              repository: provectuslabs/kafka-ui
+              tag: latest
+            env:
+                KAFKA_CLUSTERS_0_NAME: local
+                KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+                DYNAMIC_CONFIG_ENABLED: 'true'
+    service:
+      kafka:
+        controller: kafka
+        ports:
+          http:
+            port: 9092
+      zookeeper:
+        controller: kafka
+        ports:
+          http:
+            port: 2181
