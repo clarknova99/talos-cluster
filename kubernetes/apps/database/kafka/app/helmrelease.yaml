@@ -61,8 +61,8 @@ spec:
         ports:
           http:
             port: 2181
-      # zookeeper:
-      #   controller: kafka
-      #   ports:
-      #     http:
-      #       port: 2181 
+      kafka-ui:
+        controller: kafka
+        ports:
+          http:
+            port: 8080 
