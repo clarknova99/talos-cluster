@@ -31,7 +31,7 @@ spec:
               KAFKA_CFG_RESERVED_BROKER_MAX_ID: 1001
               KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
               KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka.database.svc.cluster.local:9092
-              KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper.database.svc.cluster.local:2181
+              KAFKA_CFG_ZOOKEEPER_CONNECT: kafka-zookeeper.database.svc.cluster.local:2181
               ALLOW_PLAINTEXT_LISTENER: "true"            
               
           zookeeper:
