@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+cleanup() {
+    echo "Stopping worker..."
+    if kill -0 "$worker_pid" >/dev/null 2>&1; then
+        kill "$worker_pid"
+    else
+        echo "Worker process is not running."
+    fi
+}
+
+trap cleanup SIGINT SIGTERM EXIT
+
+python3 manage.py start_temporal_worker "$@" &
+
+worker_pid=$!
+
+wait $worker_pid
+
+cleanup

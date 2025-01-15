@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.6.1/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -24,300 +24,259 @@ spec:
     remediation:
       retries: 5
   values:
+    persistence:
+      scripts:
+        enabled: true
+        type: configMap
+        name: posthog-scripts
+        globalMounts: 
+          - /scripts
+
+
     controllers:
       posthog:
-        replicas: 1
+
+        initContainers:
+          migrations:
+            image:
+              repository: posthog/posthog
+              tag: latest
+            command:
+              - /bin/bash
+              - -c
+              - |
+                python manage.py migrate && \
+                python manage.py migrate_clickhouse && \
+                python manage.py run_async_migrations
+            env: &baseEnv
+              DISABLE_SECURE_SSL_REDIRECT: "true"
+              IS_BEHIND_PROXY: "true"
+              DATABASE_URL: "postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/posthog"
+              CLICKHOUSE_HOST: "clickhouse.database.svc.cluster.local"
+              CLICKHOUSE_DATABASE: "posthog"
+              CLICKHOUSE_SECURE: "false"
+              CLICKHOUSE_VERIFY: "false"
+              KAFKA_HOSTS: "kafka.database.svc.cluster.local:9092"
+              REDIS_URL: "redis://dragonfly.database.svc.cluster.local:6379"
+              PGHOST: "postgres16-rw.database.svc.cluster.local"
+              PGUSER: "${SECRET_PGADMIN_USER}"
+              PGPASSWORD: "${SECRET_PGADMIN_PASSWORD}"
+              DEPLOYMENT: "hobby"
+              SECRET_KEY: "${SECRET_POSTHOG_KEY}"
+              SITE_URL: "https://posthog.${SECRET_DOMAIN_TWO}"
+
         containers:
-          kafka:
+          worker:
             image:
-              repository: bitnami/kafka
-              tag: 3.9.0
+              repository: posthog/posthog
+              tag: latest
+            command: 
+              - /bin/bash
+              - -c
+              - "/scripts/docker-worker-celery --with-scheduler"
             env:
-              KAFKA_BROKER_ID: 1001
-              KAFKA_CFG_RESERVED_BROKER_MAX_ID: 1001
-              KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
-              KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://posthog-kafka.sensei.svc.cluster.local:9092
-              KAFKA_CFG_ZOOKEEPER_CONNECT: posthog-zookeeper.sensei.svc.cluster.local:2181
-              ALLOW_PLAINTEXT_LISTENER: "true"            
-              
-          zookeeper:
-            image:
-              repository: bitnami/zookeeper
-              tag: 3.9.3
-            env:
-              ALLOW_ANONYMOUS_LOGIN: "yes"
-              ZOO_ADMINSERVER_ENABLED: "false"
+              <<: *baseEnv
 
-          kafka_ui:
-              image: provectuslabs/kafka-ui:latest
-              restart: on-failure
-              environment:
-                  KAFKA_CLUSTERS_0_NAME: local
-                  KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: posthog-kafka.sensei.svc.cluster.local:9092
-                  DYNAMIC_CONFIG_ENABLED: 'true'
 
-          flower:
-              image: mher/flower:2.0.0
-              restart: on-failure
-              environment:
-                  FLOWER_PORT: 5555
-                  CELERY_BROKER_URL: redis://dragonfly.database.svc.cluster.local:6379
-
-          worker: &worker
-              command: ./bin/docker-worker-celery --with-scheduler
-              restart: on-failure
-              environment: &worker_env
-                  DISABLE_SECURE_SSL_REDIRECT: 'true'
-                  IS_BEHIND_PROXY: 'true'
-                  DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/posthog
-                  CLICKHOUSE_HOST: 'clickhouse'
-                  CLICKHOUSE_DATABASE: 'posthog'
-                  CLICKHOUSE_SECURE: 'false'
-                  CLICKHOUSE_VERIFY: 'false'
-                  KAFKA_HOSTS: posthog-kafka.sensei.svc.cluster.local
-                  REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
-                  PGHOST: postgres16-rw.database.svc.cluster.local
-                  PGUSER: ${SECRET_PGADMIN_USER}
-                  PGPASSWORD: ${SECRET_PGADMIN_PASSWORD}
-                  DEPLOYMENT: hobby
           web:
-              <<: *worker
-              command: ./bin/start-backend & ./bin/start-frontend
-              restart: on-failure
+              image:
+                repository: posthog/posthog
+                tag: latest
+              command:
+                - /bin/bash
+                - -c
+                - "/scripts/start-backend & /scripts/start-frontend"
+              env:
+                <<: *baseEnv
+              probes:
+                liveness:
+                  enabled: true
+                  custom: true
+                  spec:
+                    httpGet:
+                      path: /api/health/
+                      port: 8000
+                    initialDelaySeconds: 300
+                    periodSeconds: 10
+                readiness:
+                  enabled: true
+                  custom: true
+                  spec:
+                    httpGet:
+                      path: /api/health/
+                      port: 8000
+                    initialDelaySeconds: 30
+                    periodSeconds: 10
 
           capture:
-              image: ghcr.io/posthog/posthog/capture:master
-              build:
-                  context: rust/
-                  args:
-                      BIN: capture
-              restart: on-failure
-              environment:
-                  ADDRESS: '0.0.0.0:3000'
-                  KAFKA_TOPIC: events_plugin_ingestion
-                  KAFKA_HOSTS: posthog-kafka.sensei.svc.cluster.local:9092
-                  REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
-                  CAPTURE_MODE: events
-
+            image:
+              repository: ghcr.io/posthog/posthog/capture
+              tag: master
+            env:
+              ADDRESS: "0.0.0.0:3000"
+              KAFKA_TOPIC: "events_plugin_ingestion"
+              KAFKA_HOSTS: "kafka.database.svc.cluster.local:9092"
+              REDIS_URL: "redis://dragonfly.database.svc.cluster.local:6379"
+              CAPTURE_MODE: "events"
 
           replay-capture:
-              image: ghcr.io/posthog/posthog/capture:master
-              build:
-                  context: rust/
-                  args:
-                      BIN: capture
-              restart: on-failure
-              environment:
-                  ADDRESS: '0.0.0.0:3000'
-                  KAFKA_TOPIC: 'session_recording_snapshot_item_events'
-                  KAFKA_HOSTS: posthog-kafka.sensei.svc.cluster.local:9092
-                  REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
-                  CAPTURE_MODE: recordings
+            image:
+              repository: ghcr.io/posthog/posthog/capture
+              tag: master
+            env:
+              ADDRESS: "0.0.0.0:3000"
+              KAFKA_TOPIC: "session_recording_snapshot_item_events"
+              KAFKA_HOSTS: "kafka.database.svc.cluster.local:9092"
+              REDIS_URL: "redis://dragonfly.database.svc.cluster.local:6379"
+              CAPTURE_MODE: "recordings"
 
           property-defs-rs:
-              image: ghcr.io/posthog/posthog/property-defs-rs:master
-              build:
-                  context: rust/
-                  args:
-                      BIN: property-defs-rs
-              restart: on-failure
-              environment:
-                  DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/posthog
-                  KAFKA_HOSTS: posthog-kafka.sensei.svc.cluster.local:9092
-                  SKIP_WRITES: 'false'
-                  SKIP_READS: 'false'
-                  FILTER_MODE: 'opt-out'
-
+            image:
+              repository: ghcr.io/posthog/posthog/property-defs-rs
+              tag: master
+            env:
+              DATABASE_URL: "postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/posthog"
+              KAFKA_HOSTS: "kafka.database.svc.cluster.local:9092"
+              SKIP_WRITES: "false"
+              SKIP_READS: "false"
+              FILTER_MODE: "opt-out"
 
           plugins:
-              command: ./bin/plugin-server --no-restart-loop
-              restart: on-failure
-              environment:
-                  DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/posthog
-                  KAFKA_HOSTS: posthog-kafka.sensei.svc.cluster.local:9092
-                  REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
-                  CLICKHOUSE_HOST: 'clickhouse'
-                  CLICKHOUSE_DATABASE: 'posthog'
-                  CLICKHOUSE_SECURE: 'false'
-                  CLICKHOUSE_VERIFY: 'false'
+            image:
+              repository: posthog/posthog
+              tag: latest
+            command:
+              - /scripts/plugin-server
+              - --no-restart-loop
+            env:
+              <<: *baseEnv
 
           livestream:
-              image: 'ghcr.io/posthog/livestream:main'
-              restart: on-failure
-              depends_on:
-                  kafka:
-                      condition: service_started
+            image:
+              repository: ghcr.io/posthog/livestream
+              tag: main
+            env:
+              KAFKA_HOSTS: "kafka.database.svc.cluster.local:9092"
 
-          # openreplay-api:
-          #   image:
-          #     repository: clarknova9/http
-          #     tag: v1.0.0
-          #   env:
-          #     POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
-          #     REDIS_STRING: redis://dragonfly.database.svc.cluster.local:6379/1
-          #     MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
-          #     MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
-          #     MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
-          #     AWS_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY}
-          #     AWS_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
-          #     AWS_REGION: us-east-1
-          #     KAFKA_SERVERS: openreplay-kafka.sensei.svc.cluster.local:9092
-          #     KAFKA_USE_SSL: 'false'
-          #     WS_ENDPOINT: wss://openreplay.${SECRET_DOMAIN_TWO}/ws
-          #     TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
-          #     TOKEN_SECRET: a3f7f13f53473c286f6c14539ea443524f65a0394ba8594ea9cc99cb2b3689bed8a48ceae452
-          #     BUCKET_NAME: uxtesting-records
+          flower:
+            image:
+              repository: mher/flower
+              tag: 2.0.0
+            env:
+              FLOWER_PORT: "5555"
+              CELERY_BROKER_URL: "redis://dragonfly.database.svc.cluster.local:6379"
 
-          # openreplay-frontend:
-          #   image:
-          #     repository: clarknova9/frontend
-          #     tag: v1.0.0
-          #   env:
-          #     POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
-          #     POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
-          #     REDIS_STRING: redis://dragonfly.database.svc.cluster.local:6379
-          #     MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
-          #     MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
-          #     MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
-          #     KAFKA_URL: kafka.sensei.svc.cluster.local:9092
-          #     API_URL: https://api.openreplay.${SECRET_DOMAIN_TWO}
-          #     TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
+          temporal:
+            image:
+              repository: temporalio/auto-setup
+              tag: 1.20.0
+            env:
+              DB: postgresql
+              DB_PORT: "5432"
+              POSTGRES_USER: "${SECRET_PGADMIN_USER}"
+              POSTGRES_PWD: "${SECRET_PGADMIN_PASSWORD}"
+              POSTGRES_SEEDS: "postgres16-rw.database.svc.cluster.local"
+              DYNAMIC_CONFIG_FILE_PATH: "config/dynamicconfig/development-sql.yaml"
+              ENABLE_ES: "false"
 
-          # openreplay-storage:
-          #   image:
-          #     repository: clarknova9/storage
-          #     tag: v1.0.0
-          #   env:
-          #     POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
-          #     POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
-          #     KAFKA_URL: kafka.sensei.svc.cluster.local:9092
-          #     TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
-          #     AWS_REGION: us-east-1
-          #     AWS_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
-          #     AWS_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY}
-          #     AWS_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
+          temporal-ui:
+            image:
+              repository: temporalio/ui
+              tag: 2.31.2
+            env:
+              TEMPORAL_ADDRESS: "temporal:7233"
+              TEMPORAL_CORS_ORIGINS: "https://posthog.${SECRET_DOMAIN_TWO}"
+              TEMPORAL_CSRF_COOKIE_INSECURE: "true"
 
+          temporal-django-worker:
+            image:
+              repository: posthog/posthog
+              tag: latest
+            command:
+              - /scripts/temporal-django-worker
+            env:
+              <<: *baseEnv
+              TEMPORAL_HOST: "temporal"
+  
 
-          # openreplay-sink:
-          #   image:
-          #     repository: clarknova9/sink
-          #     tag: v1.0.0
-          #   env:
-          #     POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
-          #     POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
-          #     REDIS_STRING: redis://dragonfly.database.svc.cluster.local:6379
-          #     MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
-          #     MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
-          #     MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}
-          #     KAFKA_URL: kafka.sensei.svc.cluster.local:9092
-          #     TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
-          #     KAFKA_SERVERS: kafka.db.svc.cluster.local:9092
-          #     KAFKA_USE_SSL: 'false'
-
-
-
-          # openreplay-spot:
-          #   image:
-          #     repository: clarknova9/spot
-          #     tag: v1.0.0
-          #   env:
-          #     KAFKA_URL: kafka.sensei.svc.cluster.local:9092         
-          #     TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
-
-          # openreplay-assets:
-          #   image:
-          #     repository: clarknova9/assets
-          #     tag: v1.0.0
-          #   env:
-          #     MINIO_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
-          #     MINIO_ACCESS_KEY: ${SECRET_MINIO_ACCESS_KEY}
-          #     MINIO_SECRET_KEY: ${SECRET_MINIO_SECRET_KEY}           
-          #     TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
-
-
-          # openreplay-heuristics:
-          #   image:
-          #     repository: clarknova9/heuristics
-          #     tag: v1.0.0
-          #   env:
-          #     POSTGRES_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
-          #     POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay
-          #     KAFKA_URL: kafka.sensei.svc.cluster.local:9092     
-          #     TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
-
-          # openreplay-ender:
-          #   image:
-          #     repository: clarknova9/ender
-          #     tag: v1.0.0
-          #   env:
-          #     KAFKA_URL: kafka.sensei.svc.cluster.local:9092
-          #     TOKEN_STRING: 16cb917b3050056c4ca71338a907df63ad6d2530e54dd5240e1d1461c8d9766cf713494876f4
     service:
-      kafka:
-        controller: openreplay
+
+      capture:
+        controller: posthog
         ports:
           http:
-            port: 9092
-      zookeeper:
-        controller: openreplay
+            port: 3000  
+      replay-capture:
+        controller: posthog
         ports:
           http:
-            port: 2181  
-      openreplay-api:
-        controller: openreplay
+            port: 3000   
+      web:
+        controller: posthog
         ports:
           http:
-            port: 8090    
-      # openreplay-sink:
-      #   controller: openreplay
-      #   ports:
-      #     http:
-      #       port: 9000              
-      # openreplay-frontend:
-      #   controller: openreplay
-      #   ports:
-      #     http:
-      #       port: 8080
-        
-      # openreplay-heuristics:
-      #   controller: openreplay
-      #   ports:
-      #     http:
-      #       port: 9004
-      # openreplay-ender:
-      #   controller: openreplay
-      #   ports:
-      #     http:
-      #       port: 9005                                 
-    # ingress:
-    #   app:
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    #       nginx.ingress.kubernetes.io/websocket-services: "openreplay-frontend"          
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: mdi:math-compass
-    #     className: external
-    #     enabled: true
-    #     hosts:
-    #       - host: openreplay.${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: openreplay-frontend
-    #               port: 8080
-    #           - path: /ws
-    #             service:
-    #               identifier: openreplay-frontend
-    #               port: 8080    
-    #       - host: api.openreplay.${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: openreplay-api
-    #               port: 8080                                                 
-    #     tls:
-    #       - hosts:
-    #           - openreplay.${SECRET_DOMAIN_TWO}
-    #           - api.openreplay.${SECRET_DOMAIN_TWO}
+            port: 3000    
+      flower:
+        controller: posthog
+        ports:
+          http:
+            port: 5555                     
+      temporal:
+        controller: posthog
+        ports:
+          grpc:
+            port: 7233
+      temporal-ui:
+        controller: posthog
+        ports:
+          http:
+            port: 8080                             
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:math-compass
+        className: external
+        enabled: true
+        hosts:
+          - host: posthog.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: web
+                  port: 8000
+          - host: capture.posthog.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: capture
+                  port: 3000                                                 
+          - host: replay-capture.posthog.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: eplay-capture
+                  port: 3000   
+          - host: temporal.posthog.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  name: temporal-ui
+                  port: 8080
+
+          - host: flower.posthog.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  name: flower
+                  port: 5555
+        tls:
+          - hosts:
+              - posthog.${SECRET_DOMAIN_TWO}
+              - capture.posthog.${SECRET_DOMAIN_TWO}
+              - replay-capture.posthog.${SECRET_DOMAIN_TWO}
+              - temporal.posthog.${SECRET_DOMAIN_TWO}
+              - flower.posthog.${SECRET_DOMAIN_TWO}

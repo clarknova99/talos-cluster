@@ -5,3 +5,9 @@ kind: Kustomization
 namespace: sensei
 resources:
   - ./helmrelease.yaml
+configMapGenerator:
+  - name: posthog-scripts
+    files:
+      - bin/
+generatorOptions:
+  disableNameSuffixHash: true

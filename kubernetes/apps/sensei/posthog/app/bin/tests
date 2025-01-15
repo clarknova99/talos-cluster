@@ -1,0 +1,40 @@
+#!/bin/bash
+set -e
+
+if ! command -v nodemon &> /dev/null
+then
+    echo "Please install nodemon (pnpm install -g nodemon) to automatically run tests."
+    exit
+fi
+
+
+if [ $# -eq 0 ]; then
+    echo "Are you sure you want to run all backend tests? You can run specific tests by doing:"
+    echo " "
+    echo "bin/tests posthog/api/test/test_user.py::TestUserAPI::test_retrieve_current_user"
+    echo " "
+    read -r -p "Run all tests? [y/N] " response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
+    then
+        echo "OK!"
+    else
+        exit
+    fi
+fi
+
+export REDIS_URL='redis:///'
+
+PG_HOST="${PGHOST:=localhost}"
+PG_USER="${PGUSER:=posthog}"
+PG_PASSWORD="${PGPASSWORD:=posthog}"
+PG_PORT="${PGPORT:=5432}"
+PGOPTIONS='--client-min-messages=warning' psql posthog -d "postgres://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:${PG_PORT}" -c "drop database if exists test_posthog" 1> /dev/null
+
+if [ -z "$XDIST_WORKERS" ]
+then
+    TEST_CONCURRENCY=""
+else
+    TEST_CONCURRENCY="-n $XDIST_WORKERS"
+fi
+
+nodemon -w ./posthog -w ./hogvm/python -w ./ee --ext py --exec "OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES pytest --reuse-db --durations-min=2.0 ${MIGRATIONS} ${TEST_CONCURRENCY} -s $* --snapshot-update; mypy -p posthog | mypy-baseline filter"
