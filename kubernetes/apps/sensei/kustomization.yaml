@@ -9,4 +9,4 @@ resources:
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
   - ./langfuse/ks.yaml
-  # - ./posthog/ks.yaml
+  - ./posthog/ks.yaml
