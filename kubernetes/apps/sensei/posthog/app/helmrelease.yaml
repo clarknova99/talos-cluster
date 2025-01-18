@@ -161,7 +161,7 @@ spec:
           flower:
             image:
               repository: mher/flower
-              tag: 2.0.0
+              tag: 2.0.1
             env:
               FLOWER_PORT: "5555"
               CELERY_BROKER_URL: "redis://dragonfly.database.svc.cluster.local:6379"
