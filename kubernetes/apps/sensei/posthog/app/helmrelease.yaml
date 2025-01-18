@@ -182,7 +182,7 @@ spec:
           temporal-ui:
             image:
               repository: temporalio/ui
-              tag: 2.31.2
+              tag: 2.34.0
             env:
               TEMPORAL_ADDRESS: "temporal:7233"
               TEMPORAL_CORS_ORIGINS: "https://posthog.${SECRET_DOMAIN_TWO}"
