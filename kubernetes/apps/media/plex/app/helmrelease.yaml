@@ -156,14 +156,15 @@ spec:
               - *host
     persistence:
       config:
-        existingClaim: plex
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server          
-        # type: nfs
-        # server: 192.168.1.2
-        # path: /volume1/network-storage/plex
+        # existingClaim: plex
         # globalMounts:
-        #   - path: /config
+        #   - path: /config/Library/Application Support/Plex Media Server          
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/plex
+        globalMounts:
+          # - path: /config
+          - path: /config/Library/Application Support/Plex Media Server    
       cache:
         existingClaim: plex-cache
         globalMounts:
