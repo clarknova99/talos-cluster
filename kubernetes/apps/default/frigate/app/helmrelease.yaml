@@ -119,32 +119,27 @@ spec:
           - hosts:
               - *host
     persistence:
-      config:
+      data:
         enabled: true
         type: nfs
         server: 192.168.1.2
-        path: /volume1/network-storage/frigate/config
+        path: /volume1/network-storage/frigate/data
         globalMounts:
-          - path: /config
-      media:
-        enabled: true
-        type: nfs
-        server: 192.168.1.2
-        path: /volume1/network-storage/frigate/media
-      # config:
-      #   enabled: true
-      #   existingClaim: pvc-frigate-data
-      #   globalMounts:
-      #     - path: /data
-      # media:
-      #   existingClaim: pvc-frigate-media
+          - path: /data
       config-file:
         type: configMap
         name: frigate-configmap
         globalMounts:
           - path: /config/config.yml
             subPath: config.yml
-            readOnly: true
+            readOnly: true    
+      media:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/frigate/media
+        globalMounts:
+          - path: /media
       cache:
         enabled: true
         type: emptyDir
