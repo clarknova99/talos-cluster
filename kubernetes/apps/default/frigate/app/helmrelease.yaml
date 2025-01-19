@@ -119,6 +119,13 @@ spec:
           - hosts:
               - *host
     persistence:
+      config:
+        enabled: true
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/frigate/config
+        globalMounts:
+          - path: /config
       data:
         enabled: true
         type: nfs
@@ -126,14 +133,14 @@ spec:
         path: /volume1/network-storage/frigate/data
         globalMounts:
           - path: /data
-      config:
-        enabled: true
-        type: configMap
-        name: frigate-configmap
-        globalMounts:
-          - path: /config/config.yml
-            subPath: config.yml
-            readOnly: true    
+      # config:
+      #   enabled: true
+      #   type: configMap
+      #   name: frigate-configmap
+      #   globalMounts:
+      #     - path: /config/config.yml
+      #       subPath: config.yml
+      #       readOnly: true    
       media:
         enabled: true
         type: nfs
