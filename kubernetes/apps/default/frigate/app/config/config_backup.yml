@@ -1,0 +1,193 @@
+---
+
+logger:
+  default: info
+  logs:
+    frigate.record: debug
+    frigate.record.maintainer: debug
+    frigate.video: debug
+
+    ffmpeg.frontyard_hq: error
+    ffmpeg.backyard_hq: error
+    #frigate.ptz.onvif: debug
+
+mqtt:
+  host: mosquitto.default.svc.cluster.local
+  topic_prefix: frigate
+  # user: "${SECRET_MQTT_USERNAME}"
+  # password: "${SECRET_MQTT_PASSWORD}"
+
+database:
+  path: /data/frigate.db
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+birdseye:
+  enabled: True
+  restream: true
+  mode: continuous
+
+# Optional: Restream configuratio
+# Uses https://github.com/AlexxIT/go2rtc (v1.2.0)
+go2rtc:
+  streams:
+    frontyard_hq:
+      - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream1#timeout=20        
+      # - "ffmpeg:backyard#video=h264"
+    frontyard_lq:
+      - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream2#timeout=20    
+    #   - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream2
+    frontdoor_hq:
+      - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_0.264#timeout=20
+    frontdoor_lq:
+      - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_1.264#timeout=20      
+    # basement_hq:
+    #   - ffmpeg:rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.206:554/ch0_0.264#timeout=20
+      # - "ffmpeg:backyard#video=h264"
+    # basement_lq:
+    #   - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.206:554/ch0_1.264
+    #   - "ffmpeg:backyard#video=h264"
+    backyard_hq:
+      - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_WIFICAM_PASSWORD}@192.168.1.201:10554/tcp/av0_0#timeout=20
+      # - "ffmpeg:backyard#video=h264"
+    backyard_lq:
+      - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_WIFICAM_PASSWORD}@192.168.1.201:10554/tcp/av0_1#timeout=20
+  webrtc:
+    listen: ":8555"
+    candidates:
+      - 192.168.3.34:8555 # <--- enter frigate host IP here
+      - stun:8555
+ffmpeg:
+  global_args: ["-hide_banner", "-loglevel", "warning"]
+  hwaccel_args: preset-intel-qsv-h264
+  #hwaccel_args: preset-vaapi
+  #hwaccel_args: ["-hwaccel", "vaapi", "-hwaccel_device", "/dev/dri/renderD128", "-hwaccel_output_format", "yuv420p"]
+  
+  output_args:
+    #record: preset-record-generic-audio-aac
+    record: preset-record-generic-audio-copy
+  # output_args:
+  #   record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -use_wallclock_as_timestamps 1 -c:v copy -ar 44100 -c:a aac
+  #   rtmp: -c:v copy -f flv -ar 44100 -c:a aac
+
+snapshots:
+  enabled: true
+  timestamp: false
+  bounding_box: true
+  retain:
+    default: 30
+
+record:
+  enabled: true
+  retain:
+    days: 0
+    mode: active_objects
+  events:
+    retain:
+      default: 30
+      mode: active_objects
+    pre_capture: 15
+    post_capture: 15
+
+objects:
+  track:
+    - person
+    - dog
+    - cat
+    - bird
+    - bicycle
+    - deer
+  # filters:
+  #   person:
+  #     min_area: 5000
+  #     max_area: 100000
+  #     threshold: 0.7
+cameras:
+  frontyard:
+    live:
+      stream_name: frontyard  
+    ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-copy    
+      inputs:
+        - path: rtsp://127.0.0.1:8554/frontyard_lq
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+        # - path: rtsp://127.0.0.1:8554/frontyard_lq
+        #   input_args: preset-rtsp-restream
+        #   roles:
+        #     - detect
+    detect:
+      enabled: true # <---- disable detection until you have a working camera feed
+      # width: 1920 # <---- update for your camera's resolution
+      # height: 1080 # <---- update for your camera's resolution
+      fps: 5
+    # objects:
+    #   filters:
+    #     person:
+    #       mask:
+    #         - 1049,606,1086,454,973,486,899,500,885,616
+  frontdoor:
+    ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-copy
+      inputs:
+        - path: rtsp://127.0.0.1:8554/frontdoor_hq
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+    onvif:
+      host: 192.168.1.146
+      port: 8888
+      user: ${SECRET_BACKYARDCAM_USERNAME}
+      password: ${SECRET_BACKYARDCAM_PASSWORD}
+    detect:
+      enabled: true # <---- disable detection until you have a working camera feed
+      # width: 1920 # <---- update for your camera's resolution
+      # height: 1080 # <---- update for your camera's resolution
+      fps: 5      
+  backyard:
+    ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-copy
+      inputs:
+        - path: rtsp://127.0.0.1:8554/backyard_lq
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+            - detect
+        # - path: rtsp://127.0.0.1:8554/backyard_lq
+        #   input_args: preset-rtsp-restream
+        #   roles:
+        #     - detect
+    onvif:
+      host: 192.168.1.201
+      port: 10080
+      user: ${SECRET_BACKYARDCAM_USERNAME}
+      password: ${SECRET_WIFICAM_PASSWORD}
+    detect:
+      enabled: true # <---- disable detection until you have a working camera feed
+      # width: 1920 # <---- update for your camera's resolution
+      # height: 1080 # <---- update for your camera's resolution
+      fps: 5
+
+# Optional: Telemetry configuration
+telemetry:
+  # Optional: Configure system stats
+  stats:
+    # Enable AMD GPU stats (default: shown below)
+    amd_gpu_stats: false
+    # Enable Intel GPU stats (default: shown below)
+    intel_gpu_stats: True
+    # Enable network bandwidth stats monitoring for camera ffmpeg processes, go2rtc, and object detectors. (default: shown below)
+    # NOTE: The container must either be privileged or have cap_net_admin, cap_net_raw capabilities enabled.
+    network_bandwidth: True
+  # Optional: Enable the latest version outbound check (default: shown below)
+  # NOTE: If you use the HomeAssistant integration, disabling this will prevent it from reporting new versions
+  version_check: True
