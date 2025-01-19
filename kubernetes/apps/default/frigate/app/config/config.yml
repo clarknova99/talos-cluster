@@ -20,6 +20,10 @@ mqtt:
 database:
   path: /data/frigate.db
 
+ffmpeg:
+  global_args: ["-hide_banner", "-loglevel", "info"]
+  hwaccel_args: preset-vaapi
+  
 detectors:
   coral:
     type: edgetpu
@@ -28,6 +32,11 @@ detectors:
 # Optional: Restream configuratio
 # Uses https://github.com/AlexxIT/go2rtc (v1.2.0)
 go2rtc:
+  webrtc:
+    listen: ":8555"
+    candidates:
+      - 192.168.3.34:8555 # <--- enter frigate host IP here
+      - stun:8555
   streams:
     frontyard_hq:
       - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream1#timeout=20        
@@ -45,15 +54,13 @@ go2rtc:
       # - "ffmpeg:backyard#video=h264"
     backyard_lq:
       - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_WIFICAM_PASSWORD}@192.168.1.201:10554/tcp/av0_1#timeout=20
-  webrtc:
-    listen: ":8555"
-    candidates:
-      - 192.168.3.34:8555 # <--- enter frigate host IP here
-      - stun:8555
+
 
 cameras:
   frontyard:
-    ffmpeg:   
+    ffmpeg:  
+      output_args:
+        record: preset-record-generic-audio-copy     
       inputs:
         - path: rtsp://127.0.0.1:8554/frontyard_lq
           input_args: preset-rtsp-restream
@@ -65,6 +72,8 @@ cameras:
             - record
   frontdoor:
     ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-copy    
       inputs:
         - path: rtsp://127.0.0.1:8554/frontyard_lq
           input_args: preset-rtsp-restream
@@ -75,6 +84,8 @@ cameras:
           roles:
             - record
   backyard:
+      output_args:
+        record: preset-record-generic-audio-copy  
       inputs:
         - path: rtsp://127.0.0.1:8554/backyard_lq
           input_args: preset-rtsp-restream

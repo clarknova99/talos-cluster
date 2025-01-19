@@ -123,9 +123,9 @@ spec:
         enabled: true
         type: nfs
         server: 192.168.1.2
-        path: /volume1/network-storage/frigate/config
+        path: /volume1/network-storage/frigate/data
         globalMounts:
-          - path: /config
+          - path: /data
       media:
         enabled: true
         type: nfs
