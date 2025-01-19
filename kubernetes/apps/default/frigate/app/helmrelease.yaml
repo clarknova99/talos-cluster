@@ -126,7 +126,8 @@ spec:
         path: /volume1/network-storage/frigate/data
         globalMounts:
           - path: /data
-      config-file:
+      config:
+        enabled: true
         type: configMap
         name: frigate-configmap
         globalMounts:
