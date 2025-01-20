@@ -29,33 +29,33 @@ detectors:
     type: edgetpu
     device: usb
 
-# snapshots:
-#   enabled: true
-#   timestamp: false
-#   bounding_box: true
-#   retain:
-#     default: 30
+snapshots:
+  enabled: true
+  timestamp: false
+  bounding_box: true
+  retain:
+    default: 30
 
 record:
   enabled: true
   retain:
     days: 0
     mode: active_objects
-  events:
+  alerts:
     retain:
       default: 30
       mode: active_objects
     pre_capture: 15
     post_capture: 15
 
-# objects:
-#   track:
-#     - person
-#     - dog
-#     - cat
-#     - bird
-#     - bicycle
-#     - deer
+objects:
+  track:
+    - person
+    - dog
+    - cat
+    - bird
+    - bicycle
+    - deer
 
 cameras:
   frontyard:
