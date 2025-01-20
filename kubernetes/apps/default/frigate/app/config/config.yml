@@ -31,7 +31,7 @@ detectors:
 
 cameras:
   frontyard:
-    ffmpeg:  
+    ffmpeg:
       output_args:
         record: preset-record-generic-audio-copy     
       inputs:
@@ -43,6 +43,7 @@ cameras:
             - record
   frontdoor:
     ffmpeg:  
+      hwaccel_args: preset-vaapi
       output_args:
         record: preset-record-generic-audio-copy     
       inputs:
