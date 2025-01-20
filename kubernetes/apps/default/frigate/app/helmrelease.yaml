@@ -126,6 +126,13 @@ spec:
         path: /volume1/network-storage/frigate/config
         globalMounts:
           - path: /config
+      config-file:
+        type: configMap
+        name: frigate-configmap
+        globalMounts:
+          - path: /config/config.yml
+            subPath: config.yml
+            readOnly: true          
       data:
         enabled: true
         type: nfs
