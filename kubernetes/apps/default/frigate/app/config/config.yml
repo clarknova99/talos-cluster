@@ -28,12 +28,13 @@ detectors:
   coral:
     type: edgetpu
     device: usb
-snapshots:
-  enabled: true
-  timestamp: false
-  bounding_box: true
-  retain:
-    default: 30
+
+# snapshots:
+#   enabled: true
+#   timestamp: false
+#   bounding_box: true
+#   retain:
+#     default: 30
 
 record:
   enabled: true
@@ -47,14 +48,14 @@ record:
     pre_capture: 15
     post_capture: 15
 
-objects:
-  track:
-    - person
-    - dog
-    - cat
-    - bird
-    - bicycle
-    - deer
+# objects:
+#   track:
+#     - person
+#     - dog
+#     - cat
+#     - bird
+#     - bicycle
+#     - deer
 
 cameras:
   frontyard:
