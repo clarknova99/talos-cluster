@@ -43,7 +43,7 @@ record:
     mode: active_objects
   alerts:
     retain:
-      default: 30
+      days: 30
       mode: active_objects
     pre_capture: 15
     post_capture: 15
