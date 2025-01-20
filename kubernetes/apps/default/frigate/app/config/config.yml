@@ -40,20 +40,8 @@ go2rtc:
   streams:
     frontyard_hq:
       - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream1#timeout=20        
-      # - "ffmpeg:backyard#video=h264"
     frontyard_lq:
       - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream2#timeout=20    
-    #   - rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream2
-    # frontdoor_hq:
-    #   - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_0.264#timeout=20
-    # frontdoor_lq:
-    #   - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_1.264#timeout=20      
-
-    # backyard_hq:
-    #   - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_WIFICAM_PASSWORD}@192.168.1.201:10554/tcp/av0_0#timeout=20
-    #   # - "ffmpeg:backyard#video=h264"
-    # backyard_lq:
-    #   - rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_WIFICAM_PASSWORD}@192.168.1.201:10554/tcp/av0_1#timeout=20
 
 
 cameras:
@@ -70,29 +58,3 @@ cameras:
           input_args: preset-rtsp-restream
           roles:
             - record
-  # frontdoor:
-  #   ffmpeg:
-  #     output_args:
-  #       record: preset-record-generic-audio-copy    
-  #     inputs:
-  #       - path: rtsp://127.0.0.1:8554/frontyard_lq
-  #         input_args: preset-rtsp-restream
-  #         roles:
-  #           - detect      
-  #       - path: rtsp://127.0.0.1:8554/frontdoor_hq
-  #         input_args: preset-rtsp-restream
-  #         roles:
-  #           - record
-  # backyard:
-  #     ffmpeg:
-  #       output_args:
-  #         record: preset-record-generic-audio-copy  
-  #       inputs:
-  #         - path: rtsp://127.0.0.1:8554/backyard_lq
-  #           input_args: preset-rtsp-restream
-  #           roles:
-  #             - detect
-  #         - path: rtsp://127.0.0.1:8554/backyard_hq
-  #           input_args: preset-rtsp-restream
-  #           roles:
-  #             - record
