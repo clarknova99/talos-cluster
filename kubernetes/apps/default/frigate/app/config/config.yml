@@ -41,3 +41,25 @@ cameras:
         - path: rtsp://${SECRET_CAM_USERNAME}:${SECRET_CAM_PASSWORD}@192.168.1.101:554/stream1#timeout=20 
           roles:
             - record
+  frontdoor:
+    ffmpeg:  
+      output_args:
+        record: preset-record-generic-audio-copy     
+      inputs:
+        - path: rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_1.264#timeout=20
+          roles:
+            - detect
+        - path: rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_1.264#timeout=20
+          roles:
+            - record            
+  backyard:
+    ffmpeg:  
+      output_args:
+        record: preset-record-generic-audio-copy     
+      inputs:
+        - path: rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_WIFICAM_PASSWORD}@192.168.1.201:10554/tcp/av0_1#timeout=20
+          roles:
+            - detect
+        - path: rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_WIFICAM_PASSWORD}@192.168.1.201:10554/tcp/av0_0#timeout=20
+          roles:
+            - record    
