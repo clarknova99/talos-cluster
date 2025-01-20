@@ -47,7 +47,7 @@ cameras:
       output_args:
         record: preset-record-generic-audio-copy     
       inputs:
-        - path: rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_1.264#timeout=20
+        - path: rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_0.264#timeout=20
           roles:
             - detect
         - path: rtsp://${SECRET_BACKYARDCAM_USERNAME}:${SECRET_BACKYARDCAM_PASSWORD}@192.168.1.146:554/ch0_1.264#timeout=20
