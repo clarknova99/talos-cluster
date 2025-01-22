@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: langfuse_test
+  name: langfuse-test
   namespace: sensei
 spec:
   interval: 15m
@@ -25,7 +25,7 @@ spec:
       retries: 5
   values:
     controllers:
-      langfuse_test:
+      langfuse-test:
         replicas: 1
         containers:
           app:
@@ -36,7 +36,7 @@ spec:
               tag: 3.13@sha256:f1514450062db721323720810fd8d17efe7b9ccb37201b2737aa3b5e4dbcd7b7
             env:
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse2
-              NEXTAUTH_URL: https://langfuse_test.${SECRET_DOMAIN_TWO}
+              NEXTAUTH_URL: https://langfuse-test.${SECRET_DOMAIN_TWO}
               NEXTAUTH_SECRET: ${SECRET_LANGFUSE_SECRET}
               SALT: ${SECRET_LANGFUSE_SALT}
               ENCRYPTION_KEY: ${SECRET_LANGFUSE_ENCRYPTION_KEY}
@@ -52,10 +52,10 @@ spec:
 
     service:
       app:
-        controller: langfuse_test
+        controller: langfuse-test
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: langfuse_test.${SECRET_DOMAIN_TWO}
+          external-dns.alpha.kubernetes.io/hostname: langfuse-test.${SECRET_DOMAIN_TWO}
           io.cilium/lb-ipam-ips: 192.168.3.32
         ports:
           http:
@@ -74,7 +74,7 @@ spec:
         className: external
         enabled: true
         hosts:
-          - host: langfuse_test.${SECRET_DOMAIN_TWO}
+          - host: langfuse-test.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
                 service:
@@ -82,4 +82,4 @@ spec:
                   port: 3000
         tls:
           - hosts:
-              - langfuse_test.${SECRET_DOMAIN_TWO}
+              - langfuse-test.${SECRET_DOMAIN_TWO}
