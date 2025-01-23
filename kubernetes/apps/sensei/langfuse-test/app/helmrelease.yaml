@@ -28,7 +28,7 @@ spec:
       langfuse-test:
         replicas: 1
         containers:
-          app:
+          web:
             image:
               # repository: docker.io/langfuse/langfuse
               # tag: 2.93@sha256:e05b4b389a07aba93a94d3a19c24c104b125b023792ff612706137e26067c23f
@@ -49,6 +49,18 @@ spec:
               #AUTH_DISABLE_SIGNUP: true
               LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: true
               LANGFUSE_LOG_LEVEL: trace
+
+              CLICKHOUSE_URL: http://clickhouse:8123
+              CLICKHOUSE_USER: clickhouse
+              CLICKHOUSE_PASSWORD: clickhouse
+              CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:9000
+              REDIS_HOST: localhost
+              REDIS_PORT: 6379
+              REDIS_AUTH: redis
+              LANGFUSE_S3_EVENT_UPLOAD_BUCKET: my-bucket
+              LANGFUSE_S3_EVENT_UPLOAD_REGION: us-east-1
+              LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: AKIAIOSFODNN7EXAMPLE 
+              LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: bPxRfiCYEXAMPLEKEY
 
     service:
       app:
