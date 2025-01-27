@@ -7,3 +7,11 @@ model_list:
     litellm_params:
       model: groq/llama3-8b-8192
       api_key: ${GROQ_API_KEY_LLM}     
+  - model_name: gpt-4o-mini
+    litellm_params:
+      model: openai/gpt-4o-mini
+      api_key: ${SECRET_SENSEI_OPENAI_KEY}
+  - model_name: gpt-4o
+    litellm_params:
+      model: openai/gpt-4o
+      api_key: ${SECRET_SENSEI_OPENAI_KEY}      
