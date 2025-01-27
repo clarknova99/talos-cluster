@@ -27,5 +27,6 @@ model_list:
 general_settings:
   store_prompts_in_spend_logs: True
 
-litellm_settings:
-  default_fallbacks: ["gpt-4o-mini"]
+router_settings:
+  fallbacks: [{"llama-3.3-70b-versatile": ["llama-3.3-70b-specdec", "llama3-70b-8192", "llama3-8b-8192", "gpt-4o-mini"]}]
+
