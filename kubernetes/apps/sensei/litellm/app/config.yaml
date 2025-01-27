@@ -14,4 +14,4 @@ model_list:
   - model_name: gpt-4o
     litellm_params:
       model: openai/gpt-4o
-      api_key: ${SECRET_SENSEI_OPENAI_KEY}      
+      api_key: ${SECRET_SENSEI_OPENAI_KEY}
