@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: main-0.1.0@sha256:d2fcf4d5ab21041250016e33dbc2c06f7c2b134712e265ef192c89596a1d634a
+              tag: main-0.1.0@sha256:a0f79281ec1730e19d68cb15260e207fc481dda0baafeab0cd7f4f5b111d0d4f
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
             env:
@@ -49,7 +49,7 @@ spec:
               LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
               LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000
               LITELLM_BASE_URL: http://litellm.sensei.svc.cluster.local:4000
-              LITELLM_API_KEY: ${SECRET_LITELLM_API_KEY}              
+              LITELLM_API_KEY: ${SECRET_LITELLM_API_KEY}
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:

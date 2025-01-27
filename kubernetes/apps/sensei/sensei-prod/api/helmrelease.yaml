@@ -31,14 +31,14 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: main-0.1.0@sha256:d2fcf4d5ab21041250016e33dbc2c06f7c2b134712e265ef192c89596a1d634a
+              tag: main-0.1.0@sha256:a0f79281ec1730e19d68cb15260e207fc481dda0baafeab0cd7f4f5b111d0d4f
               pullPolicy: Always
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
               GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
-              SENSEI_OPENAI_API_KEY: ${SECRET_SENSEI_OPENAI_KEY} 
+              SENSEI_OPENAI_API_KEY: ${SECRET_SENSEI_OPENAI_KEY}
               ENVIRONMENT: prod
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-prod
               DISCORD_WEBHOOK: ${SECRET_SENSEI_DISCORD_WEBHOOK}
