@@ -10,4 +10,4 @@ resources:
   - ./sensei-stage/ks.yaml
   - ./langfuse/ks.yaml
   # - ./langfuse-test/ks.yaml
-  - ./litellm/ks.yaml
+  #- ./litellm/ks.yaml

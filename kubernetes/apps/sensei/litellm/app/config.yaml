@@ -23,3 +23,6 @@ model_list:
     litellm_params:
       model: openai/gpt-4o
       api_key: ${SECRET_SENSEI_OPENAI_KEY}
+
+general_settings:
+  store_prompts_in_spend_logs: True
