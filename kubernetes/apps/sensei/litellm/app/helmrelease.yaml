@@ -37,6 +37,8 @@ spec:
             env:
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/litellm
               STORE_MODEL_IN_DB: "True"
+              UI_USERNAME: ${SECRET_LITELLM_UI_USERNAME}
+              UI_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
             envFrom: &envFrom
               - secretRef:
                   name: litellm-secrets
