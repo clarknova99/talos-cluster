@@ -67,7 +67,7 @@ spec:
         hosts:
           - host: litellm.${SECRET_DOMAIN_TWO}
             paths:
-              - path: /
+              - path: /ui
                 service:
                   identifier: app
                   port: 4000
