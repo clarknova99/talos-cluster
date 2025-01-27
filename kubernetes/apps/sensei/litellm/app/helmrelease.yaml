@@ -79,6 +79,6 @@ spec:
         type: configMap
         name: litellm-configmap
         globalMounts:
-          - path: /config/config.yml
+          - path: /app/config.yml
             subPath: config.yml
             readOnly: true
