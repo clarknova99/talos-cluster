@@ -26,3 +26,6 @@ model_list:
 
 general_settings:
   store_prompts_in_spend_logs: True
+
+litellm_settings:
+  callbacks: ["prometheus"]
