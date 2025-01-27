@@ -55,7 +55,6 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          nginx.ingress.kubernetes.io/rewrite-target: /ui
           nginx.ingress.kubernetes.io/permanent-redirect: https://litellm.${SECRET_DOMAIN_TWO}/ui
           # nginx.ingress.kubernetes.io/auth-method: GET
           # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
