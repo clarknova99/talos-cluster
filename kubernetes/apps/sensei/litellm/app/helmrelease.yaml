@@ -37,7 +37,7 @@ spec:
               STORE_MODEL_IN_DB: "True"
             envFrom: &envFrom
               - secretRef:
-                  name: lightllm-secrets
+                  name: litellm-secrets
             # args:
             #   - "--config"
             #   - "/app/config.yaml"
