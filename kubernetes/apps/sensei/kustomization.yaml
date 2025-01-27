@@ -6,7 +6,7 @@ resources:
   - ./namespace.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
-  # - ./sensei-prod/ks.yaml
+  - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
   - ./langfuse/ks.yaml
   # - ./langfuse-test/ks.yaml
