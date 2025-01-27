@@ -1,0 +1,9 @@
+model_list:
+  - model_name: groq-llama3-70b-8192
+    litellm_params:
+      model: groq/llama3-70b-8192
+      api_key: ${GROQ_API_KEY_LLM}
+  - model_name: groq-llama3-8b-8192
+    litellm_params:
+      model: groq/llama3-8b-8192
+      api_key: ${GROQ_API_KEY_LLM}     

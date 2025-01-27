@@ -75,10 +75,10 @@ spec:
           - hosts:
               - litellm.${SECRET_DOMAIN_TWO}
     persistence:
-      config:
-        enabled: true
-        type: nfs
-        server: 192.168.1.2
-        path: /volume1/network-storage/litellm
+      config-file:
+        type: configMap
+        name: litellm-configmap
         globalMounts:
-          - path: /app
+          - path: /config/config.yml
+            subPath: config.yml
+            readOnly: true

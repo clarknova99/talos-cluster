@@ -6,3 +6,9 @@ namespace: sensei
 resources:
   - ./litellm.sops.yaml
   - ./helmrelease.yaml
+configMapGenerator:
+  - name: litellm-configmap
+    files:
+      - config.yaml=./app/config.yaml
+generatorOptions:
+  disableNameSuffixHash: true
