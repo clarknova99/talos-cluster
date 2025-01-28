@@ -28,5 +28,10 @@ general_settings:
   store_prompts_in_spend_logs: True
 
 router_settings:
-  fallbacks: [{"llama-3.3-70b-versatile": ["llama-3.3-70b-specdec", "llama3-70b-8192", "llama3-8b-8192", "gpt-4o-mini"]}]
+  fallbacks: [
+    {"llama-3.3-70b-versatile": ["llama-3.3-70b-specdec", "llama3-70b-8192", "llama3-8b-8192", "gpt-4o-mini"]},
+    {"llama-3.3-70b-specdec": ["llama3-70b-8192", "llama3-8b-8192", "gpt-4o-mini"]},
+    {"llama3-70b-8192": ["llama3-8b-8192", "gpt-4o-mini"]}, 
+    {"llama3-8b-8192": ["gpt-4o-mini"]},     
+  ]
 
