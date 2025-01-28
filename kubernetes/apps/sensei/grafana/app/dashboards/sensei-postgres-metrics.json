@@ -53,7 +53,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "locale"
         },
         "overrides": []
       },
@@ -724,7 +725,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "locale"
         },
         "overrides": []
       },
@@ -812,7 +814,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "locale"
         },
         "overrides": []
       },
@@ -988,7 +991,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "locale"
         },
         "overrides": []
       },
@@ -1076,7 +1080,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "locale"
         },
         "overrides": []
       },
@@ -1164,7 +1169,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "locale"
         },
         "overrides": []
       },
@@ -1252,7 +1258,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "locale"
         },
         "overrides": []
       },
@@ -2040,7 +2047,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2137,6 +2145,6 @@
   "timezone": "utc",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 8,
+  "version": 9,
   "weekStart": ""
 }
