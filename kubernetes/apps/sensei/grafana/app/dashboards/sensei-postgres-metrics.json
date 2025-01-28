@@ -1752,7 +1752,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "locale"
         },
         "overrides": []
       },
@@ -2128,6 +2129,185 @@
         }
       ],
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "P44368ADAD746BC27"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "job_count"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 17,
+        "x": 0,
+        "y": 82
+      },
+      "id": 24,
+      "interval": "1hr",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P44368ADAD746BC27"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n  date_trunc('hour', updated_at) AS job_hour, \n  COUNT(*) AS job_count\nFROM job_queue\nWHERE job_status = 'failed'\n  AND job_type = 'analysis'\n  and updated_at >= NOW() - INTERVAL '96 hours'\nGROUP BY job_hour\nORDER BY job_hour desc;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "alias": "\"failed\"",
+                "name": "COUNT",
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50,
+            "whereJsonTree": {
+              "children1": [
+                {
+                  "id": "8899aa88-cdef-4012-b456-7194adc95a9b",
+                  "properties": {
+                    "field": "job_type",
+                    "fieldSrc": "field",
+                    "operator": "equal",
+                    "value": [
+                      "analysis"
+                    ],
+                    "valueError": [
+                      null
+                    ],
+                    "valueSrc": [
+                      "value"
+                    ],
+                    "valueType": [
+                      "text"
+                    ]
+                  },
+                  "type": "rule"
+                },
+                {
+                  "id": "9bba9abb-89ab-4cde-b012-3194adc96430",
+                  "properties": {
+                    "field": "job_status",
+                    "fieldSrc": "field",
+                    "operator": "equal",
+                    "value": [
+                      "failed"
+                    ],
+                    "valueError": [
+                      null
+                    ],
+                    "valueSrc": [
+                      "value"
+                    ],
+                    "valueType": [
+                      "text"
+                    ]
+                  },
+                  "type": "rule"
+                }
+              ],
+              "id": "99ab98a8-0123-4456-b89a-b194adc0f9c9",
+              "type": "group"
+            },
+            "whereString": "(job_type = 'analysis' AND job_status = 'failed')"
+          },
+          "table": "job_queue"
+        }
+      ],
+      "timeFrom": "96h",
+      "title": "Analysis Job Failures By Hour",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -2145,6 +2325,6 @@
   "timezone": "utc",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }
