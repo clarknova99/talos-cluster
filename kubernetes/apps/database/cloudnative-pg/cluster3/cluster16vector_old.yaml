@@ -45,21 +45,19 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      # destinationPath: s3://cloudnative-pg/
-      # endpointURL: http://minio.kube-system.svc.cluster.local:9000
-
-      destinationPath: s3://sensei-cnpg/
-      endpointURL: https://s3.us-east-1.amazonaws.com
+      destinationPath: s3://cloudnative-pg/
+      #endpointURL: https://s3.${SECRET_DOMAIN}
+      endpointURL: http://minio.kube-system.svc.cluster.local:9000
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
       serverName: &currentCluster postgres16vector-v3
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secrets
-          key: SENSEI_AWS_ACCESS_KEY_ID
+          key: AWS_ACCESS_KEY_ID
         secretAccessKey:
           name: cloudnative-pg-secrets
-          key: SENSEI_AWS_SECRET_ACCESS_KEY
+          key: AWS_SECRET_ACCESS_KEY
  
   bootstrap:
     # initdb:

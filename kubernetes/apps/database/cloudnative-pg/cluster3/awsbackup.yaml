@@ -1,0 +1,26 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: postgres16vector-aws
+spec:
+  schedule: "@daily"
+  immediate: true
+  backupOwnerReference: self
+  cluster:
+    name: postgres16vector
+  barmanObjectStore:
+    data:
+      compression: bzip2
+    wal:
+      compression: bzip2
+      maxParallel: 8
+    destinationPath: s3://sensei-cnpg/
+    endpointURL: https://s3.us-east-1.amazonaws.com
+    serverName: postgres16vector-v3
+    s3Credentials:
+      accessKeyId:
+        name: aws-s3-credentials
+        key: SENSEI_AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: aws-s3-credentials
+        key: SENSEI_AWS_SECRET_ACCESS_KEY

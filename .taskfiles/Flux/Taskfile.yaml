@@ -72,4 +72,4 @@ tasks:
   commit:
     desc: Stage, commit & push
     cmds:
-      - git add -A && git commit -m {{ .CLI_ARGS }} && git push && task flux:reconcile
+      - git add -A && git commit -S -m {{ .CLI_ARGS }} && git push && task flux:reconcile
