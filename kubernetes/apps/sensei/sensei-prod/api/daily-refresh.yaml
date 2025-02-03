@@ -14,7 +14,7 @@ spec:
           - name: sensei-secret        
           containers:
           - name: stage-daily-user-refresh
-            image: ghcr.io/clarknova99/project-sensei/backend:stage-latest
+            image: ghcr.io/clarknova99/project-sensei/backend:latest
             imagePullPolicy: Always
 
             command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
@@ -28,7 +28,17 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: sensei-prod-daily-refresh-secrets
-                  key: GROQ_API_KEY_PGN_TEXT       
+                  key: GROQ_API_KEY_PGN_TEXT   
+            - name: LITELLM_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-prod-daily-refresh-secrets
+                  key: LITELLM_BASE_URL 
+            - name: LITELLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-prod-daily-refresh-secrets
+                  key: LITELLM_API_KEY                                          
             - name: PG_URI
               valueFrom:
                 secretKeyRef:
