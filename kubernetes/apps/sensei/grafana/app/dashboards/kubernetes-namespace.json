@@ -1062,7 +1062,7 @@
         "y": 29
       },
       "id": 12,
-      "interval": "1h",
+      "interval": "1d",
       "options": {
         "barRadius": 0,
         "barWidth": 0.97,
@@ -1390,6 +1390,6 @@
   "timezone": "utc",
   "title": "Kubernetes - Sensei Utilization",
   "uid": "a87fb0d919ec0ea5f6543124e16c42a5",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
