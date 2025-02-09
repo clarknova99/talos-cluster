@@ -920,7 +920,7 @@
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
-          "sortBy": "Max",
+          "sortBy": "Mean",
           "sortDesc": true
         },
         "tooltip": {
@@ -1025,7 +1025,7 @@
           "displayMode": "table",
           "placement": "right",
           "showLegend": true,
-          "sortBy": "Max",
+          "sortBy": "Mean",
           "sortDesc": true
         },
         "tooltip": {
@@ -1057,7 +1057,7 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "description": "Dropped noisy virtual devices for readability.",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1162,7 +1162,7 @@
           "refId": "B"
         }
       ],
-      "title": "Global Network Utilization by device",
+      "title": "Global Network Utilization",
       "type": "timeseries"
     },
     {
