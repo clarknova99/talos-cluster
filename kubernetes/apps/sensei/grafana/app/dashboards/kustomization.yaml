@@ -11,13 +11,16 @@ configMapGenerator:
         grafana_folder: "sensei"           
   - name: sensei-metrics
     files:
-      - sensei-postgres-metrics.json
-  - name: sensei-kubernetes
-    files:
-      - kubernetes-namespace.json      
+      - sensei-postgres-metrics.json    
     options:
       annotations:
-        grafana_folder: "sensei"                            
+        grafana_folder: "sensei"    
+  - name: sensei-kubernetes
+    files:
+      - kubernetes-namespace.json  
+    options:
+      annotations:
+        grafana_folder: "sensei"
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
