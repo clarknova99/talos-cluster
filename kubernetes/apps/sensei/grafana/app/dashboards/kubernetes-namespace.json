@@ -343,360 +343,8 @@
       },
       {
         "datasource": {
-          "type": "datasource",
-          "uid": "-- Mixed --"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 10,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "never",
-              "spanNulls": true,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byFrameRefID",
-                "options": "B"
-              },
-              "properties": [
-                {
-                  "id": "custom.lineStyle",
-                  "value": {
-                    "fill": "dash"
-                  }
-                },
-                {
-                  "id": "custom.lineWidth",
-                  "value": 2
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byFrameRefID",
-                "options": "C"
-              },
-              "properties": [
-                {
-                  "id": "custom.lineStyle",
-                  "value": {
-                    "fill": "dash"
-                  }
-                },
-                {
-                  "id": "custom.lineWidth",
-                  "value": 2
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "orange",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 7,
-          "w": 24,
-          "x": 0,
-          "y": 8
-        },
-        "id": 1,
-        "interval": "1m",
-        "options": {
-          "legend": {
-            "asTable": true,
-            "calcs": [
-              "lastNotNull",
-              "p90",
-              "max"
-            ],
-            "displayMode": "table",
-            "placement": "right",
-            "showLegend": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "11.4.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
-            },
-            "editorMode": "code",
-            "expr": "sum(\n  node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace=\"sensei\"}\n* on(namespace,pod)\n  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}\n) by (workload, workload_type)\n",
-            "legendFormat": "{{workload}}",
-            "range": true,
-            "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
-            },
-            "editorMode": "code",
-            "expr": "scalar(max(kube_resourcequota{namespace=\"sensei\", type=\"hard\",resource=~\"requests.cpu|cpu\"}))",
-            "legendFormat": "quota - requests",
-            "range": true,
-            "refId": "B"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
-            },
-            "editorMode": "code",
-            "expr": "scalar(max(kube_resourcequota{namespace=\"sensei\", type=\"hard\",resource=~\"limits.cpu\"}))",
-            "legendFormat": "quota - limits",
-            "range": true,
-            "refId": "C"
-          }
-        ],
-        "title": "CPU Usage",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "datasource",
-          "uid": "-- Mixed --"
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 10,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "never",
-              "spanNulls": true,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "bytes"
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byFrameRefID",
-                "options": "B"
-              },
-              "properties": [
-                {
-                  "id": "custom.lineStyle",
-                  "value": {
-                    "fill": "dash"
-                  }
-                },
-                {
-                  "id": "custom.lineWidth",
-                  "value": 2
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byFrameRefID",
-                "options": "C"
-              },
-              "properties": [
-                {
-                  "id": "custom.lineStyle",
-                  "value": {
-                    "fill": "dash"
-                  }
-                },
-                {
-                  "id": "custom.lineWidth",
-                  "value": 2
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "orange",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 7,
-          "w": 24,
-          "x": 0,
-          "y": 15
-        },
-        "id": 3,
-        "interval": "1m",
-        "options": {
-          "legend": {
-            "asTable": true,
-            "calcs": [
-              "lastNotNull",
-              "p90",
-              "max"
-            ],
-            "displayMode": "table",
-            "placement": "right",
-            "showLegend": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "11.4.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
-            },
-            "editorMode": "code",
-            "expr": "sum(\n    container_memory_working_set_bytes{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\", container!=\"\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=~\"deployment\"}\n) by (workload, workload_type)\n",
-            "legendFormat": "{{workload}}",
-            "range": true,
-            "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
-            },
-            "editorMode": "code",
-            "expr": "scalar(max(kube_resourcequota{namespace=\"sensei\", type=\"hard\",resource=~\"requests.memory|memory\"}))",
-            "legendFormat": "quota - requests",
-            "range": true,
-            "refId": "B"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
-            },
-            "editorMode": "code",
-            "expr": "scalar(max(kube_resourcequota{namespace=\"sensei\", type=\"hard\",resource=~\"limits.memory\"}))",
-            "legendFormat": "quota - limits",
-            "range": true,
-            "refId": "C"
-          }
-        ],
-        "title": "Memory Usage",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "datasource",
-          "uid": "-- Mixed --"
+          "type": "prometheus",
+          "uid": "prometheus"
         },
         "fieldConfig": {
           "defaults": {
@@ -782,7 +430,7 @@
           "h": 7,
           "w": 24,
           "x": 0,
-          "y": 22
+          "y": 8
         },
         "id": 5,
         "options": {
@@ -808,67 +456,90 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${datasource}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
-            "expr": "(sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))\n",
+            "exemplar": false,
+            "expr": "(sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))",
             "format": "table",
             "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
             "refId": "A"
           },
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${datasource}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
-            "expr": "(sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))\n",
+            "exemplar": false,
+            "expr": "(sum(rate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))  ",
             "format": "table",
+            "hide": false,
             "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
             "refId": "B"
           },
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${datasource}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
-            "expr": "(sum(rate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))\n",
+            "exemplar": false,
+            "expr": "(sum(rate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))",
             "format": "table",
+            "hide": false,
             "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
             "refId": "C"
           },
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${datasource}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
-            "expr": "(sum(rate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))\n",
+            "exemplar": false,
+            "expr": "(sum(rate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))",
             "format": "table",
+            "hide": false,
             "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
             "refId": "D"
           },
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${datasource}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
-            "expr": "(sum(rate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))\n",
+            "exemplar": false,
+            "expr": "(sum(rate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))",
             "format": "table",
+            "hide": false,
             "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
             "refId": "E"
           },
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${datasource}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
-            "expr": "(sum(rate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))\n",
+            "exemplar": false,
+            "expr": "(sum(rate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload_type=\"deployment\"}) by (workload))",
             "format": "table",
+            "hide": false,
             "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
             "refId": "F"
           }
         ],
@@ -924,8 +595,8 @@
       },
       {
         "datasource": {
-          "type": "datasource",
-          "uid": "-- Mixed --"
+          "type": "prometheus",
+          "uid": "prometheus"
         },
         "fieldConfig": {
           "defaults": {
@@ -987,7 +658,7 @@
           "h": 7,
           "w": 12,
           "x": 0,
-          "y": 29
+          "y": 15
         },
         "id": 6,
         "interval": "1m",
@@ -1011,7 +682,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${datasource}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
             "expr": "(sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload=~\".+\", workload_type=\"deployment\"}) by (workload))\n",
@@ -1025,8 +696,8 @@
       },
       {
         "datasource": {
-          "type": "datasource",
-          "uid": "-- Mixed --"
+          "type": "prometheus",
+          "uid": "prometheus"
         },
         "fieldConfig": {
           "defaults": {
@@ -1088,7 +759,7 @@
           "h": 7,
           "w": 12,
           "x": 12,
-          "y": 29
+          "y": 15
         },
         "id": 7,
         "interval": "1m",
@@ -1112,10 +783,11 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${datasource}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
             "expr": "(sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload=~\".+\", workload_type=\"deployment\"}) by (workload))\n",
+            "instant": false,
             "legendFormat": "__auto",
             "range": true,
             "refId": "A"
@@ -1126,8 +798,8 @@
       },
       {
         "datasource": {
-          "type": "datasource",
-          "uid": "-- Mixed --"
+          "type": "prometheus",
+          "uid": "prometheus"
         },
         "fieldConfig": {
           "defaults": {
@@ -1189,7 +861,7 @@
           "h": 7,
           "w": 12,
           "x": 0,
-          "y": 36
+          "y": 22
         },
         "id": 8,
         "interval": "1m",
@@ -1213,10 +885,11 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${datasource}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
             "expr": "(avg(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload=~\".+\", workload_type=\"deployment\"}) by (workload))",
+            "instant": false,
             "legendFormat": "__auto",
             "range": true,
             "refId": "A"
@@ -1227,8 +900,8 @@
       },
       {
         "datasource": {
-          "type": "datasource",
-          "uid": "-- Mixed --"
+          "type": "prometheus",
+          "uid": "prometheus"
         },
         "fieldConfig": {
           "defaults": {
@@ -1290,7 +963,7 @@
           "h": 7,
           "w": 12,
           "x": 12,
-          "y": 36
+          "y": 22
         },
         "id": 9,
         "interval": "1m",
@@ -1314,10 +987,11 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${datasource}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
-            "expr": "(avg(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload=~\".+\", workload_type=\"deployment\"}) by (workload))\n",
+            "expr": "(avg(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", namespace=\"sensei\"}[$__rate_interval])\n* on (namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace=\"sensei\", workload=~\".+\", workload_type=\"deployment\"}) by (workload))",
+            "instant": false,
             "legendFormat": "__auto",
             "range": true,
             "refId": "A"
@@ -1342,8 +1016,8 @@
     },
     "timepicker": {},
     "timezone": "utc",
-    "title": "Kubernetes / Compute Resources / Namespace (Workloads)",
+    "title": "Sensei Compute, Memory & Network Resources ",
     "uid": "a87fb0d919ec0ea5f6543124e16c42a5",
-    "version": 2,
+    "version": 3,
     "weekStart": ""
   }
