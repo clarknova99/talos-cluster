@@ -28,19 +28,6 @@
   "links": [],
   "panels": [
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 67,
-      "panels": [],
-      "title": "Global Cluster Overview",
-      "type": "row"
-    },
-    {
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
@@ -74,7 +61,7 @@
         "h": 9,
         "w": 6,
         "x": 0,
-        "y": 1
+        "y": 0
       },
       "id": 77,
       "options": {
@@ -179,7 +166,7 @@
         "h": 9,
         "w": 6,
         "x": 6,
-        "y": 1
+        "y": 0
       },
       "id": 78,
       "options": {
@@ -275,7 +262,7 @@
         "h": 5,
         "w": 2,
         "x": 12,
-        "y": 1
+        "y": 0
       },
       "id": 63,
       "options": {
@@ -389,7 +376,7 @@
         "h": 7,
         "w": 10,
         "x": 14,
-        "y": 1
+        "y": 0
       },
       "id": 72,
       "options": {
@@ -448,7 +435,7 @@
         "h": 4,
         "w": 2,
         "x": 12,
-        "y": 6
+        "y": 5
       },
       "id": 62,
       "options": {
@@ -556,7 +543,7 @@
         "h": 6,
         "w": 10,
         "x": 14,
-        "y": 8
+        "y": 7
       },
       "id": 55,
       "options": {
@@ -621,7 +608,7 @@
         "h": 4,
         "w": 6,
         "x": 0,
-        "y": 10
+        "y": 9
       },
       "id": 37,
       "options": {
@@ -723,7 +710,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 10
+        "y": 9
       },
       "id": 39,
       "options": {
@@ -812,7 +799,7 @@
         "h": 4,
         "w": 2,
         "x": 12,
-        "y": 10
+        "y": 9
       },
       "id": 59,
       "options": {
@@ -850,19 +837,6 @@
       ],
       "title": "Namespaces",
       "type": "stat"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 14
-      },
-      "id": 71,
-      "panels": [],
-      "title": "Resources",
-      "type": "row"
     },
     {
       "datasource": {
@@ -933,7 +907,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 15
+        "y": 13
       },
       "id": 46,
       "options": {
@@ -1038,7 +1012,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 15
+        "y": 13
       },
       "id": 50,
       "options": {
@@ -1144,7 +1118,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 24
       },
       "id": 44,
       "options": {
@@ -1192,398 +1166,12 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 25,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 10,
-        "x": 0,
-        "y": 34
-      },
-      "id": 52,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "max",
-            "mean"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "sortBy": "Max",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.4.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum(kube_namespace_labels{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Namespaces",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_pod_container_status_running{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Running Containers",
-          "range": true,
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_pod_status_phase{phase=\"Running\", namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Running Pods",
-          "range": true,
-          "refId": "O"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_service_info{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Services",
-          "range": true,
-          "refId": "C"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_endpoint_info{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Endpoints",
-          "range": true,
-          "refId": "D"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_ingress_info{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Ingresses",
-          "range": true,
-          "refId": "E"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "sum(kube_deployment_labels{cluster=\"$cluster\"})",
-          "interval": "",
-          "legendFormat": "Deployments",
-          "refId": "F"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_statefulset_labels{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Statefulsets",
-          "range": true,
-          "refId": "G"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "sum(kube_daemonset_labels{cluster=\"$cluster\"})",
-          "interval": "",
-          "legendFormat": "Daemonsets",
-          "refId": "H"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_persistentvolumeclaim_info{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Persistent Volume Claims",
-          "range": true,
-          "refId": "I"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_hpa_labels{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Horizontal Pod Autoscalers",
-          "range": true,
-          "refId": "J"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_configmap_info{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Configmaps",
-          "range": true,
-          "refId": "K"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_secret_info{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Secrets",
-          "range": true,
-          "refId": "L"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(kube_networkpolicy_labels{namespace=\"sensei\"})",
-          "interval": "",
-          "legendFormat": "Network Policies",
-          "range": true,
-          "refId": "M"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "count(count by (node) (kube_node_info{namespace=\"sensei\"}))",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "Nodes",
-          "range": true,
-          "refId": "N"
-        }
-      ],
-      "title": "Sensei Kubernetes Resource Count",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "No data is generally a good thing here.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "locale"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "sensei"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 13,
-        "w": 13,
-        "x": 10,
-        "y": 34
-      },
-      "id": 88,
-      "interval": "1h",
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "11.4.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"sensei\"}[$__rate_interval])) by (namespace) > 0",
-          "interval": "",
-          "legendFormat": "{{ namespace }}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Sensei Container Restarts",
-      "type": "barchart"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 32
       },
       "id": 69,
       "panels": [],
@@ -1607,7 +1195,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Global Kubernetes Overview",
+  "title": "Kubernetes - Global Utilization",
   "uid": "k8s_views_global",
   "version": 3,
   "weekStart": ""
