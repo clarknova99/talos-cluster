@@ -585,8 +585,8 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(node_memory_MemTotal_bytes{cluster=\"$cluster\"} - node_memory_MemAvailable_bytes{cluster=\"$cluster\"}) / sum(node_memory_MemTotal_bytes{cluster=\"$cluster\"})",
-          "interval": "$resolution",
+          "expr": "sum(node_memory_MemTotal_bytes{} - node_memory_MemAvailable_bytes{}) / sum(node_memory_MemTotal_bytes{})",
+          "interval": "",
           "legendFormat": "Memory usage in %",
           "range": true,
           "refId": "A"
@@ -961,10 +961,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(rate(container_cpu_usage_seconds_total{image!=\"\", cluster=\"$cluster\"}[$__rate_interval])) by (namespace)",
-          "interval": "$resolution",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{image!=\"\"}[$__rate_interval])) by (namespace)",
+          "interval": "",
           "legendFormat": "{{ namespace }}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1064,10 +1066,12 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(container_memory_working_set_bytes{image!=\"\", cluster=\"$cluster\"}) by (namespace)",
-          "interval": "$resolution",
+          "expr": "sum(container_memory_working_set_bytes{image!=\"\"}) by (namespace)",
+          "interval": "",
           "legendFormat": "{{ namespace }}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -1165,7 +1169,7 @@
           "editorMode": "code",
           "exemplar": true,
           "expr": "sum(rate(node_network_receive_bytes_total{device!~\"lxc.*|veth.*\"}[$__rate_interval]))",
-          "interval": "$resolution",
+          "interval": "",
           "legendFormat": "Received : {{ device }}",
           "range": true,
           "refId": "A"
@@ -1178,7 +1182,7 @@
           "editorMode": "code",
           "exemplar": true,
           "expr": "- sum(rate(node_network_transmit_bytes_total{device!~\"lxc.*|veth.*\"}[$__rate_interval]))",
-          "interval": "$resolution",
+          "interval": "",
           "legendFormat": "Transmitted : {{ device }}",
           "range": true,
           "refId": "B"
@@ -1605,6 +1609,6 @@
   "timezone": "",
   "title": "Global Kubernetes Overview",
   "uid": "k8s_views_global",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
