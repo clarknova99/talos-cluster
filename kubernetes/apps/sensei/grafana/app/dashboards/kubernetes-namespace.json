@@ -19,19 +19,7 @@
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
     "id": 4,
-    "links": [
-      {
-        "asDropdown": true,
-        "includeVars": true,
-        "keepTime": true,
-        "tags": [
-          "kubernetes-mixin"
-        ],
-        "targetBlank": false,
-        "title": "Kubernetes",
-        "type": "dashboards"
-      }
-    ],
+    "links": [],
     "panels": [
       {
         "datasource": {
@@ -1004,20 +992,18 @@
     "preload": false,
     "refresh": "10s",
     "schemaVersion": 40,
-    "tags": [
-      "kubernetes-mixin"
-    ],
+    "tags": [],
     "templating": {
       "list": []
     },
     "time": {
-      "from": "now-3h",
+      "from": "now-6h",
       "to": "now"
     },
     "timepicker": {},
     "timezone": "utc",
-    "title": "Sensei Compute, Memory & Network Resources ",
+    "title": "Sensei Compute, Memory & Network Resources",
     "uid": "a87fb0d919ec0ea5f6543124e16c42a5",
-    "version": 3,
+    "version": 4,
     "weekStart": ""
   }
