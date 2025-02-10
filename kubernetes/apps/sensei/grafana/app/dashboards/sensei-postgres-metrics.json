@@ -82,7 +82,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -198,7 +198,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -359,7 +359,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -470,7 +470,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -639,7 +639,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -754,7 +754,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -843,7 +843,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -931,7 +931,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -1020,7 +1020,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -1109,7 +1109,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -1198,7 +1198,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -1287,7 +1287,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -1343,6 +1343,209 @@
     },
     {
       "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "P44368ADAD746BC27"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 15,
+        "x": 0,
+        "y": 41
+      },
+      "id": 25,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "blur": 15,
+              "radius": 5,
+              "weight": {
+                "fixed": 1,
+                "max": 1,
+                "min": 0
+              }
+            },
+            "name": "Layer 1",
+            "tooltip": true,
+            "type": "heatmap"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": 17.258472,
+          "lon": 13.040792,
+          "zoom": 2.98
+        }
+      },
+      "pluginVersion": "11.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P44368ADAD746BC27"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select\nlocation->>'latitude' as latitude,\nlocation->>'longitude' as longitude,\nlocation->>'city' as city,\nlocation->>'country_name' as country,\ncount(distinct sensei_user_id) as user_count\nfrom events \nwhere sensei_user_id > 0\ngroup by latitude, longitude, city, country",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "User Map",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "P44368ADAD746BC27"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 9,
+        "x": 15,
+        "y": 41
+      },
+      "id": 26,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P44368ADAD746BC27"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select\nlocation->>'city' as city,\nlocation->>'country_name' as country,\ncount(distinct sensei_user_id) as user_count\nfrom events \nwhere sensei_user_id > 0\ngroup by city,country\norder by user_count desc",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Users by City",
+      "type": "table"
+    },
+    {
+      "datasource": {
         "type": "loki",
         "uid": "loki"
       },
@@ -1383,7 +1586,7 @@
         "h": 13,
         "w": 22,
         "x": 0,
-        "y": 41
+        "y": 59
       },
       "id": 6,
       "options": {
@@ -1431,7 +1634,7 @@
           "zoom": 2.43
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -1528,7 +1731,7 @@
         "h": 13,
         "w": 11,
         "x": 0,
-        "y": 54
+        "y": 72
       },
       "id": 7,
       "options": {
@@ -1549,7 +1752,7 @@
           }
         ]
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -1655,7 +1858,7 @@
         "h": 13,
         "w": 11,
         "x": 11,
-        "y": 54
+        "y": 72
       },
       "id": 23,
       "options": {
@@ -1676,7 +1879,7 @@
           }
         ]
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -1726,7 +1929,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 67
+        "y": 85
       },
       "id": 4,
       "panels": [],
@@ -1761,7 +1964,7 @@
         "h": 6,
         "w": 5,
         "x": 0,
-        "y": 68
+        "y": 86
       },
       "id": 8,
       "options": {
@@ -1781,7 +1984,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -1858,7 +2061,7 @@
         "h": 6,
         "w": 5,
         "x": 5,
-        "y": 68
+        "y": 86
       },
       "id": 9,
       "options": {
@@ -1878,7 +2081,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -1956,7 +2159,7 @@
         "h": 6,
         "w": 7,
         "x": 10,
-        "y": 68
+        "y": 86
       },
       "id": 10,
       "options": {
@@ -1976,7 +2179,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -2065,7 +2268,7 @@
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 74
+        "y": 92
       },
       "id": 3,
       "options": {
@@ -2080,7 +2283,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.4.1",
       "targets": [
         {
           "datasource": {
@@ -2178,8 +2381,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               }
             ]
           }
@@ -2206,7 +2408,7 @@
         "h": 9,
         "w": 17,
         "x": 0,
-        "y": 82
+        "y": 100
       },
       "id": 24,
       "interval": "1hr",
@@ -2325,6 +2527,6 @@
   "timezone": "utc",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 10,
+  "version": 3,
   "weekStart": ""
 }
