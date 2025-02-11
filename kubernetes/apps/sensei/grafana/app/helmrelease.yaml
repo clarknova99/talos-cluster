@@ -40,6 +40,8 @@ spec:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
+      date_formats:
+        default_week_start: monday
       news:
         news_feed_enabled: false
       auth:
