@@ -26,7 +26,13 @@ configMapGenerator:
       - kubernetes-global.json  
     options:
       annotations:
-        grafana_folder: "sensei"        
+        grafana_folder: "sensei"
+  - name: sensei-cnpg
+    files:
+      - sensei-cnpg.json  
+    options:
+      annotations:
+        grafana_folder: "sensei"             
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
