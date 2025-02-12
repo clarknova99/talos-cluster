@@ -24,7 +24,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 1,
-    "id": 28,
+    "id": 6,
     "links": [
       {
         "asDropdown": false,
@@ -48,43 +48,9 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 7,
-          "w": 3,
-          "x": 0,
-          "y": 0
-        },
-        "id": 676,
-        "options": {
-          "alertInstanceLabelFilter": "{namespace=~\"$namespace\",pod=~\"$instances\"}",
-          "alertName": "",
-          "dashboardAlerts": false,
-          "folder": "",
-          "groupBy": [],
-          "groupMode": "default",
-          "maxItems": 20,
-          "sortOrder": 1,
-          "stateFilter": {
-            "error": true,
-            "firing": true,
-            "noData": false,
-            "normal": true,
-            "pending": true
-          },
-          "viewMode": "list"
-        },
-        "pluginVersion": "11.4.1",
-        "title": "Alerts",
-        "type": "alertlist"
-      },
-      {
-        "fieldConfig": {
-          "defaults": {},
-          "overrides": []
-        },
-        "gridPos": {
           "h": 1,
           "w": 4,
-          "x": 3,
+          "x": 0,
           "y": 0
         },
         "id": 586,
@@ -109,7 +75,7 @@
         "gridPos": {
           "h": 1,
           "w": 12,
-          "x": 7,
+          "x": 4,
           "y": 0
         },
         "id": 336,
@@ -134,7 +100,7 @@
         "gridPos": {
           "h": 1,
           "w": 2,
-          "x": 19,
+          "x": 16,
           "y": 0
         },
         "id": 352,
@@ -159,7 +125,7 @@
         "gridPos": {
           "h": 1,
           "w": 3,
-          "x": 21,
+          "x": 18,
           "y": 0
         },
         "id": 354,
@@ -231,7 +197,7 @@
         "gridPos": {
           "h": 2,
           "w": 2,
-          "x": 3,
+          "x": 0,
           "y": 1
         },
         "id": 585,
@@ -356,7 +322,7 @@
         "gridPos": {
           "h": 2,
           "w": 1,
-          "x": 5,
+          "x": 2,
           "y": 1
         },
         "id": 590,
@@ -506,7 +472,7 @@
         "gridPos": {
           "h": 2,
           "w": 1,
-          "x": 6,
+          "x": 3,
           "y": 1
         },
         "id": 613,
@@ -573,7 +539,7 @@
         "gridPos": {
           "h": 3,
           "w": 2,
-          "x": 7,
+          "x": 4,
           "y": 1
         },
         "id": 338,
@@ -643,7 +609,7 @@
         "gridPos": {
           "h": 6,
           "w": 2,
-          "x": 9,
+          "x": 6,
           "y": 1
         },
         "id": 342,
@@ -734,7 +700,7 @@
         "gridPos": {
           "h": 4,
           "w": 2,
-          "x": 11,
+          "x": 8,
           "y": 1
         },
         "id": 344,
@@ -822,7 +788,7 @@
         "gridPos": {
           "h": 4,
           "w": 2,
-          "x": 13,
+          "x": 10,
           "y": 1
         },
         "id": 348,
@@ -901,7 +867,7 @@
         "gridPos": {
           "h": 3,
           "w": 2,
-          "x": 15,
+          "x": 12,
           "y": 1
         },
         "id": 465,
@@ -980,7 +946,7 @@
         "gridPos": {
           "h": 3,
           "w": 2,
-          "x": 17,
+          "x": 14,
           "y": 1
         },
         "id": 467,
@@ -1055,7 +1021,7 @@
         "gridPos": {
           "h": 4,
           "w": 2,
-          "x": 19,
+          "x": 16,
           "y": 1
         },
         "id": 356,
@@ -1193,7 +1159,7 @@
         "gridPos": {
           "h": 2,
           "w": 3,
-          "x": 21,
+          "x": 18,
           "y": 1
         },
         "id": 360,
@@ -1320,7 +1286,7 @@
         "gridPos": {
           "h": 2,
           "w": 4,
-          "x": 3,
+          "x": 0,
           "y": 3
         },
         "id": 591,
@@ -1437,7 +1403,7 @@
         "gridPos": {
           "h": 2,
           "w": 3,
-          "x": 21,
+          "x": 18,
           "y": 3
         },
         "id": 362,
@@ -1507,7 +1473,7 @@
         "gridPos": {
           "h": 3,
           "w": 2,
-          "x": 7,
+          "x": 4,
           "y": 4
         },
         "id": 340,
@@ -1591,7 +1557,7 @@
         "gridPos": {
           "h": 3,
           "w": 2,
-          "x": 15,
+          "x": 12,
           "y": 4
         },
         "id": 466,
@@ -1668,7 +1634,7 @@
         "gridPos": {
           "h": 3,
           "w": 2,
-          "x": 17,
+          "x": 14,
           "y": 4
         },
         "id": 468,
@@ -1704,6 +1670,469 @@
           }
         ],
         "title": "Replay Lag",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "description": "Online if there is at least one ready operator pod",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "red",
+                    "index": 0,
+                    "text": "Failure"
+                  }
+                },
+                "type": "value"
+              },
+              {
+                "options": {
+                  "from": 1,
+                  "result": {
+                    "color": "green",
+                    "index": 1,
+                    "text": "Online"
+                  },
+                  "to": 99
+                },
+                "type": "range"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "A"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Reconcile errors"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 1,
+          "x": 0,
+          "y": 5
+        },
+        "id": 589,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "value_and_name",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.4.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${DS_PROMETHEUS}"
+            },
+            "editorMode": "code",
+            "expr": "sum by (label_app_kubernetes_io_name) (kube_pod_status_ready{namespace=\"database\"} * on (pod) group_left( label_app_kubernetes_io_name ) kube_pod_labels{label_app_kubernetes_io_name=~\"cloudnative-pg\"})",
+            "hide": false,
+            "instant": false,
+            "legendFormat": "Operator Status",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "description": "Base Backups are considered healthy when there has been at least one base backup in the last 24 hours.",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "color": "orange",
+                    "index": 0,
+                    "text": "None"
+                  }
+                },
+                "type": "special"
+              },
+              {
+                "options": {
+                  "from": 0,
+                  "result": {
+                    "color": "green",
+                    "index": 1,
+                    "text": "Healthy"
+                  },
+                  "to": 360
+                },
+                "type": "range"
+              },
+              {
+                "options": {
+                  "from": 360,
+                  "result": {
+                    "color": "orange",
+                    "index": 2,
+                    "text": "Delayed"
+                  },
+                  "to": 900
+                },
+                "type": "range"
+              },
+              {
+                "options": {
+                  "from": 900,
+                  "result": {
+                    "color": "red",
+                    "index": 3,
+                    "text": "Unsynced"
+                  },
+                  "to": 4294967295
+                },
+                "type": "range"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "WAL"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "match": "null",
+                        "result": {
+                          "color": "orange",
+                          "index": 0,
+                          "text": "None"
+                        }
+                      },
+                      "type": "special"
+                    },
+                    {
+                      "options": {
+                        "from": 0,
+                        "result": {
+                          "color": "green",
+                          "index": 1,
+                          "text": "Healthy"
+                        },
+                        "to": 360
+                      },
+                      "type": "range"
+                    },
+                    {
+                      "options": {
+                        "from": 360,
+                        "result": {
+                          "color": "orange",
+                          "index": 2,
+                          "text": "Delayed"
+                        },
+                        "to": 900
+                      },
+                      "type": "range"
+                    },
+                    {
+                      "options": {
+                        "from": 900,
+                        "result": {
+                          "color": "red",
+                          "index": 3,
+                          "text": "Unsynced"
+                        },
+                        "to": 4294967295
+                      },
+                      "type": "range"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 1,
+          "x": 1,
+          "y": 5
+        },
+        "id": 612,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "value_and_name",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.4.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${DS_PROMETHEUS}"
+            },
+            "editorMode": "code",
+            "expr": "max((1 - cnpg_pg_replication_in_recovery{namespace=~\"$namespace\", pod=~\"$instances\"}) * (time() - timestamp(cnpg_pg_stat_archiver_seconds_since_last_archival{namespace=~\"$namespace\", pod=~\"$instances\"}) +\ncnpg_pg_stat_archiver_seconds_since_last_archival{namespace=~\"$namespace\", pod=~\"$instances\"}))",
+            "hide": false,
+            "instant": false,
+            "legendFormat": "WAL",
+            "range": true,
+            "refId": "WAL"
+          }
+        ],
+        "title": "",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "The operator reconcile errors don't distinguish between database cluster or namespaces.",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "green",
+                    "index": 0,
+                    "text": "None"
+                  }
+                },
+                "type": "value"
+              },
+              {
+                "options": {
+                  "from": 1,
+                  "result": {
+                    "color": "red",
+                    "index": 1,
+                    "text": "Backup"
+                  },
+                  "to": 9
+                },
+                "type": "range"
+              },
+              {
+                "options": {
+                  "from": 10,
+                  "result": {
+                    "color": "red",
+                    "index": 2,
+                    "text": "Cluster"
+                  },
+                  "to": 99
+                },
+                "type": "range"
+              },
+              {
+                "options": {
+                  "from": 100,
+                  "result": {
+                    "color": "red",
+                    "index": 3,
+                    "text": "Pooler"
+                  },
+                  "to": 999
+                },
+                "type": "range"
+              },
+              {
+                "options": {
+                  "from": 1000,
+                  "result": {
+                    "color": "red",
+                    "index": 4,
+                    "text": "Scheduled Backup"
+                  },
+                  "to": 9999
+                },
+                "type": "range"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "A"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Reconcile errors"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 1,
+          "x": 2,
+          "y": 5
+        },
+        "id": 655,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "value_and_name",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.4.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "editorMode": "code",
+            "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"database\", result=\"error\", controller=\"backup\"}), 1)",
+            "hide": true,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "RECONCILE_ERRORS_BACKUP"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "editorMode": "code",
+            "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"database\", result=\"error\", controller=\"cluster\"}), 1)",
+            "hide": true,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "RECONCILE_ERRORS_CLUSTER"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "editorMode": "code",
+            "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"database\", result=\"error\", controller=\"pooler\"}), 1)",
+            "hide": true,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "RECONCILE_ERRORS_POOLER"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "editorMode": "code",
+            "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"database\", result=\"error\", controller=\"scheduledbackup\"}), 1)",
+            "hide": true,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "RECONCILE_ERRORS_SCHEDULED_BACKUP"
+          },
+          {
+            "datasource": {
+              "type": "__expr__",
+              "uid": "${DS_EXPRESSION}"
+            },
+            "expression": "$RECONCILE_ERRORS_BACKUP + $RECONCILE_ERRORS_CLUSTER * 10 + $RECONCILE_ERRORS_POOLER * 100 + $RECONCILE_ERRORS_SCHEDULED_BACKUP * 1000",
+            "hide": false,
+            "refId": "A",
+            "type": "math"
+          }
+        ],
+        "title": "",
         "type": "stat"
       },
       {
@@ -1885,469 +2314,6 @@
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
-        "description": "Base Backups are considered healthy when there has been at least one base backup in the last 24 hours.",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [
-              {
-                "options": {
-                  "match": "null",
-                  "result": {
-                    "color": "orange",
-                    "index": 0,
-                    "text": "None"
-                  }
-                },
-                "type": "special"
-              },
-              {
-                "options": {
-                  "from": 0,
-                  "result": {
-                    "color": "green",
-                    "index": 1,
-                    "text": "Healthy"
-                  },
-                  "to": 360
-                },
-                "type": "range"
-              },
-              {
-                "options": {
-                  "from": 360,
-                  "result": {
-                    "color": "orange",
-                    "index": 2,
-                    "text": "Delayed"
-                  },
-                  "to": 900
-                },
-                "type": "range"
-              },
-              {
-                "options": {
-                  "from": 900,
-                  "result": {
-                    "color": "red",
-                    "index": 3,
-                    "text": "Unsynced"
-                  },
-                  "to": 4294967295
-                },
-                "type": "range"
-              }
-            ],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "WAL"
-              },
-              "properties": [
-                {
-                  "id": "mappings",
-                  "value": [
-                    {
-                      "options": {
-                        "match": "null",
-                        "result": {
-                          "color": "orange",
-                          "index": 0,
-                          "text": "None"
-                        }
-                      },
-                      "type": "special"
-                    },
-                    {
-                      "options": {
-                        "from": 0,
-                        "result": {
-                          "color": "green",
-                          "index": 1,
-                          "text": "Healthy"
-                        },
-                        "to": 360
-                      },
-                      "type": "range"
-                    },
-                    {
-                      "options": {
-                        "from": 360,
-                        "result": {
-                          "color": "orange",
-                          "index": 2,
-                          "text": "Delayed"
-                        },
-                        "to": 900
-                      },
-                      "type": "range"
-                    },
-                    {
-                      "options": {
-                        "from": 900,
-                        "result": {
-                          "color": "red",
-                          "index": 3,
-                          "text": "Unsynced"
-                        },
-                        "to": 4294967295
-                      },
-                      "type": "range"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 2,
-          "w": 1,
-          "x": 4,
-          "y": 5
-        },
-        "id": 612,
-        "options": {
-          "colorMode": "background",
-          "graphMode": "none",
-          "justifyMode": "auto",
-          "orientation": "auto",
-          "percentChangeColorMode": "standard",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showPercentChange": false,
-          "textMode": "value_and_name",
-          "wideLayout": true
-        },
-        "pluginVersion": "11.4.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
-            },
-            "editorMode": "code",
-            "expr": "max((1 - cnpg_pg_replication_in_recovery{namespace=~\"$namespace\", pod=~\"$instances\"}) * (time() - timestamp(cnpg_pg_stat_archiver_seconds_since_last_archival{namespace=~\"$namespace\", pod=~\"$instances\"}) +\ncnpg_pg_stat_archiver_seconds_since_last_archival{namespace=~\"$namespace\", pod=~\"$instances\"}))",
-            "hide": false,
-            "instant": false,
-            "legendFormat": "WAL",
-            "range": true,
-            "refId": "WAL"
-          }
-        ],
-        "title": "",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
-        },
-        "description": "Online if there is at least one ready operator pod",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [
-              {
-                "options": {
-                  "0": {
-                    "color": "red",
-                    "index": 0,
-                    "text": "Failure"
-                  }
-                },
-                "type": "value"
-              },
-              {
-                "options": {
-                  "from": 1,
-                  "result": {
-                    "color": "green",
-                    "index": 1,
-                    "text": "Online"
-                  },
-                  "to": 99
-                },
-                "type": "range"
-              }
-            ],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "A"
-              },
-              "properties": [
-                {
-                  "id": "displayName",
-                  "value": "Reconcile errors"
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 2,
-          "w": 1,
-          "x": 5,
-          "y": 5
-        },
-        "id": 589,
-        "options": {
-          "colorMode": "background",
-          "graphMode": "none",
-          "justifyMode": "auto",
-          "orientation": "auto",
-          "percentChangeColorMode": "standard",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showPercentChange": false,
-          "textMode": "value_and_name",
-          "wideLayout": true
-        },
-        "pluginVersion": "11.4.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
-            },
-            "editorMode": "code",
-            "expr": "sum by (label_app_kubernetes_io_name) (kube_pod_status_ready{namespace=\"$operatorNamespace\"} * on (pod) group_left( label_app_kubernetes_io_name ) kube_pod_labels{label_app_kubernetes_io_name=~\"cloudnative-pg\"})",
-            "hide": false,
-            "instant": false,
-            "legendFormat": "Operator Status",
-            "range": true,
-            "refId": "A"
-          }
-        ],
-        "title": "",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
-        },
-        "description": "The operator reconcile errors don't distinguish between database cluster or namespaces.",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [
-              {
-                "options": {
-                  "0": {
-                    "color": "green",
-                    "index": 0,
-                    "text": "None"
-                  }
-                },
-                "type": "value"
-              },
-              {
-                "options": {
-                  "from": 1,
-                  "result": {
-                    "color": "red",
-                    "index": 1,
-                    "text": "Backup"
-                  },
-                  "to": 9
-                },
-                "type": "range"
-              },
-              {
-                "options": {
-                  "from": 10,
-                  "result": {
-                    "color": "red",
-                    "index": 2,
-                    "text": "Cluster"
-                  },
-                  "to": 99
-                },
-                "type": "range"
-              },
-              {
-                "options": {
-                  "from": 100,
-                  "result": {
-                    "color": "red",
-                    "index": 3,
-                    "text": "Pooler"
-                  },
-                  "to": 999
-                },
-                "type": "range"
-              },
-              {
-                "options": {
-                  "from": 1000,
-                  "result": {
-                    "color": "red",
-                    "index": 4,
-                    "text": "Scheduled Backup"
-                  },
-                  "to": 9999
-                },
-                "type": "range"
-              }
-            ],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "A"
-              },
-              "properties": [
-                {
-                  "id": "displayName",
-                  "value": "Reconcile errors"
-                }
-              ]
-            }
-          ]
-        },
-        "gridPos": {
-          "h": 2,
-          "w": 1,
-          "x": 6,
-          "y": 5
-        },
-        "id": 655,
-        "options": {
-          "colorMode": "background",
-          "graphMode": "none",
-          "justifyMode": "auto",
-          "orientation": "auto",
-          "percentChangeColorMode": "standard",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showPercentChange": false,
-          "textMode": "value_and_name",
-          "wideLayout": true
-        },
-        "pluginVersion": "11.4.1",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
-            },
-            "editorMode": "code",
-            "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"backup\"}), 1)",
-            "hide": true,
-            "legendFormat": "__auto",
-            "range": true,
-            "refId": "RECONCILE_ERRORS_BACKUP"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
-            },
-            "editorMode": "code",
-            "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"cluster\"}), 1)",
-            "hide": true,
-            "legendFormat": "__auto",
-            "range": true,
-            "refId": "RECONCILE_ERRORS_CLUSTER"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
-            },
-            "editorMode": "code",
-            "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"pooler\"}), 1)",
-            "hide": true,
-            "legendFormat": "__auto",
-            "range": true,
-            "refId": "RECONCILE_ERRORS_POOLER"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
-            },
-            "editorMode": "code",
-            "expr": "clamp_max(max(controller_runtime_reconcile_total{namespace=~\"$operatorNamespace\", result=\"error\", controller=\"scheduledbackup\"}), 1)",
-            "hide": true,
-            "legendFormat": "__auto",
-            "range": true,
-            "refId": "RECONCILE_ERRORS_SCHEDULED_BACKUP"
-          },
-          {
-            "datasource": {
-              "type": "__expr__",
-              "uid": "${DS_EXPRESSION}"
-            },
-            "expression": "$RECONCILE_ERRORS_BACKUP + $RECONCILE_ERRORS_CLUSTER * 10 + $RECONCILE_ERRORS_POOLER * 100 + $RECONCILE_ERRORS_SCHEDULED_BACKUP * 1000",
-            "hide": false,
-            "refId": "A",
-            "type": "math"
-          }
-        ],
-        "title": "",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
-        },
         "description": "",
         "fieldConfig": {
           "defaults": {
@@ -2380,7 +2346,7 @@
         "gridPos": {
           "h": 2,
           "w": 2,
-          "x": 11,
+          "x": 8,
           "y": 5
         },
         "id": 346,
@@ -2457,7 +2423,7 @@
         "gridPos": {
           "h": 2,
           "w": 2,
-          "x": 13,
+          "x": 10,
           "y": 5
         },
         "id": 350,
@@ -2535,7 +2501,7 @@
         "gridPos": {
           "h": 2,
           "w": 2,
-          "x": 19,
+          "x": 16,
           "y": 5
         },
         "id": 358,
@@ -2644,7 +2610,7 @@
         "gridPos": {
           "h": 2,
           "w": 3,
-          "x": 21,
+          "x": 18,
           "y": 5
         },
         "id": 364,
@@ -2947,7 +2913,7 @@
           "content": "<table style=\"width:100%; height:100%;border:0px solid black;\">\n  <td style=\"text-align: center;vertical-align: middle;border:0px solid black; \"><p style=\"font-weight: bold;\">$instances</p>\n  </td>\n</table>",
           "mode": "html"
         },
-        "pluginVersion": "10.3.3",
+        "pluginVersion": "11.4.1",
         "repeat": "instances",
         "repeatDirection": "v",
         "title": "",
@@ -2990,8 +2956,7 @@
                   "value": 1
                 }
               ]
-            },
-            "unitScale": true
+            }
           },
           "overrides": []
         },
@@ -3007,6 +2972,7 @@
           "graphMode": "area",
           "justifyMode": "auto",
           "orientation": "auto",
+          "percentChangeColorMode": "standard",
           "reduceOptions": {
             "calcs": [
               "lastNotNull"
@@ -3019,7 +2985,7 @@
           "textMode": "value",
           "wideLayout": true
         },
-        "pluginVersion": "10.3.3",
+        "pluginVersion": "11.4.1",
         "repeat": "instances",
         "repeatDirection": "v",
         "targets": [
@@ -3709,7 +3675,7 @@
               "h": 1,
               "w": 3,
               "x": 0,
-              "y": 25
+              "y": 19
             },
             "id": 187,
             "options": {
@@ -3721,7 +3687,7 @@
               "content": "",
               "mode": "html"
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "11.4.1",
             "title": "Instance",
             "transparent": true,
             "type": "text"
@@ -3735,7 +3701,7 @@
               "h": 1,
               "w": 3,
               "x": 3,
-              "y": 25
+              "y": 19
             },
             "id": 183,
             "options": {
@@ -3747,7 +3713,7 @@
               "content": "",
               "mode": "html"
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "11.4.1",
             "title": "Max Connections",
             "type": "text"
           },
@@ -3760,7 +3726,7 @@
               "h": 1,
               "w": 3,
               "x": 6,
-              "y": 25
+              "y": 19
             },
             "id": 184,
             "options": {
@@ -3772,7 +3738,7 @@
               "content": "",
               "mode": "html"
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "11.4.1",
             "title": "Shared Buffers",
             "type": "text"
           },
@@ -3785,7 +3751,7 @@
               "h": 1,
               "w": 3,
               "x": 9,
-              "y": 25
+              "y": 19
             },
             "id": 185,
             "options": {
@@ -3797,7 +3763,7 @@
               "content": "",
               "mode": "html"
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "11.4.1",
             "title": "Effective Cache Size",
             "type": "text"
           },
@@ -3810,7 +3776,7 @@
               "h": 1,
               "w": 3,
               "x": 12,
-              "y": 25
+              "y": 19
             },
             "id": 186,
             "options": {
@@ -3822,7 +3788,7 @@
               "content": "",
               "mode": "html"
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "11.4.1",
             "title": "Work Mem",
             "type": "text"
           },
@@ -3835,7 +3801,7 @@
               "h": 1,
               "w": 3,
               "x": 15,
-              "y": 25
+              "y": 19
             },
             "id": 188,
             "options": {
@@ -3847,7 +3813,7 @@
               "content": "",
               "mode": "html"
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "11.4.1",
             "title": "Maintenance Work Mem",
             "type": "text"
           },
@@ -3860,7 +3826,7 @@
               "h": 1,
               "w": 3,
               "x": 18,
-              "y": 25
+              "y": 19
             },
             "id": 189,
             "options": {
@@ -3872,7 +3838,7 @@
               "content": "",
               "mode": "html"
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "11.4.1",
             "title": "Random Page Cost",
             "type": "text"
           },
@@ -3885,7 +3851,7 @@
               "h": 1,
               "w": 3,
               "x": 21,
-              "y": 25
+              "y": 19
             },
             "id": 190,
             "options": {
@@ -3897,7 +3863,7 @@
               "content": "",
               "mode": "html"
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "11.4.1",
             "title": "Sequential Page Cost",
             "type": "text"
           },
@@ -3910,7 +3876,7 @@
               "h": 3,
               "w": 3,
               "x": 0,
-              "y": 26
+              "y": 20
             },
             "id": 86,
             "options": {
@@ -3943,7 +3909,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "dark-purple"
+                      "color": "dark-purple",
+                      "value": null
                     }
                   ]
                 },
@@ -3955,7 +3922,7 @@
               "h": 3,
               "w": 3,
               "x": 3,
-              "y": 26
+              "y": 20
             },
             "id": 30,
             "options": {
@@ -4011,7 +3978,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "dark-purple"
+                      "color": "dark-purple",
+                      "value": null
                     }
                   ]
                 },
@@ -4024,7 +3992,7 @@
               "h": 3,
               "w": 3,
               "x": 6,
-              "y": 26
+              "y": 20
             },
             "id": 24,
             "options": {
@@ -4080,7 +4048,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "dark-purple"
+                      "color": "dark-purple",
+                      "value": null
                     }
                   ]
                 },
@@ -4093,7 +4062,7 @@
               "h": 3,
               "w": 3,
               "x": 9,
-              "y": 26
+              "y": 20
             },
             "id": 57,
             "options": {
@@ -4149,7 +4118,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "dark-purple"
+                      "color": "dark-purple",
+                      "value": null
                     }
                   ]
                 },
@@ -4162,7 +4132,7 @@
               "h": 3,
               "w": 3,
               "x": 12,
-              "y": 26
+              "y": 20
             },
             "id": 26,
             "options": {
@@ -4217,7 +4187,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "dark-purple"
+                      "color": "dark-purple",
+                      "value": null
                     }
                   ]
                 },
@@ -4230,7 +4201,7 @@
               "h": 3,
               "w": 3,
               "x": 15,
-              "y": 26
+              "y": 20
             },
             "id": 47,
             "options": {
@@ -4285,7 +4256,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "dark-purple"
+                      "color": "dark-purple",
+                      "value": null
                     }
                   ]
                 },
@@ -4298,7 +4270,7 @@
               "h": 3,
               "w": 3,
               "x": 18,
-              "y": 26
+              "y": 20
             },
             "id": 48,
             "options": {
@@ -4353,7 +4325,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "dark-purple"
+                      "color": "dark-purple",
+                      "value": null
                     }
                   ]
                 },
@@ -4366,7 +4339,7 @@
               "h": 3,
               "w": 3,
               "x": 21,
-              "y": 26
+              "y": 20
             },
             "id": 56,
             "options": {
@@ -4429,11 +4402,11 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "dark-purple"
+                      "color": "dark-purple",
+                      "value": null
                     }
                   ]
-                },
-                "unitScale": true
+                }
               },
               "overrides": []
             },
@@ -4441,7 +4414,7 @@
               "h": 9,
               "w": 24,
               "x": 0,
-              "y": 32
+              "y": 29
             },
             "id": 150,
             "options": {
@@ -4457,7 +4430,7 @@
               "showHeader": true,
               "sortBy": []
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "11.4.1",
             "targets": [
               {
                 "datasource": {
@@ -5386,7 +5359,7 @@
               "h": 8,
               "w": 12,
               "x": 0,
-              "y": 52
+              "y": 68
             },
             "id": 424,
             "options": {
@@ -5476,7 +5449,7 @@
               "h": 8,
               "w": 12,
               "x": 12,
-              "y": 52
+              "y": 68
             },
             "id": 426,
             "options": {
@@ -5564,7 +5537,7 @@
               "h": 7,
               "w": 24,
               "x": 0,
-              "y": 60
+              "y": 76
             },
             "id": 564,
             "options": {
@@ -5665,7 +5638,7 @@
               "h": 8,
               "w": 12,
               "x": 0,
-              "y": 67
+              "y": 83
             },
             "id": 44,
             "options": {
@@ -5817,7 +5790,7 @@
               "h": 8,
               "w": 12,
               "x": 12,
-              "y": 67
+              "y": 83
             },
             "id": 46,
             "options": {
@@ -5924,7 +5897,7 @@
               "h": 8,
               "w": 12,
               "x": 0,
-              "y": 75
+              "y": 91
             },
             "id": 22,
             "options": {
@@ -6022,7 +5995,7 @@
               "h": 8,
               "w": 12,
               "x": 12,
-              "y": 75
+              "y": 91
             },
             "id": 2,
             "options": {
@@ -6131,7 +6104,7 @@
               "h": 8,
               "w": 8,
               "x": 0,
-              "y": 53
+              "y": 69
             },
             "id": 6,
             "options": {
@@ -6237,7 +6210,7 @@
               "h": 8,
               "w": 8,
               "x": 8,
-              "y": 53
+              "y": 69
             },
             "id": 52,
             "options": {
@@ -6345,7 +6318,7 @@
               "h": 8,
               "w": 8,
               "x": 16,
-              "y": 53
+              "y": 69
             },
             "id": 53,
             "options": {
@@ -6439,7 +6412,7 @@
               "h": 8,
               "w": 8,
               "x": 0,
-              "y": 61
+              "y": 77
             },
             "id": 725,
             "options": {
@@ -6553,7 +6526,7 @@
               "h": 8,
               "w": 6,
               "x": 0,
-              "y": 59
+              "y": 75
             },
             "id": 16,
             "options": {
@@ -6649,7 +6622,7 @@
               "h": 8,
               "w": 6,
               "x": 6,
-              "y": 59
+              "y": 75
             },
             "id": 14,
             "options": {
@@ -6746,7 +6719,7 @@
               "h": 8,
               "w": 6,
               "x": 12,
-              "y": 59
+              "y": 75
             },
             "id": 59,
             "options": {
@@ -6844,7 +6817,7 @@
               "h": 8,
               "w": 6,
               "x": 18,
-              "y": 59
+              "y": 75
             },
             "id": 20,
             "options": {
@@ -6916,7 +6889,7 @@
               "h": 8,
               "w": 12,
               "x": 0,
-              "y": 55
+              "y": 71
             },
             "id": 233,
             "options": {
@@ -7037,7 +7010,7 @@
               "h": 8,
               "w": 12,
               "x": 12,
-              "y": 55
+              "y": 71
             },
             "id": 235,
             "options": {
@@ -7146,7 +7119,7 @@
               "h": 6,
               "w": 8,
               "x": 0,
-              "y": 56
+              "y": 72
             },
             "id": 237,
             "options": {
@@ -7257,7 +7230,7 @@
               "h": 6,
               "w": 5,
               "x": 0,
-              "y": 57
+              "y": 73
             },
             "id": 295,
             "options": {
@@ -7371,7 +7344,7 @@
               "h": 6,
               "w": 5,
               "x": 5,
-              "y": 57
+              "y": 73
             },
             "id": 296,
             "options": {
@@ -7486,7 +7459,7 @@
               "h": 2,
               "w": 4,
               "x": 0,
-              "y": 64
+              "y": 80
             },
             "id": 697,
             "options": {
@@ -7588,7 +7561,7 @@
               "h": 2,
               "w": 4,
               "x": 4,
-              "y": 64
+              "y": 80
             },
             "id": 702,
             "options": {
@@ -7690,7 +7663,7 @@
               "h": 2,
               "w": 4,
               "x": 8,
-              "y": 64
+              "y": 80
             },
             "id": 698,
             "options": {
@@ -7792,7 +7765,7 @@
               "h": 2,
               "w": 4,
               "x": 12,
-              "y": 64
+              "y": 80
             },
             "id": 704,
             "options": {
@@ -7894,7 +7867,7 @@
               "h": 2,
               "w": 4,
               "x": 16,
-              "y": 64
+              "y": 80
             },
             "id": 703,
             "options": {
@@ -8017,7 +7990,7 @@
               "h": 8,
               "w": 4,
               "x": 0,
-              "y": 66
+              "y": 82
             },
             "id": 746,
             "options": {
@@ -8146,7 +8119,7 @@
               "h": 8,
               "w": 4,
               "x": 4,
-              "y": 66
+              "y": 82
             },
             "id": 767,
             "options": {
@@ -8274,7 +8247,7 @@
               "h": 8,
               "w": 4,
               "x": 8,
-              "y": 66
+              "y": 82
             },
             "id": 768,
             "options": {
@@ -8402,7 +8375,7 @@
               "h": 8,
               "w": 4,
               "x": 12,
-              "y": 66
+              "y": 82
             },
             "id": 790,
             "options": {
@@ -8532,7 +8505,7 @@
               "h": 8,
               "w": 4,
               "x": 16,
-              "y": 66
+              "y": 82
             },
             "id": 769,
             "options": {
@@ -8594,27 +8567,15 @@
         },
         {
           "current": {
-            "text": "kube-system",
-            "value": "kube-system"
+            "text": "database",
+            "value": "database"
           },
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "definition": "label_values(controller_runtime_active_workers,namespace)",
-          "description": "Namespace where the CNPG operator is located",
-          "includeAll": false,
+          "hide": 2,
           "label": "Operator Namespace",
           "name": "operatorNamespace",
-          "options": [],
-          "query": {
-            "qryType": 1,
-            "query": "label_values(controller_runtime_active_workers,namespace)",
-            "refId": "PrometheusVariableQueryEditor-VariableQuery"
-          },
-          "refresh": 2,
-          "regex": "",
-          "type": "query"
+          "query": "database",
+          "skipUrlSync": true,
+          "type": "constant"
         },
         {
           "current": {
@@ -8641,34 +8602,20 @@
         },
         {
           "current": {
-            "text": "postgres16",
-            "value": "postgres16"
+            "text": "postgres16vector",
+            "value": "postgres16vector"
           },
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "definition": "cnpg_collector_up{namespace=~\"$namespace\"}",
-          "description": "CNPG Cluster",
-          "includeAll": false,
+          "hide": 2,
           "label": "Cluster",
           "name": "cluster",
-          "options": [],
-          "query": {
-            "query": "cnpg_collector_up{namespace=~\"$namespace\"}",
-            "refId": "PrometheusVariableQueryEditor-VariableQuery"
-          },
-          "refresh": 2,
-          "regex": "/\\bcluster\\b=\"(?<text>[^\"]+)/g",
-          "sort": 1,
-          "type": "query"
+          "query": "postgres16vector",
+          "skipUrlSync": true,
+          "type": "constant"
         },
         {
           "allValue": "$cluster-([1-9][0-9]*)$",
           "current": {
-            "text": [
-              "All"
-            ],
+            "text": "All",
             "value": [
               "$__all"
             ]
@@ -8704,7 +8651,7 @@
       "nowDelay": ""
     },
     "timezone": "",
-    "title": "CloudNativePG",
+    "title": "Postgres Metrics",
     "uid": "cloudnative-pg",
     "version": 1,
     "weekStart": ""
