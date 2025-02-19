@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.4.0
+      version: 3.6.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -38,72 +38,57 @@ spec:
               GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
               GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
-              ENVIRONMENT: stage
+              SENSEI_OPENAI_API_KEY: ${SECRET_SENSEI_OPENAI_KEY}
+              ENVIRONMENT: prod
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
-              DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
+              DISCORD_WEBHOOK: ${SECRET_SENSEI_DISCORD_WEBHOOK}
+              DISCORD_SIGNUP_WEBOOK: ${SECRET_DISCORD_SIGNUP_WEBOOK}
               LICHESS_API_TOKEN: ${LICHESS_API_TOKEN}
               GROQ_API_KEY: ${GROQ_API_KEY_LLM}
               STOCKFISH_PATH: /usr/games/stockfish
               LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
               LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
               LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000
+              LITELLM_BASE_URL: http://litellm.sensei.svc.cluster.local:4000
+              LITELLM_API_KEY: ${SECRET_LITELLM_API_KEY}
               #GROQ_MODEL: llama3-70b-8192
-          # worker-game-processing:
-          #   image:
-          #     repository: ghcr.io/clarknova99/project-sensei/backend
-          #     tag: stage-latest@sha256:84e34d12ec6e3672480992948c6a4d0e7fb105a41f125b73a361d31b4124b244
-          #     pullPolicy: Always
-          #   command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
-          #   env:
-          #     GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
-          #     GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
-          #     OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
-          #     ENVIRONMENT: stage
-          #     PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-stage
-          #     DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
-          #     LICHESS_API_TOKEN: ${LICHESS_API_TOKEN}
-          #     GROQ_API_KEY: ${GROQ_API_KEY_LLM}
-          #     STOCKFISH_PATH: /usr/games/stockfish
-          #     LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
-          #     LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
-          #     LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-secret
-    defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: "In"
-                    values: ["jupiter"]
+    # defaultPodOptions:
+    #   affinity:
+    #     nodeAffinity:
+    #       preferredDuringSchedulingIgnoredDuringExecution:
+    #         - weight: 1
+    #           preference:
+    #             matchExpressions:
+    #               - key: kubernetes.io/hostname
+    #                 operator: "In"
+    #                 values: ["jupiter"]
     service:
       app:
         controller: sensei-stage-api
         ports:
           http:
             port: 3001
-    ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
-          nginx.ingress.kubernetes.io/proxy-read-timeout: "180"
-          nginx.ingress.kubernetes.io/proxy-send-timeout: "180"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:math-compass
-        className: external
-        hosts:
-          - host: stageapi.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 3001
-        tls:
-          - hosts:
-              - stageapi.${SECRET_DOMAIN_TWO}
+    # ingress:
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+    #       nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "180"
+    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "180"
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:math-compass
+    #     className: external
+    #     hosts:
+    #       - host: stageapi.${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: 3001
+    #     tls:
+    #       - hosts:
+    #           - stageapi.${SECRET_DOMAIN_TWO}
