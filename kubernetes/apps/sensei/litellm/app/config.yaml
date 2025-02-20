@@ -26,7 +26,7 @@ model_list:
   - model_name: gpt-3.5-ft
     litellm_params:
       model: openai/ft:gpt-3.5-turbo-0125:personal:sensei-fine-tuned-v1:B0PBp7HZ
-      api_key: ${SECRET_SENSEI_OPENAI_KEY}      
+      api_key: ${SECRET_FT_SENSEI_OPENAI_KEY}      
 
 general_settings:
   store_prompts_in_spend_logs: True
