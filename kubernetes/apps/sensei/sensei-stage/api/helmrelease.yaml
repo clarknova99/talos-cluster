@@ -56,16 +56,16 @@ spec:
           # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-secret
-    # defaultPodOptions:
-    #   affinity:
-    #     nodeAffinity:
-    #       preferredDuringSchedulingIgnoredDuringExecution:
-    #         - weight: 1
-    #           preference:
-    #             matchExpressions:
-    #               - key: kubernetes.io/hostname
-    #                 operator: "In"
-    #                 values: ["jupiter"]
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: "In"
+                    values: ["venus"]
     service:
       app:
         controller: sensei-stage-api
