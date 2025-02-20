@@ -51,7 +51,6 @@ spec:
               LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000
               LITELLM_BASE_URL: http://litellm.sensei.svc.cluster.local:4000
               LITELLM_API_KEY: ${SECRET_LITELLM_API_KEY}
-              #GROQ_MODEL: llama3-70b-8192
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
@@ -59,13 +58,12 @@ spec:
     defaultPodOptions:
       affinity:
         nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              preference:
-                matchExpressions:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
                   - key: kubernetes.io/hostname
-                    operator: "In"
-                    values: ["venus"]
+                    operator: NotIn
+                    values: ["mars"]            
     service:
       app:
         controller: sensei-stage-api
