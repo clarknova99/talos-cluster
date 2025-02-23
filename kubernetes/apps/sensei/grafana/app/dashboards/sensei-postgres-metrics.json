@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 5,
   "links": [],
   "panels": [
     {
@@ -802,7 +802,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 803
+                "value": 540
               }
             ]
           }
@@ -838,7 +838,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH user_days AS (\n    SELECT \n        e.sensei_user_id,\n        COUNT(DISTINCT DATE(e.event_timestamp)) AS days_with_events\n    FROM \n        events e\n    JOIN \n        sensei_users su ON e.sensei_user_id = su.sensei_user_id\n    WHERE su.sensei_user_id > 2\n--    AND joined_at >= '2024-12-30'\n    GROUP BY \n        e.sensei_user_id\n), total_users AS (\n    SELECT COUNT(sensei_user_id) AS total_user_count \n    FROM sensei_users \n    WHERE joined_at >= '2024-12-30'\n)\nSELECT \n    ud.days_with_events,\n    COUNT(ud.sensei_user_id) AS user_count,\n    ROUND((COUNT(ud.sensei_user_id) * 100.0) / tu.total_user_count, 2) AS user_percentage\nFROM \n    user_days ud\nJOIN \n    total_users tu ON 1=1\nGROUP BY \n    ud.days_with_events, tu.total_user_count\nORDER BY \n    ud.days_with_events;",
+          "rawSql": "WITH user_event_days AS (\n    SELECT \n        sensei_user_id, \n        COUNT(DISTINCT DATE(event_timestamp)) AS event_days_count\n    FROM events\n    WHERE sensei_user_id > 2\n    GROUP BY sensei_user_id\n),\ngrouped_user_event_days AS (\n    SELECT \n        CASE \n            WHEN event_days_count >= 10 THEN '10+'\n            ELSE event_days_count::TEXT\n        END AS days_with_events,\n        COUNT(*) AS user_count\n    FROM user_event_days\n    GROUP BY \n        CASE \n            WHEN event_days_count >= 10 THEN '10+'\n            ELSE event_days_count::TEXT\n        END\n),\ntotal_users AS (\n    SELECT COUNT(*) AS total_user_count FROM sensei_users\n)\nSELECT \n    g.days_with_events,\n    g.user_count,\n    ROUND(100.0 * g.user_count / t.total_user_count, 2) AS percentage_of_users\nFROM grouped_user_event_days g\nCROSS JOIN total_users t\nORDER BY \n    CASE \n        WHEN g.days_with_events = '10+' THEN 10\n        ELSE g.days_with_events::INTEGER\n    END;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1552,7 +1552,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1667,7 +1668,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1753,7 +1755,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "#EAB839",
@@ -1879,7 +1882,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2005,7 +2009,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2135,7 +2140,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           },
@@ -2232,7 +2238,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           }
@@ -2328,7 +2335,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": null
               }
             ]
           },
@@ -2432,7 +2440,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2561,7 +2570,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               }
             ]
           }
