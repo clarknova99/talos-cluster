@@ -869,6 +869,7 @@
             "indexByName": {},
             "renameByName": {
               "days_with_events": "Days with Events",
+              "percentage_of_users": "% Of Users",
               "user_count": "User Count",
               "user_percentage": "%"
             }
