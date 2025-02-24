@@ -65,7 +65,7 @@ spec:
           worker:
             image:
               repository: ghcr.io/langfuse/langfuse-worker
-              tag: 3.14@sha256:158f6b32cec5641b626907eb3cf0ef9ee734532989ddc8d77f93e87923e2f0bb
+              tag: 3.29@sha256:d7bb957d0d9a446633b3ebfe4aa3c5f36419a39cdb14d028d563eac3b5649ca6
             env:
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse2
               SALT: ${SECRET_LANGFUSE_SALT}
