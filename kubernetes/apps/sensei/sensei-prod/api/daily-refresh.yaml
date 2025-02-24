@@ -13,7 +13,7 @@ spec:
           imagePullSecrets:
           - name: sensei-secret        
           containers:
-          - name: stage-daily-user-refresh
+          - name: prod-daily-user-refresh
             image: ghcr.io/clarknova99/project-sensei/backend:latest
             imagePullPolicy: Always
 
