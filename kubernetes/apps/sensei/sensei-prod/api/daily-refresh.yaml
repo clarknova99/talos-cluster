@@ -19,6 +19,9 @@ spec:
 
             command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
             env:
+            - LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
+            - LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
+            - LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000            
             - name: GROQ_API_KEY_LLM
               valueFrom:
                 secretKeyRef:
