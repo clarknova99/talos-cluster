@@ -73,7 +73,7 @@ spec:
       www:
         enabled: true
         type: nfs
-        server: 192.168.1.2
-        path: /volume1/network-storage/nginx/www
+        server: 192.168.1.3
+        path: /volume1/network-storage/network-storage/nginx/www
         globalMounts:
           - path: /opt/bitnami/nginx/html
