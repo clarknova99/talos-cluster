@@ -63,7 +63,7 @@ spec:
       config:
         enabled: true
         type: nfs
-        server: 192.168.1.2
-        path: /volume1/network-storage/influxdb
+        server: 192.168.1.3
+        path: /volume1/network-storage/network-storage/influxdb
         globalMounts:
           - path: /var/lib/influxdb
