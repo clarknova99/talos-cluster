@@ -128,9 +128,15 @@ spec:
               - *s3Host
     persistence:
       config:
-        enabled: true
-        type: nfs
-        server: 192.168.1.3
-        path: /volume1/network-storage/network-storage/minio
+        existingClaim: minio-nfs-pvc
         globalMounts:
           - path: /data
+    
+    # persistence:
+    #   config:
+    #     enabled: true
+    #     type: nfs
+    #     server: 192.168.1.3
+    #     path: /volume1/network-storage/network-storage/minio
+    #     globalMounts:
+    #       - path: /data

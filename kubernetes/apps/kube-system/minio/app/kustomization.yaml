@@ -5,4 +5,5 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - ./minio.sops.yaml
+  - ./pvc.yaml
   - ./helmrelease.yaml
