@@ -106,21 +106,21 @@ spec:
         enabled: true
         type: nfs
         server: 192.168.1.3
-        path: /volume1/network-storage/cluster/downloads
+        path: /volume1/network-storage/downloads
         globalMounts:
           - path: /downloads
       movies:
         enabled: true
         type: nfs
         server: 192.168.1.3
-        path: /volume1/network-storage/cluster/Video/Movies
+        path: /volume1/network-storage/Video/Movies
         globalMounts:
           - path: /movies
       tv:
         enabled: true
         type: nfs
         server: 192.168.1.3
-        path: /volume1/network-storage/cluster/Video/TV
+        path: /volume1/network-storage/Video/TV
         globalMounts:
           - path: /tv
       incomplete:
