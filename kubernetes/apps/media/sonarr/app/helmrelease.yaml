@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.4.0
+      version: 3.7.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/sonarr-develop
-              tag: 4.0.12.2900@sha256:e4de8879c00d0d5ac2d616e325259cf0afef0b3715fcdcf081292c25c5072760
+              tag: 4.0.13.2934@sha256:d871b5816748ecca49e322b905b399d5aaf2ef36fa3ec45179f785f2c5861a41
             env:
               SONARR__APP__INSTANCENAME: Sonarr
               SONARR__APP__THEME: dark
@@ -76,11 +76,11 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1025
+        runAsGroup: 1025
+        fsGroup: 1025
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
+        supplementalGroups: [100]
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
@@ -119,15 +119,15 @@ spec:
       downloads:
         enabled: true
         type: nfs
-        server: 192.168.1.2
-        path: /volume1/Downloads
+        server: 192.168.1.3
+        path: /volume1/network-storage/downloads
         globalMounts:
           - path: /downloads
       videos:
         enabled: true
         type: nfs
-        server: 192.168.1.2
-        path: /volume1/Video
+        server: 192.168.1.3
+        path: /volume1/network-storage/Video
         globalMounts:
           - path: /video
       # tv:
