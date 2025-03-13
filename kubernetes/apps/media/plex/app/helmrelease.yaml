@@ -173,11 +173,7 @@ spec:
       config-logs:
         type: emptyDir
         globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Logs
-      # logs:
-      #   type: emptyDir
-      #   globalMounts:
-      #     - path: /config/Library/Application Support/Plex Media Server/Logs                    
+          - path: /config/Library/Application Support/Plex Media Server/Logs                
       tmp:
         type: emptyDir
       transcode:
