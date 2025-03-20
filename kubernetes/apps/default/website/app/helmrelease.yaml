@@ -67,6 +67,7 @@ spec:
           - hosts:
               - ${SECRET_DOMAIN}
               - www.${SECRET_DOMAIN}
+            secretName: bigwang-org-production-tls
     persistence:
       config:
         enabled: true
