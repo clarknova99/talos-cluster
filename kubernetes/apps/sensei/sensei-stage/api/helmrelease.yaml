@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:5d478913c73a278e308213da45a8e124d026eaf45c4e8afa121dc826fc3d3e69
+              tag: stage-latest@sha256:b22eedef168827be79016bfb5c5e3c204b61096465ddf3a7becc307c3e07202d
               pullPolicy: Always
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
@@ -63,7 +63,7 @@ spec:
               - matchExpressions:
                   - key: kubernetes.io/hostname
                     operator: NotIn
-                    values: ["mars"]            
+                    values: ["mars"]
     service:
       app:
         controller: sensei-stage-api
