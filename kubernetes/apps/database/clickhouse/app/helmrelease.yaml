@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.2
+      version: 3.7.3
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
@@ -29,9 +29,9 @@ spec:
               pullPolicy: IfNotPresent
             # securityContext:
             #   readOnlyRootFilesystem: true
-            env:
-              CLICKHOUSE_USER: clickhouse
-              CLICKHOUSE_PASSWORD: clickhouse
+            # env:
+            #   CLICKHOUSE_USER: clickhouse
+            #   CLICKHOUSE_PASSWORD: clickhouse
             probes:
               liveness: &probe
                 enabled: true
@@ -86,9 +86,9 @@ spec:
         type: configMap
         name: clickhouse-config
         globalMounts:
-          - path: /etc/clickhouse-server/config.d/logging.xml
+          - path: /etc/clickhouse-server/config.d/config.xml
             subPath: config.xml
-          - path: /etc/clickhouse-server/users.d/logging.xml
+          - path: /etc/clickhouse-server/users.d/users.xml
             subPath: users.xml
 
     configMaps:
@@ -119,10 +119,10 @@ spec:
           users.xml: |
             <clickhouse>
                 <users>
-                    <clickhouse>
+                    <default>
                         <password>clickhouse</password>
-                        <!-- Optionally, if needed, reference a profile -->
+                        <!-- Optionally, add a profile if needed -->
                         <!-- <profile>default</profile> -->
-                    </clickhouse>
+                    </default>
                 </users>
             </clickhouse>
