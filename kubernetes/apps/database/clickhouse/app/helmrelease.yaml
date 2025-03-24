@@ -29,9 +29,10 @@ spec:
               pullPolicy: IfNotPresent
             # securityContext:
             #   readOnlyRootFilesystem: true
-            # env:
-            #   CLICKHOUSE_USER: clickhouse
-            #   CLICKHOUSE_PASSWORD: clickhouse
+            env:
+              CLICKHOUSE_USER: clickhouse
+              CLICKHOUSE_PASSWORD: clickhouse
+              CLICKHOUSE_TCP_PORT: 29000
             probes:
               liveness: &probe
                 enabled: true
@@ -63,8 +64,8 @@ spec:
           http:
             port: 8123
           tcp:
-            port: 9000
-            targetPort: 9000
+            port: 29000
+            targetPort: 29000
 
     persistence:
       data:
