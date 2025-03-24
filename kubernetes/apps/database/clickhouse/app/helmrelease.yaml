@@ -102,66 +102,29 @@ spec:
             <clickhouse replace="true">
               <logger>
                 <level>debug</level>
-                <log>/var/log/clickhouse-server/clickhouse-server.log</log>
-                <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
-                <size>1000M</size>
-                <count>3</count>
+                <console>true</console>
               </logger>
-              <display_name>ch-1S_1K</display_name>
               <listen_host>0.0.0.0</listen_host>
               <http_port>8123</http_port>
               <tcp_port>9000</tcp_port>
-              <user_directories>
-                <users_xml>
-                  <path>users.xml</path>
-                </users_xml>
-                <local_directory>
-                  <path>/var/lib/clickhouse/access/</path>
-                </local_directory>
-              </user_directories>
-              <distributed_ddl>
-                <path>/clickhouse/task_queue/ddl</path>
-              </distributed_ddl>
-              <zookeeper>
-                <node>
-                  <host>clickhouse-keeper</host>
-                  <port>9181</port>
-                </node>
-              </zookeeper>
+
+              <!-- Stop all the unnecessary logging -->
+              <query_thread_log remove="remove"/>
+              <query_log remove="remove"/>
+              <text_log remove="remove"/>
+              <trace_log remove="remove"/>
+              <metric_log remove="remove"/>
+              <asynchronous_metric_log remove="remove"/>
+              <session_log remove="remove"/>
+              <part_log remove="remove"/>
             </clickhouse>
           users.xml: |
             <clickhouse>
-                <users>
-                    <default>
-                        <password>clickhouse</password>
-                        <profile>default</profile>
-                        <quota>default</quota>
-                        <networks>
-                            <ip>::/0</ip>
-                        </networks>
-                        <access_management>1</access_management>
-                    </default>
-                </users>
-                
                 <profiles>
                     <default>
-                        <max_memory_usage>10000000000</max_memory_usage>
-                        <max_memory_usage_for_user>10000000000</max_memory_usage_for_user>
-                        <load_balancing>random</load_balancing>
-                        <readonly>0</readonly>
+                        <password>clickhouse</password>
+                        <log_queries>0</log_queries>
+                        <log_query_threads>0</log_query_threads>
                     </default>
                 </profiles>
-                
-                <quotas>
-                    <default>
-                        <interval>
-                            <duration>3600</duration>
-                            <queries>0</queries>
-                            <errors>0</errors>
-                            <result_rows>0</result_rows>
-                            <read_rows>0</read_rows>
-                            <execution_time>0</execution_time>
-                        </interval>
-                    </default>
-                </quotas>
             </clickhouse>
