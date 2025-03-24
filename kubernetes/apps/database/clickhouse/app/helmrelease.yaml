@@ -29,9 +29,9 @@ spec:
               pullPolicy: IfNotPresent
             securityContext:
               readOnlyRootFilesystem: true
-            # env:
-            #   CLICKHOUSE_USER: clickhouse
-            #   CLICKHOUSE_PASSWORD: clickhouse
+            env:
+              CLICKHOUSE_USER: clickhouse
+              CLICKHOUSE_PASSWORD: clickhouse
             probes:
               liveness: &probe
                 enabled: true
