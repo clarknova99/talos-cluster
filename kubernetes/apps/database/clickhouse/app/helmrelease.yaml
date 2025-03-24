@@ -50,6 +50,7 @@ spec:
         runAsGroup: 1025
         fsGroup: 1025
         fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 100, 1025]        
         seccompProfile: { type: RuntimeDefault }                  
 
     service:
