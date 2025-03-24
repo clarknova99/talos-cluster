@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 3.6.1
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
@@ -25,25 +25,20 @@ spec:
           app:
             image:
               repository: clickhouse/clickhouse-server
-              tag: 25.3-alpine@sha256:f5628a231d9892bac11caca28ba021a5b1e88728ea037e973b8acd0ce78d8eb2
+              tag: 24.12.3.47-alpine@sha256:c82aa62f94cf435297ef03ab9f626051104985a643cbffa8e9bf5e75534a6638
               pullPolicy: IfNotPresent
             # securityContext:
             #   readOnlyRootFilesystem: true
-            env:
-              CLICKHOUSE_HTTP_PORT: 8123
-              CLICKHOUSE_TCP_PORT: 9000
-              CLICKHOUSE_LISTEN_HOST: 0.0.0.0
-              CLICKHOUSE_LOGGER_CONSOLE: "true"
-              CLICKHOUSE_DB: default
-              CLICKHOUSE_USER: clickhouse
-              CLICKHOUSE_PASSWORD: clickhouse
+            # env:
+            #   CLICKHOUSE_USER: clickhouse
+            #   CLICKHOUSE_PASSWORD: clickhouse
             probes:
               liveness: &probe
                 enabled: true
                 type: HTTP
                 path: /?query=SELECT+1
               readiness: *probe
-              startup:  
+              startup:
                 <<: *probe
                 spec:
                   failureThreshold: 30
@@ -56,19 +51,17 @@ spec:
         fsGroup: 1025
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 100, 101, 1025]        
-        seccompProfile: { type: RuntimeDefault }                  
-
+        seccompProfile: { type: RuntimeDefault }     
+        
     service:
       clickhouse:
-        controller: clickhouse
+        controller: clickhouses
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 192.168.3.35    
         ports:
           http:
             port: 8123
-          tcp:
-            port: 9000
 
     persistence:
       data:
@@ -83,78 +76,48 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /var/log
-      temp-path:
+      config:
         enabled: true
-        type: emptyDir
+        type: configMap
+        name: clickhouse-config
         globalMounts:
-          - path: /tmp       
-      # config:
-      #   enabled: true
-      #   type: configMap
-      #   name: clickhouse-config
-      #   globalMounts:
-      #     - path: /etc/clickhouse-server/config.d/config.xml
-      #       subPath: config.xml
-      #     - path: /etc/clickhouse-server/users.d/users.xml
-      #       subPath: users.xml
+          - path: /etc/clickhouse-server/config.d/logging.xml
+            subPath: config.xml
+          - path: /etc/clickhouse-server/users.d/logging.xml
+            subPath: users.xml
 
-    # configMaps:
-    #   config:
-    #     enabled: true
-    #     data:
-    #       config.xml: |
-    #         <clickhouse replace="true">
-    #           <logger>
-    #             <level>warning</level>
-    #             <console>true</console>
-    #           </logger>
-    #           <listen_host>0.0.0.0</listen_host>
-    #           <http_port>8123</http_port>
-    #           <tcp_port>9000</tcp_port>
+    configMaps:
+      config:
+        enabled: true
+        data:
+          # language=xml
+          config.xml: |
+            <clickhouse>
+                <logger>
+                    <level>warning</level>
+                    <console>true</console>
+                </logger>
 
-    #           <!-- Stop all the unnecessary logging -->
-    #           <query_thread_log remove="remove"/>
-    #           <query_log remove="remove"/>
-    #           <text_log remove="remove"/>
-    #           <trace_log remove="remove"/>
-    #           <metric_log remove="remove"/>
-    #           <asynchronous_metric_log remove="remove"/>
-    #           <session_log remove="remove"/>
-    #           <part_log remove="remove"/>
-    #         </clickhouse>
-    #       users.xml: |
-    #         <clickhouse>
-    #             <users>
-    #                 <default>
-    #                     <password>clickhouse</password>
-    #                     <profile>default</profile>
-    #                     <quota>default</quota>
-    #                     <networks>
-    #                         <ip>::/0</ip>
-    #                     </networks>
-    #                     <access_management>1</access_management>
-    #                 </default>
-    #             </users>
-                
-    #             <profiles>
-    #                 <default>
-    #                     <max_memory_usage>10000000000</max_memory_usage>
-    #                     <max_memory_usage_for_user>10000000000</max_memory_usage_for_user>
-    #                     <load_balancing>random</load_balancing>
-    #                     <readonly>0</readonly>
-    #                 </default>
-    #             </profiles>
-                
-    #             <quotas>
-    #                 <default>
-    #                     <interval>
-    #                         <duration>3600</duration>
-    #                         <queries>0</queries>
-    #                         <errors>0</errors>
-    #                         <result_rows>0</result_rows>
-    #                         <read_rows>0</read_rows>
-    #                         <execution_time>0</execution_time>
-    #                     </interval>
-    #                 </default>
-    #             </quotas>
-    #         </clickhouse>
+                <listen_host>0.0.0.0</listen_host>
+
+                <!-- Stop all the unnecessary logging -->
+                <query_thread_log remove="remove"/>
+                <query_log remove="remove"/>
+                <text_log remove="remove"/>
+                <trace_log remove="remove"/>
+                <metric_log remove="remove"/>
+                <asynchronous_metric_log remove="remove"/>
+                <session_log remove="remove"/>
+                <part_log remove="remove"/>
+            </clickhouse>
+          # language=xml
+          users.xml: |
+            <clickhouse>
+                <profiles>
+                    <default>
+                        <password>clickhouse</password>
+                        <log_queries>0</log_queries>
+                        <log_query_threads>0</log_query_threads>
+                    </default>
+                </profiles>
+            </clickhouse>

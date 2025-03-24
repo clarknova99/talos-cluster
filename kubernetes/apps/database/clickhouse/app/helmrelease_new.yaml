@@ -1,0 +1,160 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.6.1/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: clickhouse
+  namespace: database
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        namespace: flux-system
+        name: bjw-s
+  interval: 1h
+  driftDetection:
+    mode: enabled
+  values:
+    controllers:
+      clickhouse:
+        type: statefulset
+        containers:
+          app:
+            image:
+              repository: clickhouse/clickhouse-server
+              tag: 25.3-alpine@sha256:f5628a231d9892bac11caca28ba021a5b1e88728ea037e973b8acd0ce78d8eb2
+              pullPolicy: IfNotPresent
+            # securityContext:
+            #   readOnlyRootFilesystem: true
+            env:
+              CLICKHOUSE_HTTP_PORT: 8123
+              CLICKHOUSE_TCP_PORT: 9000
+              CLICKHOUSE_LISTEN_HOST: 0.0.0.0
+              CLICKHOUSE_LOGGER_CONSOLE: "true"
+              CLICKHOUSE_DB: default
+              CLICKHOUSE_USER: clickhouse
+              CLICKHOUSE_PASSWORD: clickhouse
+            probes:
+              liveness: &probe
+                enabled: true
+                type: HTTP
+                path: /?query=SELECT+1
+              readiness: *probe
+              startup:  
+                <<: *probe
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1025
+        runAsGroup: 1025
+        fsGroup: 1025
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 100, 101, 1025]        
+        seccompProfile: { type: RuntimeDefault }                  
+
+    service:
+      clickhouse:
+        controller: clickhouse
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.35    
+        ports:
+          http:
+            port: 8123
+          tcp:
+            port: 9000
+
+    persistence:
+      data:
+        enabled: true
+        type: nfs
+        server: 192.168.1.3
+        path: /volume1/network-storage/cluster/clickhouse
+        globalMounts:
+          - path: /var/lib/clickhouse
+      logs:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /var/log
+      temp-path:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /tmp       
+      # config:
+      #   enabled: true
+      #   type: configMap
+      #   name: clickhouse-config
+      #   globalMounts:
+      #     - path: /etc/clickhouse-server/config.d/config.xml
+      #       subPath: config.xml
+      #     - path: /etc/clickhouse-server/users.d/users.xml
+      #       subPath: users.xml
+
+    # configMaps:
+    #   config:
+    #     enabled: true
+    #     data:
+    #       config.xml: |
+    #         <clickhouse replace="true">
+    #           <logger>
+    #             <level>warning</level>
+    #             <console>true</console>
+    #           </logger>
+    #           <listen_host>0.0.0.0</listen_host>
+    #           <http_port>8123</http_port>
+    #           <tcp_port>9000</tcp_port>
+
+    #           <!-- Stop all the unnecessary logging -->
+    #           <query_thread_log remove="remove"/>
+    #           <query_log remove="remove"/>
+    #           <text_log remove="remove"/>
+    #           <trace_log remove="remove"/>
+    #           <metric_log remove="remove"/>
+    #           <asynchronous_metric_log remove="remove"/>
+    #           <session_log remove="remove"/>
+    #           <part_log remove="remove"/>
+    #         </clickhouse>
+    #       users.xml: |
+    #         <clickhouse>
+    #             <users>
+    #                 <default>
+    #                     <password>clickhouse</password>
+    #                     <profile>default</profile>
+    #                     <quota>default</quota>
+    #                     <networks>
+    #                         <ip>::/0</ip>
+    #                     </networks>
+    #                     <access_management>1</access_management>
+    #                 </default>
+    #             </users>
+                
+    #             <profiles>
+    #                 <default>
+    #                     <max_memory_usage>10000000000</max_memory_usage>
+    #                     <max_memory_usage_for_user>10000000000</max_memory_usage_for_user>
+    #                     <load_balancing>random</load_balancing>
+    #                     <readonly>0</readonly>
+    #                 </default>
+    #             </profiles>
+                
+    #             <quotas>
+    #                 <default>
+    #                     <interval>
+    #                         <duration>3600</duration>
+    #                         <queries>0</queries>
+    #                         <errors>0</errors>
+    #                         <result_rows>0</result_rows>
+    #                         <read_rows>0</read_rows>
+    #                         <execution_time>0</execution_time>
+    #                     </interval>
+    #                 </default>
+    #             </quotas>
+    #         </clickhouse>
