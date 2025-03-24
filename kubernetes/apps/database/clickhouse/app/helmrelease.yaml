@@ -119,10 +119,10 @@ spec:
           users.xml: |
             <clickhouse>
                 <users>
-                    <default>
+                    <clickhouse>
                         <password>clickhouse</password>
                         <!-- Optionally, if needed, reference a profile -->
                         <!-- <profile>default</profile> -->
-                    </default>
+                    </clickhouse>
                 </users>
             </clickhouse>
