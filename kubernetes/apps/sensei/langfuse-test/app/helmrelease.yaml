@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.6.1
+      version: 3.7.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -33,7 +33,7 @@ spec:
               # repository: docker.io/langfuse/langfuse
               # tag: 2.93@sha256:e05b4b389a07aba93a94d3a19c24c104b125b023792ff612706137e26067c23f
               repository: ghcr.io/langfuse/langfuse
-              tag: 3.14@sha256:ee2dee06cbdf04ed34c545fb06904c2bff3f4d0e02cbecf26afcb607a74f0518
+              tag: 3.44@sha256:f9b676ba4877a4bcb8f4fd9f835adc7a42be56a0f71531b5cfc9d245d242a39e
             env:
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse2
               NEXTAUTH_URL: https://langfuse-test.${SECRET_DOMAIN_TWO}
@@ -65,7 +65,7 @@ spec:
           worker:
             image:
               repository: ghcr.io/langfuse/langfuse-worker
-              tag: 3.14@sha256:158f6b32cec5641b626907eb3cf0ef9ee734532989ddc8d77f93e87923e2f0bb
+              tag: 3.44@sha256:0a190951911d3d5be8c7dbc6efc3f917116f154dff76fe93515a300e7cc366ee
             env:
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse2
               SALT: ${SECRET_LANGFUSE_SALT}
