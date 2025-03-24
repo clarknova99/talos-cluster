@@ -29,10 +29,10 @@ spec:
               pullPolicy: IfNotPresent
             # securityContext:
             #   readOnlyRootFilesystem: true
-            env:
-              CLICKHOUSE_USER: clickhouse
-              CLICKHOUSE_PASSWORD: clickhouse
-              CLICKHOUSE_TCP_PORT: 29000
+            # env:
+            #   # CLICKHOUSE_USER: clickhouse
+            #   CLICKHOUSE_PASSWORD: clickhouse
+            #   CLICKHOUSE_TCP_PORT: 29000
             probes:
               liveness: &probe
                 enabled: true
@@ -64,8 +64,7 @@ spec:
           http:
             port: 8123
           tcp:
-            port: 29000
-            targetPort: 29000
+            port: 9000
 
     persistence:
       data:
@@ -99,44 +98,37 @@ spec:
       config:
         enabled: true
         data:
-          # language=xml
           config.xml: |
-            <clickhouse>
-                <logger>
-                    <level>warning</level>
-                    <console>true</console>
-                </logger>
-
-                <listen_host>0.0.0.0</listen_host>
-                
-                <!-- Define ports explicitly to avoid conflicts -->
-                <http_port>8123</http_port>
-                <tcp_port>9000</tcp_port>
-                <interserver_http_port>9009</interserver_http_port>
-                <grpc_port>9100</grpc_port>
-                <prometheus.port>9363</prometheus.port>
-                
-                <!-- Increase starting port to avoid conflicts -->
-                <distributed_ddl>
-                    <port>9010</port>
-                </distributed_ddl>
-
-                <!-- Stop all the unnecessary logging -->
-                <query_thread_log remove="remove"/>
-                <query_log remove="remove"/>
-                <text_log remove="remove"/>
-                <trace_log remove="remove"/>
-                <metric_log remove="remove"/>
-                <asynchronous_metric_log remove="remove"/>
-                <session_log remove="remove"/>
-                <part_log remove="remove"/>
-                
-                <!-- Set password for default user in a more explicit way -->
-                <default_profile>default</default_profile>
-                <default_database>default</default_database>
+            <clickhouse replace="true">
+              <logger>
+                <level>debug</level>
+                <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+                <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+                <size>1000M</size>
+                <count>3</count>
+              </logger>
+              <display_name>ch-1S_1K</display_name>
+              <listen_host>0.0.0.0</listen_host>
+              <http_port>8123</http_port>
+              <tcp_port>9000</tcp_port>
+              <user_directories>
+                <users_xml>
+                  <path>users.xml</path>
+                </users_xml>
+                <local_directory>
+                  <path>/var/lib/clickhouse/access/</path>
+                </local_directory>
+              </user_directories>
+              <distributed_ddl>
+                <path>/clickhouse/task_queue/ddl</path>
+              </distributed_ddl>
+              <zookeeper>
+                <node>
+                  <host>clickhouse-keeper</host>
+                  <port>9181</port>
+                </node>
+              </zookeeper>
             </clickhouse>
-
-          # language=xml
           users.xml: |
             <clickhouse>
                 <users>
