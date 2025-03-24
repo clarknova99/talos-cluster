@@ -21,6 +21,17 @@ spec:
     controllers:
       clickhouse:
         type: statefulset
+        replicas: 1
+        strategy: RollingUpdate
+        # Add pod termination grace period to ensure clean shutdown
+        pod:
+          terminationGracePeriodSeconds: 60
+          
+        # Make sure previous pods are fully terminated before new ones start
+        statefulset:
+          podManagementPolicy: OrderedReady
+
+
         containers:
           app:
             image:
@@ -32,17 +43,18 @@ spec:
               CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: clickhouse
               CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
-            probes:
-              liveness: &probe
-                enabled: true
-                type: HTTP
-                path: /?query=SELECT+1
-              readiness: *probe
-              startup:
-                <<: *probe
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 5
+
+            # probes:
+            #   liveness: &probe
+            #     enabled: true
+            #     type: HTTP
+            #     path: /?query=SELECT+1
+            #   readiness: *probe
+            #   startup:
+            #     <<: *probe
+            #     spec:
+            #       failureThreshold: 30
+            #       periodSeconds: 5
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -62,6 +74,8 @@ spec:
         ports:
           http:
             port: 8123
+          tcp:
+            port: 9000
 
     persistence:
       data:
@@ -83,11 +97,34 @@ spec:
         globalMounts:
           - path: /etc/clickhouse-server/users.d/users.xml
             subPath: users.xml
+          - path: /etc/clickhouse-server/config.d/config.xml
+            subPath: config.xml
 
     configMaps:
       config:
         enabled: true
         data:
+          config.xml: |
+            <clickhouse>
+                <logger>
+                    <level>warning</level>
+                    <console>true</console>
+                </logger>
+                
+                <!-- Explicitly set listen hosts to avoid conflicts -->
+                <listen_host>0.0.0.0</listen_host>
+                
+                <!-- Disable all the unnecessary logging -->
+                <query_thread_log remove="remove"/>
+                <query_log remove="remove"/>
+                <text_log remove="remove"/>
+                <trace_log remove="remove"/>
+                <metric_log remove="remove"/>
+                <asynchronous_metric_log remove="remove"/>
+                <session_log remove="remove"/>
+                <part_log remove="remove"/>
+            </clickhouse>
+
           users.xml: |
             <clickhouse>
                 <users>
