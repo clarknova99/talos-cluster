@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.6.1
+      version: 3.7.2
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
@@ -31,12 +31,11 @@ spec:
         statefulset:
           podManagementPolicy: OrderedReady
 
-
         containers:
           app:
             image:
               repository: clickhouse/clickhouse-server
-              tag: 24.12.3.47-alpine@sha256:c82aa62f94cf435297ef03ab9f626051104985a643cbffa8e9bf5e75534a6638
+              tag: 25.3-alpine@sha256:f5628a231d9892bac11caca28ba021a5b1e88728ea037e973b8acd0ce78d8eb2
               pullPolicy: IfNotPresent
             env:
               # Set credentials via environment variables
