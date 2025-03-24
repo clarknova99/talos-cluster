@@ -81,9 +81,9 @@ spec:
         type: configMap
         name: clickhouse-config
         globalMounts:
-          - path: /etc/clickhouse-server/config.d/logging.xml
+          - path: /etc/clickhouse-server/config.d/custom-config.xml
             subPath: config.xml
-          - path: /etc/clickhouse-server/users.d/logging.xml
+          - path: /etc/clickhouse-server/users.d/custom-users.xml
             subPath: users.xml
 
     configMaps:
@@ -113,14 +113,21 @@ spec:
           # language=xml
           users.xml: |
             <clickhouse>
+                <!-- Define users -->
                 <users>
                     <default>
+                        <!-- Clear text password -->
                         <password>clickhouse</password>
+                        <networks>
+                            <ip>::/0</ip>
+                        </networks>
                         <profile>default</profile>
                         <quota>default</quota>
+                        <access_management>1</access_management>
                     </default>
                 </users>
                 
+                <!-- User profiles -->
                 <profiles>
                     <default>
                         <log_queries>0</log_queries>
@@ -128,6 +135,7 @@ spec:
                     </default>
                 </profiles>
                 
+                <!-- Quotas -->
                 <quotas>
                     <default>
                     </default>
