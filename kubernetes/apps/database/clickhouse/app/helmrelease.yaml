@@ -62,6 +62,9 @@ spec:
         ports:
           http:
             port: 8123
+          tcp:
+            port: 9000
+            targetPort: 9000
 
     persistence:
       data:
@@ -104,6 +107,18 @@ spec:
                 </logger>
 
                 <listen_host>0.0.0.0</listen_host>
+                
+                <!-- Define ports explicitly to avoid conflicts -->
+                <http_port>8123</http_port>
+                <tcp_port>9000</tcp_port>
+                <interserver_http_port>9009</interserver_http_port>
+                <grpc_port>9100</grpc_port>
+                <prometheus.port>9363</prometheus.port>
+                
+                <!-- Increase starting port to avoid conflicts -->
+                <distributed_ddl>
+                    <port>9010</port>
+                </distributed_ddl>
 
                 <!-- Stop all the unnecessary logging -->
                 <query_thread_log remove="remove"/>
@@ -114,15 +129,46 @@ spec:
                 <asynchronous_metric_log remove="remove"/>
                 <session_log remove="remove"/>
                 <part_log remove="remove"/>
+                
+                <!-- Set password for default user in a more explicit way -->
+                <default_profile>default</default_profile>
+                <default_database>default</default_database>
             </clickhouse>
+
           # language=xml
           users.xml: |
             <clickhouse>
                 <users>
                     <default>
                         <password>clickhouse</password>
-                        <!-- Optionally, add a profile if needed -->
-                        <!-- <profile>default</profile> -->
+                        <profile>default</profile>
+                        <quota>default</quota>
+                        <networks>
+                            <ip>::/0</ip>
+                        </networks>
+                        <access_management>1</access_management>
                     </default>
                 </users>
+                
+                <profiles>
+                    <default>
+                        <max_memory_usage>10000000000</max_memory_usage>
+                        <max_memory_usage_for_user>10000000000</max_memory_usage_for_user>
+                        <load_balancing>random</load_balancing>
+                        <readonly>0</readonly>
+                    </default>
+                </profiles>
+                
+                <quotas>
+                    <default>
+                        <interval>
+                            <duration>3600</duration>
+                            <queries>0</queries>
+                            <errors>0</errors>
+                            <result_rows>0</result_rows>
+                            <read_rows>0</read_rows>
+                            <execution_time>0</execution_time>
+                        </interval>
+                    </default>
+                </quotas>
             </clickhouse>
