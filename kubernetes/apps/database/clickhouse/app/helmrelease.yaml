@@ -29,10 +29,10 @@ spec:
               pullPolicy: IfNotPresent
             # securityContext:
             #   readOnlyRootFilesystem: true
-            # env:
-            #   # CLICKHOUSE_USER: clickhouse
-            #   CLICKHOUSE_PASSWORD: clickhouse
-            #   CLICKHOUSE_TCP_PORT: 29000
+            env:
+              CLICKHOUSE_DB: default
+              CLICKHOUSE_USER: clickhouse
+              CLICKHOUSE_PASSWORD: clickhouse
             probes:
               liveness: &probe
                 enabled: true
@@ -51,7 +51,7 @@ spec:
         runAsGroup: 1025
         fsGroup: 1025
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 100, 1025]        
+        supplementalGroups: [44, 100, 101, 1025]        
         seccompProfile: { type: RuntimeDefault }                  
 
     service:
@@ -84,73 +84,73 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp       
-      config:
-        enabled: true
-        type: configMap
-        name: clickhouse-config
-        globalMounts:
-          - path: /etc/clickhouse-server/config.d/config.xml
-            subPath: config.xml
-          - path: /etc/clickhouse-server/users.d/users.xml
-            subPath: users.xml
+      # config:
+      #   enabled: true
+      #   type: configMap
+      #   name: clickhouse-config
+      #   globalMounts:
+      #     - path: /etc/clickhouse-server/config.d/config.xml
+      #       subPath: config.xml
+      #     - path: /etc/clickhouse-server/users.d/users.xml
+      #       subPath: users.xml
 
-    configMaps:
-      config:
-        enabled: true
-        data:
-          config.xml: |
-            <clickhouse replace="true">
-              <logger>
-                <level>warning</level>
-                <console>true</console>
-              </logger>
-              <listen_host>0.0.0.0</listen_host>
-              <http_port>8123</http_port>
-              <tcp_port>9000</tcp_port>
+    # configMaps:
+    #   config:
+    #     enabled: true
+    #     data:
+    #       config.xml: |
+    #         <clickhouse replace="true">
+    #           <logger>
+    #             <level>warning</level>
+    #             <console>true</console>
+    #           </logger>
+    #           <listen_host>0.0.0.0</listen_host>
+    #           <http_port>8123</http_port>
+    #           <tcp_port>9000</tcp_port>
 
-              <!-- Stop all the unnecessary logging -->
-              <query_thread_log remove="remove"/>
-              <query_log remove="remove"/>
-              <text_log remove="remove"/>
-              <trace_log remove="remove"/>
-              <metric_log remove="remove"/>
-              <asynchronous_metric_log remove="remove"/>
-              <session_log remove="remove"/>
-              <part_log remove="remove"/>
-            </clickhouse>
-          users.xml: |
-            <clickhouse>
-                <users>
-                    <default>
-                        <password>clickhouse</password>
-                        <profile>default</profile>
-                        <quota>default</quota>
-                        <networks>
-                            <ip>::/0</ip>
-                        </networks>
-                        <access_management>1</access_management>
-                    </default>
-                </users>
+    #           <!-- Stop all the unnecessary logging -->
+    #           <query_thread_log remove="remove"/>
+    #           <query_log remove="remove"/>
+    #           <text_log remove="remove"/>
+    #           <trace_log remove="remove"/>
+    #           <metric_log remove="remove"/>
+    #           <asynchronous_metric_log remove="remove"/>
+    #           <session_log remove="remove"/>
+    #           <part_log remove="remove"/>
+    #         </clickhouse>
+    #       users.xml: |
+    #         <clickhouse>
+    #             <users>
+    #                 <default>
+    #                     <password>clickhouse</password>
+    #                     <profile>default</profile>
+    #                     <quota>default</quota>
+    #                     <networks>
+    #                         <ip>::/0</ip>
+    #                     </networks>
+    #                     <access_management>1</access_management>
+    #                 </default>
+    #             </users>
                 
-                <profiles>
-                    <default>
-                        <max_memory_usage>10000000000</max_memory_usage>
-                        <max_memory_usage_for_user>10000000000</max_memory_usage_for_user>
-                        <load_balancing>random</load_balancing>
-                        <readonly>0</readonly>
-                    </default>
-                </profiles>
+    #             <profiles>
+    #                 <default>
+    #                     <max_memory_usage>10000000000</max_memory_usage>
+    #                     <max_memory_usage_for_user>10000000000</max_memory_usage_for_user>
+    #                     <load_balancing>random</load_balancing>
+    #                     <readonly>0</readonly>
+    #                 </default>
+    #             </profiles>
                 
-                <quotas>
-                    <default>
-                        <interval>
-                            <duration>3600</duration>
-                            <queries>0</queries>
-                            <errors>0</errors>
-                            <result_rows>0</result_rows>
-                            <read_rows>0</read_rows>
-                            <execution_time>0</execution_time>
-                        </interval>
-                    </default>
-                </quotas>
-            </clickhouse>
+    #             <quotas>
+    #                 <default>
+    #                     <interval>
+    #                         <duration>3600</duration>
+    #                         <queries>0</queries>
+    #                         <errors>0</errors>
+    #                         <result_rows>0</result_rows>
+    #                         <read_rows>0</read_rows>
+    #                         <execution_time>0</execution_time>
+    #                     </interval>
+    #                 </default>
+    #             </quotas>
+    #         </clickhouse>
