@@ -30,6 +30,10 @@ spec:
             # securityContext:
             #   readOnlyRootFilesystem: true
             env:
+              CLICKHOUSE_HTTP_PORT: 8123
+              CLICKHOUSE_TCP_PORT: 9000
+              CLICKHOUSE_LISTEN_HOST: 0.0.0.0
+              CLICKHOUSE_LOGGER_CONSOLE: "true"
               CLICKHOUSE_DB: default
               CLICKHOUSE_USER: clickhouse
               CLICKHOUSE_PASSWORD: clickhouse
