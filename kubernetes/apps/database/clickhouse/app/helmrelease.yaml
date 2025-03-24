@@ -38,7 +38,7 @@ spec:
                 type: HTTP
                 path: /?query=SELECT+1
               readiness: *probe
-              startup:
+              startup:  
                 <<: *probe
                 spec:
                   failureThreshold: 30
@@ -76,6 +76,11 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /var/log
+      temp-path:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /tmp       
       config:
         enabled: true
         type: configMap
