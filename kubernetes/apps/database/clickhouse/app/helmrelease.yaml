@@ -32,17 +32,17 @@ spec:
               CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: clickhouse
               CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
-            # probes:
-            #   liveness: &probe
-            #     enabled: true
-            #     type: HTTP
-            #     path: /?query=SELECT+1
-            #   readiness: *probe
-            #   startup:
-            #     <<: *probe
-            #     spec:
-            #       failureThreshold: 30
-            #       periodSeconds: 5
+            probes:
+              liveness: &probe
+                enabled: true
+                type: HTTP
+                path: /?query=SELECT+1
+              readiness: *probe
+              startup:
+                <<: *probe
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
