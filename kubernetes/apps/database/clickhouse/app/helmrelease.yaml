@@ -52,10 +52,10 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 100, 101, 1025]        
         seccompProfile: { type: RuntimeDefault }     
-        
+
     service:
       clickhouse:
-        controller: clickhouses
+        controller: clickhouse
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 192.168.3.35    
