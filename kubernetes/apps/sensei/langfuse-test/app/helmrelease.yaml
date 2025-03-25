@@ -51,9 +51,10 @@ spec:
               CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse.database.svc.cluster.local:9000
               CLICKHOUSE_USER: clickhouse
               CLICKHOUSE_PASSWORD: clickhouse
-              REDIS_HOST: dragonfly.database.svc.cluster.local
-              REDIS_PORT: 6379
-              REDIS_TLS_ENABLED: false
+              REDIS_CONNECTION_STRING: redis://dragonfly.database.svc.cluster.local:6379/0
+              # REDIS_HOST: dragonfly.database.svc.cluster.local
+              # REDIS_PORT: 6379
+              # REDIS_TLS_ENABLED: false
               # REDIS_AUTH: redis
               LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
@@ -82,9 +83,10 @@ spec:
               CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse.database.svc.cluster.local:9000
               CLICKHOUSE_USER: clickhouse
               CLICKHOUSE_PASSWORD: clickhouse
-              REDIS_HOST: dragonfly.database.svc.cluster.local
-              REDIS_PORT: 6379
-              REDIS_TLS_ENABLED: false
+              REDIS_CONNECTION_STRING: redis://dragonfly.database.svc.cluster.local:6379/0
+              # REDIS_HOST: dragonfly.database.svc.cluster.local
+              # REDIS_PORT: 6379
+              # REDIS_TLS_ENABLED: false
               # REDIS_AUTH: redis
               LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
