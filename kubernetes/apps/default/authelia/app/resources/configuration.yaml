@@ -126,7 +126,16 @@ identity_providers:
         pre_configured_consent_duration: 1y
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris: ["https://langfuse.${SECRET_DOMAIN_TWO}/api/auth/callback/custom"]
-        userinfo_signing_algorithm: none        
+        userinfo_signing_algorithm: none      
+      - client_id: langfuse3
+        client_name: langfuse3
+        description: langfuse3
+        secret: ${SECRET_OAUTH_CLIENT_SECRET}
+        authorization_policy: one_factor
+        pre_configured_consent_duration: 1y
+        scopes: ["openid", "profile", "groups", "email"]
+        redirect_uris: ["https://lf.${SECRET_DOMAIN_TWO}/api/auth/callback/custom"]
+        userinfo_signing_algorithm: none            
       # - id: headlamp
       #   description: Headlamp
       #   secret: "${SECRET_HEADLAMP_OAUTH_CLIENT_SECRET}"
