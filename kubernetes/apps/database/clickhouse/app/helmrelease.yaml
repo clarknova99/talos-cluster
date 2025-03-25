@@ -39,21 +39,21 @@ spec:
               pullPolicy: IfNotPresent
             env:
               # Set credentials via environment variables
-              CLICKHOUSE_USER: default
+              CLICKHOUSE_USER: clickhouse
               CLICKHOUSE_PASSWORD: clickhouse
               CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
-
-            probes:
-              liveness: &probe
-                enabled: true
-                type: HTTP
-                path: /?query=SELECT+1
-              readiness: *probe
-              startup:
-                <<: *probe
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 5
+              CLICKHOUSE_SKIP_USER_SETUP: 1
+            # probes:
+            #   liveness: &probe
+            #     enabled: true
+            #     type: HTTP
+            #     path: /?query=SELECT+1
+            #   readiness: *probe
+            #   startup:
+            #     <<: *probe
+            #     spec:
+            #       failureThreshold: 30
+            #       periodSeconds: 5
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -76,63 +76,63 @@ spec:
           tcp:
             port: 9000
 
-    persistence:
-      # data:
-      #   enabled: true
-      #   type: nfs
-      #   server: 192.168.1.3
-      #   path: /volume1/network-storage/cluster/clickhouse
-      #   globalMounts:
-      #     - path: /var/lib/clickhouse
-      logs:
-        enabled: true
-        type: emptyDir
-        globalMounts:
-          - path: /var/log
-      config:
-        enabled: true
-        type: configMap
-        name: clickhouse-config
-        globalMounts:
-          - path: /etc/clickhouse-server/users.d/users.xml
-            subPath: users.xml
-          - path: /etc/clickhouse-server/config.d/config.xml
-            subPath: config.xml
+    # persistence:
+    #   # data:
+    #   #   enabled: true
+    #   #   type: nfs
+    #   #   server: 192.168.1.3
+    #   #   path: /volume1/network-storage/cluster/clickhouse
+    #   #   globalMounts:
+    #   #     - path: /var/lib/clickhouse
+    #   logs:
+    #     enabled: true
+    #     type: emptyDir
+    #     globalMounts:
+    #       - path: /var/log
+    #   config:
+    #     enabled: true
+    #     type: configMap
+    #     name: clickhouse-config
+    #     globalMounts:
+    #       - path: /etc/clickhouse-server/users.d/users.xml
+    #         subPath: users.xml
+    #       - path: /etc/clickhouse-server/config.d/config.xml
+    #         subPath: config.xml
 
-    configMaps:
-      config:
-        enabled: true
-        data:
-          config.xml: |
-            <clickhouse>
-                <logger>
-                    <level>warning</level>
-                    <console>true</console>
-                </logger>
+    # configMaps:
+    #   config:
+    #     enabled: true
+    #     data:
+    #       config.xml: |
+    #         <clickhouse>
+    #             <logger>
+    #                 <level>warning</level>
+    #                 <console>true</console>
+    #             </logger>
                 
-                <!-- Explicitly set listen hosts to avoid conflicts -->
-                <listen_host>0.0.0.0</listen_host>
+    #             <!-- Explicitly set listen hosts to avoid conflicts -->
+    #             <listen_host>0.0.0.0</listen_host>
                 
-                <!-- Disable all the unnecessary logging -->
-                <query_thread_log remove="remove"/>
-                <query_log remove="remove"/>
-                <text_log remove="remove"/>
-                <trace_log remove="remove"/>
-                <metric_log remove="remove"/>
-                <asynchronous_metric_log remove="remove"/>
-                <session_log remove="remove"/>
-                <part_log remove="remove"/>
-            </clickhouse>
+    #             <!-- Disable all the unnecessary logging -->
+    #             <query_thread_log remove="remove"/>
+    #             <query_log remove="remove"/>
+    #             <text_log remove="remove"/>
+    #             <trace_log remove="remove"/>
+    #             <metric_log remove="remove"/>
+    #             <asynchronous_metric_log remove="remove"/>
+    #             <session_log remove="remove"/>
+    #             <part_log remove="remove"/>
+    #         </clickhouse>
 
-          users.xml: |
-            <clickhouse>
-                <users>
-                    <default>
-                        <password>clickhouse</password>
-                        <networks>
-                            <ip>::/0</ip>
-                        </networks>
-                        <access_management>1</access_management>
-                    </default>
-                </users>
-            </clickhouse>
+    #       users.xml: |
+    #         <clickhouse>
+    #             <users>
+    #                 <default>
+    #                     <password>clickhouse</password>
+    #                     <networks>
+    #                         <ip>::/0</ip>
+    #                     </networks>
+    #                     <access_management>1</access_management>
+    #                 </default>
+    #             </users>
+    #         </clickhouse>
