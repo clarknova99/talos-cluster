@@ -124,15 +124,42 @@ spec:
                 <part_log remove="remove"/>
             </clickhouse>
 
-          # users.xml: |
-          #   <clickhouse>
-          #       <users>
-          #           <default>
-          #               <password>clickhouse</password>
-          #               <networks>
-          #                   <ip>::/0</ip>
-          #               </networks>
-          #               <access_management>1</access_management>
-          #           </default>
-          #       </users>
-          #   </clickhouse>
+          users.xml: |
+            <clickhouse>
+                <!-- Define users -->
+                <users>
+                    <!-- Leave default user as-is by not specifying any settings for it -->
+                    
+                    <!-- Create a new user named clickhouse -->
+                    <clickhouse>
+                        <!-- Password in plain text -->
+                        <password>clickhouse</password>
+                        
+                        <!-- Allow connections from any IP -->
+                        <networks>
+                            <ip>::/0</ip>
+                        </networks>
+                        
+                        <!-- Assign profile and quota -->
+                        <profile>default</profile>
+                        <quota>default</quota>
+                        
+                        <!-- Grant administrative privileges -->
+                        <access_management>1</access_management>
+                    </clickhouse>
+                </users>
+                
+                <!-- User profiles -->
+                <profiles>
+                    <default>
+                        <log_queries>0</log_queries>
+                        <log_query_threads>0</log_query_threads>
+                    </default>
+                </profiles>
+                
+                <!-- Quotas -->
+                <quotas>
+                    <default>
+                    </default>
+                </quotas>
+            </clickhouse>
