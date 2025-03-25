@@ -38,7 +38,7 @@ spec:
               NEXTAUTH_URL: https://lf.${SECRET_DOMAIN_TWO}
               NEXTAUTH_SECRET: ${SECRET_LANGFUSE_SECRET}
               HOSTNAME: 0.0.0.0
-              AUTH_CUSTOM_CLIENT_ID: langfuse
+              AUTH_CUSTOM_CLIENT_ID: langfuse3
               AUTH_CUSTOM_CLIENT_SECRET: ${SECRET_OAUTH_CLIENT_SECRET}
               AUTH_CUSTOM_SCOPE: openid profile email groups
               AUTH_CUSTOM_NAME: authelia
