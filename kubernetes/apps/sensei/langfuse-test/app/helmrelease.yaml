@@ -45,6 +45,30 @@ spec:
               AUTH_CUSTOM_ISSUER: https://auth.${SECRET_DOMAIN}
               #AUTH_DISABLE_SIGNUP: true
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse2
+              SALT: ${SECRET_LANGFUSE_SALT}
+              ENCRYPTION_KEY: ${SECRET_LANGFUSE_ENCRYPTION_KEY}
+              CLICKHOUSE_URL: http://clickhouse.database.svc.cluster.local:8123
+              CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse.database.svc.cluster.local:9000
+              CLICKHOUSE_USER: default
+              CLICKHOUSE_PASSWORD: ""
+              REDIS_HOST: dragonfly.database.svc.cluster.local
+              REDIS_PORT: 6379
+              # REDIS_AUTH: redis
+              LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
+              LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
+              LANGFUSE_S3_EVENT_UPLOAD_REGION: us-east-1
+              LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY} 
+              LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
+              LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: true
+              LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
+
+              LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
+              LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
+              LANGFUSE_S3_MEDIA_UPLOAD_REGION: us-east-1
+              LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY} 
+              LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
+              LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: true
+              LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/              
           worker:
             image:
               repository: ghcr.io/langfuse/langfuse-worker
