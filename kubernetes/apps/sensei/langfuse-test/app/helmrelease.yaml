@@ -146,3 +146,4 @@ spec:
         tls:
           - hosts:
               - lf.${SECRET_DOMAIN_TWO}
+            secretName: "${SECRET_DOMAIN/./-}-production-tls"
