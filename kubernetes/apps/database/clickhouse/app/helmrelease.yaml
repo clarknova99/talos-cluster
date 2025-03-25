@@ -65,7 +65,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }     
 
     service:
-      clickhouse:
+      app:
         controller: clickhouse
         type: LoadBalancer
         annotations:
