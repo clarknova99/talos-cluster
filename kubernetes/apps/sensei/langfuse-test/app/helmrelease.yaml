@@ -52,7 +52,7 @@ spec:
               CLICKHOUSE_USER: clickhouse
               CLICKHOUSE_PASSWORD: clickhouse
               CLICKHOUSE_CLUSTER_ENABLED: false
-              REDIS_CONNECTION_STRING: redis://dragonfly.database.svc.cluster.local:6379/0
+              REDIS_CONNECTION_STRING: redis://dragonfly.database.svc.cluster.local:6379/1
               # REDIS_HOST: dragonfly.database.svc.cluster.local
               # REDIS_PORT: 6379
               # REDIS_TLS_ENABLED: false
@@ -85,7 +85,7 @@ spec:
               CLICKHOUSE_USER: clickhouse
               CLICKHOUSE_PASSWORD: clickhouse
               CLICKHOUSE_CLUSTER_ENABLED: false
-              REDIS_CONNECTION_STRING: redis://dragonfly.database.svc.cluster.local:6379/0
+              REDIS_CONNECTION_STRING: redis://dragonfly.database.svc.cluster.local:6379/1
               # REDIS_HOST: dragonfly.database.svc.cluster.local
               # REDIS_PORT: 6379
               # REDIS_TLS_ENABLED: false

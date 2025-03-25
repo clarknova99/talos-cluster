@@ -9,5 +9,5 @@ resources:
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
   - ./langfuse/ks.yaml
-  # - ./langfuse-test/ks.yaml
+  - ./langfuse-test/ks.yaml
   - ./litellm/ks.yaml
