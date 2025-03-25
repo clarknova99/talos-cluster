@@ -44,6 +44,7 @@ spec:
               AUTH_CUSTOM_NAME: authelia
               AUTH_CUSTOM_ISSUER: https://auth.${SECRET_DOMAIN}
               #AUTH_DISABLE_SIGNUP: true
+              DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse2
           worker:
             image:
               repository: ghcr.io/langfuse/langfuse-worker
