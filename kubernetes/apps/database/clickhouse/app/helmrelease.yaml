@@ -94,8 +94,8 @@ spec:
         type: configMap
         name: clickhouse-config
         globalMounts:
-          - path: /etc/clickhouse-server/users.d/users.xml
-            subPath: users.xml
+          # - path: /etc/clickhouse-server/users.d/users.xml
+          #   subPath: users.xml
           - path: /etc/clickhouse-server/config.d/config.xml
             subPath: config.xml
 
@@ -124,15 +124,15 @@ spec:
                 <part_log remove="remove"/>
             </clickhouse>
 
-          users.xml: |
-            <clickhouse>
-                <users>
-                    <default>
-                        <password>clickhouse</password>
-                        <networks>
-                            <ip>::/0</ip>
-                        </networks>
-                        <access_management>1</access_management>
-                    </default>
-                </users>
-            </clickhouse>
+          # users.xml: |
+          #   <clickhouse>
+          #       <users>
+          #           <default>
+          #               <password>clickhouse</password>
+          #               <networks>
+          #                   <ip>::/0</ip>
+          #               </networks>
+          #               <access_management>1</access_management>
+          #           </default>
+          #       </users>
+          #   </clickhouse>
