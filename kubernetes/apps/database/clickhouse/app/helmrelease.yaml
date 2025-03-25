@@ -43,23 +43,23 @@ spec:
               CLICKHOUSE_PASSWORD: clickhouse
               CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
 
-            # probes:
-            #   liveness: &probe
-            #     enabled: true
-            #     type: HTTP
-            #     path: /?query=SELECT+1
-            #   readiness: *probe
-            #   startup:
-            #     <<: *probe
-            #     spec:
-            #       failureThreshold: 30
-            #       periodSeconds: 5
+            probes:
+              liveness: &probe
+                enabled: true
+                type: HTTP
+                path: /?query=SELECT+1
+              readiness: *probe
+              startup:
+                <<: *probe
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1025
-        runAsGroup: 1025
-        fsGroup: 1025
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 100, 101, 1025]        
         seccompProfile: { type: RuntimeDefault }     
