@@ -106,7 +106,7 @@ spec:
         controller: langfuse-v3
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: lf.${SECRET_DOMAIN_TWO}
+          external-dns.alpha.kubernetes.io/hostname: langfuse.${SECRET_DOMAIN_TWO}
           io.cilium/lb-ipam-ips: 192.168.3.32
         ports:
           http:
@@ -126,7 +126,7 @@ spec:
         className: external
         enabled: true
         hosts:
-          - host: lf.${SECRET_DOMAIN_TWO}
+          - host: langfuse.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
                 service:
@@ -134,5 +134,5 @@ spec:
                   port: 3000
         tls:
           - hosts:
-              - lf.${SECRET_DOMAIN_TWO}
+              - langfuse.${SECRET_DOMAIN_TWO}
             secretName: "${SECRET_DOMAIN/./-}-production-tls"
