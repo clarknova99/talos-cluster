@@ -46,7 +46,7 @@ spec:
               AUTH_CUSTOM_CHECKS: state
               AUTH_CUSTOM_ALLOW_ACCOUNT_LINKING: true
               #AUTH_DISABLE_SIGNUP: true
-              DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse2
+              DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/langfuse
               SALT: ${SECRET_LANGFUSE_SALT}
               ENCRYPTION_KEY: ${SECRET_LANGFUSE_ENCRYPTION_KEY}
               CLICKHOUSE_URL: http://clickhouse.database.svc.cluster.local:8123
@@ -80,7 +80,7 @@ spec:
               repository: ghcr.io/langfuse/langfuse-worker
               tag: 3.45.2@sha256:a0608e543b0adaaabc67fa918de2a6fa35352db05d886427e212938593edf652
             env:
-              DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/langfuse2
+              DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/langfuse
               SALT: ${SECRET_LANGFUSE_SALT}
               ENCRYPTION_KEY: ${SECRET_LANGFUSE_ENCRYPTION_KEY}
               CLICKHOUSE_URL: http://clickhouse.database.svc.cluster.local:8123
