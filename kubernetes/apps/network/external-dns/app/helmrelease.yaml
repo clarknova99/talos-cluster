@@ -25,7 +25,8 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    provider: cloudflare
+    provider: 
+      name: cloudflare
     logLevel: debug
     env:
       - name: CF_API_TOKEN
