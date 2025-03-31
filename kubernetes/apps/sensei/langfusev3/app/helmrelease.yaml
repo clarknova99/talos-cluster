@@ -135,4 +135,4 @@ spec:
         tls:
           - hosts:
               - langfuse.${SECRET_DOMAIN_TWO}
-            secretName: "${SECRET_DOMAIN/./-}-production-tls"
+            # secretName: "${SECRET_DOMAIN/./-}-production-tls"
