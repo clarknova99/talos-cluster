@@ -67,7 +67,7 @@ spec:
           - hosts:
               - ${SECRET_DOMAIN}
               - www.${SECRET_DOMAIN}
-            secretName: "${SECRET_DOMAIN/./-}-production-tls"
+            # secretName: "${SECRET_DOMAIN/./-}-production-tls"
     persistence:
       config:
         enabled: true
