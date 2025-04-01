@@ -25,7 +25,7 @@ spec:
       retries: 5
   values:
     controllers:
-      sensei-prod-worker:
+      sensei-stage-worker:
         replicas: 4
         containers:
           app:
@@ -54,11 +54,6 @@ spec:
           # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-secret
-      sensei-stage-worker:
-        containers:
-          '*':
-            image:
-              tag: stage-latest@sha256:bc7fc224cabfdb1e0304fe2843e65c3325f7d93602ba8537cd89a81b864c955c
     defaultPodOptions:
       affinity:
         nodeAffinity:
