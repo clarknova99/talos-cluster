@@ -19,31 +19,47 @@ spec:
 
             command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
             env:
+            - name: LANGFUSE_PUBLIC_KEY
+              value: ${SECRET_LANGFUSE_PUBLIC_KEY}
+            - name: LANGFUSE_SECRET_KEY
+              value: ${SECRET_LANGFUSE_SECRET_KEY}
+            - name: LANGFUSE_HOST
+              value: http://langfuse.sensei.svc.cluster.local:3000                  
             - name: GROQ_API_KEY_LLM
               valueFrom:
                 secretKeyRef:
-                  name: sensei-stage-daily-refresh-secrets
+                  name: sensei-prod-daily-refresh-secrets
                   key: GROQ_API_KEY_LLM
             - name: GROQ_API_KEY_PGN_TEXT
               valueFrom:
                 secretKeyRef:
-                  name: sensei-stage-daily-refresh-secrets
-                  key: GROQ_API_KEY_PGN_TEXT       
+                  name: sensei-prod-daily-refresh-secrets
+                  key: GROQ_API_KEY_PGN_TEXT   
+            - name: LITELLM_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-prod-daily-refresh-secrets
+                  key: LITELLM_BASE_URL 
+            - name: LITELLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sensei-prod-daily-refresh-secrets
+                  key: LITELLM_API_KEY                                          
             - name: PG_URI
               valueFrom:
                 secretKeyRef:
-                  name: sensei-stage-daily-refresh-secrets
+                  name: sensei-prod-daily-refresh-secrets
                   key: PG_URI       
             - name: DISCORD_WEBHOOK
               valueFrom:
                 secretKeyRef:
-                  name: sensei-stage-daily-refresh-secrets
+                  name: sensei-prod-daily-refresh-secrets
                   key: DISCORD_WEBHOOK 
             - name: LICHESS_API_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: sensei-stage-daily-refresh-secrets
-                  key: LICHESS_API_TOKEN 
+                  name: sensei-prod-daily-refresh-secrets
+                  key: LICHESS_API_TOKEN  
             - name: ENVIRONMENT
               value: "stage"
           restartPolicy: OnFailure
