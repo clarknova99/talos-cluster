@@ -44,26 +44,26 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 1m
-# ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app sensei-stage-worker
-#   namespace: flux-system
-# spec:
-#   targetNamespace: sensei
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: *app
-#   dependsOn:
-#     - name: cloudnative-pg-cluster3
-#   path: ./kubernetes/apps/sensei/sensei-stage/worker
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: home-kubernetes
-#   wait: false
-#   interval: 30m
-#   retryInterval: 1m
-#   timeout: 1m  
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app sensei-stage-worker
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cloudnative-pg-cluster3
+  path: ./kubernetes/apps/sensei/sensei-stage/worker
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 1m  
