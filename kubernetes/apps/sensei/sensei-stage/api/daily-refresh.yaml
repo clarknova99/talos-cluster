@@ -24,7 +24,7 @@ spec:
             - name: LANGFUSE_SECRET_KEY
               value: ${SECRET_LANGFUSE_SECRET_KEY}
             - name: LANGFUSE_HOST
-              value: http://langfuse.sensei.svc.cluster.local:3000                  
+              value: http://langfuse-v3-web.sensei.svc.cluster.local:3000                 
             - name: GROQ_API_KEY_LLM
               valueFrom:
                 secretKeyRef:
