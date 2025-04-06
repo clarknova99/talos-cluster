@@ -127,7 +127,7 @@ spec:
       dashboards:
         enabled: true
         searchNamespace: ALL
-        label: grafana_sensei_dashboard
+        label: grafana_dashboard
         folderAnnotation: grafana_folder
         provider:
           disableDelete: true
