@@ -26,7 +26,7 @@ spec:
   values:
     controllers:
       sensei-stage-worker:
-        replicas: 4
+        replicas: 1
         containers:
           app:
             image:
