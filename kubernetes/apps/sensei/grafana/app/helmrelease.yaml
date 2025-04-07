@@ -134,8 +134,10 @@ spec:
           foldersFromFilesStructure: true
       datasources:
         enabled: true
-        searchNamespace: sensei
-        labelValue: "sensei"
+        # searchNamespace: sensei
+        # labelValue: "sensei"
+        searchNamespace: ALL
+        labelValue: ""        
     plugins:
       - grafana-clock-panel
       - grafana-piechart-panel
