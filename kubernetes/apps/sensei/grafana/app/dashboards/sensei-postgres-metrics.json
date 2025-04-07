@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 6,
   "links": [],
   "panels": [
     {
@@ -49,8 +49,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -82,7 +81,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -171,8 +170,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -209,11 +207,12 @@
           "showLegend": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -297,8 +296,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           }
@@ -331,13 +329,14 @@
           "valueSize": 35
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         },
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -455,8 +454,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           }
@@ -479,11 +477,12 @@
           "showLegend": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -590,8 +589,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -671,7 +669,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -681,7 +679,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH weekly_users AS (\n    -- Get weekly new users and cumulative total users\n    SELECT \n        DATE_TRUNC('week', joined_at) AS event_week,\n        COUNT(sensei_user_id) AS new_users,\n        SUM(COUNT(sensei_user_id)) OVER (ORDER BY DATE_TRUNC('week', joined_at)) AS total_users\n    FROM \n        sensei_users\n    GROUP BY DATE_TRUNC('week', joined_at)\n),\nactive_chess_players AS (\n    -- Count unique users who played a game in a given event week after joining\n    SELECT \n        DATE_TRUNC('week', g.game_date) AS event_week,\n        COUNT(DISTINCT g.sensei_user_id) AS active_users\n    FROM \n        games g\n    JOIN \n        sensei_users su ON g.sensei_user_id = su.sensei_user_id\n    WHERE \n        su.joined_at <= g.game_date  -- Exclude games played before the user joined\n    GROUP BY DATE_TRUNC('week', g.game_date)\n),\npreviously_active_users AS (\n    -- Identify users who had at least one event in any previous week\n    SELECT \n        e.sensei_user_id,\n        MIN(DATE_TRUNC('week', e.event_timestamp)) AS first_event_week\n    FROM \n        events e\n    GROUP BY \n        e.sensei_user_id\n),\nweekly_sensei_active_users AS (\n    -- Count users who played a game in the current week AND had an event in the same week\n    -- but also had an event in any previous week\n    SELECT \n        DATE_TRUNC('week', g.game_date) AS event_week,\n        COUNT(DISTINCT g.sensei_user_id) AS sensei_active_users\n    FROM \n        games g\n    JOIN \n        events e ON g.sensei_user_id = e.sensei_user_id \n            AND DATE_TRUNC('week', g.game_date) = DATE_TRUNC('week', e.event_timestamp)  -- Same week\n    JOIN \n        previously_active_users p ON g.sensei_user_id = p.sensei_user_id\n            AND p.first_event_week < DATE_TRUNC('week', g.game_date)  -- Ensure they had an event in a previous week\n    GROUP BY \n        DATE_TRUNC('week', g.game_date)\n)\nSELECT \n    date(wu.event_week) as event_week,\n    wu.total_users,\n    COALESCE(acp.active_users, 0) AS active_chess_players, -- Users who played games that week\n    CASE \n        WHEN COALESCE(wu.total_users, 0) = 0 THEN 0\n        ELSE ROUND((COALESCE(acp.active_users, 0)::DECIMAL / NULLIF(wu.total_users, 0)) * 100, 2)\n    END AS chess_player_pct, -- % of total users who played a game      \n    COALESCE(wsau.sensei_active_users, 0) AS active_sensei_users, -- Users who played chess that week and signed up to sensei chess in a prior week (not new users)\n    CASE \n        WHEN COALESCE(acp.active_users, 0) = 0 THEN 0\n        ELSE ROUND((COALESCE(wsau.sensei_active_users, 0)::DECIMAL / NULLIF(acp.active_users, 0)) * 100, 2)\n    END AS sensei_engagement_percentage -- % of active chess players who are sensei active users\nFROM \n    weekly_users wu\nLEFT JOIN \n    active_chess_players acp ON wu.event_week = acp.event_week\nLEFT JOIN \n    weekly_sensei_active_users wsau ON wu.event_week = wsau.event_week\nWHERE \n    wu.event_week >= DATE '2025-01-01'\nORDER BY \n    wu.event_week desc;",
+          "rawSql": "WITH weekly_users AS (\n    -- Get weekly new users and cumulative total users\n    SELECT \n        DATE_TRUNC('week', joined_at) AS event_week,\n        COUNT(sensei_user_id) AS new_users,\n        SUM(COUNT(sensei_user_id)) OVER (ORDER BY DATE_TRUNC('week', joined_at)) AS total_users\n    FROM \n        sensei_users\n    GROUP BY DATE_TRUNC('week', joined_at)\n),\nactive_chess_players AS (\n    -- Count unique users who played a game in a given event week after joining\n    -- Only include games where date_added is close to game_date\n    SELECT \n        DATE_TRUNC('week', g.game_date) AS event_week,\n        COUNT(DISTINCT g.sensei_user_id) AS active_users\n    FROM \n        games g\n    JOIN \n        sensei_users su ON g.sensei_user_id = su.sensei_user_id\n    WHERE \n        su.joined_at <= g.game_date  -- Exclude games played before the user joined\n        AND (g.date_added - g.game_date) <= interval '2 days'  -- Only include games added within 2 days of game_date\n    GROUP BY DATE_TRUNC('week', g.game_date)\n),\npreviously_active_users AS (\n    -- Identify users who had at least one event in any previous week\n    SELECT \n        e.sensei_user_id,\n        MIN(DATE_TRUNC('week', e.event_timestamp)) AS first_event_week\n    FROM \n        events e\n    GROUP BY \n        e.sensei_user_id\n),\nweekly_sensei_active_users AS (\n    -- Count users who played a game in the current week AND had an event in the same week\n    -- but also had an event in any previous week\n    -- Only include games where date_added is close to game_date\n    SELECT \n        DATE_TRUNC('week', g.game_date) AS event_week,\n        COUNT(DISTINCT g.sensei_user_id) AS sensei_active_users\n    FROM \n        games g\n    JOIN \n        events e ON g.sensei_user_id = e.sensei_user_id \n            AND DATE_TRUNC('week', g.game_date) = DATE_TRUNC('week', e.event_timestamp)  -- Same week\n    JOIN \n        previously_active_users p ON g.sensei_user_id = p.sensei_user_id\n            AND p.first_event_week < DATE_TRUNC('week', g.game_date)  -- Ensure they had an event in a previous week\n    WHERE \n        (g.date_added - g.game_date) <= interval '2 days'  -- Only include games added within 2 days of game_date\n    GROUP BY \n        DATE_TRUNC('week', g.game_date)\n)\nSELECT \n    date(wu.event_week) as event_week,\n    wu.total_users,\n    COALESCE(acp.active_users, 0) AS active_chess_players, -- Users who played games that week\n    CASE \n        WHEN COALESCE(wu.total_users, 0) = 0 THEN 0\n        ELSE ROUND((COALESCE(acp.active_users, 0)::DECIMAL / NULLIF(wu.total_users, 0)) * 100, 2)\n    END AS chess_player_pct, -- % of total users who played a game      \n    COALESCE(wsau.sensei_active_users, 0) AS active_sensei_users, -- Users who played chess that week and signed up to sensei chess in a prior week (not new users)\n    CASE \n        WHEN COALESCE(acp.active_users, 0) = 0 THEN 0\n        ELSE ROUND((COALESCE(wsau.sensei_active_users, 0)::DECIMAL / NULLIF(acp.active_users, 0)) * 100, 2)\n    END AS sensei_engagement_percentage -- % of active chess players who are sensei active users\nFROM \n    weekly_users wu\nLEFT JOIN \n    active_chess_players acp ON wu.event_week = acp.event_week\nLEFT JOIN \n    weekly_sensei_active_users wsau ON wu.event_week = wsau.event_week\nWHERE \n    wu.event_week >= DATE '2025-01-01'\nORDER BY \n    wu.event_week desc;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -753,8 +751,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -829,7 +826,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -912,8 +909,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -945,7 +941,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -1001,8 +997,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -1034,7 +1029,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -1090,8 +1085,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           }
@@ -1122,7 +1116,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -1178,8 +1172,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -1211,7 +1204,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -1267,8 +1260,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               }
             ]
           },
@@ -1356,8 +1348,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               }
             ]
           },
@@ -1445,8 +1436,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               }
             ]
           },
@@ -1554,8 +1544,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1670,8 +1659,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1757,8 +1745,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "#EAB839",
@@ -1884,8 +1871,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2011,8 +1997,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2142,8 +2127,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -2240,8 +2224,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           }
@@ -2337,8 +2320,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               }
             ]
           },
@@ -2442,8 +2424,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2572,8 +2553,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               }
             ]
           }
@@ -2706,7 +2686,7 @@
   ],
   "preload": false,
   "refresh": "30s",
-  "schemaVersion": 40,
+  "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": []
@@ -2719,6 +2699,5 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 1,
-  "weekStart": ""
+  "version": 1
 }
