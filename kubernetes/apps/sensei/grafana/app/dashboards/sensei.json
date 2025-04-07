@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 2,
   "links": [],
   "panels": [
     {
@@ -280,6 +280,7 @@
             "type": "loki",
             "uid": "loki"
           },
+          "direction": "backward",
           "editorMode": "code",
           "expr": "{app=\"sensei-prod-worker\"}",
           "queryType": "range",
@@ -303,6 +304,50 @@
         "w": 19,
         "x": 0,
         "y": 36
+      },
+      "id": 9,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "11.6.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{app=\"sensei-stage-worker\"}",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Worker Stage Logs",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 19,
+        "x": 0,
+        "y": 45
       },
       "id": 7,
       "options": {
@@ -346,7 +391,7 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 45
+        "y": 54
       },
       "id": 8,
       "options": {
@@ -390,7 +435,7 @@
         "h": 10,
         "w": 19,
         "x": 0,
-        "y": 54
+        "y": 63
       },
       "id": 5,
       "options": {
@@ -457,7 +502,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 64
+        "y": 73
       },
       "id": 6,
       "interval": "24h",

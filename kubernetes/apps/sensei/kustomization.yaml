@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./gatus/ks.yaml
-  - ./grafana/ks.yaml
+  # - ./grafana/ks.yaml
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
   - ./langfusev3/ks.yaml
