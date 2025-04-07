@@ -14,7 +14,15 @@ model_list:
   - model_name: groq-llama3-8b-8192
     litellm_params:
       model: groq/llama3-8b-8192
-      api_key: ${GROQ_API_KEY_LLM}     
+      api_key: ${GROQ_API_KEY_LLM}    
+  - model_name: groq-deepseek-r1-distill-llama-70b
+    litellm_params:
+      model: groq/deepseek-r1-distill-llama-70b
+      api_key: ${GROQ_API_KEY_LLM}   
+  - model_name: groq-llama-4-scout-17b-16e-instruct
+    litellm_params:
+      model: groq/meta-llama/llama-4-scout-17b-16e-instruct
+      api_key: ${GROQ_API_KEY_LLM}            
   - model_name: gpt-4o-mini
     litellm_params:
       model: openai/gpt-4o-mini
