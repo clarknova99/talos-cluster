@@ -41,8 +41,9 @@ general_settings:
 
 router_settings:
   fallbacks: [
-    {"llama-3.3-70b-versatile": ["llama-3.3-70b-specdec", "llama3-70b-8192", "llama3-8b-8192", "gpt-4o-mini"]},
-    {"llama-3.3-70b-specdec": ["llama3-70b-8192", "llama3-8b-8192", "gpt-4o-mini"]},
+    {"groq-llama-4-scout-17b-16e-instruct": ["llama-3.3-70b-versatile", "groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
+    {"llama-3.3-70b-versatile": ["groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
+    {"groq-deepseek-r1-distill-llama-70b": ["llama3-70b-8192", "gpt-4o-mini"]},
     {"llama3-70b-8192": ["llama3-8b-8192", "gpt-4o-mini"]}, 
     {"llama3-8b-8192": ["gpt-4o-mini"]},     
   ]
