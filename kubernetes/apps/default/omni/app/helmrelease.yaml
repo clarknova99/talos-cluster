@@ -52,7 +52,7 @@ spec:
               capabilities:
                 add:
                   - NET_ADMIN
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
         pod:
           nodeSelector:
             kubernetes.io/arch: amd64
