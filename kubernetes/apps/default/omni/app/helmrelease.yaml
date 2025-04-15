@@ -52,10 +52,9 @@ spec:
               capabilities:
                 add:
                   - NET_ADMIN
+                  - SYS_ADMIN
               readOnlyRootFilesystem: false
-        pod:
-          nodeSelector:
-            kubernetes.io/arch: amd64
+              privileged: true
     service:
       app:
         controller: omni
@@ -100,9 +99,7 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: 8100                  
-  
-
+                  port: 8100
         tls:
           - hosts:
               - omni.${SECRET_DOMAIN}
