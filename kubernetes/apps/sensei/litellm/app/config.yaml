@@ -33,7 +33,8 @@ model_list:
       api_key: ${SECRET_FT_SENSEI_OPENAI_KEY}      
 
 general_settings:
-  store_prompts_in_spend_logs: True
+  store_model_in_db: true
+  store_prompts_in_spend_logs: true
 
 router_settings:
   fallbacks: [
