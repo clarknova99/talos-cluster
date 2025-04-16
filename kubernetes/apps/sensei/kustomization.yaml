@@ -9,4 +9,4 @@ resources:
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
   - ./langfusev3/ks.yaml
-  # - ./litellm/ks.yaml
+  - ./litellm/ks.yaml
