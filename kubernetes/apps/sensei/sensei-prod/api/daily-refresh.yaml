@@ -4,64 +4,62 @@ metadata:
   name: sensei-prod-daily-refresh
   namespace: sensei
 spec:
-  schedule: "0 1 * * *"  # 9 PM ET (assuming EDT, UTC-4)
+  schedule: "0 1 * * *" # 9 PM ET (assuming EDT, UTC-4)
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
         spec:
           imagePullSecrets:
-          - name: sensei-secret        
+            - name: sensei-secret
           containers:
-          - name: prod-daily-user-refresh
-            #image: ghcr.io/clarknova99/project-sensei/backend:main-0.1.0@sha256:af86e55f90528706a814467f377c54bc69b50efe23881354bd33f919fae8cb68
-            image: ghcr.io/clarknova99/project-sensei/backend:latest
-            imagePullPolicy: Always
-
-            command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
-            env:
-            - name: LANGFUSE_PUBLIC_KEY
-              value: ${SECRET_LANGFUSE_PUBLIC_KEY}
-            - name: LANGFUSE_SECRET_KEY
-              value: ${SECRET_LANGFUSE_SECRET_KEY}
-            - name: LANGFUSE_HOST
-              value: http://langfuse-v3-web.sensei.svc.cluster.local:3000                    
-            - name: GROQ_API_KEY_LLM
-              valueFrom:
-                secretKeyRef:
-                  name: sensei-prod-daily-refresh-secrets
-                  key: GROQ_API_KEY_LLM
-            - name: GROQ_API_KEY_PGN_TEXT
-              valueFrom:
-                secretKeyRef:
-                  name: sensei-prod-daily-refresh-secrets
-                  key: GROQ_API_KEY_PGN_TEXT   
-            - name: LITELLM_BASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: sensei-prod-daily-refresh-secrets
-                  key: LITELLM_BASE_URL 
-            - name: LITELLM_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: sensei-prod-daily-refresh-secrets
-                  key: LITELLM_API_KEY                                          
-            - name: PG_URI
-              valueFrom:
-                secretKeyRef:
-                  name: sensei-prod-daily-refresh-secrets
-                  key: PG_URI       
-            - name: DISCORD_WEBHOOK
-              valueFrom:
-                secretKeyRef:
-                  name: sensei-prod-daily-refresh-secrets
-                  key: DISCORD_WEBHOOK 
-            - name: LICHESS_API_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: sensei-prod-daily-refresh-secrets
-                  key: LICHESS_API_TOKEN 
-            - name: ENVIRONMENT
-              value: "prod"
+            - name: prod-daily-user-refresh
+              #image: ghcr.io/clarknova99/project-sensei/backend:main-0.1.0@sha256:af86e55f90528706a814467f377c54bc69b50efe23881354bd33f919fae8cb68
+              image: ghcr.io/clarknova99/project-sensei/backend:main-0.1.0@sha256:34547f91dd54d114f35abb8182741e6bb834f36ddb9ec85cfea631cf2c2496f9
+              imagePullPolicy: Always
+              command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
+              env:
+                - name: LANGFUSE_PUBLIC_KEY
+                  value: ${SECRET_LANGFUSE_PUBLIC_KEY}
+                - name: LANGFUSE_SECRET_KEY
+                  value: ${SECRET_LANGFUSE_SECRET_KEY}
+                - name: LANGFUSE_HOST
+                  value: http://langfuse-v3-web.sensei.svc.cluster.local:3000
+                - name: GROQ_API_KEY_LLM
+                  valueFrom:
+                    secretKeyRef:
+                      name: sensei-prod-daily-refresh-secrets
+                      key: GROQ_API_KEY_LLM
+                - name: GROQ_API_KEY_PGN_TEXT
+                  valueFrom:
+                    secretKeyRef:
+                      name: sensei-prod-daily-refresh-secrets
+                      key: GROQ_API_KEY_PGN_TEXT
+                - name: LITELLM_BASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: sensei-prod-daily-refresh-secrets
+                      key: LITELLM_BASE_URL
+                - name: LITELLM_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: sensei-prod-daily-refresh-secrets
+                      key: LITELLM_API_KEY
+                - name: PG_URI
+                  valueFrom:
+                    secretKeyRef:
+                      name: sensei-prod-daily-refresh-secrets
+                      key: PG_URI
+                - name: DISCORD_WEBHOOK
+                  valueFrom:
+                    secretKeyRef:
+                      name: sensei-prod-daily-refresh-secrets
+                      key: DISCORD_WEBHOOK
+                - name: LICHESS_API_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: sensei-prod-daily-refresh-secrets
+                      key: LICHESS_API_TOKEN
+                - name: ENVIRONMENT
+                  value: "prod"
           restartPolicy: OnFailure
-
