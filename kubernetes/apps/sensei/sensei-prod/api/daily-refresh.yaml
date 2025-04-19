@@ -15,7 +15,7 @@ spec:
           containers:
             - name: prod-daily-user-refresh
               #image: ghcr.io/clarknova99/project-sensei/backend:main-0.1.0@sha256:af86e55f90528706a814467f377c54bc69b50efe23881354bd33f919fae8cb68
-              image: ghcr.io/clarknova99/project-sensei/backend:main-0.1.0@sha256:34547f91dd54d114f35abb8182741e6bb834f36ddb9ec85cfea631cf2c2496f9
+              image: ghcr.io/clarknova99/project-sensei/backend:main-0.1.0@sha256:e3b41f46598d9b14c3fe2da8b38710d07cadab70b934402243160d9c78a27ea3
               imagePullPolicy: Always
               command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
               env:
