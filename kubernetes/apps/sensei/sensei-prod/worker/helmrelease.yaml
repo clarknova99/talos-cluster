@@ -41,7 +41,7 @@ spec:
               SENSEI_OPENAI_API_KEY: ${SECRET_SENSEI_OPENAI_KEY}
               OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
               ENVIRONMENT: prod
-              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@192.168.3.42:5432/sensei-prod
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-prod
               DISCORD_WEBHOOK: ${SECRET_SENSE_DISCORD_WEBHOOK}
               DISCORD_SIGNUP_WEBOOK: ${SECRET_DISCORD_SIGNUP_WEBOOK}
               LICHESS_API_TOKEN: ${LICHESS_API_TOKEN}
