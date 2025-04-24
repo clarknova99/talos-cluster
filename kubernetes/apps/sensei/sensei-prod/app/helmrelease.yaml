@@ -132,10 +132,16 @@ spec:
             paths:
               - path: /ads.txt
                 pathType: Exact
+                service:
+                  identifier: app
+                  port: 8000                
           - host: ${SECRET_DOMAIN_TWO}
             paths:
               - path: /ads.txt
                 pathType: Exact
+                service:
+                  identifier: app
+                  port: 8000
         tls:
           - hosts:
               - www.${SECRET_DOMAIN_TWO}
