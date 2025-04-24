@@ -101,6 +101,10 @@ spec:
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
           nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
           nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            location ~ /ads.txt {
+              return 301 https://srv.adstxtmanager.com/19390/senseichess.com;
+            }
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:math-compass
         className: external
