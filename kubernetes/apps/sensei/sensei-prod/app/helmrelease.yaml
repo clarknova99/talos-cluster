@@ -101,10 +101,6 @@ spec:
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
           nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
           nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            location ~ /ads.txt {
-              return 301 https://srv.adstxtmanager.com/19390/senseichess.com;
-            }
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:math-compass
         className: external
@@ -112,15 +108,34 @@ spec:
           - host: www.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   identifier: app
                   port: 8000
           - host: ${SECRET_DOMAIN_TWO}
             paths:
               - path: /
+                pathType: Prefix
                 service:
                   identifier: app
                   port: 8000
+        tls:
+          - hosts:
+              - www.${SECRET_DOMAIN_TWO}
+              - ${SECRET_DOMAIN_TWO}
+      adstxt:
+        annotations:
+          nginx.ingress.kubernetes.io/permanent-redirect: https://srv.adstxtmanager.com/19390/${SECRET_DOMAIN_TWO}
+        className: external
+        hosts:
+          - host: www.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /ads.txt
+                pathType: Exact
+          - host: ${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /ads.txt
+                pathType: Exact
         tls:
           - hosts:
               - www.${SECRET_DOMAIN_TWO}
