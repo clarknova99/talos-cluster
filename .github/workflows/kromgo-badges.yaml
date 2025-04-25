@@ -1,0 +1,40 @@
+---
+name: "Download kromgo badges"
+
+on:
+  workflow_dispatch:
+  schedule: 
+    - cron: "0 */6 * * *"
+
+jobs:
+  render-readme:
+    name: Download kromgo badges
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup Python
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
+        with:
+          python-version: 3.x
+          cache: pip
+
+      - name: Install Python Requirements
+        shell: bash
+        run: pip install requests==2.32.3
+
+      - name: Download kromgo badges
+        env:
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
+          SECRET_DOMAIN: "${{ secrets.SECRET_DOMAIN }}"
+
+        shell: bash
+        run: python ./.github/scripts/kromgo-badges.py
+
+      - name: Commit Changes
+        shell: bash
+        run: |
+          git add ./kromgo
+          git commit -m "chore: download kromgo badges" || echo "No changes to commit"
+          git push origin || echo "No changes to push"
