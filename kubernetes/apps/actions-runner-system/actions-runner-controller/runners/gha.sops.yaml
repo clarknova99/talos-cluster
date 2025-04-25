@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: actions-runner-runner-secrets
+    namespace: actions-runner-system
+stringData:
+    #ENC[AES256_GCM,data:owZ0AGPB+M34d4eXo+qHLfcvUXJNnMSJi7DFA4rsFN3A3WEevTPN634LFWeMaI9VZ8FSZArZR6vO0E5klVQlUF/JR5dLKh511jR6579BCZVfAwSgaDpMmndrnlal9A+FcXfVBr3xzy664kR+VRqE,iv:6FNH+z/r4Ss3xj/C+b0Y3zYzK5VITX0FgiKRgGB6b6k=,tag:DlwCyll8N3qewAmfznYotg==,type:comment]
+    #ENC[AES256_GCM,data:yVlbbPx/U5Nau9BKAcA6wYzLv6B4CAHgNfvsbVDXcEOwcypLqaqDQKob4HkP38NQXUEPnlYu8uuAS1jqfPlXkuhNqUW/9rBaGw5tVtEvN1mc90nECRrz/3GouDJ79jUVLzX3pSUDMZczxykPvQ0mbZnsHMWlINe/dQ==,iv:ITee+Ihk+/v8zlpcmpnDyZm+kk2DEztGG5INYGeu8z8=,tag:TcKCCd1/zQ2R8FvlSu84yg==,type:comment]
+    github_app_id: ENC[AES256_GCM,data:quFwYc0t2g==,iv:ctcdg1BzVher7secWEVm98nuAFN/un1p2wSaW0jvQHQ=,tag:yiOh/aD85+eGSWlkMi0cfQ==,type:str]
+    github_app_installation_id: ENC[AES256_GCM,data:RI1X3++HXFU=,iv:9AwQmPyB/3Jxc+OHuoWsYuQkyI6eToa2ZglIux20xpA=,tag:16VK+yWin5YMr2a6BMcrtg==,type:str]
+    github_app_private_key: ENC[AES256_GCM,data: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,iv:s4cBM419XXujXdG+NcwZh8l72S2e6CUN2gDjt+k/KmQ=,tag:elqWC7LT8yx/JzxwQ8oG2Q==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBFQUxKSTd3SFZJdFFna3VW
+            dVpCeUFuVlJ3YzZkNVhLUFZ2VWZud0xRbzNnCjlEQzlMcXZ4MzN4SWtXTmZCOXZD
+            VUwvMmpNRHdsdm05NFl4N0t3QVlNNVUKLS0tIGpBQnFTNW5nOEV2YXhwT2FWOHNU
+            ZzVEM3QrRnNUMGxYVnhyVlEvblBiNXcK3WyPbGh3rth8y1EPHzW7GuOz7jflvDHM
+            kF+7wkCXT9Mt9KvRXLlg6VylksXqtL+3AXGAcOtl+Ql4VdMUg/rQtw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-04-25T19:45:13Z"
+    mac: ENC[AES256_GCM,data:szTPFzllwr2A+uOvkWUq0/NMy2Zdwq5lH9r4BXLY7IHTuzeKQMGHCdrbZf0C5tkth7M23K5ulHUlnZEVtLz6zYkDuxiNtXea3xfAiOX5w8cGoDj6PP3DqOsklwCjQX98UZHKT6XSV0Nv4zT3f1/35duaXF6PNz9XyIlZyN2dBx8=,iv:X4NBKabdZuATE9fZ13NOurYnUssyLgK8t3h0l52Hpoc=,tag:OridnDN0z3fm6vZiOiL2Hg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
