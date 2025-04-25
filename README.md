@@ -9,6 +9,7 @@
 <div align="center">
 
   [![Talos](https://kromgo.bigwang.org/talos_version?format=badge&style=flat-square)](https://www.talos.dev/)&nbsp;&nbsp;
+  [![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.bigwang.org%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=orange&label=talos)](https://talos.dev)&nbsp;
   [![Kubernetes](https://kromgo.bigwang.org/kubernetes_version?format=badge&style=flat-square)](https://www.talos.dev/)&nbsp;&nbsp;
 </div>
 
