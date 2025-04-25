@@ -11,7 +11,7 @@ print(f"Using domain: {secret_domain[:3]}...{secret_domain[-3:]}", file=sys.stdo
 
 def build_kromgo_url(tag: str, base_url: str = secret_domain):
     #url = f"https://kromgo.{secret_domain}/{tag}?format=badge&style=flat-square"
-    url = f"https://kromgo.observability.svc.cluster.local/{tag}?format=badge&style=flat-square"
+    url = f"http://kromgo.observability.svc.cluster.local/{tag}?format=badge&style=flat-square"
     # Print partial URL for debugging (hide most of the domain)
     # domain_parts = secret_domain.split('.')
     # masked_domain = f"{'*' * len(domain_parts[0])}.{'.'.join(domain_parts[1:])}" if len(domain_parts) > 1 else f"{'*' * len(secret_domain)}"
