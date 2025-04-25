@@ -15,6 +15,7 @@
 <div align="center">
 
   [![Cluster-Age](https://kromgo.bigwang.org/cluster_age_days?format=badge)](https://github.com/clarknova99/talos-cluster/)&nbsp;
+  [![Age-Days](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.bigwang.org%2Fcluster_age_days&style=flat-square&label=Age)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;
   [![Nodes](https://kromgo.bigwang.org/cluster_node_count?format=badge)]()&nbsp;
   [![CPUs](https://kromgo.bigwang.org/cluster_cpu_core_total?format=badge)]()&nbsp;
   [![Memory](https://kromgo.bigwang.org/cluster_memory_total?format=badge)]()&nbsp;
