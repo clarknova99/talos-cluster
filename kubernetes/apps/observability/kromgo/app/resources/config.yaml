@@ -42,6 +42,16 @@ metrics:
     query: round(sum(node_memory_MemTotal_bytes) / 2 ^ 30)
     suffix: " GB"      
 
+  - name: cluster_memory_usage
+    query: round(sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / sum(node_memory_MemTotal_bytes) * 100, 0.1)
+    title: Memory
+    suffix: "%"
+    colors:
+      - {color: green, min: 0, max: 35}
+      - {color: orange, min: 36, max: 75}
+      - {color: red, min: 76, max: 9999}
+
+
   - name: cluster_network_transmit_usage
     title: "Network Tx"
     query: round(avg(instance:node_network_transmit_bytes_excluding_lo:rate5m / 1024 / 1024), 0.1)
