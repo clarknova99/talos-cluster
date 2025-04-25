@@ -8,18 +8,20 @@
 
 <div align="center">
 
-  [![Talos](https://kromgo.bigwang.org/talos_version?format=badge&style=flat-square)](https://www.talos.dev/)&nbsp;&nbsp;
-  [![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.bigwang.org%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=orange&label=talos)](https://talos.dev)&nbsp;
-  [![Kubernetes](https://kromgo.bigwang.org/kubernetes_version?format=badge&style=flat-square)](https://www.talos.dev/)&nbsp;&nbsp;
+  [![Talos](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/talos_version.svg)](https://github.com/kashalls/kromgo/)&nbsp;
+  [![Talos](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/kubernetes_version.svg)](https://github.com/kashalls/kromgo/)&nbsp;
+  
 </div>
 
 <div align="center">
 
-  [![Cluster-Age](https://kromgo.bigwang.org/cluster_age_days?format=badge)](https://github.com/clarknova99/talos-cluster/)&nbsp;
-  [![Age-Days](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.bigwang.org%2Fcluster_age_days&style=flat-square&label=Age)](https://github.com/kashalls/kromgo)&nbsp;&nbsp;
-  [![Nodes](https://kromgo.bigwang.org/cluster_node_count?format=badge)]()&nbsp;
-  [![CPUs](https://kromgo.bigwang.org/cluster_cpu_core_total?format=badge)]()&nbsp;
-  [![Memory](https://kromgo.bigwang.org/cluster_memory_total?format=badge)]()&nbsp;
+[![Age-Days](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_age_days.svg)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Node-Count](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_node_count.svg)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Pod-Count](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_pod_count.svg)](https://github.com/kashalls/kromgo/)&nbsp;
+[![CPU-Usage](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_cpu_usage.svg)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Memory-Usage](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_memory_usage.svg)](https://github.com/kashalls/kromgo/)&nbsp;
+
+
 </div>
 
 ---
