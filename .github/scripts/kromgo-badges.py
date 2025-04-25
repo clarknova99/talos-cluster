@@ -10,32 +10,34 @@ if not secret_domain:
 print(f"Using domain: {secret_domain[:3]}...{secret_domain[-3:]}", file=sys.stdout)
 
 def build_kromgo_url(tag: str, base_url: str = secret_domain):
-    url = f"https://kromgo.{secret_domain}/{tag}?format=badge&style=flat-square"
+    #url = f"https://kromgo.{secret_domain}/{tag}?format=badge&style=flat-square"
+    url = f"https://kromgo.observability.svc.cluster.local/{tag}?format=badge&style=flat-square"
     # Print partial URL for debugging (hide most of the domain)
-    domain_parts = secret_domain.split('.')
-    masked_domain = f"{'*' * len(domain_parts[0])}.{'.'.join(domain_parts[1:])}" if len(domain_parts) > 1 else f"{'*' * len(secret_domain)}"
-    print(f"Building kromgo URL for {tag}: https://kromgo.{masked_domain}/{tag}?format=badge&style=flat-square", file=sys.stdout)
+    # domain_parts = secret_domain.split('.')
+    # masked_domain = f"{'*' * len(domain_parts[0])}.{'.'.join(domain_parts[1:])}" if len(domain_parts) > 1 else f"{'*' * len(secret_domain)}"
+    # print(f"Building kromgo URL for {tag}: https://kromgo.{masked_domain}/{tag}?format=badge&style=flat-square", file=sys.stdout)
+    print(f"Building kromgo URL for {tag}: {url}", file=sys.stdout)
     return url
 
 
 def download_svg(tag: str):
     url = build_kromgo_url(tag)
     
-    # Browser-like headers to bypass Cloudflare
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-        "Accept": "image/svg+xml, */*",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Referer": f"https://kromgo.{secret_domain}/",
-        "Cache-Control": "no-cache",
-        "Pragma": "no-cache",
-        "Sec-Ch-Ua": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"91\"",
-        "Sec-Ch-Ua-Mobile": "?0"
-    }
+    # # Browser-like headers to bypass Cloudflare
+    # headers = {
+    #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    #     "Accept": "image/svg+xml, */*",
+    #     "Accept-Language": "en-US,en;q=0.9",
+    #     "Accept-Encoding": "gzip, deflate, br",
+    #     "Referer": f"https://kromgo.{secret_domain}/",
+    #     "Cache-Control": "no-cache",
+    #     "Pragma": "no-cache",
+    #     "Sec-Ch-Ua": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"91\"",
+    #     "Sec-Ch-Ua-Mobile": "?0"
+    # }
     
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, timeout=10)
         print(f"Downloaded badge {tag} with status: {response.status_code}", file=sys.stdout)
         
         if response.status_code != 200:
