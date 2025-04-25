@@ -4,22 +4,37 @@ import requests
 
 secret_domain = os.environ.get("SECRET_DOMAIN")
 
+if not secret_domain:
+    print("ERROR: SECRET_DOMAIN environment variable is not set!", file=sys.stderr)
+    sys.exit(1)
+print(f"Using domain: {secret_domain[:3]}...{secret_domain[-3:]}", file=sys.stdout)
+
 def build_kromgo_url(tag: str, base_url: str = secret_domain):
-    print(f"Building kromgo {tag} url", file=sys.stdout)
-    return f"https://kromgo.{secret_domain}/{tag}?format=badge&style=flat-square"
+    url = f"https://kromgo.{secret_domain}/{tag}?format=badge&style=flat-square"
+    # Print partial URL for debugging (hide most of the domain)
+    domain_parts = secret_domain.split('.')
+    masked_domain = f"{'*' * len(domain_parts[0])}.{'.'.join(domain_parts[1:])}" if len(domain_parts) > 1 else f"{'*' * len(secret_domain)}"
+    print(f"Building kromgo URL for {tag}: https://kromgo.{masked_domain}/{tag}?format=badge&style=flat-square", file=sys.stdout)
+    return url
 
 
 def download_svg(tag: str):
-    response = requests.get(build_kromgo_url(tag))
-    print(f"Downloaded badge {tag} with status: {response.status_code}", file=sys.stdout)
-
-    response.raise_for_status()
-
-    with open(f"./kromgo/{tag}.svg", "wb") as file_descriptor:
-        print(f"Saving badge {tag}", file=sys.stdout)
-
-        for chunk in response:
-            file_descriptor.write(chunk)
+    try:
+        url = build_kromgo_url(tag)
+        print(f"Requesting: {url.replace(secret_domain, '[SECRET]')}", file=sys.stdout)
+        response = requests.get(url)
+        print(f"Downloaded badge {tag} with status: {response.status_code}", file=sys.stdout)
+        
+        if response.status_code != 200:
+            print(f"Error response content: {response.text[:100]}...", file=sys.stderr)
+            response.raise_for_status()
+            
+        with open(f"./kromgo/{tag}.svg", "wb") as file_descriptor:
+            print(f"Saving badge {tag}", file=sys.stdout)
+            for chunk in response:
+                file_descriptor.write(chunk)
+    except Exception as e:
+        print(f"Downloading badge {tag} failed: {str(e)}", file=sys.stderr)
 
 
 if __name__ == "__main__":
