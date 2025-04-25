@@ -9,7 +9,7 @@ on:
 jobs:
   render-readme:
     name: Download kromgo badges
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, ubuntu-latest]
     permissions:
       contents: write 
 
