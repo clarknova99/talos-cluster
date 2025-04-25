@@ -33,24 +33,27 @@ jobs:
         shell: bash
         run: |
           echo "==== Testing domain resolution ===="
-          nslookup kromgo.${{ secrets.SECRET_DOMAIN }} || echo "Failed to resolve domain"
+          nslookup kromgo.observability.svc.cluster.local || echo "Failed to resolve domain"
           
-          echo -e "\n==== Testing with verbose output ===="
-          curl -v https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version || echo "Failed to connect"
-          
-          echo -e "\n==== Testing with full browser headers ===="
-          curl -v -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" \
-              -H "Accept: application/json, text/plain, */*" \
-              -H "Accept-Language: en-US,en;q=0.9" \
-              -H "Accept-Encoding: gzip, deflate, br" \
-              -H "Connection: keep-alive" \
-              -H "Referer: https://github.com/" \
-              -H "Sec-Fetch-Dest: empty" \
-              -H "Sec-Fetch-Mode: cors" \
-              -H "Sec-Fetch-Site: cross-site" \
-              -H "Pragma: no-cache" \
-              -H "Cache-Control: no-cache" \
-              https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version || echo "Failed with browser headers"
+        # echo "==== Testing domain resolution ===="
+        # nslookup kromgo.${{ secrets.SECRET_DOMAIN }} || echo "Failed to resolve domain"
+
+        # echo -e "\n==== Testing with verbose output ===="
+        # curl -v https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version || echo "Failed to connect"
+        
+        # echo -e "\n==== Testing with full browser headers ===="
+        # curl -v -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" \
+        #     -H "Accept: application/json, text/plain, */*" \
+        #     -H "Accept-Language: en-US,en;q=0.9" \
+        #     -H "Accept-Encoding: gzip, deflate, br" \
+        #     -H "Connection: keep-alive" \
+        #     -H "Referer: https://github.com/" \
+        #     -H "Sec-Fetch-Dest: empty" \
+        #     -H "Sec-Fetch-Mode: cors" \
+        #     -H "Sec-Fetch-Site: cross-site" \
+        #     -H "Pragma: no-cache" \
+        #     -H "Cache-Control: no-cache" \
+        #     https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version || echo "Failed with browser headers"
 
 
       - name: Download kromgo badges
