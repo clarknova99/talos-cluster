@@ -19,15 +19,22 @@ def build_kromgo_url(tag: str, base_url: str = secret_domain):
 
 
 def download_svg(tag: str):
+    url = build_kromgo_url(tag)
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Accept": "image/svg+xml,*/*",
+        "Referer": f"https://kromgo.{secret_domain}/",
+        "Cache-Control": "no-cache"
+    }
+    
     try:
-        url = build_kromgo_url(tag)
-        print(f"Requesting: {url.replace(secret_domain, '[SECRET]')}", file=sys.stdout)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers, timeout=10)
         print(f"Downloaded badge {tag} with status: {response.status_code}", file=sys.stdout)
         
         if response.status_code != 200:
             print(f"Error response content: {response.text[:100]}...", file=sys.stderr)
-            response.raise_for_status()
+            return
             
         with open(f"./kromgo/{tag}.svg", "wb") as file_descriptor:
             print(f"Saving badge {tag}", file=sys.stdout)
