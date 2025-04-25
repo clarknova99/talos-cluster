@@ -37,10 +37,10 @@ jobs:
           echo "Testing connection..."
           curl -I https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version || echo "Failed to connect"
           echo "Testing json response..."
-          curl -s https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version || echo "Failed to connect"
+          curl -sL https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version || echo "Failed to connect"
           
           echo "Testing svg response..."
-          curl -s https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version?format=badge\&style=flat-square || echo "Failed to connect"
+          curl -sL https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version?format=badge\&style=flat-square || echo "Failed to connect"
           
           echo "Testing with browser headers..."
           curl -s -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" \
