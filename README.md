@@ -25,7 +25,7 @@
 [![Node-Count](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_node_count.svg)](https://github.com/kashalls/kromgo/)&nbsp;
 [![CPU-Usage](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_cpu_usage.svg)](https://github.com/kashalls/kromgo/)&nbsp;
 [![Memory-Usage](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_memory_usage.svg)](https://github.com/kashalls/kromgo/)&nbsp;
-
+[![Pod-Count](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_pod_count.svg)](https://github.com/kashalls/kromgo/)&nbsp;
 
 </div>
 
