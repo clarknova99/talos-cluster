@@ -88,6 +88,9 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - "{{ .Release.Name }}.${SECRET_DOMAIN}"                  
     persistence:
       config-file:
         type: configMap

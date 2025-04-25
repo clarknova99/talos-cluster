@@ -15,10 +15,14 @@
 
 <div align="center">
 
-[![Age-Days](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_age_days.svg)](https://github.com/kashalls/kromgo/)&nbsp;
-[![Node-Count](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_node_count.svg)](https://github.com/kashalls/kromgo/)&nbsp;
 [![CPU-Count](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_cpu_core_total.svg)](https://github.com/kashalls/kromgo/)&nbsp;
 [![Memory-Total](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_memory_total.svg)](https://github.com/kashalls/kromgo/)&nbsp;
+
+</div>
+<div align="center">
+
+[![Age-Days](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_age_days.svg)](https://github.com/kashalls/kromgo/)&nbsp;
+[![Node-Count](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_node_count.svg)](https://github.com/kashalls/kromgo/)&nbsp;
 [![CPU-Usage](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_cpu_usage.svg)](https://github.com/kashalls/kromgo/)&nbsp;
 [![Memory-Usage](https://raw.githubusercontent.com/clarknova99/talos-cluster/refs/heads/main/kromgo/cluster_memory_usage.svg)](https://github.com/kashalls/kromgo/)&nbsp;
 
