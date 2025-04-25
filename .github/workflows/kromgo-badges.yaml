@@ -36,6 +36,11 @@ jobs:
           nslookup kromgo.${{ secrets.SECRET_DOMAIN }} || echo "Failed to resolve domain"
           echo "Testing connection..."
           curl -I https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version || echo "Failed to connect"
+          echo "Testing json response..."
+          curl https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version || echo "Failed to connect"
+          echo "Testing svg response..."
+          curl https://kromgo.${{ secrets.SECRET_DOMAIN }}/talos_version?format=badge&style=flat-square || echo "Failed to connect"
+
 
       - name: Download kromgo badges
         env:
