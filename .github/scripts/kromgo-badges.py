@@ -62,7 +62,8 @@ if __name__ == "__main__":
         "cluster_cpu_core_total",        
         "cluster_memory_total",
         "cluster_cpu_usage",
-        "cluster_memory_usage"
+        "cluster_memory_usage",
+        "cluster_pod_count"
     ]:
         try:
             download_svg(tag)
