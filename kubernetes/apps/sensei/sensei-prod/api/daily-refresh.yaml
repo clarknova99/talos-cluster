@@ -46,11 +46,11 @@ spec:
                     secretKeyRef:
                       name: sensei-prod-daily-refresh-secrets
                       key: LITELLM_API_KEY
-                - name: PG_URI
-                  valueFrom:
-                    secretKeyRef:
-                      name: sensei-prod-daily-refresh-secrets
-                      key: PG_URI
+                # - name: PG_URI
+                #   valueFrom:
+                #     secretKeyRef:
+                #       name: sensei-prod-daily-refresh-secrets
+                #       key: PG_URI
                 - name: DISCORD_WEBHOOK
                   valueFrom:
                     secretKeyRef:
