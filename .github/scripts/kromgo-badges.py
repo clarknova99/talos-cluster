@@ -21,11 +21,17 @@ def build_kromgo_url(tag: str, base_url: str = secret_domain):
 def download_svg(tag: str):
     url = build_kromgo_url(tag)
     
+    # Browser-like headers to bypass Cloudflare
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-        "Accept": "image/svg+xml,*/*",
+        "Accept": "image/svg+xml, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
         "Referer": f"https://kromgo.{secret_domain}/",
-        "Cache-Control": "no-cache"
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+        "Sec-Ch-Ua": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"91\"",
+        "Sec-Ch-Ua-Mobile": "?0"
     }
     
     try:
