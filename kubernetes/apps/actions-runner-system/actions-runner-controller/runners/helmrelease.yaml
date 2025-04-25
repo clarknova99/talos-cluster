@@ -25,7 +25,7 @@ spec:
     keepHistory: false      
   values:
     githubConfigUrl: https://github.com/clarknova99/talos-cluster
-    githubConfigSecret: actions-runner-controller-secrets    
+    githubConfigSecret: actions-runner-runner-secrets    
     minRunners: 1
     maxRunners: 3
     containerMode:
