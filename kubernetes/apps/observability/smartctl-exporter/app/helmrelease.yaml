@@ -34,16 +34,13 @@ spec:
     serviceMonitor:
       enabled: true
       relabelings:
-        # # replaces other node identifiers with hostname
-        # - sourceLabels: ["node"]
-        #   targetLabel: instance
-        #   action: replace
-      - action: labeldrop
-        regex: (pod)
-      - action: replace
-        regex: (.*)
-        replacement: $1.${SECRET_DOMAIN}
-        sourceLabels:
-        - __meta_kubernetes_endpoint_node_name          
+        - action: labeldrop
+          regex: (pod)
+        - action: replace
+          regex: (.*)
+          replacement: $1
+          sourceLabels:
+            - __meta_kubernetes_endpoint_node_name
+          targetLabel: instance      
     prometheusRules:
       enabled: false
