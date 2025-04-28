@@ -14,12 +14,12 @@ spec:
             - name: sensei-secret
           containers:
             - name: prod-daily-user-refresh
-              image: ghcr.io/clarknova99/project-sensei/backend:main-0.1.0@sha256:e3b41f46598d9b14c3fe2da8b38710d07cadab70b934402243160d9c78a27ea3
+              image: ghcr.io/clarknova99/project-sensei/backend:main-0.1.0@sha256:a315615d77525cb5b0e3d249f6dd311d9db933944bd986be88af2804084479dd
               imagePullPolicy: Always
               command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
               env:
                 - name: PG_URI
-                  value: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-prod              
+                  value: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-prod
                 - name: LANGFUSE_PUBLIC_KEY
                   value: ${SECRET_LANGFUSE_PUBLIC_KEY}
                 - name: LANGFUSE_SECRET_KEY
