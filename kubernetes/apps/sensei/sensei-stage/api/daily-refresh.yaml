@@ -14,12 +14,12 @@ spec:
             - name: sensei-secret
           containers:
             - name: stage-daily-user-refresh
-              image: ghcr.io/clarknova99/project-sensei/backend:stage-latest@sha256:a44efcbb545393f85a045dd71f0982c1de6c1b6f5757e70e4f5f7e695bd28271
+              image: ghcr.io/clarknova99/project-sensei/backend:stage-latest@sha256:0f91019a72823f941dc3e51764b7cda8439bd72aae9dfdcb8890fdf3de212ace
               imagePullPolicy: Always
               command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
               env:
                 - name: PG_URI
-                  value: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-stage  
+                  value: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-stage
                 - name: LANGFUSE_PUBLIC_KEY
                   value: ${SECRET_LANGFUSE_PUBLIC_KEY}
                 - name: LANGFUSE_SECRET_KEY
