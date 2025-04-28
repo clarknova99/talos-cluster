@@ -33,7 +33,7 @@ spec:
               # repository: docker.io/langfuse/langfuse
               # tag: 2.93@sha256:e05b4b389a07aba93a94d3a19c24c104b125b023792ff612706137e26067c23f
               repository: ghcr.io/langfuse/langfuse
-              tag: 3.52.0@sha256:b3dd6eea7a2389ae68c2042381642e655801a996e224e43bc3730f4c478012c6
+              tag: 3.53.0@sha256:8b15ef43f97a95a3dc253674de90465a1467dabb5b387f91c0b34c251b051f61
             env:
               NEXTAUTH_URL: https://lf.${SECRET_DOMAIN_TWO}
               NEXTAUTH_SECRET: ${SECRET_LANGFUSE_SECRET}
