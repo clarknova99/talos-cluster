@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: main-0.1.0@sha256:9d52714a1fc81f6e25251877c502220e1fe9ce36b6ec91ba2ddc8691390de3e0
+              tag: main-0.1.0@sha256:a623e262205621fabfa4568a912d01f7f5c130fa87601dfd002064182091c28b
               pullPolicy: Always
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
@@ -134,7 +134,7 @@ spec:
                 pathType: Exact
                 service:
                   identifier: app
-                  port: 8000                
+                  port: 8000
           - host: ${SECRET_DOMAIN_TWO}
             paths:
               - path: /ads.txt
