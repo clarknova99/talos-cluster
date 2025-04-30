@@ -60,9 +60,9 @@ spec:
         api_url: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
         client_id: grafana
         allow_assign_grafana_admin: true
-        role_attribute_path: contains(groups, 'grafana-admin') && 'GrafanaAdmin' || contains(groups, 'sensei-dashboards') && 'Viewer' || contains(groups, 'people') && 'Viewer' 
+        role_attribute_path: contains(groups, 'grafana-admin') && 'GrafanaAdmin' || contains(groups, 'sensei-dashboards') && 'Viewer' || contains(groups, 'people') && 'Viewer'
       log.console:
-        level: debug    
+        level: debug
       # teams:
       #   - name: "Sensei Viewers"
       #     orgId: 1
@@ -121,7 +121,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/sensei-folder              
+              path: /var/lib/grafana/dashboards/sensei-folder
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -144,7 +144,7 @@ spec:
             access: proxy
             url: http://influxdb.database.svc.cluster.local:8086
             jsonData:
-              dbName: brad            
+              dbName: brad
           - name: Loki
             type: loki
             uid: loki
@@ -166,7 +166,7 @@ spec:
               maxIdleConnsAuto: true # Grafana v9.5.1+
               connMaxLifetime: 14400 # Grafana v5.4+
               postgresVersion: 1000 # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10
-              timescaledb: false                        
+              timescaledb: false
           # - name: Alertmanager
           #   type: alertmanager
           #   uid: alertmanager
@@ -190,7 +190,12 @@ spec:
           # renovate: depName="Ceph - Pools"
           gnetId: 5342
           revision: 9
-          datasource: Prometheus      
+          datasource: Prometheus
+        cert-manager:
+          # renovate: depName="Cert-manager-Kubernetes"
+          gnetId: 20842
+          revision: 3
+          datasource: Prometheus
         cloudflared:
           # renovate: depName="Cloudflare Tunnels (cloudflared)"
           gnetId: 17457
@@ -218,16 +223,13 @@ spec:
           gnetId: 22604
           revision: 2
           datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }            
+            - { name: DS_PROMETHEUS, value: Prometheus }
         unpackerr:
           # renovate: depName="Unpackerr"
           gnetId: 18817
           revision: 1
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
-        cert-manager:
-          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
-          datasource: Prometheus
         node-feature-discovery:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
           datasource: Prometheus
@@ -317,7 +319,7 @@ spec:
         # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
         # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN}?rm=$request_method
         # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-        # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;            
+        # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
       ingressClassName: external
       hosts: ["grafana.${SECRET_DOMAIN}"]
     persistence:
