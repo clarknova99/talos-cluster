@@ -60,6 +60,14 @@ spec:
                 memory: 128M
               limits:
                 memory: 2G
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1025
+        runAsGroup: 1025
+        fsGroup: 1025
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }   
     service:
       app:
         controller: n8n
