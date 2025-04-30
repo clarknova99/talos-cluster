@@ -8,6 +8,6 @@ resources:
   - ./grafana/ks.yaml
   - ./langfusev3/ks.yaml
   - ./litellm/ks.yaml
-  # - ./n8n/ks.yaml
+  - ./n8n/ks.yaml
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
