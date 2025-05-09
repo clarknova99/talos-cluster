@@ -26,7 +26,7 @@ spec:
   values:
     controllers:
       sensei-prod-worker:
-        replicas: 4
+        replicas: 2
         containers:
           app:
             image:
