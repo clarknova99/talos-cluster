@@ -65,12 +65,15 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities:
+                drop: ["ALL"]
+                add: ["NET_ADMIN"]  # Add this line to fix permission issues
             resources:
               requests:
-                cpu: 10m
+                cpu: 100m           # Increase from 10m to 100m
+                memory: 256Mi       # Add memory request
               limits:
-                memory: 256Mi
+                memory: 512Mi       # Increase from 256Mi to 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
