@@ -2,25 +2,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: authelia-ingress
+  name: flux-webhook
   annotations:
-    external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-    hajimari.io/icon: mdi:shield-account
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      add_header Cache-Control "no-store";
-      add_header Pragma "no-cache";
-      add_header X-Frame-Options "SAMEORIGIN";
-      add_header X-XSS-Protection "1; mode=block";
+    external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
 spec:
   ingressClassName: external
   rules:
-    - host: "auth.${SECRET_DOMAIN}"
+    - host: "flux-webhook.${SECRET_DOMAIN}"
       http:
         paths:
-          - path: /
+          - path: /hook/
             pathType: Prefix
             backend:
               service:
-                name: authelia
+                name: webhook-receiver
                 port:
                   number: 80
