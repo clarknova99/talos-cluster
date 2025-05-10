@@ -58,7 +58,7 @@ spec:
               AUTHELIA_THEME: dark
               X_AUTHELIA_CONFIG: /config/configuration.yaml
               X_AUTHELIA_CONFIG_FILTERS: expand-env
-              AUTHELIA_LOG_LEVEL: trace
+              AUTHELIA_LOG_LEVEL: debug
             envFrom: *envFrom
             probes:
               liveness: &probes
