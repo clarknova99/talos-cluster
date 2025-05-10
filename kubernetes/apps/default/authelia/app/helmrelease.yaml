@@ -130,13 +130,13 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: http
+                  port: 80
           - host: auth.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
                 service:
                   identifier: app
-                  port: http
+                  port: 80
 
         tls:
           - hosts:
