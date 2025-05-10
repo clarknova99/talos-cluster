@@ -131,17 +131,17 @@ spec:
                 service:
                   identifier: app
                   port: 80
-          - host: auth.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 80
+          # - host: auth.${SECRET_DOMAIN_TWO}
+          #   paths:
+          #     - path: /
+          #       service:
+          #         identifier: app
+          #         port: 80
 
         tls:
           - hosts:
               - auth.${SECRET_DOMAIN}
-              - auth.${SECRET_DOMAIN_TWO}
+              # - auth.${SECRET_DOMAIN_TWO}
     persistence:
       config:
         enabled: true
