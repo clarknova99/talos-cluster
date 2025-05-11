@@ -88,8 +88,7 @@ identity_providers:
     jwks:
       - key_id: default
         # key: {{ env "JWKS_KEY" | mindent 10 "|" | msquote }}
-        key: |
-          ${SECRET_AUTHELIA_JWKS_KEY}
+        key: '${JWKS_KEY}'
     clients:
       - client_id: grafana
         client_name: grafana
