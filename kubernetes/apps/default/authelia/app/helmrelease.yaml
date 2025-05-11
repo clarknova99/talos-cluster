@@ -121,6 +121,9 @@ spec:
 
           hajimari.io/icon: mdi:shield-account
           nginx.ingress.kubernetes.io/add-header-Cache-Control: "no-store"
+          nginx.ingress.kubernetes.io/add-header-Pragma: "no-cache"
+          nginx.ingress.kubernetes.io/add-header-X-Frame-Options: "SAMEORIGIN"
+          nginx.ingress.kubernetes.io/add-header-X-XSS-Protection: "1; mode=block"
           # nginx.ingress.kubernetes.io/configuration-snippet: |
           #   add_header Cache-Control "no-store";
           #   add_header Pragma "no-cache";
