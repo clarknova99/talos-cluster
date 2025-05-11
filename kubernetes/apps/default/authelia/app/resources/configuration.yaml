@@ -23,6 +23,13 @@ authentication_backend:
     disable: false
   refresh_interval: 1m
 
+server:
+  headers:
+    cache_control: no-store
+    pragma: no-cache
+    x-frame-options: SAMEORIGIN
+    x-xss-protection: 1; mode=block
+
 session:
   same_site: lax
   inactivity: 5m
