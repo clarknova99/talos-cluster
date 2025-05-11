@@ -6,6 +6,13 @@ metadata:
 ## sops --encrypt --in-place ./kubernetes/apps/default/authelia/app/authelia-secrets.sops.yaml
 ## sops --decrypt ./kubernetes/apps/default/authelia/app/authelia.sops.yaml | kubectl apply -f -
 stringData:
+    SECRET_DOMAIN: ENC[AES256_GCM,data:TD1IyuncxjIsS+k=,iv:2+5i2mM7aZ4gIDDjmLi/BO5qxeeVgJRlyLtSrcCG+x8=,tag:sV6PWAbryCY70zrF/UfMcA==,type:str]
+    SECRET_DOMAIN_TWO: ENC[AES256_GCM,data:rO3Sms5UAO4RHT24O1/V,iv:PjFs8eYNU13PvKS/39//wbg8RFcg+WknMb32sWzqHZs=,tag:FkdWDl+XIi7mQild/PDbUA==,type:str]
+    SECRET_MAIL_USERNAME: ENC[AES256_GCM,data:36bndGM/oyizGBaLbd18UscdC1HuOLVPBtvaHYBiww4=,iv:2+iEx4gynmeyhCUHINjBtoodplIeUOyAuQtr8c+uaAY=,tag:qgitiVpgoNRMMG2yAtZLVw==,type:str]
+    SECRET_MAIL_PASSWORD: ENC[AES256_GCM,data:zMKEu1GYwLfH4PtUaQ6jaeG7rWWr3qfD7zAkTQAt9DY=,iv:EPOt0D+o7XJndwHC01pOhTSctU73k1XNSIz8jHK4XQk=,tag:UfTHBw+JpNZX86LrsSvXdQ==,type:str]
+    SECRET_MAIL_HOST: ENC[AES256_GCM,data:j+dgoRgq/WND+zjCinP3jvs=,iv:BUUgijMBMurYxcWJQFSFONUtNc2ix75Ese99ueFxIlU=,tag:zzvPDJidy2kcLsdA4q3Lmw==,type:str]
+    SECRET_MAIL_PORT: ENC[AES256_GCM,data:/bZC,iv:/2tIBLmWHLqduZaFup9pZhyR/uehKCHohiB+4e9VDj0=,tag:WAwPiehFpFDOOg0jefv/lA==,type:str]
+    SECRET_OAUTH_CLIENT_SECRET: ENC[AES256_GCM,data:7MbsbIJ3fMRJ0RGRN8bwO13ewqLUgt2xx8uGDUHVs3t9yAsKGDUErwnpJFWwWHGghT13aC7gEs42mO6xNHL62A==,iv:ukXmNngunmrrXiu7GNOLDrHQAdlLep0pgIkKAjNhkpo=,tag:YCe5jdhiwg9op/PtE1RIHw==,type:str]
     JWT_TOKEN: ENC[AES256_GCM,data:KDHr8vfTDTT3enaw6wh2EbwtcplBnSShlauFz7tJi/6VVDITzt+dNGiBKDKkhG4J3TH6af0C/SWikqMKpqys9A==,iv:O7VK/kwvaDnEiS+RcUqRR3I8eE+QZP5eMsaoSLP5j8g=,tag:aRQLcYQqhwSreMkjeFyGQw==,type:str]
     AUTHELIA_EMAIL: ENC[AES256_GCM,data:GI/w/KVTt3aiwZ2VqdxTRWkoiJEl,iv:7A7t8bZ2O+QB1sntHzS3FQpIL/Wf9Zs5snDBvVY8f4g=,tag:XYsYATiW115lKZY+yGwbjQ==,type:str]
     AUTHELIA_PASSWORD: ENC[AES256_GCM,data:5cQ6DcGdHkdo,iv:M2wMhV4bFmJ7s1d3vKexXTpc18nXH0tgLCg9+nuQ/zM=,tag:gvvXQUu4/OwgSWD5jHT4Ag==,type:str]
@@ -46,7 +53,7 @@ sops:
             TExSSTNXVjJuak95OTFaNFZIMEhuQ1UK+WGgrUID1FGqegMyoM2DFqoGOOHIiBgx
             wrNKabS7994K+HdWmzs0iCAOUWVrZ+cOLqw2n4oyt1G9TtkReoOY9w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-05-11T17:42:21Z"
-    mac: ENC[AES256_GCM,data:A50DYegAXlnD2aGVJLMe2zf8RK1ITz/nJCxT19DiZvwCueG44bxD8GwciPFeBHED2tva4vE3k8wfCNr3o6ulvbPaUgOOEduOoIBnJvRVusPYZ5kQAurh0Pf3GSLVG/HnBdYnAQ7piNNTNS7D2luPsPPqI7Je8J3JN4ROSCKbJ5A=,iv:bdhzSL6NQDlkgQJppZGEMQs0h7MsmJKZq8yJMzurp6I=,tag:P5+rlqb7yNabZDF/pPfS8A==,type:str]
+    lastmodified: "2025-05-11T21:05:48Z"
+    mac: ENC[AES256_GCM,data:WiZAv675zgycA96dE9dk/+agp2wOhoZfV69b+TQ2l2/aa7MY0vG1d3N5H+fywKpoNzoe/CyawNVkQjDv8hQSCdISiZIxlxhSeryOQ2vyVLw38ioG9k6JTAwHfhmPGne3dZFMpi00qUefXrjGr8Cwcm8cXgT9+2S9RAVhgtSxX8U=,iv:CL1CIwFW3xKDN71B0a12Sf8WsomvluoAqN7IsigMpw0=,tag:RxGKdRxTWp/Wcf2dqhA89A==,type:str]
     encrypted_regex: ^(data|stringData)$
     version: 3.10.2
