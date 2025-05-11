@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sensei-dev-app
+  namespace: sensei
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      sensei-dev-app:
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: ghcr.io/clarknova99/project-sensei/frontend
+              tag: dev-latest@sha256:de17d80c56c1fe8c3033c23c581a5e9dcde454495e79e39ceddee4bd27aa3b76
+              pullPolicy: Always
+            env:
+              SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
+              API_HOST: sensei-dev-api.sensei.svc.cluster.local
+              ENVIRONMENT: dev
+              GOOGLE_CLIENT_ID: ${SECRET_GOOGLE_CLIENT_ID}
+              GOOGLE_CLIENT_SECRET: ${SECRET_GOOGLE_CLIENT_SECRET}
+              GOOGLE_REDIRECT_URI: ${SECRET_GOOGLE_REDIRECT_URI}
+        pod:
+          # imagePullPolicy: Always
+          imagePullSecrets:
+            - name: sensei-secret
+    service:
+      app:
+        controller: sensei-dev-app
+        ports:
+          http:
+            port: 8000
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:math-compass
+        className: external
+        hosts:
+          - host: dev.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: 8000
+        tls:
+          - hosts:
+              - dev.${SECRET_DOMAIN_TWO}

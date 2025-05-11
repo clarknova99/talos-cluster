@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: sensei-dev-daily-refresh-secrets
+    namespace: sensei
+## sops --encrypt --in-place ./kubernetes/apps/default/authelia/app/authelia-secrets.sops.yaml
+## sops --decrypt ./kubernetes/apps/default/authelia/app/authelia.sops.yaml | kubectl apply -f -
+stringData:
+    GROQ_API_KEY_LLM: ENC[AES256_GCM,data:AvttGlBAYgys8jKsJyEm+XLdxNDHovvD5tVDJ7hTKn1JoGVTbkKFF57NDqu5KKKNjjx710wmoZw=,iv:B8S01cIAbqZo9xrBVpWa/fu0iGNglFqUu0/BdBqNboM=,tag:7FR4+TnZ31kovg0S5/e/+Q==,type:str]
+    GROQ_API_KEY_PGN_TEXT: ENC[AES256_GCM,data:WRiHLEQY7ShjD1fgosSWKlF6ALpdLJnln96epgMjKC/9YEhuDxZllezELdWUi9e0YkWnJkh3hNI=,iv:Zj65p9h7GiUv2CoYpVL6fZrJ8vOviQI3L8/EMjrqG1Y=,tag:FXWdWLL3iQMcdza/g2659Q==,type:str]
+    PG_URI: ENC[AES256_GCM,data:Dkxisn6w6mIWZMA5kjGM7lF9f8bF2wAt4RrvWN9Gu46pXQN5uixZ/oiEuqDOASAvVekHSKfZP7lWzHNX,iv:CxzwkpQ46NtJ5e+MTQfVyIJHB8ezixHSp4p7mZQOMLw=,tag:Xi5SHRqwDGDExE0NnPtFiQ==,type:str]
+    DISCORD_WEBHOOK: ENC[AES256_GCM,data:9+E32CO25q5bC/b8Fuer3PSRhvU7yE6IHFIkQZFH0hikuMqyz7t5WUcb2GZREdBhy3shWxYQrf0D9kJTEqiRCIYO0nSraqrVpXq5JN3V47ocmDGRFrn1eL2FLjOZar7r5TcCyKvAbhWD16qQDPJvReWwtj/KADoqKg==,iv:jIjqytgZcPixx3tBn8FEEH9l1eCUDfxqdCuSCGhQTdk=,tag:esGGpLtmp27r+1IWXzN0tQ==,type:str]
+    LICHESS_API_TOKEN: ENC[AES256_GCM,data:Ze9VzyUpKkVZgo77x2sWZ6dsHZuuyoC8,iv:eMv5aZaSZDaUf1fR3CGDNJQ6fkaG0fRjSwyAgQhfpQw=,tag:IODPWcIrCL3bD1OkHgxw7A==,type:str]
+    LITELLM_BASE_URL: ENC[AES256_GCM,data:B4vMYp2DcmtDy1Bfpqh9cQ5TTmgFnWiT7IXedMZ/qwgM974NNdNpxkgSLHo=,iv:fc0V5rKrjFMq20Wsp5hXfnqTGrij0/LPDpoW057qVuQ=,tag:WrBwDrt7ZSDZCXbqXQNBww==,type:str]
+    LITELLM_API_KEY: ENC[AES256_GCM,data:n7YRd6DFczNbEcmSnasRBy4PbaXGY977vQ==,iv:G/VYtHGbIh8IRb5uA+d8qtpdMfGbia14e7irCJkDOsI=,tag:phNL9wK28GRW2zAbIuN49g==,type:str]
+sops:
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBvUURYRGpycEFVclVsTTl4
+            SndMa3ZGam9HVHZEbTlLamxZKzJjSk9QTkNJCmhwQWZsVm1tc2EyZ1RxS3g4aVZv
+            ZUJPVHBHM3MzamVqM21WWTk1TXJTSUEKLS0tIEhwUHZQWS9BRlgvRWxJdnl2REVy
+            TExSSTNXVjJuak95OTFaNFZIMEhuQ1UK+WGgrUID1FGqegMyoM2DFqoGOOHIiBgx
+            wrNKabS7994K+HdWmzs0iCAOUWVrZ+cOLqw2n4oyt1G9TtkReoOY9w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-05-11T16:50:56Z"
+    mac: ENC[AES256_GCM,data:Vg70H7pCQYOLv9oDvoWkeqjkQcU9j36Ju58/zzwjXw4cN00X8EnOqTL+1dSp7OV2+W7Y5k2UKzk6ELeZ3iDwEUCct7O+0R1fyjEcgwMYTwkQKByALYKNMIVEFU+ONlQvERAaEtB5Cz8xdU+Jp+sg9fM44ibMLOMSdfGeRpeB9o0=,iv:hSrYTP9cQpucLuFcwypOkE2p2Cef2UhYjwfdEV+oqqM=,tag:pN67e+m1Mi503nWwvdEQvQ==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2

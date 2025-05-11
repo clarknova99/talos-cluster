@@ -1,0 +1,74 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sensei-dev-api
+  namespace: sensei
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      sensei-dev-api:
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: ghcr.io/clarknova99/project-sensei/backend
+              tag: dev-latest@sha256:0f91019a72823f941dc3e51764b7cda8439bd72aae9dfdcb8890fdf3de212ace
+              pullPolicy: Always
+            env:
+              SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
+              GROQ_API_KEY_LLM: ${GROQ_API_KEY_LLM}
+              GROQ_API_KEY_PGN_TEXT: ${GROQ_API_KEY_PGN_TEXT}
+              OPENAI_API_KEY: ${SECRET_OPENAPI_KEY}
+              SENSEI_OPENAI_API_KEY: ${SECRET_SENSEI_OPENAI_KEY}
+              ENVIRONMENT: dev
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-dev
+              DISCORD_WEBHOOK: ${SECRET_SENSEI_DISCORD_WEBHOOK}
+              DISCORD_SIGNUP_WEBOOK: ${SECRET_DISCORD_SIGNUP_WEBOOK}
+              LICHESS_API_TOKEN: ${LICHESS_API_TOKEN}
+              GROQ_API_KEY: ${GROQ_API_KEY_LLM}
+              STOCKFISH_PATH: /usr/games/stockfish
+              LANGFUSE_PUBLIC_KEY: ${SECRET_LANGFUSE_PUBLIC_KEY}
+              LANGFUSE_SECRET_KEY: ${SECRET_LANGFUSE_SECRET_KEY}
+              #LANGFUSE_HOST: http://langfuse.sensei.svc.cluster.local:3000
+              LANGFUSE_HOST: http://langfuse-v3-web.sensei.svc.cluster.local:3000
+              LITELLM_BASE_URL: http://litellm.sensei.svc.cluster.local:4000
+              LITELLM_API_KEY: ${SECRET_LITELLM_API_KEY}
+        pod:
+          # imagePullPolicy: Always
+          imagePullSecrets:
+            - name: sensei-secret
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values: ["mars"]
+    service:
+      app:
+        controller: sensei-dev-api
+        ports:
+          http:
+            port: 3001
+
