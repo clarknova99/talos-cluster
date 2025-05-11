@@ -59,11 +59,11 @@ spec:
               X_AUTHELIA_CONFIG: /config/configuration.yaml
               X_AUTHELIA_CONFIG_FILTERS: template
               AUTHELIA_LOG_LEVEL: debug
-              JWKS_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: authelia-jwks-key
-                    key: jwks.key
+              # JWKS_KEY:
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: authelia-jwks-key
+              #       key: jwks.key
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -161,11 +161,11 @@ spec:
           - path: /config/configuration.yaml
             subPath: configuration.yaml
             readOnly: true
-      jwks-key:
-        enabled: true
-        type: secret
-        name: authelia-jwks-key
-        globalMounts:
-          - path: /jwks/jwks.key
-            subPath: jwks.key
-            readOnly: true
+      # jwks-key:
+      #   enabled: true
+      #   type: secret
+      #   name: authelia-jwks-key
+      #   globalMounts:
+      #     - path: /jwks/jwks.key
+      #       subPath: jwks.key
+      #       readOnly: true

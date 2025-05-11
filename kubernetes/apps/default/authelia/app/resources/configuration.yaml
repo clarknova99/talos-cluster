@@ -36,14 +36,14 @@ session:
   expiration: 1h
   remember_me: 1M
   cookies:
-    - name: ${SECRET_DOMAIN}_session
-      domain: ${SECRET_DOMAIN}
-      authelia_url: https://auth.${SECRET_DOMAIN}
-      default_redirection_url: https://${SECRET_DOMAIN}
-    - name: ${SECRET_DOMAIN_TWO}_session
-      domain: ${SECRET_DOMAIN_TWO}
-      authelia_url: https://auth.${SECRET_DOMAIN_TWO}
-      default_redirection_url: https://${SECRET_DOMAIN_TWO}
+    - name: '{{ env "SECRET_DOMAIN" }}_session'
+      domain: '{{ env "SECRET_DOMAIN" }}'
+      authelia_url: 'https://auth.{{ env "SECRET_DOMAIN" }}'
+      default_redirection_url: 'https://{{ env "SECRET_DOMAIN" }}'
+    - name: '{{ env "SECRET_DOMAIN_TWO" }}_session'
+      domain: '{{ env "SECRSECRET_DOMAIN_TWOET_DOMAIN" }}'
+      authelia_url: 'https://auth.{{ env "SECRET_DOMAIN_TWO" }}'
+      default_redirection_url: 'https://{{ env "SECRET_DOMAIN_TWO" }}'
   redis:
     database_index: 2
     host: dragonfly.database.svc.cluster.local
@@ -51,12 +51,12 @@ session:
 notifier:
   disable_startup_check: true
   smtp:
-    username: "${SECRET_MAIL_USERNAME}"
+    username: '{{env SECRET_MAIL_USERNAME}}'
     # Password can also be set using a secret: https://www.authelia.com/configuration/methods/secrets/
-    password: "${SECRET_MAIL_PASSWORD}"
-    sender: "${SECRET_DOMAIN} auth <auth@${SECRET_DOMAIN}>"
-    host: "${SECRET_MAIL_HOST}"
-    port: "${SECRET_MAIL_PORT}"
+    password: '{{env SECRET_MAIL_PASSWORD}}'
+    sender: '{{env SECRET_DOMAIN}} auth <auth@{{env SECRET_DOMAIN}}>'
+    host: '{{env SECRET_MAIL_HOST}}'
+    port: '{{env SECRET_MAIL_PORT}}'
 
 totp:
   disable: false
@@ -89,48 +89,48 @@ identity_providers:
       - client_id: grafana
         client_name: grafana
         description: Grafana
-        secret: ${SECRET_OAUTH_CLIENT_SECRET}
+        secret: '{{env SECRET_OAUTH_CLIENT_SECRET}}'
         public: false
         require_pkce: true
         authorization_policy: one_factor
         pre_configured_consent_duration: 1y
         scopes: ["openid", "profile", "groups", "email"]
-        redirect_uris: ["https://grafana.${SECRET_DOMAIN}/login/generic_oauth"]
+        redirect_uris: ['https://grafana.{{ env "SECRET_DOMAIN" }}/login/generic_oauth']
         userinfo_signing_algorithm: none
       - client_id: grafana-sensei
         client_name: grafana-sensei
         description: Grafana
-        secret: ${SECRET_OAUTH_CLIENT_SECRET}
+        secret: '{{env SECRET_OAUTH_CLIENT_SECRET}}'
         public: false
         require_pkce: true
         authorization_policy: one_factor
         pre_configured_consent_duration: 1y
         scopes: ["openid", "profile", "groups", "email"]
-        redirect_uris: ["https://grafana.${SECRET_DOMAIN_TWO}/login/generic_oauth"]
+        redirect_uris: ['https://grafana.{{ env "SECRET_DOMAIN" }}/login/generic_oauth']
         userinfo_signing_algorithm: none
       - client_id: minio
         description: Minio
-        secret: "${SECRET_OAUTH_CLIENT_SECRET}"  # The digest of 'insecure_secret'.
+        secret: '{{env SECRET_OAUTH_CLIENT_SECRET}}'
         public: false
         authorization_policy: one_factor
         pre_configured_consent_duration: 1y
-        redirect_uris: ["https://minio.${SECRET_DOMAIN}/oauth_callback"]
+        redirect_uris: ['https://minio.{{ env "SECRET_DOMAIN" }}/oauth_callback']
         scopes: ["openid", "profile", "groups", "email"]
         userinfo_signing_algorithm: none
       - client_id: pgadmin
         client_name: pgAdmin
-        client_secret: ${SECRET_OAUTH_CLIENT_SECRET}
+        client_secret: '{{env SECRET_OAUTH_CLIENT_SECRET}}'
         public: false
         authorization_policy: one_factor
-        redirect_uris: https://pgadmin.${SECRET_DOMAIN}/oauth2/authorize
+        redirect_uris: https://pgadmin.{{ env "SECRET_DOMAIN" }}/oauth2/authorize
         scopes: ["openid", "profile", "groups", "email"]
         userinfo_signed_response_alg: none
       - client_id: langfuse3
         client_name: langfuse3
         description: langfuse3
-        secret: ${SECRET_OAUTH_CLIENT_SECRET}
+        secret: '{{env SECRET_OAUTH_CLIENT_SECRET}}'
         authorization_policy: one_factor
         pre_configured_consent_duration: 1y
         scopes: ["openid", "profile", "groups", "email"]
-        redirect_uris: ["https://langfuse.${SECRET_DOMAIN_TWO}/api/auth/callback/custom"]
+        redirect_uris: ['https://langfuse.{{ env "SECRET_DOMAIN" }}/api/auth/callback/custom']
         userinfo_signing_algorithm: none
