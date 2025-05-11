@@ -50,8 +50,6 @@ spec:
               tag: 4.39.1@sha256:e325963609cc928861ffe8130c09111862df88dd8fcafbcd2c47e5ff0a4ae268
             env:
               AUTHELIA_SERVER_ADDRESS: tcp://0.0.0.0:80
-              # AUTHELIA_SERVER_PATH: ""
-              # AUTHELIA_SERVER_ASSET_PATH: "/app/public"
               AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
               AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
               AUTHELIA_TELEMETRY_METRICS_ENABLED: "true"
@@ -59,11 +57,6 @@ spec:
               X_AUTHELIA_CONFIG: /config/configuration.yaml
               X_AUTHELIA_CONFIG_FILTERS: template
               AUTHELIA_LOG_LEVEL: debug
-              # JWKS_KEY:
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: authelia-jwks-key
-              #       key: jwks.key
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -121,9 +114,7 @@ spec:
       app:
         className: external
         annotations:
-          #external-dns.alpha.kubernetes.io/hostname: external.${SECRET_DOMAIN}, external.${SECRET_DOMAIN_TWO}
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-
           hajimari.io/icon: mdi:shield-account
           nginx.ingress.kubernetes.io/add-header-Cache-Control: "no-store"
           nginx.ingress.kubernetes.io/add-header-Pragma: "no-cache"
@@ -147,7 +138,6 @@ spec:
                 service:
                   identifier: app
                   port: 80
-
         tls:
           - hosts:
               - auth.${SECRET_DOMAIN}
@@ -161,11 +151,3 @@ spec:
           - path: /config/configuration.yaml
             subPath: configuration.yaml
             readOnly: true
-      # jwks-key:
-      #   enabled: true
-      #   type: secret
-      #   name: authelia-jwks-key
-      #   globalMounts:
-      #     - path: /jwks/jwks.key
-      #       subPath: jwks.key
-      #       readOnly: true
