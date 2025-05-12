@@ -8,6 +8,6 @@ resources:
 #  - ./frigate/ks.yaml
   - ./hajimari/ks.yaml
   - ./lldap/ks.yaml
-  - ./mosquitto/ks.yaml
+  # - ./mosquitto/ks.yaml
   - ./website/ks.yaml
  # - ./whoami/ks.yaml
