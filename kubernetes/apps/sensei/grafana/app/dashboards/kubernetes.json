@@ -96,7 +96,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Network Utilization 90%"
+              "options": "Network Utilization 90th %"
             },
             "properties": [
               {
@@ -164,12 +164,12 @@
         {
           "editorMode": "code",
           "exemplar": false,
-          "expr": "quantile_over_time(0.9,\n  sum by (workload) (\n    container_memory_working_set_bytes{\n      job=\"kubelet\",\n      metrics_path=\"/metrics/cadvisor\",\n      namespace=\"sensei\",\n      container!=\"\",\n      image!=\"\"\n    }\n    * on(namespace, pod)\n      group_left(workload)\n      namespace_workload_pod:kube_pod_owner:relabel{\n        namespace=\"sensei\",\n        workload_type=\"deployment\"\n      }\n  )[7d:5m]\n)",
+          "expr": "quantile_over_time(\n  0.9,\n  (\n    # — your existing deployment workloads —\n    sum by (workload) (\n      container_memory_working_set_bytes{\n        job=\"kubelet\",\n        metrics_path=\"/metrics/cadvisor\",\n        namespace=\"sensei\",\n        container!=\"\",\n        image!=\"\"\n      }\n      * on(namespace,pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n    or\n    # — plus those three postgres pods, labelled as “workload” —\n    label_replace(\n      sum by (pod) (\n        container_memory_working_set_bytes{\n          job=\"kubelet\",\n          metrics_path=\"/metrics/cadvisor\",\n          namespace=\"database\",\n          pod=~\"postgres16vector-(5|6|7)\",\n          container!=\"\",\n          image!=\"\"\n        }\n      ),\n      \"workload\", \"$1\", \"pod\", \"(.*)\"\n    )\n  )[7d:5m]\n)",
           "format": "table",
           "instant": true,
           "legendFormat": "{{workload}}",
           "range": false,
-          "refId": "A"
+          "refId": "memory_90"
         },
         {
           "datasource": {
@@ -178,58 +178,13 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max_over_time(\n  sum by (workload) (\n    container_memory_working_set_bytes{\n      job=\"kubelet\",\n      metrics_path=\"/metrics/cadvisor\",\n      namespace=\"sensei\",\n      container!=\"\",\n      image!=\"\"\n    }\n    * on(namespace, pod)\n      group_left(workload)\n      namespace_workload_pod:kube_pod_owner:relabel{\n        namespace=\"sensei\",\n        workload_type=\"deployment\"\n      }\n  )[7d:5m]\n)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "{{workload}}",
-          "range": false,
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "quantile_over_time(0.9,\n  (\n    sum by (workload) (\n      rate(\n        container_cpu_usage_seconds_total{\n          job=\"kubelet\",\n          metrics_path=\"/metrics/cadvisor\",\n          namespace=\"sensei\",\n          container!=\"\",\n          image!=\"\"\n        }[5m]\n      )\n      * on(namespace, pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n  )[7d:5m]\n)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "D"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "max_over_time(\n  (\n    sum by (workload) (\n      rate(\n        container_cpu_usage_seconds_total{\n          job=\"kubelet\",\n          metrics_path=\"/metrics/cadvisor\",\n          namespace=\"sensei\",\n          container!=\"\",\n          image!=\"\"\n        }[5m]\n      )\n      * on(namespace, pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n  )[7d:5m]\n)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "E"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "quantile_over_time(\n  0.9,\n  (\n    sum by (workload) (\n      (\n        rate(container_network_receive_bytes_total{namespace=\"sensei\"}[5m])\n        +\n        rate(container_network_transmit_bytes_total{namespace=\"sensei\"}[5m])\n      )\n      * on(namespace,pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n  )[7d:5m]\n)",
+          "expr": "max_over_time(\n  (\n    # — deployments —\n    sum by (workload) (\n      container_memory_working_set_bytes{\n        job=\"kubelet\",\n        metrics_path=\"/metrics/cadvisor\",\n        namespace=\"sensei\",\n        container!=\"\",\n        image!=\"\"\n      }\n      * on(namespace,pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n    or\n    # — postgres pods as “workload” —\n    label_replace(\n      sum by (pod) (\n        container_memory_working_set_bytes{\n          job=\"kubelet\",\n          metrics_path=\"/metrics/cadvisor\",\n          namespace=\"database\",\n          pod=~\"postgres16vector-(5|6|7)\",\n          container!=\"\",\n          image!=\"\"\n        }\n      ),\n      \"workload\", \"$1\", \"pod\", \"(.*)\"\n    )\n  )[7d:5m]\n)",
           "format": "table",
           "hide": false,
           "instant": true,
           "legendFormat": "{{workload}}",
           "range": false,
-          "refId": "F"
+          "refId": "memory_max"
         },
         {
           "datasource": {
@@ -238,13 +193,58 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max_over_time(\n  (\n    sum by (workload) (\n      (\n        rate(container_network_receive_bytes_total{namespace=\"sensei\"}[5m])\n        +\n        rate(container_network_transmit_bytes_total{namespace=\"sensei\"}[5m])\n      )\n      * on(namespace,pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n  )[7d:5m]\n)",
+          "expr": "quantile_over_time(0.9,\n  (\n    # — sensei deployments —\n    sum by (workload) (\n      rate(container_cpu_usage_seconds_total{\n        job=\"kubelet\",\n        metrics_path=\"/metrics/cadvisor\",\n        namespace=\"sensei\",\n        container!=\"\",\n        image!=\"\"\n      }[5m])\n      * on(namespace,pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n    or\n    # — postgres pods, also using rate() —\n    label_replace(\n      sum by (pod) (\n        rate(container_cpu_usage_seconds_total{\n          job=\"kubelet\",\n          metrics_path=\"/metrics/cadvisor\",\n          namespace=\"database\",\n          pod=~\"postgres16vector-(5|6|7)\",\n          container!=\"\",\n          image!=\"\"\n        }[5m])\n      ),\n      \"workload\", \"$1\", \"pod\", \"(.*)\"\n    )\n  )[7d:5m]\n)",
           "format": "table",
           "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "G"
+          "refId": "cpu_90"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max_over_time(\n  (\n    # — sensei deployments —\n    sum by (workload) (\n      rate(container_cpu_usage_seconds_total{\n        job=\"kubelet\",\n        metrics_path=\"/metrics/cadvisor\",\n        namespace=\"sensei\",\n        container!=\"\",\n        image!=\"\"\n      }[5m])\n      * on(namespace,pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n    or\n    # — postgres pods, also using rate() —\n    label_replace(\n      sum by (pod) (\n        rate(container_cpu_usage_seconds_total{\n          job=\"kubelet\",\n          metrics_path=\"/metrics/cadvisor\",\n          namespace=\"database\",\n          pod=~\"postgres16vector-(5|6|7)\",\n          container!=\"\",\n          image!=\"\"\n        }[5m])\n      ),\n      \"workload\", \"$1\", \"pod\", \"(.*)\"\n    )\n  )[7d:5m]\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "cpu_max"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "quantile_over_time(\n  0.9,\n  (\n    # — existing deployments in “sensei” —\n    sum by (workload) (\n      (\n        rate(container_network_receive_bytes_total{namespace=\"sensei\"}[5m])\n        +\n        rate(container_network_transmit_bytes_total{namespace=\"sensei\"}[5m])\n      )\n      * on(namespace,pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n    or\n    # — the three postgres pods, relabeled as workload —\n    label_replace(\n      sum by (pod) (\n        (\n          rate(container_network_receive_bytes_total{\n            namespace=\"database\",\n            pod=~\"postgres16vector-(5|6|7)\"\n          }[5m])\n          +\n          rate(container_network_transmit_bytes_total{\n            namespace=\"database\",\n            pod=~\"postgres16vector-(5|6|7)\"\n          }[5m])\n        )\n      ),\n      \"workload\", \"$1\", \"pod\", \"(.*)\"\n    )\n  )[7d:5m]\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{workload}}",
+          "range": false,
+          "refId": "network_90"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max_over_time(\n  (\n    # — existing deployments in “sensei” —\n    sum by (workload) (\n      (\n        rate(container_network_receive_bytes_total{namespace=\"sensei\"}[5m])\n        +\n        rate(container_network_transmit_bytes_total{namespace=\"sensei\"}[5m])\n      )\n      * on(namespace,pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n    or\n    # — the three postgres pods, relabeled as workload —\n    label_replace(\n      sum by (pod) (\n        (\n          rate(container_network_receive_bytes_total{\n            namespace=\"database\",\n            pod=~\"postgres16vector-(5|6|7)\"\n          }[5m])\n          +\n          rate(container_network_transmit_bytes_total{\n            namespace=\"database\",\n            pod=~\"postgres16vector-(5|6|7)\"\n          }[5m])\n        )\n      ),\n      \"workload\", \"$1\", \"pod\", \"(.*)\"\n    )\n  )[7d:5m]\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "network_max"
         }
       ],
       "title": "Table testing",
@@ -260,7 +260,14 @@
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Time": true
+              "Time": true,
+              "Value #C": false,
+              "pod 1": true,
+              "pod 2": true,
+              "pod 3": true,
+              "pod 4": true,
+              "pod 5": true,
+              "pod 6": true
             },
             "includeByName": {},
             "indexByName": {},
@@ -275,7 +282,13 @@
               "Value #D": "CPU 90th %",
               "Value #E": "Max CPU Usage",
               "Value #F": "Network Utilization 90%",
-              "Value #G": "Network Utilization Max"
+              "Value #G": "Network Utilization Max",
+              "Value #cpu_90": "CPU Usage 90th %",
+              "Value #cpu_max": "CPU Usage Max",
+              "Value #memory_90": "Memory 90th %",
+              "Value #memory_max": "Memory Max",
+              "Value #network_90": "Network Utilization 90th %",
+              "Value #network_max": "Network Utilization Max"
             }
           }
         }
@@ -302,5 +315,5 @@
   "timezone": "",
   "title": "Sensei Deployments Utilization Dashboard",
   "uid": "sensei-utilization",
-  "version": 5
+  "version": 6
 }
