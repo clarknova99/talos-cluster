@@ -1,0 +1,589 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory 90th %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 279
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Max"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "workload"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 261
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network Utilization 90%"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "binBps"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Network Utilization Max"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "binBps"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "workload"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count by (workload) (\n  namespace_workload_pod:kube_pod_owner:relabel{\n    namespace=\"sensei\",\n    workload_type=\"deployment\"\n  }\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "C"
+        },
+        {
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "quantile_over_time(0.9,\n  sum by (workload) (\n    container_memory_working_set_bytes{\n      job=\"kubelet\",\n      metrics_path=\"/metrics/cadvisor\",\n      namespace=\"sensei\",\n      container!=\"\",\n      image!=\"\"\n    }\n    * on(namespace, pod)\n      group_left(workload)\n      namespace_workload_pod:kube_pod_owner:relabel{\n        namespace=\"sensei\",\n        workload_type=\"deployment\"\n      }\n  )[7d:5m]\n)",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "{{workload}}",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max_over_time(\n  sum by (workload) (\n    container_memory_working_set_bytes{\n      job=\"kubelet\",\n      metrics_path=\"/metrics/cadvisor\",\n      namespace=\"sensei\",\n      container!=\"\",\n      image!=\"\"\n    }\n    * on(namespace, pod)\n      group_left(workload)\n      namespace_workload_pod:kube_pod_owner:relabel{\n        namespace=\"sensei\",\n        workload_type=\"deployment\"\n      }\n  )[7d:5m]\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{workload}}",
+          "range": false,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "quantile_over_time(0.9,\n  (\n    sum by (workload) (\n      rate(\n        container_cpu_usage_seconds_total{\n          job=\"kubelet\",\n          metrics_path=\"/metrics/cadvisor\",\n          namespace=\"sensei\",\n          container!=\"\",\n          image!=\"\"\n        }[5m]\n      )\n      * on(namespace, pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n  )[7d:5m]\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max_over_time(\n  (\n    sum by (workload) (\n      rate(\n        container_cpu_usage_seconds_total{\n          job=\"kubelet\",\n          metrics_path=\"/metrics/cadvisor\",\n          namespace=\"sensei\",\n          container!=\"\",\n          image!=\"\"\n        }[5m]\n      )\n      * on(namespace, pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n  )[7d:5m]\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "quantile_over_time(\n  0.9,\n  (\n    sum by (workload) (\n      (\n        rate(container_network_receive_bytes_total{namespace=\"sensei\"}[5m])\n        +\n        rate(container_network_transmit_bytes_total{namespace=\"sensei\"}[5m])\n      )\n      * on(namespace,pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n  )[7d:5m]\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{workload}}",
+          "range": false,
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max_over_time(\n  (\n    sum by (workload) (\n      (\n        rate(container_network_receive_bytes_total{namespace=\"sensei\"}[5m])\n        +\n        rate(container_network_transmit_bytes_total{namespace=\"sensei\"}[5m])\n      )\n      * on(namespace,pod)\n        group_left(workload)\n        namespace_workload_pod:kube_pod_owner:relabel{\n          namespace=\"sensei\",\n          workload_type=\"deployment\"\n        }\n    )\n  )[7d:5m]\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "G"
+        }
+      ],
+      "title": "Table testing",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "workload",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Time 1": "",
+              "Time 2": "",
+              "Time 5": "",
+              "Time 7": "",
+              "Value #A": "Memory 90th %",
+              "Value #B": "Memory Max",
+              "Value #C": "Pods",
+              "Value #D": "CPU 90th %",
+              "Value #E": "Max CPU Usage",
+              "Value #F": "Network Utilization 90%",
+              "Value #G": "Network Utilization Max"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "mode": "basic",
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "deployment"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Deployment Name"
+              },
+              {
+                "id": "custom.width",
+                "value": 250
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*cpu.*/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*memory.*/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": ""
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "auto"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/.*network.*/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": ""
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "auto"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 24,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "CPU Utilization (90th)"
+          }
+        ]
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "quantile_over_time(0.9, sum by(deployment) (label_replace(rate(container_cpu_usage_seconds_total{namespace=\"sensei\", container!=\"\", container!=\"POD\"}[5m]), \"deployment\", \"$1\", \"pod\", \"(.*)-[^-]+-[^-]+$\"))[7d:5m])",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "CPU 90th",
+          "range": false,
+          "refId": "CPU_90"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "max_over_time(sum by(deployment) (label_replace(rate(container_cpu_usage_seconds_total{namespace=\"sensei\", container!=\"\", container!=\"POD\"}[5m]), \"deployment\", \"$1\", \"pod\", \"(.*)-[^-]+-[^-]+$\"))[7d:5m])",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "CPU Max",
+          "range": false,
+          "refId": "CPU_MAX"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "quantile_over_time(0.9, sum by(deployment) (label_replace(container_memory_working_set_bytes{namespace=\"sensei\", container!=\"\", container!=\"POD\"}, \"deployment\", \"$1\", \"pod\", \"(.*)-[^-]+-[^-]+$\"))[7d:5m]) / 1024 / 1024",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__memory_90th__",
+          "range": false,
+          "refId": "MEM_90"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "max_over_time(sum by(deployment) (label_replace(container_memory_working_set_bytes{namespace=\"sensei\", container!=\"\", container!=\"POD\"}, \"deployment\", \"$1\", \"pod\", \"(.*)-[^-]+-[^-]+$\"))[7d:5m]) / 1024 / 1024",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__memory_max__",
+          "range": false,
+          "refId": "MEM_MAX"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "quantile_over_time(0.9, sum by(deployment) (label_replace(rate(container_network_receive_bytes_total{namespace=\"sensei\"}[5m]) + rate(container_network_transmit_bytes_total{namespace=\"sensei\"}[5m]), \"deployment\", \"$1\", \"pod\", \"(.*)-[^-]+-[^-]+$\"))[7d:5m]) / 1024",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__network_90th__",
+          "range": false,
+          "refId": "NET_90"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "max_over_time(sum by(deployment) (label_replace(rate(container_network_receive_bytes_total{namespace=\"sensei\"}[5m]) + rate(container_network_transmit_bytes_total{namespace=\"sensei\"}[5m]), \"deployment\", \"$1\", \"pod\", \"(.*)-[^-]+-[^-]+$\"))[7d:5m]) / 1024",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__network_max__",
+          "range": false,
+          "refId": "NET_MAX"
+        }
+      ],
+      "title": "Sensei Namespace Deployments - 7 Day Resource Utilization (MiB and KB/s)",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "deployment",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "indexByName": {
+              "Color #CPU_90": 2,
+              "Color #CPU_MAX": 3,
+              "Memory Utilization (90th)": 4,
+              "Memory Utilization (Max)": 5,
+              "Network Utilization (90th)": 6,
+              "Network Utilization (Max)": 7,
+              "Time": 0,
+              "deployment": 1
+            },
+            "renameByName": {
+              "Value #CPU_90": "CPU Utilization (90th)",
+              "Value #CPU_MAX": "CPU Utilization (Max)",
+              "Value #MEM_90": "Memory Utilization (90th)",
+              "Value #MEM_MAX": "Memory Utilization (Max)",
+              "Value #NET_90": "Network Utilization (90th)",
+              "Value #NET_MAX": "Network Utilization (Max)",
+              "deployment": "Deployment"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "10s",
+  "schemaVersion": 41,
+  "tags": [
+    "kubernetes",
+    "sensei",
+    "monitoring"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Sensei Deployments Utilization Dashboard",
+  "uid": "sensei-utilization",
+  "version": 4
+}

@@ -8,31 +8,37 @@ configMapGenerator:
       - sensei.json
     options:
       annotations:
-        grafana_folder: "sensei"           
+        grafana_folder: "sensei"
   - name: sensei-metrics
     files:
-      - sensei-postgres-metrics.json    
+      - sensei-postgres-metrics.json
     options:
       annotations:
-        grafana_folder: "sensei"    
+        grafana_folder: "sensei"
+  - name: sensei-kubernetes-aws
+    files:
+      - kubernetes.json
+    options:
+      annotations:
+        grafana_folder: "sensei"
   - name: sensei-kubernetes
     files:
-      - kubernetes-namespace.json  
+      - kubernetes-namespace.json
     options:
       annotations:
         grafana_folder: "sensei"
   - name: kubernetes-global
     files:
-      - kubernetes-global.json  
+      - kubernetes-global.json
     options:
       annotations:
         grafana_folder: "sensei"
   - name: sensei-cnpg
     files:
-      - sensei-cnpg.json  
+      - sensei-cnpg.json
     options:
       annotations:
-        grafana_folder: "sensei"             
+        grafana_folder: "sensei"
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
