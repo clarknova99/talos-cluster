@@ -81,7 +81,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -212,7 +212,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -336,7 +336,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -482,7 +482,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -669,7 +669,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -826,7 +826,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -882,12 +882,338 @@
       "type": "table"
     },
     {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "P44368ADAD746BC27"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "week"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 168
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "engaged sensei users pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total users"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "locale"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "active chess players pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 0,
+        "y": 28
+      },
+      "id": 30,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P44368ADAD746BC27"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH raw_hosts AS (\n  SELECT\n    -- strip off scheme + path, leaving host[:port]\n    split_part(\n      split_part(event_data->>'referer', '://', 2),\n      '/', \n      1\n    ) AS host\n  FROM events\n  WHERE event_type = 'page_load'\n    AND event_timestamp >= now() - interval '7 days'\n    AND event_data->>'page' = 'landing_page'\n    AND event_data->'query_params' = '{}'::jsonb\n    AND event_data->>'referer' IS NOT NULL\n    AND event_data->>'referer' <> 'null'\n),\nreferrers AS (\n  SELECT *\n  FROM raw_hosts\n  -- drop true blanks *and* any senseichess.com host (with optional port)\n  WHERE host <> ''\n    AND host !~* '^(.+\\.)?senseichess\\.com(:[0-9]+)?$'\n)\nSELECT\n  CASE\n    WHEN host LIKE '%.%' THEN\n      CASE\n        -- country‐code TLD → keep last 3 labels\n        WHEN char_length(regexp_replace(host, '^.*\\.([^.]+)$', '\\1')) = 2\n        THEN substring(host FROM '([^.]+\\.[^.]+\\.[^.]+)$')\n        -- generic TLD → keep last 2 labels\n        ELSE substring(host FROM '([^.]+\\.[^.]+)$')\n      END\n    ELSE\n      host\n  END AS referer,\n  count(*) AS count\nFROM referrers\nGROUP BY referer\nORDER BY count DESC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Organic Referrers (Last 7 Days)",
+      "transformations": [
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "YYYY-MM-DD",
+            "timeField": "event_week",
+            "useTimezone": true
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "active_chess_players": "active chess players",
+              "active_sensei_users": "active sensei users",
+              "chess_player_pct": "active chess players pct",
+              "event_week": "week",
+              "sensei_engagement_percentage": "engaged sensei users pct",
+              "total_users": "total users"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "P44368ADAD746BC27"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "week"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 168
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "engaged sensei users pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total users"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "locale"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "active chess players pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 11,
+        "y": 28
+      },
+      "id": 31,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P44368ADAD746BC27"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  CASE\n    WHEN (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    ) = 'referrer' THEN\n      (SELECT jsonb_array_elements_text(event_data->'query_params'->'referrer') LIMIT 1)\n    WHEN (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    ) = 'utm_source' THEN\n      (SELECT jsonb_array_elements_text(event_data->'query_params'->'utm_source') LIMIT 1)\n    ELSE (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    )\n  END AS first_query_param, \n  count(*) as count\nFROM events\nWHERE event_timestamp >= now() - interval '7 days'\n  AND event_data->'query_params' <> '{}'::jsonb\nGROUP BY first_query_param\nORDER BY count DESC",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Paid Referring Source (Last 7 Days)",
+      "transformations": [
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "YYYY-MM-DD",
+            "timeField": "event_week",
+            "useTimezone": true
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "active_chess_players": "active chess players",
+              "active_sensei_users": "active sensei users",
+              "chess_player_pct": "active chess players pct",
+              "event_week": "week",
+              "sensei_engagement_percentage": "engaged sensei users pct",
+              "total_users": "total users"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 37
       },
       "id": 14,
       "panels": [],
@@ -921,7 +1247,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 29
+        "y": 38
       },
       "id": 15,
       "options": {
@@ -941,7 +1267,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1009,7 +1335,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 29
+        "y": 38
       },
       "id": 16,
       "options": {
@@ -1029,7 +1355,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1096,7 +1422,7 @@
         "h": 8,
         "w": 5,
         "x": 10,
-        "y": 29
+        "y": 38
       },
       "id": 17,
       "options": {
@@ -1116,7 +1442,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1184,7 +1510,7 @@
         "h": 8,
         "w": 5,
         "x": 15,
-        "y": 29
+        "y": 38
       },
       "id": 18,
       "options": {
@@ -1204,7 +1530,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1272,7 +1598,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 37
+        "y": 46
       },
       "id": 19,
       "options": {
@@ -1292,7 +1618,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1360,7 +1686,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 37
+        "y": 46
       },
       "id": 20,
       "options": {
@@ -1380,7 +1706,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1448,7 +1774,7 @@
         "h": 8,
         "w": 6,
         "x": 10,
-        "y": 37
+        "y": 46
       },
       "id": 21,
       "options": {
@@ -1468,7 +1794,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1515,7 +1841,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 54
       },
       "id": 5,
       "panels": [],
@@ -1559,7 +1885,7 @@
         "h": 18,
         "w": 15,
         "x": 0,
-        "y": 46
+        "y": 55
       },
       "id": 25,
       "options": {
@@ -1603,7 +1929,7 @@
           "zoom": 2.98
         }
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1674,7 +2000,7 @@
         "h": 18,
         "w": 9,
         "x": 15,
-        "y": 46
+        "y": 55
       },
       "id": 26,
       "options": {
@@ -1689,7 +2015,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -1722,130 +2048,6 @@
       ],
       "title": "Users by City",
       "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "loki"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "#EAB839",
-                "value": 35
-              },
-              {
-                "color": "red",
-                "value": 65
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 13,
-        "w": 22,
-        "x": 0,
-        "y": 64
-      },
-      "id": 6,
-      "options": {
-        "basemap": {
-          "config": {},
-          "name": "Layer 0",
-          "type": "default"
-        },
-        "controls": {
-          "mouseWheelZoom": true,
-          "showAttribution": false,
-          "showDebug": false,
-          "showMeasure": false,
-          "showScale": false,
-          "showZoom": true
-        },
-        "layers": [
-          {
-            "config": {
-              "blur": 8,
-              "radius": 4,
-              "weight": {
-                "fixed": 1,
-                "max": 1,
-                "min": 0
-              }
-            },
-            "location": {
-              "mode": "auto"
-            },
-            "name": "Requests",
-            "opacity": 0.2,
-            "tooltip": true,
-            "type": "heatmap"
-          }
-        ],
-        "tooltip": {
-          "mode": "details"
-        },
-        "view": {
-          "allLayers": true,
-          "id": "coords",
-          "lat": 25.475173,
-          "lon": 9.654596,
-          "zoom": 2.43
-        }
-      },
-      "pluginVersion": "11.4.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "loki"
-          },
-          "editorMode": "code",
-          "expr": "sum by (lat, lon, city_name, country_name) (\n  count_over_time({instance=\"ingress-nginx-external\"} \n  | json \n  | lat != \"\"\n  | vhost = `senseichess.com` or vhost = `www.senseichess.com`\n  | city_name != `Jersey City`\n  |__error__=``[$__range])\n) > 20",
-          "legendFormat": "{{ip_address}}",
-          "queryType": "instant",
-          "refId": "A"
-        }
-      ],
-      "title": "",
-      "transformations": [
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "number",
-                "targetField": "lat"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "lon"
-              }
-            ],
-            "fields": {}
-          }
-        }
-      ],
-      "type": "geomap"
     },
     {
       "datasource": {
@@ -1908,7 +2110,7 @@
         "h": 13,
         "w": 11,
         "x": 0,
-        "y": 77
+        "y": 73
       },
       "id": 7,
       "options": {
@@ -1929,7 +2131,7 @@
           }
         ]
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -2034,7 +2236,7 @@
         "h": 13,
         "w": 11,
         "x": 11,
-        "y": 77
+        "y": 73
       },
       "id": 23,
       "options": {
@@ -2055,7 +2257,7 @@
           }
         ]
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -2105,7 +2307,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 90
+        "y": 86
       },
       "id": 4,
       "panels": [],
@@ -2139,7 +2341,7 @@
         "h": 6,
         "w": 5,
         "x": 0,
-        "y": 91
+        "y": 87
       },
       "id": 8,
       "options": {
@@ -2159,7 +2361,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -2235,7 +2437,7 @@
         "h": 6,
         "w": 5,
         "x": 5,
-        "y": 91
+        "y": 87
       },
       "id": 9,
       "options": {
@@ -2255,7 +2457,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -2332,7 +2534,7 @@
         "h": 6,
         "w": 7,
         "x": 10,
-        "y": 91
+        "y": 87
       },
       "id": 10,
       "options": {
@@ -2352,7 +2554,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -2440,7 +2642,7 @@
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 97
+        "y": 93
       },
       "id": 3,
       "options": {
@@ -2455,7 +2657,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.4.1",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -2580,7 +2782,7 @@
         "h": 9,
         "w": 17,
         "x": 0,
-        "y": 105
+        "y": 101
       },
       "id": 24,
       "interval": "1hr",
