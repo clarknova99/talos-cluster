@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: troddit-secrets
+    namespace: default
+# ## sops --encrypt --in-place ./kubernetes/apps/default/troddit/app/troddit.sops.yaml
+stringData:
+    CLIENT_ID: ENC[AES256_GCM,data:FsBGh1TuV7oHJx0Yw3ut/RXYrdyyAg==,iv:vJgwhagVhU2G8UOiV4YtsL/Jrue11Pfd4/k0NXlOOwg=,tag:JIi1zRShgritaaLhPuJhsA==,type:str]
+    CLIENT_SECRET: ENC[AES256_GCM,data:bdVRaaWLbDhJXrX+nHLEheAlq96dxOY2cpohAuoZ,iv:s9duXV+YOwrdqHPvwAYNQEuTex6pOHSorF14xjFMiNI=,tag:kMDjCJg72LxpYsNmXVA7GA==,type:str]
+    REDDIT_REDIRECT: ENC[AES256_GCM,data:10hYPs+y+FEU1P6n2e6VBhtbd9TmnpWs6DpjEMzhEJZijgkpiv1PrcgIbsQ1Z2avop6S5g==,iv:6RoLGLd57wHyzoV7fIyUHanrYsa0yMrhEhdD1S9J6DI=,tag:BjLKLw1pW2GnSKcMG/bNYw==,type:str]
+    NEXTAUTH_SECRET: ENC[AES256_GCM,data:csfPQgDcIQULk/YKmqw+HMlKN/u6abWhnNXDbbup0jg3BOX/KlikSupyjT8=,iv:bFrZ28d34WgEJw9DLX0aEu6O7ZjJ4AlEv5NcnI/gi2w=,tag:uHNGvaJyHC0VGlpa6aMZCQ==,type:str]
+    NEXTAUTH_URL: ENC[AES256_GCM,data:KKIsVXu/E9remsddvwaCoTaM6Aox9vuOjluH,iv:EuZbubthca6U4KYU8Atvh9Iq2l5ZizbcheSL41X2Ivo=,tag:KMjJT9Q02LXx9Ohw2D0+Gg==,type:str]
+    SIGNING_PRIVATE_KEY: ENC[AES256_GCM,data:Eh918UJ+maDw7myRvofRc5LacjtkqD84WntyWrHfKwlpIkt4vb6XkZniYforEbxl89Cz5V3i/nLeDLgmuqjYl+vD+ValABo2OD2Z3IYNQ3mbERlJ9L7HRJ9p2+C9kByPDYFs72AaN/mHlxW5A061NkqVQ4xHq1Qv76p1XBMvDYAJuQ==,iv:kR5yFn+wBVNuVOaJPM5Pgg6UVIzf42pd677AQ4O5SNQ=,tag:E+Wn8YMuOVdEhPCAmpN7HA==,type:str]
+sops:
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBXRzFrcktJOFhvSmt0WGpn
+            QnJQM2ExajRRVVB1VStCM21RY2ZjZFFjR25rCi9iVklEYjk4alBwOFRrWEQ5cnYv
+            NzArMEViWGZ2QU54Y28rK240bWNTOUkKLS0tIEFKSkFyWE5ET1JhSUtsRmxvZXpL
+            S1hOVzhVUHBJd0VkQ0NlY1ZrTWk0OXMKWNB86308E3VaZgmDuKXzc8WnRdQnnKOc
+            6/xEAV5mbOLDacAjzOzgzdH6bAqr5qo7oXOkyE4C50e+hfAMnKm3dw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-05-14T13:04:01Z"
+    mac: ENC[AES256_GCM,data:/Klq3EepSVTaSYmUcVnFe20UKN8LdAO8X2agcTRkhzVu4+IKy07GH0dhrqn4AO5Gz9daTrA28poekUhJICf/lIhdXGqBiPXtsIlDze4pmIbHFz5FK3zm8gnhOegOZ3wdugeK+U8FDGScnhNR0z8gAUt7fYTX4y473lkLvaPDssQ=,iv:yTMNMEup+c9UdqZ2DFtP7h3bi46t1YEYTumA3vMH2Ws=,tag:SdmRCcdcdOrUK9/I39Qn8g==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2
