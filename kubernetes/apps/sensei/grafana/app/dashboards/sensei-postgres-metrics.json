@@ -1157,7 +1157,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE\n    WHEN (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    ) = 'referrer' THEN\n      (SELECT jsonb_array_elements_text(event_data->'query_params'->'referrer') LIMIT 1)\n    WHEN (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    ) = 'utm_source' THEN\n      (SELECT jsonb_array_elements_text(event_data->'query_params'->'utm_source') LIMIT 1)\n    ELSE (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    )\n  END AS first_query_param, \n  count(*) as count\nFROM events\nWHERE event_timestamp >= now() - interval '7 days'\n  AND event_data->'query_params' <> '{}'::jsonb\nGROUP BY first_query_param\nORDER BY count DESC",
+          "rawSql": "SELECT\n  CASE\n    WHEN (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    ) = 'referrer' THEN\n      (SELECT jsonb_array_elements_text(event_data->'query_params'->'referrer') LIMIT 1)\n    WHEN (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    ) = 'utm_source' THEN\n      (SELECT jsonb_array_elements_text(event_data->'query_params'->'utm_source') LIMIT 1)\n    ELSE (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    )\n  END AS source, \n  count(*) as count\nFROM events\nWHERE event_timestamp >= now() - interval '7 days'\n  AND event_data->'query_params' <> '{}'::jsonb\nGROUP BY source\nORDER BY count DESC",
           "refId": "A",
           "sql": {
             "columns": [
