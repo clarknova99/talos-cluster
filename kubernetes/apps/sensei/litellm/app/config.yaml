@@ -10,15 +10,15 @@ model_list:
   - model_name: groq-llama3-8b-8192
     litellm_params:
       model: groq/llama3-8b-8192
-      api_key: ${GROQ_API_KEY_LLM}    
+      api_key: ${GROQ_API_KEY_LLM}
   - model_name: groq-deepseek-r1-distill-llama-70b
     litellm_params:
       model: groq/deepseek-r1-distill-llama-70b
-      api_key: ${GROQ_API_KEY_LLM}   
+      api_key: ${GROQ_API_KEY_LLM}
   - model_name: groq-llama-4-scout-17b-16e-instruct
     litellm_params:
       model: groq/meta-llama/llama-4-scout-17b-16e-instruct
-      api_key: ${GROQ_API_KEY_LLM}            
+      api_key: ${GROQ_API_KEY_LLM}
   - model_name: gpt-4o-mini
     litellm_params:
       model: openai/gpt-4o-mini
@@ -30,11 +30,11 @@ model_list:
   - model_name: gpt-3.5-ft
     litellm_params:
       model: openai/ft:gpt-3.5-turbo-0125:personal:sensei-fine-tuned-v1:B0PBp7HZ
-      api_key: ${SECRET_FT_SENSEI_OPENAI_KEY}      
+      api_key: ${SECRET_FT_SENSEI_OPENAI_KEY}
   - model_name: gemini-2.5-pro-exp-03-25
     litellm_params:
       model: gemini/gemini-2.5-pro-exp-03-25
-      api_key: ${SECRET_SENSEI_GEMINI_KEY}   
+      api_key: ${SECRET_SENSEI_GEMINI_KEY}
 
 
 general_settings:
@@ -46,7 +46,7 @@ router_settings:
     {"groq-llama-4-scout-17b-16e-instruct": ["llama-3.3-70b-versatile", "groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
     {"llama-3.3-70b-versatile": ["groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
     {"groq-deepseek-r1-distill-llama-70b": ["llama3-70b-8192", "gpt-4o-mini"]},
-    {"llama3-70b-8192": ["llama3-8b-8192", "gpt-4o-mini"]}, 
-    {"llama3-8b-8192": ["gpt-4o-mini"]},     
+    {"llama3-70b-8192": ["llama3-8b-8192", "gpt-4o-mini"]},
+    {"llama3-8b-8192": ["gpt-4o-mini"]},
   ]
 
