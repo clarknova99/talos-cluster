@@ -30,25 +30,6 @@ spec:
       plex:
         annotations:
           reloader.stakater.com/auto: "true"
-        # pod:
-        #   affinity:
-        #     nodeAffinity:
-        #       requiredDuringSchedulingIgnoredDuringExecution:
-        #         nodeSelectorTerms:
-        #         - matchExpressions:
-        #           - key: plex-target
-        #             operator: In
-        #             values:
-        #             - "true"
-              # preferredDuringSchedulingIgnoredDuringExecution:
-              # - weight: 1
-              #   preference:
-              #     matchExpressions:
-              #     - key: kubernetes.io/hostname
-              #       operator: In
-              #       values:
-              #       - jupiter
-              #       - mars
         containers:
           app:
             image:
