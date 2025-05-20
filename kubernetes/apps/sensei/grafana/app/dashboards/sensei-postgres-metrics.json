@@ -1454,6 +1454,18 @@
                 "value": "language_preference"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value account_link"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "account_link"
+              }
+            ]
           }
         ]
       },
