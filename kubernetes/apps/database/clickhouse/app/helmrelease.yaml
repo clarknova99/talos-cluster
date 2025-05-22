@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: clickhouse/clickhouse-server
-              tag: 25.4-alpine@sha256:ca44e3a16f64d49359b8aff4bd21a4e2311a8309591dcd5be6c8c6c1ba19bd76
+              tag: 25.5-alpine@sha256:4ac5e4d6acf3230e5b33d723dd233ceaf9393a13552e6598aaf62d4397c3148b
               pullPolicy: IfNotPresent
             env:
               # Set credentials via environment variables
