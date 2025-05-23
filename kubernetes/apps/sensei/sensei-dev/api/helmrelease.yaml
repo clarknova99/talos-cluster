@@ -52,6 +52,7 @@ spec:
               LANGFUSE_HOST: http://langfuse-v3-web.sensei.svc.cluster.local:3000
               LITELLM_BASE_URL: http://litellm.sensei.svc.cluster.local:4000
               LITELLM_API_KEY: ${SECRET_LITELLM_API_KEY}
+              GOOGLE_TTS_API_KEY: ""
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
