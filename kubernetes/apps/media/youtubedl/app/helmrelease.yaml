@@ -35,7 +35,8 @@ spec:
           app:
             image:
               repository: docker.io/tzahi12345/youtubedl-material
-              tag: 4.3.2
+              #tag: 4.3.2
+              tag: nightly@sha256:ca6f08a9c3aeca75ddee7356252fb712998f45e99da9542d0e14c2eaef5e8e08
             env:
               TZ: America/New_York
               write_ytdl_config: true
@@ -66,14 +67,14 @@ spec:
         enabled: true
         type: nfs
         server: 192.168.1.2
-        path: /volume1/network-storage/youtubedl
+        path: /volume1/network-storage/cluster/youtubedl
         globalMounts:
           - path: /app/appdata
       media:
         enabled: true
         type: nfs
-        server: 192.168.1.2
-        path: /volume1/Video/youtube
+        server: 192.168.1.3
+        path: /volume1/network-storage/Video/youtube
         globalMounts:
           - path: /app/video
 
