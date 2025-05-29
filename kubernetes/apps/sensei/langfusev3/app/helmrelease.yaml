@@ -35,7 +35,7 @@ spec:
               repository: ghcr.io/langfuse/langfuse
               tag: 3.63.0@sha256:90e1cf747c0815cdf8fe458efe9059f6430e673d93a103c4b60fddfe5e92218f
             env:
-              NEXTAUTH_URL: https://lf.${SECRET_DOMAIN_TWO}
+              NEXTAUTH_URL: https://langfuse.${SECRET_DOMAIN_TWO}
               NEXTAUTH_SECRET: ${SECRET_LANGFUSE_SECRET}
               HOSTNAME: 0.0.0.0
               AUTH_CUSTOM_CLIENT_ID: langfuse3
@@ -58,7 +58,7 @@ spec:
               LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
               LANGFUSE_S3_EVENT_UPLOAD_REGION: us-east-1
-              LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY} 
+              LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY}
               LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
               LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: true
               LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
@@ -66,10 +66,10 @@ spec:
               LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
               LANGFUSE_S3_MEDIA_UPLOAD_REGION: us-east-1
-              LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY} 
+              LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY}
               LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
               LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: true
-              LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/              
+              LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
           worker:
             image:
               repository: ghcr.io/langfuse/langfuse-worker
@@ -84,11 +84,11 @@ spec:
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_CLUSTER_ENABLED: false
               #REDIS_CONNECTION_STRING: redis://dragonfly.database.svc.cluster.local:6379
-              REDIS_CONNECTION_STRING: redis://redis.database.svc.cluster.local:6379           
+              REDIS_CONNECTION_STRING: redis://redis.database.svc.cluster.local:6379
               LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
               LANGFUSE_S3_EVENT_UPLOAD_REGION: us-east-1
-              LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY} 
+              LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY}
               LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
               LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: true
               LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
@@ -96,7 +96,7 @@ spec:
               LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
               LANGFUSE_S3_MEDIA_UPLOAD_REGION: us-east-1
-              LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY} 
+              LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY}
               LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
               LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: true
               LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
@@ -115,7 +115,7 @@ spec:
         controller: langfuse-v3
         ports:
           http:
-            port: 3030  
+            port: 3030
 
     ingress:
       web:
