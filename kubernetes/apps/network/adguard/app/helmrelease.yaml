@@ -45,15 +45,17 @@ spec:
                 memory: 256M
               limits:
                 memory: 512M
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: false
-        runAsUser: 1025
-        runAsGroup: 1025
-        fsGroup: 1025
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [100]
-        seccompProfile: { type: RuntimeDefault }
+        pod:
+          dnsConfig:
+            options:
+              - { name: ndots, value: "1" }
+          securityContext:
+            runAsNonRoot: false # Adguard doesn't support running as non-root
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: adguard
