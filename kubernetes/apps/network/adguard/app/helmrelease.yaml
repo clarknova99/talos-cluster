@@ -36,25 +36,6 @@ spec:
               tag: v0.107.62@sha256:b04764acecf1f663a23f55e95724a3c7ca0dc7f3a6f957d29005728b6bd036f2
             env:
               TZ: America/New_York
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  tcpSocket:
-                    port: 53
-                  initialDelaySeconds: 15
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  tcpSocket:
-                    port: 53
-                  initialDelaySeconds: 5
-                  periodSeconds: 10
-                  timeoutSeconds: 5
 
     service:
       app:
