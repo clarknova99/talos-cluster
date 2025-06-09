@@ -41,20 +41,18 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /
-                    port: 3000
-                  initialDelaySeconds: 30
+                  tcpSocket:
+                    port: 53
+                  initialDelaySeconds: 15
                   periodSeconds: 30
                   timeoutSeconds: 5
               readiness:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /
-                    port: 3000
-                  initialDelaySeconds: 10
+                  tcpSocket:
+                    port: 53
+                  initialDelaySeconds: 5
                   periodSeconds: 10
                   timeoutSeconds: 5
 
