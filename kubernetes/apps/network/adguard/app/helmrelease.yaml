@@ -75,15 +75,15 @@ spec:
         globalMounts:
           - path: /opt/adguardhome/conf
             subPath: conf
-    # Add this new persistence mount for the certificate
-    tls-cert:
-      enabled: true
-      type: secret
-      name: "${SECRET_DOMAIN/./-}-production-tls"
-      defaultMode: 0400  # Read-only for security
-      globalMounts:
-        - path: /opt/adguardhome/certs
-          readOnly: true
+      # Add this new persistence mount for the certificate
+      tls-cert:
+        enabled: true
+        type: secret
+        name: "${SECRET_DOMAIN/./-}-production-tls"
+        defaultMode: 0400  # Read-only for security
+        globalMounts:
+          - path: /opt/adguardhome/certs
+            readOnly: true
     ingress:
       app:
         className: internal
