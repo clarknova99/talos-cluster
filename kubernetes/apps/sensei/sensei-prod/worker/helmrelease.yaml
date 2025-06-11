@@ -52,6 +52,16 @@ spec:
               LANGFUSE_HOST: http://langfuse-v3-web.sensei.svc.cluster.local:3000
               LITELLM_BASE_URL: http://litellm.sensei.svc.cluster.local:4000
               LITELLM_API_KEY: ${SECRET_LITELLM_API_KEY}
+              FRONTEND_BASE_URL: https://www.${SECRET_DOMAIN_TWO}
+              EMAIL_VERIFICATION_TOKEN_EXPIRES_HOURS: 24
+              SENDER_EMAIL: ${SECRET_SENSEI_SENDER_EMAIL}
+              SMTP_SENDER_NAME: ${SECRET_SENSEI_SMTP_SENDER_NAME}
+              GMAIL_SERVICE_ACCOUNT_FILE: ${SECRET_SENSEI_GMAIL_SERVICE_ACCOUNT_FILE}
+              AWS_ACCESS_KEY_ID: ${SECRET_AWS_ACCESS_KEY_ID}
+              AWS_SECRET_ACCESS_KEY: ${SECRET_AWS_SECRET_ACCESS_KEY}
+              AWS_S3_BUCKET_NAME: ${SECRET_AWS_S3_BUCKET_NAME}
+              AWS_REGION_NAME: ${SECRET_AWS_REGION_NAME}
+              AWS_S3_REGION: ${SECRET_AWS_S3_REGION}
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
