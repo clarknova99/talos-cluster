@@ -6,7 +6,7 @@ metadata:
   name: sensei-prod-worker
   namespace: sensei
 spec:
-  interval: 15m
+  interval: 5m
   chart:
     spec:
       chart: app-template
@@ -15,7 +15,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      interval: 15m
+      interval: 5m
   maxHistory: 3
   install:
     remediation:
