@@ -4,11 +4,13 @@ http:
     enabled: false
   address: 0.0.0.0:80
   session_ttl: 720h
-users: []
+users:
+  - name: test
+    password:
 auth_attempts: 5
 block_auth_min: 15
 http_proxy: ""
-language: en
+language: ""
 theme: auto
 dns:
   bind_hosts:
@@ -21,14 +23,17 @@ dns:
   ratelimit_whitelist: []
   refuse_any: true
   upstream_dns:
-    - udp://192.168.1.1:53
+    - https://unfiltered.adguard-dns.com/dns-query
+    - https://dns10.quad9.net/dns-query
+    - '[/${SECRET_DOMAIN}/]192.168.3.22'
   upstream_dns_file: ""
   bootstrap_dns:
-    - 192.168.60.59
-  fallback_dns:
-    - https://dns10.quad9.net/dns-query
-  all_servers: false
-  fastest_addr: false
+    - 9.9.9.10
+    - 149.112.112.10
+    - 2620:fe::10
+    - 2620:fe::fe:10
+  fallback_dns: []
+  upstream_mode: load_balance
   fastest_timeout: 1s
   allowed_clients: []
   disallowed_clients: []
@@ -37,6 +42,7 @@ dns:
     - id.server
     - hostname.bind
   trusted_proxies:
+    - 10.0.0.0/8
     - 127.0.0.0/8
     - ::1/128
   cache_size: 4194304
@@ -45,7 +51,7 @@ dns:
   cache_optimistic: false
   bogus_nxdomain: []
   aaaa_disabled: false
-  enable_dnssec: true
+  enable_dnssec: false
   edns_client_subnet:
     custom_ip: ""
     enabled: false
@@ -59,14 +65,18 @@ dns:
   private_networks: []
   use_private_ptr_resolvers: true
   local_ptr_upstreams:
-    - 192.168.1.1
+    - udp://192.168.3.1
+    - udp://192.168.1.1
   use_dns64: false
   dns64_prefixes: []
   serve_http3: false
   use_http3_upstreams: false
   serve_plain_dns: true
+  hostsfile_enabled: true
+  pending_requests:
+    enabled: true
 tls:
-  enabled: false
+  enabled: true
   server_name: ""
   force_https: false
   port_https: 443
@@ -77,43 +87,43 @@ tls:
   allow_unencrypted_doh: false
   certificate_chain: ""
   private_key: ""
-  certificate_path: ""
-  private_key_path: ""
+  certificate_path: /opt/adguardhome/certs/tls.crt
+  private_key_path: /opt/adguardhome/certs/tls.key
   strict_sni_check: false
 querylog:
+  dir_path: ""
   ignored: []
-  interval: 2160h
+  interval: 168h
   size_memory: 1000
   enabled: true
   file_enabled: true
 statistics:
+  dir_path: ""
   ignored: []
-  interval: 24h
+  interval: 2160h
   enabled: true
 filters:
   - enabled: true
     url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt
     name: AdGuard DNS filter
     id: 1
-  - enabled: true
+  - enabled: false
     url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_2.txt
     name: AdAway Default Blocklist
     id: 2
-  - enabled: true
-    url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_42.txt
-    name: ShadowWhisperer's Malware List
-    id: 1706303075
 whitelist_filters: []
 user_rules:
-  - '@@||api.ipify.org^$important'
-  - '@@||login.windows.net^$important'
-  - /(^|\.)xn--/
-  - '# Block Tweakers ads after DPG Media takeover.'
-  - '||aa.tweakers.nl^$important'
-  - '||ab.tweakers.nl^$important'
-  - '# Security: prevent WPAD lookups, ref: DEF CON 32 2024.'
-  - '||wpad^$important'
-  - '||wpad.*^$important'
+  - '||mask.icloud.com^$important,dnsrewrite=NXDOMAIN;;'
+  - '||mask-h2.icloud.com^$important,dnsrewrite=NXDOMAIN;;'
+  - '||mask-api.icloud.com^$important,dnsrewrite=NXDOMAIN;;'
+  - '||metrics.icloud.com^$important,dnsrewrite=NXDOMAIN;;'
+  - '||mask-t.apple-dns.net^$important,dnsrewrite=NXDOMAIN;;'
+  - '||mask.apple-dns.net^$important,dnsrewrite=NXDOMAIN;;'
+  - '||mask-api.fe.apple-dns.net^$important,dnsrewrite=NXDOMAIN;;'
+  - '||_dns-sd._udp^'
+  - '||lb._dns-sd._udp^'
+  - /^lb\._dns-sd\._udp\..*\.in-addr\.arpa\.$/
+  - /^.*\.in-addr\.arpa\.$/dnstype=PTR
 dhcp:
   enabled: false
   interface_name: ""
@@ -132,74 +142,29 @@ dhcp:
     ra_slaac_only: false
     ra_allow_slaac: false
 filtering:
-  blocking_ipv4: ""
-  blocking_ipv6: ""
+  blocking_ipv4: 192.168.3.25
+  blocking_ipv6: '::'
   blocked_services:
     schedule:
       time_zone: America/New_York
     ids:
-      - qq
-      - telegram
-      - vk
-      - 500px
-      - 9gag
-      - bilibili
-      - clubhouse
-      - crunchyroll
-      - dailymotion
-      - deezer
-      - disneyplus
-      - douban
-      - ebay
-      - facebook
-      - flickr
-      - gog
-      - hulu
-      - instagram
-      - iqiyi
-      - kakaotalk
-      - kik
-      - lazada
-      - leagueoflegends
-      - line
-      - mail_ru
-      - minecraft
-      - nintendo
-      - ok
-      - onlyfans
-      - pinterest
-      - playstation
-      - rakuten_viki
-      - riot_games
-      - roblox
-      - shopee
-      - snapchat
-      - tidal
-      - tiktok
-      - valorant
-      - viber
-      - vimeo
-      - voot
-      - wechat
-      - weibo
-      - zhihu
+      - icloud_private_relay
   protection_disabled_until: null
   safe_search:
-    enabled: false
+    enabled: true
     bing: true
     duckduckgo: true
+    ecosia: true
     google: true
     pixabay: true
     yandex: true
-    youtube: true
+    youtube: false
   blocking_mode: default
   parental_block_host: family-block.dns.adguard.com
   safebrowsing_block_host: standard-block.dns.adguard.com
-  rewrites:
-    - domain: www.bing.com
-      answer: nochat.bing.com
-    - domain: copilot.microsoft.com
-      answer: cdp.copilot.microsoft.com
+  rewrites: []
+  safe_fs_patterns:
+    - /opt/adguardhome/work/userfilters/*
   safebrowsing_cache_size: 1048576
   safesearch_cache_size: 1048576
   parental_cache_size: 1048576
@@ -207,7 +172,7 @@ filtering:
   filters_update_interval: 24
   blocked_response_ttl: 10
   filtering_enabled: true
-  parental_enabled: false
+  parental_enabled: true
   safebrowsing_enabled: true
   protection_enabled: true
 clients:
@@ -219,15 +184,16 @@ clients:
     hosts: true
   persistent: []
 log:
+  enabled: true
   file: ""
   max_backups: 0
   max_size: 100
   max_age: 3
   compress: false
-  local_time: false
+  local_time: true
   verbose: false
 os:
   group: ""
   user: ""
   rlimit_nofile: 0
-schema_version: 27
+schema_version: 29
