@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: dev-latest@sha256:e55eb60c11f8bac8bcb82fb10d0efc588bdde5c28d1e833a16b813e7cb2786bf
+              tag: dev-latest@sha256:236f5136bd18086a7257c1baa232345b1814f59210739f213c7f6d9ecf477703
               pullPolicy: Always
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
@@ -57,7 +57,6 @@ spec:
               SENDER_EMAIL: ${SECRET_SENSEI_SENDER_EMAIL}
               SMTP_SENDER_NAME: ${SECRET_SENSEI_SMTP_SENDER_NAME}
               GMAIL_SERVICE_ACCOUNT_FILE: ${SECRET_SENSEI_GMAIL_SERVICE_ACCOUNT_FILE}
-
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
