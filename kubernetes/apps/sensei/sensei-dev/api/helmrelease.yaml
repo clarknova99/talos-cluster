@@ -42,7 +42,7 @@ spec:
               ENVIRONMENT: dev
               PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-dev
               DISCORD_WEBHOOK: ${SECRET_SENSEI_DISCORD_WEBHOOK}
-              DISCORD_SIGNUP_WEBOOK: ${SECRET_DISCORD_SIGNUP_WEBOOK}
+              DISCORD_SIGNUP_WEBHOOK: ${SECRET_DISCORD_SIGNUP_WEBOOK}
               LICHESS_API_TOKEN: ${LICHESS_API_TOKEN}
               GROQ_API_KEY: ${GROQ_API_KEY_LLM}
               STOCKFISH_PATH: /usr/games/stockfish
