@@ -81,7 +81,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -212,7 +212,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -336,7 +336,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -459,7 +459,62 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value google"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "google"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value password"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "password"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "google"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "password"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -468,13 +523,13 @@
         "y": 10
       },
       "id": 22,
-      "interval": "1d",
+      "interval": "7d",
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -482,7 +537,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -492,7 +547,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH hours AS (\n    SELECT generate_series(\n        DATE_TRUNC('hour', NOW() - INTERVAL '24 hours'), \n        DATE_TRUNC('hour', NOW()), \n        INTERVAL '1 hour'\n    ) AS hour\n)\nSELECT \n    h.hour AS join_date_hour,\n    COALESCE(COUNT(su.joined_at), 0) AS new_users\nFROM hours h\nLEFT JOIN sensei_users su\n    ON DATE_TRUNC('hour', su.joined_at) = h.hour\nWHERE su.joined_at >= NOW() - INTERVAL '24 hours'\n   OR su.joined_at IS NULL\nGROUP BY h.hour\nORDER BY h.hour;",
+          "rawSql": "select \n\tdate(joined_at) as time,\n\tauth_type as metric,\n\tcount(*) as value\nfrom sensei_users\nwhere joined_at >= now() - interval '7 days'\nand auth_type is not null\ngroup by time, metric\norder by time, metric",
           "refId": "A",
           "sql": {
             "columns": [
@@ -549,8 +604,15 @@
           "table": "sensei_users"
         }
       ],
-      "timeFrom": "24h",
       "title": "Signups",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
       "transparent": true,
       "type": "timeseries"
     },
@@ -669,7 +731,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -826,7 +888,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -984,7 +1046,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -1147,7 +1209,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -1286,7 +1348,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -1490,7 +1552,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -1651,7 +1713,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -1739,7 +1801,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -1826,7 +1888,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -1914,7 +1976,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -2002,7 +2064,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -2090,7 +2152,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -2178,7 +2240,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -3286,5 +3348,5 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 2
+  "version": 1
 }
