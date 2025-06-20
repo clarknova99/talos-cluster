@@ -24,8 +24,10 @@
     ignorePaths: [
         "**/*.sops.*",
         "**/resources/**",
+        "**/sensei-dev/**",
         "**/sensei-stage/**",
-        "**/sensei-prod/**"                
+        "**/sensei-prod/**"
+
     ],
     flux: {
       fileMatch: [
