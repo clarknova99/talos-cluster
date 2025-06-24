@@ -45,7 +45,7 @@ spec:
               MINIO_PROMETHEUS_JOB_ID: minio
               MINIO_PROMETHEUS_AUTH_TYPE: public
               #MINIO_IDENTITY_OPENID_CONFIG_URL: https://auth.${SECRET_DOMAIN}/.well-known/openid-configuration
-              MINIO_IDENTITY_OPENID_CONFIG_URL: https://authelia.default.svc.cluster.local/.well-known/openid-configuration
+              MINIO_IDENTITY_OPENID_CONFIG_URL: http://authelia.default.svc.cluster.local/.well-known/openid-configuration
               MINIO_IDENTITY_OPENID_CLIENT_ID: minio
               MINIO_IDENTITY_OPENID_CLIENT_SECRET: ${SECRET_OAUTH_CLIENT_SECRET}
               MINIO_IDENTITY_OPENID_CLAIM_NAME: groups ## enables mapping lldap group name to minio policy name
