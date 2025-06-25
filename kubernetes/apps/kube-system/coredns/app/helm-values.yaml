@@ -16,6 +16,7 @@ servers:
         use_tcp: true
     port: 53
     plugins:
+      - name: log
       - name: errors
       - name: health
         configBlock: |-
@@ -39,9 +40,6 @@ servers:
       - name: loadbalance
       - name: prometheus
         parameters: 0.0.0.0:9153
-      - name: log
-        configBlock: |-
-          class error
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
