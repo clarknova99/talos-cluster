@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 3,
   "links": [],
   "panels": [
     {
@@ -81,7 +81,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -212,7 +212,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -336,7 +336,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -537,7 +537,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -731,7 +731,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -888,7 +888,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1046,7 +1046,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1056,7 +1056,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH raw_hosts AS (\n  SELECT\n    -- strip off scheme + path, leaving host[:port]\n    split_part(\n      split_part(event_data->>'referer', '://', 2),\n      '/', \n      1\n    ) AS host\n  FROM events\n  WHERE event_type = 'page_load'\n    AND event_timestamp >= now() - interval '7 days'\n    AND event_data->>'page' = 'landing_page'\n    AND event_data->'query_params' = '{}'::jsonb\n    AND event_data->>'referer' IS NOT NULL\n    AND event_data->>'referer' <> 'null'\n),\nreferrers AS (\n  SELECT *\n  FROM raw_hosts\n  -- drop true blanks *and* any senseichess.com host (with optional port)\n  WHERE host <> ''\n    AND host !~* '^(.+\\.)?senseichess\\.com(:[0-9]+)?$'\n)\nSELECT\n  CASE\n    WHEN host LIKE '%.%' THEN\n      CASE\n        -- country‐code TLD → keep last 3 labels\n        WHEN char_length(regexp_replace(host, '^.*\\.([^.]+)$', '\\1')) = 2\n        THEN substring(host FROM '([^.]+\\.[^.]+\\.[^.]+)$')\n        -- generic TLD → keep last 2 labels\n        ELSE substring(host FROM '([^.]+\\.[^.]+)$')\n      END\n    ELSE\n      host\n  END AS referer,\n  count(*) AS count\nFROM referrers\nGROUP BY referer\nORDER BY count DESC;",
+          "rawSql": "WITH raw_hosts AS (\n  SELECT\n    -- strip off scheme + path, leaving host[:port]\n    split_part(\n      split_part(referer, '://', 2),\n      '/', \n      1\n    ) AS host\n  FROM events\n  WHERE event_type = 'page_load'\n    AND event_timestamp >= now() - interval '7 days'\n    AND event_data->>'page' = 'home'\n    AND query_params = '{}'::jsonb\n    AND referer IS NOT NULL\n    AND referer <> 'null'\n),\nreferrers AS (\n  SELECT *\n  FROM raw_hosts\n  -- drop true blanks *and* any senseichess.com host (with optional port)\n  WHERE host <> ''\n    AND host !~* '^(.+\\.)?senseichess\\.com(:[0-9]+)?$'\n)\nSELECT\n  CASE\n    WHEN host LIKE '%.%' THEN\n      CASE\n        -- country‐code TLD → keep last 3 labels\n        WHEN char_length(regexp_replace(host, '^.*\\.([^.]+)$', '\\1')) = 2\n        THEN substring(host FROM '([^.]+\\.[^.]+\\.[^.]+)$')\n        -- generic TLD → keep last 2 labels\n        ELSE substring(host FROM '([^.]+\\.[^.]+)$')\n      END\n    ELSE\n      host\n  END AS referer,\n  count(*) AS count\nFROM referrers\nGROUP BY referer\nORDER BY count DESC;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1209,7 +1209,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1219,7 +1219,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE\n    WHEN (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    ) = 'referrer' THEN\n      (SELECT jsonb_array_elements_text(event_data->'query_params'->'referrer') LIMIT 1)\n    WHEN (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    ) = 'utm_source' THEN\n      (SELECT jsonb_array_elements_text(event_data->'query_params'->'utm_source') LIMIT 1)\n    ELSE (\n      SELECT k\n      FROM jsonb_object_keys(event_data->'query_params') AS k\n      LIMIT 1\n    )\n  END AS source, \n  count(*) as count\nFROM events\nWHERE event_timestamp >= now() - interval '7 days'\n  AND event_data->'query_params' <> '{}'::jsonb\nGROUP BY source\nORDER BY count DESC",
+          "rawSql": "SELECT\n  CASE\n    WHEN (\n      SELECT k\n      FROM jsonb_object_keys(query_params) AS k\n      LIMIT 1\n    ) = 'referrer' THEN\n      (SELECT jsonb_array_elements_text(query_params -> 'referrer') LIMIT 1)\n    WHEN (\n      SELECT k\n      FROM jsonb_object_keys(query_params) AS k\n      LIMIT 1\n    ) = 'utm_source' THEN\n      (SELECT jsonb_array_elements_text(query_params -> 'utm_source') LIMIT 1)\n    ELSE (\n      SELECT k\n      FROM jsonb_object_keys(query_params) AS k\n      LIMIT 1\n    )\n  END AS source, \n  count(*) as count\nFROM events\nWHERE event_timestamp >= now() - interval '7 days'\n  AND query_params <> '{}'::jsonb\nGROUP BY source\nORDER BY count DESC;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1348,7 +1348,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1552,7 +1552,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
