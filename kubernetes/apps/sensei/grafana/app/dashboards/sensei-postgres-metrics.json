@@ -1528,6 +1528,138 @@
                 "value": "account_link"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value bookmark_create"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "bookmark_create"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value bookmark_archived"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "bookmark_archived"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value bookmark_unarchived"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "bookmark_unarchived"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value crucial_position_expand"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "crucial_positions_expand"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value crucial_position_collapse"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "crucial_position_collapse"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value detailed_insights_collapse"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "detailed_insights_collapse"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value detailed_insights_expand"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "detailed_insights_expand"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value game_moves_expand"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "game_moves_expand"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value get_insights"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "get_insights"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value piece_activity"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "piece_activity"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value game_moves_collapse"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "game_moves_collapse"
+              }
+            ]
           }
         ]
       },
@@ -1541,10 +1673,14 @@
       "interval": "1d",
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last *",
+          "sortDesc": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -1713,7 +1849,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1801,7 +1937,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1888,7 +2024,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1976,7 +2112,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.1+security-01",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3348,5 +3484,5 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 1
+  "version": 2
 }
