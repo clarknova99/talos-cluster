@@ -1674,7 +1674,9 @@
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "lastNotNull",
+            "median",
+            "max"
           ],
           "displayMode": "table",
           "placement": "right",
