@@ -167,3 +167,9 @@ spec:
         path: /volume1/network-storage/Video
         globalMounts:
           - path: /media
+      music:
+        type: nfs
+        server: 192.168.1.2
+        path: /volume1/network-storage/Music
+        globalMounts:
+          - path: /music
