@@ -8,7 +8,7 @@ type: kubernetes.io/dockerconfigjson
 ## sops --encrypt --in-place ./kubernetes/apps/default/sensei/app/sensei.sops.yaml
 ## sops --decrypt ./kubernetes/apps/default/sensei/app/sensei.sops.yaml | kubectl apply -f -
 data:
-    .dockerconfigjson: ENC[AES256_GCM,data:JoSzzBNPfLFYRBg6hDGfYXhG2U7dlakkqOf6J+5RjV2fHnBQL+AePVWRhiI9Z6kDoaPbHNs1autbRI8Pe2ablechtyJaQucEVkQn5RIL/MGRq05DMsMiwQS51QhJgxfhQ4lPl1BVsXNgFIeTn1vVM2taFCU8EvyAOHlDTSm9fz3KlQM2efNT5DuZHz2TcTzF0ud28VaGin5HFDcU+3u1tuaOCh1A9j/USmdXjIYAyi07tVuTm3+890yuTkzNQr3osHv8iA5PV1zJVD81aGWqsIh0SbkmzUO2Kb4VEaaO/oMGScKxNNy7dxMnc0PJq/Czv0CMiM2jMIRhK2jjiOVQ8Eq8z8r//s1Dl/l6NEeULncROlsQwooE07ual2Ef07YAf5k=,iv:K1mMecGbTebjgvLBzkiYrPwAriXQ5yyxF518ZJOZ9ZA=,tag:LADWz9xLBU73/cy0pCohQQ==,type:str]
+    .dockerconfigjson: ENC[AES256_GCM,data:Bjlm7JfPXlYhfX5X//esNF+jyEhJN/prk1mVR1lUnro/qSwoRhUMA6IVOxjoDBjzK5LCpotQLKyU5ONEBsYm0RUJvCQqFYxuTj5Mzu+28q5JVs78g/bAFJuZhNCJ7NdNwbIi7UEUTJXCRMxwTaq7SXXI2N6SwM7EnnvCT0nheJmOHS2evtmi2W2HWvG/R8IRemiIvAevhc+USY33fQvIxJrwlFua8fp99JJfk+/OhAWJgbcWlk4eCAbAk9gtBiExZzgUICn2e4QruvRchMJjCMkET5rU99TTCM9/F8cmEZUWJv04qSL74PRkIVq4z6R3vtqrHCZHlWeaso6T+qMoSyr7dse6UmGj+WG/L3uFFBF3pt4Vt9hQP+3pLi0R+Kro9K7zjA==,iv:HlUKGQrJrQDu5ku+wr4r9NxQYaB0ojX0oc6MIIwZVNY=,tag:00bL2s5x98RQcjMtnMfNlQ==,type:str]
 sops:
     age:
         - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
@@ -20,7 +20,7 @@ sops:
             OUpsalBnM01VaFM5blQxZXNhblV3WUUKoHDxccQBoUt15TGbs8JLMVgdZFVAvRAD
             SYFJNXWQgHbZIyOXSr3uDWvmP4BG9zzLOb5t+EosSZu3Iup6C2vzPA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-02T23:31:59Z"
-    mac: ENC[AES256_GCM,data:s9AQsfbmhT1y1pRMXiQ2ucnWlb50GzYQhmjjc2jgMgyt+AODKqSjaA09D20iZT4Q9L+JTmwBv74NagTw/MgSK1etHwkev3j34UZvs3munHrl6iGeyUSWU68BEt/RZ230DuuNrpnZyLwNGUxHHh4cA7B2EoNH57auBcQcR7pAv/g=,iv:qv4PpZPjLD1i0oc7eVB/SbJV+C4ZX83dN581fanwvNQ=,tag:ng3lb47ztElw8uwu04ITcA==,type:str]
+    lastmodified: "2025-07-02T23:33:58Z"
+    mac: ENC[AES256_GCM,data:k8+79sOcaXarqU4jr+xFNWsA4TEFWJmjwmlY2TmiTJ7OtJGORlBK7Xq5mxMZSRNt0pK4lC6YUj97pFNUCvkjtfpou6c3uj8zk0qDN0SA7GpMGvzWfcwLgKi1USyrMOj11kRKGd0NxN8T7WtvQS9Pr+rsdRDPXQpiJ0se4HrU63c=,iv:eoQBlNvZLaWnqIw3Sld0mjY+rigEP1r32d/VBQ3jAaU=,tag:EaEdvtr0eqqzzc2e/vHakQ==,type:str]
     encrypted_regex: ^(data|stringData)$
     version: 3.10.2
