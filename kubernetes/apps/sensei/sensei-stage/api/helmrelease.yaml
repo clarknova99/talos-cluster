@@ -72,7 +72,7 @@ spec:
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
-            - name: sensei-secret
+            - name: sensei-stage-secret
     defaultPodOptions:
       affinity:
         nodeAffinity:
