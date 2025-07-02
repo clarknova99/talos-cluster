@@ -4,7 +4,6 @@ metadata:
     name: sensei-secret
     namespace: sensei
 type: kubernetes.io/dockerconfigjson
-## echo -n "username:ghp_YOUR_NEW_TOKEN_HERE" | base64
 ## sops --encrypt --in-place ./kubernetes/apps/default/sensei/app/sensei.sops.yaml
 ## sops --decrypt ./kubernetes/apps/default/sensei/app/sensei.sops.yaml | kubectl apply -f -
 data:
@@ -20,7 +19,7 @@ sops:
             OUpsalBnM01VaFM5blQxZXNhblV3WUUKoHDxccQBoUt15TGbs8JLMVgdZFVAvRAD
             SYFJNXWQgHbZIyOXSr3uDWvmP4BG9zzLOb5t+EosSZu3Iup6C2vzPA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-02T23:38:54Z"
-    mac: ENC[AES256_GCM,data:wG4JG/QO6ZXT6cTgy/LLo0nO2Si2UeAnNn3PI1xgCbM4J1aeHKHJ5rRznYfa0F5jkl9Qjqkr4DdpVcPs025Faqrwrcal9R7DtszMoLH9vwvxlQ4YygjtuljlaWhUeSJuRlAVf5nrbN6ooJKmHTOgisk9rkGXQ+p+pwfv2zpZD+o=,iv:PBcv9XL+H0Tqm0/VgecEsgrdtYIeVh7OSXYc9UBbICY=,tag:6TR0rTXbR8GuIxuW+tPLRg==,type:str]
+    lastmodified: "2025-07-02T23:42:06Z"
+    mac: ENC[AES256_GCM,data:PKmcvCK997NXfcF+QLE+YwEpH//0PdXZ1vFXgmRHBtifVtEaylo2XCU7+deVu50TK3/Dw7nlhaK/AjmH8IFDRI75lBSarEW0xH4DQHfU6fcWjaITXs2UhUqqrErc0d1do/pKARkX25XIy1hwWO+NF+0khT4w2IAA0r4hjlTHkYI=,iv:BUPUJcveWq+5eSeFzi+xnG13cH27AmeawMFsprUBPS8=,tag:sSG46V4OOTswPHKU33UicA==,type:str]
     encrypted_regex: ^(data|stringData)$
     version: 3.10.2
