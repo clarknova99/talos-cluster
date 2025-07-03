@@ -7,12 +7,8 @@ type: kubernetes.io/dockerconfigjson
 ## sops --encrypt --in-place ./kubernetes/apps/default/sensei/app/sensei.sops.yaml
 ## sops --decrypt ./kubernetes/apps/default/sensei/app/sensei.sops.yaml | kubectl apply -f -
 data:
-    .dockerconfigjson: ENC[AES256_GCM,data:aAPyEEdaEIkJp8pfcEMv2TvFP3pz6njEDfsnyAQaQ1hoL8juLClW75rhz73KbdBBWUrbM9BEOAIwzPvKmNXjImGJ4behq+Qo/1wRSQ01G3L+T+ZQmMr91Bi82i3GgW9y5D5vTctT2UoKk4a/dT3Zwl/s7JR8UTjiA/2t5bjAceyfTLIcr0XeiWvhOyfa39STbjoQtYSb0cXPFZ/PkTNMJb7R+tulFbMYnD3RhPwY7/efM3JXhJLBZHIOFefufVhN2r+oYLjAiEnPgDMNIQTsY6B/TYK7Tzikvwa46OS8ZR0ic0A1eH1g2C/8Mf91hQCQ94XwvNeRgl89Gx22n7Ds+dtXooK27vPDkz6dDlbnthtvD0XwWAEF79eJESyvQjXU,iv:M30W0XnV4ceWKsWgF54IT0PfU4fMtaoOvaT2TJXelBw=,tag:x7o2GnixaEz5XdcXtf6gLg==,type:str]
+    .dockerconfigjson: ENC[AES256_GCM,data:XBF86imAAk+Z6pfs2VvCcwd1cAnXwxlqegCq8mYuNB4uiX2LcJmCG3sl75j3jCVYUkwXYfZVtm8ci2CMokBEJAFwo/Vu5JMPLD4z8oNcQKzlahaJkm8gEmxkxo5zyCQKTF8DaasmFupcoNcNcZFywl3rU3w+TUXXzEBUPb1CO2ozO8KeMk+dEm0jj3op/c817OPJI2GVkTEQuO2dCSuPihP3+zlwNn8TfEftXX0l3Qc1wAeQoPhxDyNAs3X4IGfBcZHW6uHv733EFIROcPS662tAyPT/Jg92RB048jAfGrVxgRp/b8pYxc3IazxSEZRtW7RqmNKiYELq9YJryGb2f6awqR0dm751gYH/o1+k5Kl4L5tRxntsLJO24FGYXl4w,iv:JGGrW4LOI0LPRDbmlnY2yeeR9ajd7DR5NO//w3Yx9TU=,tag:jmV7XEK7xhWkENkqDFRS9Q==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
     age:
         - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
           enc: |
@@ -23,8 +19,7 @@ sops:
             OUpsalBnM01VaFM5blQxZXNhblV3WUUKoHDxccQBoUt15TGbs8JLMVgdZFVAvRAD
             SYFJNXWQgHbZIyOXSr3uDWvmP4BG9zzLOb5t+EosSZu3Iup6C2vzPA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-08-02T16:58:01Z"
-    mac: ENC[AES256_GCM,data:NxxhlGyDmD1wjD4UQ7lrACyJjejfKYzhZKzDklwLf5I0v6YgDGJDx/fjQ2opKgQW2O7CEmN45V68gvwngFh74fiEqyJLh5UVJ1fNsJ0PYUJM1+vNyBFqR9EsDOrU06gmSUzGLRIjAJYU6HkvRv/SS1OMnFfnp7zykmPvy8N4384=,iv:tRkmNB390jeMZGBHYZtiRZZMoTqkKndYTvrdlpHDqNk=,tag:CkRUycunmdUk4D+vgiFkxA==,type:str]
-    pgp: []
+    lastmodified: "2025-07-03T01:58:04Z"
+    mac: ENC[AES256_GCM,data:kvppDly3cTVJohYuX7VtjRrjRno0lQ8MtM1H0VdEv0wkm33pvfYmYw5hBxYOpb/+SzLgyajNuhmDJjV+FdF+9YYeS3HsCbcW2hzJDPMkeNfNZ1sP+iogvaLYEEHz4W/5pVA5Eby6a6HJkCyO2nPfyx6SPxbIud0UrlhqyXSTEQQ=,iv:8TldEXJMo+tGBqpdEaPFOiJWeRWhhg7FH+D+o7pPXiY=,tag:7FoqYVaFYiLDqfjAYdwyJQ==,type:str]
     encrypted_regex: ^(data|stringData)$
-    version: 3.8.1
+    version: 3.10.2

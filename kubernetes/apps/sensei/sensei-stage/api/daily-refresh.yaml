@@ -11,7 +11,7 @@ spec:
       template:
         spec:
           imagePullSecrets:
-            - name: sensei-secret
+            - name: sensei-stage-secret
           containers:
             - name: stage-daily-user-refresh
               image: ghcr.io/clarknova99/project-sensei/backend:stage-latest@sha256:751e8b37e622bbd75fa19f6a6ecd897645bd664c31fb968ef538bac9976dc60d
