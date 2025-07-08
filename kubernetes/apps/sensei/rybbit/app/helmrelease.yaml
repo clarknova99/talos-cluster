@@ -60,7 +60,7 @@ spec:
               tag: 25.4.2
             env:
               CLICKHOUSE_DB: analytics
-              CLICKHOUSE_USER: ${SECRET_CLICKHOUSE_USER}
+              CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
 
 
