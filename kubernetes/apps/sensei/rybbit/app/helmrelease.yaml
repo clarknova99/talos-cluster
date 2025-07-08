@@ -52,7 +52,7 @@ spec:
               tag: v1.4.2
             env:
               NODE_ENV: production
-              NEXT_PUBLIC_BACKEND_URL: http://rybbit-backend.sensei.svc.cluster.local
+              NEXT_PUBLIC_BACKEND_URL: https://rybbit-backend.${SECRET_DOMAIN_TWO}
               NEXT_PUBLIC_DISABLE_SIGNUP: false
           clickhouse:
             image:
@@ -92,6 +92,12 @@ spec:
         className: external
         enabled: true
         hosts:
+          - host: rybbit-backend.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: backend
+                  port: 3001
           - host: rybbit.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
@@ -101,3 +107,4 @@ spec:
         tls:
           - hosts:
               - rybbit.${SECRET_DOMAIN_TWO}
+              - rybbit-backend.${SECRET_DOMAIN_TWO}
