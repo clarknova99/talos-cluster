@@ -34,7 +34,7 @@ spec:
               tag: v1.4.2
             env:
               NODE_ENV: production
-              CLICKHOUSE_HOST: http://clickhouse.sensei.svc.cluster.local:8123
+              CLICKHOUSE_HOST: http://rybbit-clickhouse.sensei.svc.cluster.local:8123
               CLICKHOUSE_DB: rybbit
               CLICKHOUSE_USER: ${SECRET_CLICKHOUSE_USER}
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
