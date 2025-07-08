@@ -36,7 +36,7 @@ spec:
               NODE_ENV: production
               CLICKHOUSE_HOST: http://rybbit-clickhouse.sensei.svc.cluster.local:8123
               CLICKHOUSE_DB: analytics
-              CLICKHOUSE_USER: ${SECRET_CLICKHOUSE_USER}
+              CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               POSTGRES_HOST: postgres-lb-vector.database.svc.cluster.local
               POSTGRES_PORT: 5432
