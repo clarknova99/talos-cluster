@@ -34,7 +34,7 @@ spec:
               tag: v1.4.2
             env:
               NODE_ENV: production
-              CLICKHOUSE_HOST: http://clickhouse.database.svc.cluster.local:8123
+              CLICKHOUSE_HOST: http://clickhouse.sensei.svc.cluster.local:8123
               CLICKHOUSE_DB: rybbit
               CLICKHOUSE_USER: ${SECRET_CLICKHOUSE_USER}
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
@@ -54,6 +54,15 @@ spec:
               NODE_ENV: production
               NEXT_PUBLIC_BACKEND_URL: https://rybbit.${SECRET_DOMAIN_TWO}
               NEXT_PUBLIC_DISABLE_SIGNUP: false
+          clickhouse:
+            image:
+              repository: clickhouse/clickhouse-server:25.4.2
+              tag: 25.4.2
+            env:
+              CLICKHOUSE_DB: analytics
+              CLICKHOUSE_USER: ${SECRET_CLICKHOUSE_USER}
+              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+
 
     service:
       backend:
@@ -66,6 +75,13 @@ spec:
         ports:
           http:
             port: 3002
+      clickhouse:
+        controller: rybbit
+        ports:
+          http:
+            port: 8123
+          tcp:
+            port: 9000
 
     ingress:
       client:
