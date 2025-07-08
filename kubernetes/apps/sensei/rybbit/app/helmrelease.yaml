@@ -38,7 +38,7 @@ spec:
               CLICKHOUSE_DB: analytics
               CLICKHOUSE_USER: ${SECRET_CLICKHOUSE_USER}
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-              POSTGRES_HOST: postgres
+              POSTGRES_HOST: postgres-lb-vector.database.svc.cluster.local
               POSTGRES_PORT: 5432
               POSTGRES_DB: rybbit
               POSTGRES_USER: ${SECRET_PGADMIN_USER}
