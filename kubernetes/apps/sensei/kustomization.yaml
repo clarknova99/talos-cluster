@@ -9,7 +9,7 @@ resources:
   - ./langfusev3/ks.yaml
   - ./litellm/ks.yaml
   - ./n8n/ks.yaml
-  - ./rybbit/ks.yaml
+  # - ./rybbit/ks.yaml
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
   - ./sensei-dev/ks.yaml
