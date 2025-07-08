@@ -56,7 +56,7 @@ spec:
               NEXT_PUBLIC_DISABLE_SIGNUP: false
           clickhouse:
             image:
-              repository: clickhouse/clickhouse-server:25.4.2
+              repository: clickhouse/clickhouse-server
               tag: 25.4.2
             env:
               CLICKHOUSE_DB: analytics
