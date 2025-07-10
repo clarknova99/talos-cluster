@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/berriai/litellm
-              tag: main-stable@sha256:5637fc426fdf64158fd62b318ede06715620c78e8bf79c4273a25e9f48650ac9
+              tag: main-stable@sha256:5ebd68360d6a047a2ba8eb96104bab358ccd255b1d29713eb8c50f4b2a425222
             env:
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/litellm
               STORE_MODEL_IN_DB: "True"
