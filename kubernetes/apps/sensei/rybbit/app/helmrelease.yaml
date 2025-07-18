@@ -50,7 +50,7 @@ spec:
           client:
             image:
               repository: ghcr.io/rybbit-io/rybbit-client
-              tag: v1.4.2
+              tag: v1.5.1
             env:
               NODE_ENV: production
               NEXT_PUBLIC_BACKEND_URL: https://rybbit-backend.${SECRET_DOMAIN_TWO}
