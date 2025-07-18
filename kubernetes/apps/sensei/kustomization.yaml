@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1beta1.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -9,7 +8,7 @@ resources:
   - ./langfusev3/ks.yaml
   - ./litellm/ks.yaml
   - ./n8n/ks.yaml
-  # - ./rybbit/ks.yaml
+  - ./rybbit/ks.yaml
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
   - ./sensei-dev/ks.yaml
