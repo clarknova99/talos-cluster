@@ -49,7 +49,8 @@ spec:
               tag: v1.4.2
             env:
               NODE_ENV: production
-              CLICKHOUSE_HOST: http://rybbit-clickhouse.sensei.svc.cluster.local:8123
+              #CLICKHOUSE_HOST: http://rybbit-clickhouse.sensei.svc.cluster.local:8123
+              CLICKHOUSE_HOST: http://localhost:8123
               CLICKHOUSE_DB: analytics
               CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
@@ -77,7 +78,17 @@ spec:
               CLICKHOUSE_DB: analytics
               CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-
+            probes:
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: 8123
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                  timeoutSeconds: 3
 
     service:
       backend:
@@ -92,6 +103,9 @@ spec:
             port: 3002
       clickhouse:
         controller: rybbit
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.83
         ports:
           http:
             port: 8123
