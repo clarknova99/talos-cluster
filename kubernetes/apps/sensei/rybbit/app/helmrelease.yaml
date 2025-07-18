@@ -63,11 +63,16 @@ spec:
               CLICKHOUSE_DB: analytics
               CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-            command:
-              - /usr/bin/clickhouse-server
-              - --config-file=/etc/clickhouse-server/config.xml
-              - --
-              - --enable_introspection_functions=0
+              CLICKHOUSE_DO_NOT_CHOWN: "1"
+            securityContext:
+              runAsUser: 101
+              runAsGroup: 101
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                - ALL
             probes:
               readiness:
                 enabled: true
@@ -76,18 +81,21 @@ spec:
                   httpGet:
                     path: /ping
                     port: 8123
-                  initialDelaySeconds: 10
-                  periodSeconds: 5
-                  timeoutSeconds: 3
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 101
-        runAsGroup: 101
-        fsGroup: 101
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 100, 101, 1025]
-        seccompProfile: { type: RuntimeDefault }
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 6
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: 8123
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
 
     service:
       backend:
@@ -129,6 +137,13 @@ spec:
           rybbit:
             clickhouse:
               - path: /tmp
+      logs:
+        enabled: true
+        type: emptyDir
+        advancedMounts:
+          rybbit:
+            clickhouse:
+              - path: /var/log/clickhouse-server
 
     ingress:
       client:
