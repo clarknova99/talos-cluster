@@ -74,6 +74,15 @@ spec:
                   initialDelaySeconds: 10
                   periodSeconds: 5
                   timeoutSeconds: 3
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 100, 101, 1025]
+        seccompProfile: { type: RuntimeDefault }
 
     service:
       backend:
