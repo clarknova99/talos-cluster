@@ -27,6 +27,21 @@ spec:
     controllers:
       rybbit:
         replicas: 1
+        initContainers:
+          wait-for-clickhouse:
+            image:
+              repository: busybox
+              tag: 1.36
+            command:
+              - /bin/sh
+              - -c
+              - |
+                echo "Waiting for ClickHouse to be ready..."
+                until nc -z localhost 8123; do
+                  echo "ClickHouse is not ready yet. Waiting 5 seconds..."
+                  sleep 5
+                done
+                echo "ClickHouse is ready!"
         containers:
           backend:
             image:
