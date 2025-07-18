@@ -93,7 +93,6 @@ spec:
           rybbit:
             clickhouse:
               - path: /var/lib/clickhouse
-                name: data
 
     ingress:
       client:
