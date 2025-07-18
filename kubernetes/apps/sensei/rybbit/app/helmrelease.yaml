@@ -63,6 +63,11 @@ spec:
               CLICKHOUSE_DB: analytics
               CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+            command:
+              - /usr/bin/clickhouse-server
+              - --config-file=/etc/clickhouse-server/config.xml
+              - --
+              - --enable_introspection_functions=0
             probes:
               readiness:
                 enabled: true
@@ -116,6 +121,14 @@ spec:
           rybbit:
             clickhouse:
               - path: /var/lib/clickhouse
+      tmp:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        advancedMounts:
+          rybbit:
+            clickhouse:
+              - path: /tmp
 
     ingress:
       client:
