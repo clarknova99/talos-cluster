@@ -1,11 +1,13 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: sensei-prod-daily-refresh
+  name: sensei-prod-weekly-prodcast
   namespace: sensei
 spec:
-  schedule: "0 1 * * *" # 9 PM ET (assuming EDT, UTC-4)
+  schedule: "0 7 * * 1" # 2:00 AM EST every Monday (7:00 AM UTC)
   concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       template:
@@ -13,7 +15,7 @@ spec:
           imagePullSecrets:
             - name: sensei-secret
           containers:
-            - name: prod-daily-user-refresh
+            - name: prod-weekly-user-refresh
               image: ghcr.io/clarknova99/project-sensei/backend:main-1.0.0@sha256:affae81fd55f9a9b421f74d5c64408a52dfbe20e94d79979a1c47abca26100c3
               imagePullPolicy: Always
               command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
