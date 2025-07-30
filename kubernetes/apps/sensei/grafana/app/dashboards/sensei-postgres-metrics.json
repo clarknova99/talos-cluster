@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 7,
   "links": [],
   "panels": [
     {
@@ -49,7 +49,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": 0
               }
             ]
           },
@@ -81,7 +82,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -170,7 +171,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": 0
               }
             ]
           },
@@ -212,7 +214,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -296,7 +298,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": 0
               }
             ]
           }
@@ -336,7 +339,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -454,7 +457,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": 0
               }
             ]
           }
@@ -537,7 +541,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -547,7 +551,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select \n\tdate(joined_at) as time,\n\tauth_type as metric,\n\tcount(*) as value\nfrom sensei_users\nwhere joined_at >= now() - interval '7 days'\nand auth_type is not null\ngroup by time, metric\norder by time, metric",
+          "rawSql": "select \n\tdate(joined_at) as time,\n\tauth_type as metric,\n\tcount(*) as value\nfrom sensei_users\nwhere joined_at >= now() - interval '14 days'\nand auth_type is not null\ngroup by time, metric\norder by time, metric",
           "refId": "A",
           "sql": {
             "columns": [
@@ -681,7 +685,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": 0
               }
             ]
           },
@@ -723,7 +728,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -780,7 +785,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -860,7 +866,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -942,7 +948,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1017,7 +1024,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -1094,7 +1101,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1175,7 +1183,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -1257,7 +1265,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1338,7 +1347,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -1421,7 +1430,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1477,7 +1487,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -1559,7 +1569,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1789,6 +1800,30 @@
                 "value": "game_moves_collapse"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value play_podcast"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "play_podcast"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value move_click"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "move_click"
+              }
+            ]
           }
         ]
       },
@@ -1819,7 +1854,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -1948,7 +1983,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": 0
               }
             ]
           },
@@ -1980,7 +2016,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -2036,7 +2072,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": 0
               }
             ]
           },
@@ -2068,7 +2105,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -2124,7 +2161,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": 0
               }
             ]
           }
@@ -2155,7 +2193,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -2211,7 +2249,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue"
+                "color": "blue",
+                "value": 0
               }
             ]
           },
@@ -2243,7 +2282,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -2299,7 +2338,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               }
             ]
           },
@@ -2331,7 +2371,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -2387,7 +2427,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               }
             ]
           },
@@ -2419,7 +2460,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -2475,7 +2516,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               }
             ]
           },
@@ -2507,7 +2549,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
@@ -3615,5 +3657,5 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 4
+  "version": 1
 }
