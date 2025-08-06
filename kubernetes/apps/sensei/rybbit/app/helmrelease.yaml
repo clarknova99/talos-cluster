@@ -149,6 +149,9 @@ spec:
       client:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          nginx.ingress.kubernetes.io/enable-cors: "true"
+          nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+          nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:math-compass
         className: external
