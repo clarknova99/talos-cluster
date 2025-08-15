@@ -125,7 +125,6 @@ spec:
               - status.${SECRET_DOMAIN_TWO}
 
     serviceAccount:
-      create: true
       name: gatus
     persistence:
       config:
