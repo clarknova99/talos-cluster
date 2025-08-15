@@ -125,7 +125,7 @@ spec:
               - status.${SECRET_DOMAIN_TWO}
 
     serviceAccount:
-      name: gatus
+      gatus: {}
     persistence:
       config:
         type: emptyDir
