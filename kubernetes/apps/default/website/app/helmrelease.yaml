@@ -39,7 +39,7 @@ spec:
               tag: 1.28.0
     service:
       app:
-        controller: web
+        # controller: web
         ports:
           http:
             port: 80
