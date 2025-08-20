@@ -21,12 +21,12 @@ spec:
     controllers:
       clickhouse:
         type: statefulset
-        replicas: 1
+        replicas: 2
         strategy: RollingUpdate
         # Add pod termination grace period to ensure clean shutdown
         pod:
           terminationGracePeriodSeconds: 60
-          
+
         # Make sure previous pods are fully terminated before new ones start
         statefulset:
           podManagementPolicy: OrderedReady
@@ -61,15 +61,15 @@ spec:
         runAsGroup: 101
         fsGroup: 101
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 100, 101, 1025]        
-        seccompProfile: { type: RuntimeDefault }     
+        supplementalGroups: [44, 100, 101, 1025]
+        seccompProfile: { type: RuntimeDefault }
 
     service:
       app:
         controller: clickhouse
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.3.35    
+          io.cilium/lb-ipam-ips: 192.168.3.35
         ports:
           http:
             port: 8123
@@ -109,10 +109,10 @@ spec:
                     <level>warning</level>
                     <console>true</console>
                 </logger>
-                
+
                 <!-- Explicitly set listen hosts to avoid conflicts -->
                 <listen_host>0.0.0.0</listen_host>
-                
+
                 <!-- Disable all the unnecessary logging -->
                 <query_thread_log remove="remove"/>
                 <query_log remove="remove"/>
@@ -129,26 +129,26 @@ spec:
                 <!-- Define users -->
                 <users>
                     <!-- Leave default user as-is by not specifying any settings for it -->
-                    
+
                     <!-- Create a new user named clickhouse -->
                     <clickhouse>
                         <!-- Password in plain text -->
                         <password>clickhouse</password>
-                        
+
                         <!-- Allow connections from any IP -->
                         <networks>
                             <ip>::/0</ip>
                         </networks>
-                        
+
                         <!-- Assign profile and quota -->
                         <profile>default</profile>
                         <quota>default</quota>
-                        
+
                         <!-- Grant administrative privileges -->
                         <access_management>1</access_management>
                     </clickhouse>
                 </users>
-                
+
                 <!-- User profiles -->
                 <profiles>
                     <default>
@@ -156,7 +156,7 @@ spec:
                         <log_query_threads>0</log_query_threads>
                     </default>
                 </profiles>
-                
+
                 <!-- Quotas -->
                 <quotas>
                     <default>
