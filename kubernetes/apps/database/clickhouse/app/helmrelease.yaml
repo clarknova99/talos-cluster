@@ -122,6 +122,7 @@ spec:
                 <asynchronous_metric_log remove="remove"/>
                 <session_log remove="remove"/>
                 <part_log remove="remove"/>
+                <latency_log remove="remove"/>
             </clickhouse>
 
           users.xml: |
