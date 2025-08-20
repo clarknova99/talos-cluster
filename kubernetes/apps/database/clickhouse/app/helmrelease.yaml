@@ -21,7 +21,7 @@ spec:
     controllers:
       clickhouse:
         type: statefulset
-        replicas: 2
+        replicas: 1
         strategy: RollingUpdate
         # Add pod termination grace period to ensure clean shutdown
         pod:
