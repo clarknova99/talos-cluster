@@ -2,6 +2,8 @@
 autoDirectNodeRoutes: true
 bpf:
   masquerade: false # Required for Talos `.machine.features.hostDNS.forwardKubeDNSToHost`
+  # Ref: https://github.com/siderolabs/talos/issues/10002
+  # hostLegacyRouting: true
 cgroup:
   automount:
     enabled: false
@@ -13,7 +15,11 @@ cni:
   exclusive: false
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
 # devices: eno+ eth+
+dashboards:
+  enabled: true
 endpointRoutes:
+  enabled: true
+gatewayAPI:
   enabled: true
 hubble:
   enabled: false
@@ -31,8 +37,19 @@ loadBalancer:
   mode: dsr
 localRedirectPolicy: true
 operator:
+  dashboards:
+    enabled: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
   replicas: 1
   rollOutPods: true
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
 rollOutCiliumPods: true
 routingMode: native
 securityContext:
@@ -45,6 +62,8 @@ securityContext:
       - IPC_LOCK
       - SYS_ADMIN
       - SYS_RESOURCE
+      - PERFMON
+      - BPF
       - DAC_OVERRIDE
       - FOWNER
       - SETGID
