@@ -5,7 +5,7 @@ originRequest:
 
 ingress:
   - hostname: "whoami.${SECRET_DOMAIN}"
-    service: https://external-gateway.kube-system.svc.cluster.local:443
+    service: https://cilium-gateway-external-gateway.kube-system.svc.cluster.local:443
     originRequest:
       originServerName: "whoami.${SECRET_DOMAIN}"
   - hostname: "${SECRET_DOMAIN}"
