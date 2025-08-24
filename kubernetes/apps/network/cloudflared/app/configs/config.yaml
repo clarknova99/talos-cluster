@@ -4,6 +4,10 @@ originRequest:
   noHappyEyeballs: false          # Improves connection reliability
 
 ingress:
+  - hostname: "whoami.${SECRET_DOMAIN}"
+    service: https://external-gateway.kube-system.svc.cluster.local:443
+    originRequest:
+      originServerName: "whoami.${SECRET_DOMAIN}"
   - hostname: "${SECRET_DOMAIN}"
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
     originRequest:
