@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: cilium
-      version: 1.18.1
+      version: 1.18.0
       sourceRef:
         kind: HelmRepository
         name: cilium
@@ -54,21 +54,21 @@ spec:
           enabled: true
           className: internal
           hosts: ["hubble.${SECRET_DOMAIN}"]
-    operator:
-      prometheus:
-        enabled: true
-        serviceMonitor:
-          enabled: true
-      dashboards:
-        enabled: true
-        annotations:
-          grafana_folder: Cilium
-    prometheus:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-        trustCRDsExist: true
-    dashboards:
-      enabled: true
-      annotations:
-        grafana_folder: Cilium
+    # operator:
+    #   prometheus:
+    #     enabled: true
+    #     serviceMonitor:
+    #       enabled: true
+    #   dashboards:
+    #     enabled: true
+    #     annotations:
+    #       grafana_folder: Cilium
+    # prometheus:
+    #   enabled: true
+    #   serviceMonitor:
+    #     enabled: true
+    #     trustCRDsExist: true
+    # dashboards:
+    #   enabled: true
+    #   annotations:
+    #     grafana_folder: Cilium
