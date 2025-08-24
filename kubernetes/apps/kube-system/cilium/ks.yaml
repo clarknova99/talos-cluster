@@ -48,7 +48,7 @@ metadata:
   name: &app cilium-gateway
   namespace: flux-system
 spec:
-  targetNamespace: *namespace
+  targetNamespace: kube-system
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
