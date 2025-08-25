@@ -206,7 +206,8 @@ spec:
            # renovate: depName="Envoy Proxy Monitoring gRPC"
            gnetId: 23239
            revision: 1
-           datasource: Prometheus
+           datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
