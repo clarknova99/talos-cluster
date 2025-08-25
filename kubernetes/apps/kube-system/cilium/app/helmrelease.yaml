@@ -24,6 +24,11 @@ spec:
     - kind: ConfigMap
       name: cilium-helm-values
   values:
+    envoy:
+      rollOutPods: true
+      prometheus:
+        serviceMonitor:
+          enabled: true
     hubble:
       enabled: true
       metrics:
