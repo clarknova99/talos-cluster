@@ -1,37 +1,3 @@
-# ---
-# apiVersion: helm.toolkit.fluxcd.io/v2
-# kind: HelmRelease
-# metadata:
-#   name: k8s-gateway
-# spec:
-#   interval: 30m
-#   chart:
-#     spec:
-#       chart: k8s-gateway
-#       version: 2.4.0
-#       sourceRef:
-#         kind: HelmRepository
-#         name: k8s-gateway
-#         namespace: flux-system
-#   install:
-#     remediation:
-#       retries: 3
-#   upgrade:
-#     cleanupOnFail: true
-#     remediation:
-#       retries: 3
-#   values:
-#     fullnameOverride: k8s-gateway
-#     domain: "${SECRET_DOMAIN} ${SECRET_DOMAIN_TWO}"
-#     ttl: 1
-#     service:
-#       type: LoadBalancer
-#       port: 53
-#       annotations:
-#         io.cilium/lb-ipam-ips: "192.168.3.22"
-#       externalTrafficPolicy: Cluster
-#     watchedResources: ["Ingress", "Service"]
-
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
@@ -67,11 +33,6 @@ spec:
     remediation:
       retries: 5
   values:
-    # image:
-    #   registry: ghcr.io
-    #   repository: k8s-gateway/k8s_gateway
-    #   tag: 1.2.0
-    #   pullPolicy: IfNotPresent
     fullnameOverride: k8s-gateway
     watchedResources: ["Ingress", "Service","HTTPRoute"]
     domain: "${SECRET_DOMAIN} ${SECRET_DOMAIN_TWO}"
