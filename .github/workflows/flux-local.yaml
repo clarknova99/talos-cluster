@@ -38,7 +38,7 @@
         - name: Run flux-local test
           uses: docker://ghcr.io/allenporter/flux-local:v7.8.0
           with:
-            args: test --enable-helm --all-namespaces --path /github/workspace/kubernetes/flux/cluster -v
+            args: test --enable-helm --all-namespaces --path /github/workspace/kubernetes/flux -v
 
     diff:
       name: Flux Local Diff
