@@ -54,6 +54,9 @@ spec:
             #     spec:
             #       failureThreshold: 30
             #       periodSeconds: 5
+
+
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -113,7 +116,11 @@ spec:
                 <!-- Explicitly set listen hosts to avoid conflicts -->
                 <listen_host>0.0.0.0</listen_host>
 
-                <!-- Disable all the unnecessary logging -->
+                <!-- Configure ports explicitly to avoid conflicts -->
+                <tcp_port>9000</tcp_port>
+                <http_port>8123</http_port>
+
+                <!-- Disable problematic system tables that are causing corruption -->
                 <query_thread_log remove="remove"/>
                 <query_log remove="remove"/>
                 <text_log remove="remove"/>
@@ -123,6 +130,31 @@ spec:
                 <session_log remove="remove"/>
                 <part_log remove="remove"/>
                 <latency_log remove="remove"/>
+
+                <!-- Disable OpenTelemetry and other problematic system tables -->
+                <opentelemetry_span_log remove="remove"/>
+                <processors_profile_log remove="remove"/>
+                <error_log remove="remove"/>
+
+                <!-- Disable background merges for system tables to prevent corruption -->
+                <background_pool_size>0</background_pool_size>
+                <background_schedule_pool_size>0</background_schedule_pool_size>
+
+                <!-- Memory settings to prevent array size issues -->
+                <max_memory_usage>8589934592</max_memory_usage>
+                <max_memory_usage_for_user>8589934592</max_memory_usage_for_user>
+                <max_memory_usage_for_all_queries>8589934592</max_memory_usage_for_all_queries>
+
+                <!-- Disable some features that might cause issues -->
+                <disable_merges>1</disable_merges>
+                <disable_background_merges>1</disable_background_merges>
+
+                <!-- Disable additional ports that are causing conflicts -->
+                <interserver_http_port remove="remove"/>
+                <mysql_port remove="remove"/>
+                <postgresql_port remove="remove"/>
+                <prometheus_port remove="remove"/>
+                <port remove="remove"/>
             </clickhouse>
 
           users.xml: |
@@ -155,6 +187,8 @@ spec:
                     <default>
                         <log_queries>0</log_queries>
                         <log_query_threads>0</log_query_threads>
+                        <max_memory_usage>8589934592</max_memory_usage>
+                        <max_memory_usage_for_user>8589934592</max_memory_usage_for_user>
                     </default>
                 </profiles>
 
