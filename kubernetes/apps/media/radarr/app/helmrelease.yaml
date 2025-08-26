@@ -109,7 +109,7 @@ spec:
               - radarr.${SECRET_DOMAIN}
     persistence:
       config:
-        existingClaim: radarr
+        existingClaim: radarr-new
       tmp:
         type: emptyDir
       downloads:
@@ -118,10 +118,10 @@ spec:
         server: 192.168.1.3
         path: /volume1/network-storage/downloads
         globalMounts:
-          - path: /downloads        
+          - path: /downloads
       videos:
         type: nfs
         server: 192.168.1.3
         path: /volume1/network-storage/Video
         globalMounts:
-          - path: /video        
+          - path: /video
