@@ -137,13 +137,11 @@ spec:
                 <processors_profile_log remove="remove"/>
                 <error_log remove="remove"/>
 
-                <!-- Disable background merges for system tables to prevent corruption -->
-                <background_pool_size>0</background_pool_size>
-                <background_schedule_pool_size>0</background_schedule_pool_size>
+                <!-- Set minimal background pool sizes to prevent corruption -->
+                <background_pool_size>1</background_pool_size>
+                <background_schedule_pool_size>1</background_schedule_pool_size>
 
-                <!-- Disable some features that might cause issues -->
-                <disable_merges>1</disable_merges>
-                <disable_background_merges>1</disable_background_merges>
+
 
                 <!-- Disable additional ports that are causing conflicts -->
                 <interserver_http_port remove="remove"/>
