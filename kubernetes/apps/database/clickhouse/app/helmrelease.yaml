@@ -143,15 +143,12 @@ spec:
 
 
 
-                <!-- Disable additional ports that are causing conflicts -->
+                                <!-- Disable additional ports that are causing conflicts -->
                 <interserver_http_port remove="remove"/>
                 <mysql_port remove="remove"/>
                 <postgresql_port remove="remove"/>
                 <prometheus_port remove="remove"/>
                 <port remove="remove"/>
-                
-                <!-- Disable mutations to prevent configuration conflicts -->
-                <number_of_free_entries_in_pool_to_execute_mutation>0</number_of_free_entries_in_pool_to_execute_mutation>
             </clickhouse>
 
           users.xml: |
@@ -187,6 +184,7 @@ spec:
                         <max_memory_usage>8589934592</max_memory_usage>
                         <max_memory_usage_for_user>8589934592</max_memory_usage_for_user>
                         <max_memory_usage_for_all_queries>8589934592</max_memory_usage_for_all_queries>
+                        <background_merges_mutations_concurrency_ratio>1</background_merges_mutations_concurrency_ratio>
                     </default>
                 </profiles>
 
