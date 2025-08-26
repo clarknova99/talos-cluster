@@ -137,9 +137,9 @@ spec:
                 <processors_profile_log remove="remove"/>
                 <error_log remove="remove"/>
 
-                <!-- Set minimal background pool sizes to prevent corruption -->
-                <background_pool_size>1</background_pool_size>
-                <background_schedule_pool_size>1</background_schedule_pool_size>
+                <!-- Set background pool sizes to prevent configuration conflicts -->
+                <background_pool_size>4</background_pool_size>
+                <background_schedule_pool_size>4</background_schedule_pool_size>
 
 
 
@@ -149,6 +149,9 @@ spec:
                 <postgresql_port remove="remove"/>
                 <prometheus_port remove="remove"/>
                 <port remove="remove"/>
+                
+                <!-- Disable mutations to prevent configuration conflicts -->
+                <number_of_free_entries_in_pool_to_execute_mutation>0</number_of_free_entries_in_pool_to_execute_mutation>
             </clickhouse>
 
           users.xml: |
