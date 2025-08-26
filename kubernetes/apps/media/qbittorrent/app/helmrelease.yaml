@@ -43,19 +43,19 @@ spec:
               # QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
               #   10.42.0.0/16, 192.168.1.0/24
               # QBT_Preferences__WebUI__LocalHostAuth: false
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /api/v2/app/version
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /api/v2/app/version
+            #         port: *port
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probes
               # startup:
               #   enabled: true
               #   spec:
