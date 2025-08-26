@@ -97,10 +97,8 @@ spec:
         type: configMap
         name: clickhouse-config
         globalMounts:
-          - path: /etc/clickhouse-server/users.d/users.xml
-            subPath: users.xml
-          - path: /etc/clickhouse-server/config.d/config.xml
-            subPath: config.xml
+          - path: /etc/clickhouse-server/config.d
+          - path: /etc/clickhouse-server/users.d
 
     configMaps:
       config:
