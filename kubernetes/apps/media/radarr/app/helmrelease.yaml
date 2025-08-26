@@ -109,7 +109,7 @@ spec:
               - radarr.${SECRET_DOMAIN}
     persistence:
       config:
-        existingClaim: radarr-new
+        existingClaim: radarr
       tmp:
         type: emptyDir
       downloads:
