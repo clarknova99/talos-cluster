@@ -36,8 +36,8 @@ spec:
               tag: 5.1.2@sha256:9dd0164cc23e9c937e0af27fd7c3f627d1df30c182cf62ed34d3f129c55dc0e8
             env:
               TZ: America/New_York
-              QBITTORRENT__PORT: &port 80
-              QBITTORRENT__BT_PORT: &bittorrentPort 50413
+              QBT_WEBUI_PORT: &port 80
+              QBT_TORRENTING_PORT: &torrentPort 50413
               QBT_Preferences__WebUI__AlternativeUIEnabled: false
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
@@ -69,7 +69,7 @@ spec:
               requests:
                 cpu: 100m
               limits:
-                memory: 18Gi
+                memory: 12Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -88,7 +88,7 @@ spec:
             port: *port
           bittorrent:
             enabled: true
-            port: *bittorrentPort
+            port: *torrentPort
             protocol: TCP
     ingress:
       app:
