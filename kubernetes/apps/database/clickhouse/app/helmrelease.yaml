@@ -138,8 +138,8 @@ spec:
                 <error_log remove="remove"/>
 
                 <!-- Set background pool sizes to prevent configuration conflicts -->
-                <background_pool_size>4</background_pool_size>
-                <background_schedule_pool_size>4</background_schedule_pool_size>
+                <background_pool_size>20</background_pool_size>
+                <background_schedule_pool_size>20</background_schedule_pool_size>
 
 
 
