@@ -19,6 +19,9 @@ System tables were corrupted with "Array size is too large" errors:
 ### 3. User Permission Issues
 The ClickHouse process (user 101) didn't match the data directory owner (user 1025).
 
+### 4. Configuration Error
+Memory settings were incorrectly placed in `config.xml` instead of `users.xml`, causing ClickHouse to fail startup.
+
 ## Solutions Applied
 
 ### Configuration Changes
@@ -26,11 +29,11 @@ The ClickHouse process (user 101) didn't match the data directory owner (user 10
    - Explicitly configure only necessary ports (8123, 9000)
    - Disable problematic system tables
    - Disable background merges to prevent corruption
-   - Set memory limits to prevent array size issues
    - Disable additional ports that were causing conflicts
+   - Skip check for incorrect settings to avoid configuration errors
 
 2. **Updated `users.xml`** to:
-   - Set proper memory limits in user profiles
+   - Set proper memory limits in user profiles (moved from config.xml)
    - Disable query logging
 
 ### Manual Cleanup Required
