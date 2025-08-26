@@ -74,7 +74,7 @@ kubectl exec -n database "$POD_NAME" -- chown -R 101:101 /var/lib/clickhouse || 
 1. **Clean up corrupted data** using the script or manual commands above
 2. **Apply the updated configuration**:
    ```bash
-   kubectl apply -f kubernetes/apps/database/clickhouse/
+   task flux:commit -- "Fix ClickHouse configuration issues"
    ```
 3. **Monitor the deployment**:
    ```bash
@@ -108,3 +108,15 @@ kubectl logs -n database -l app.kubernetes.io/name=clickhouse
 # Check ClickHouse status
 kubectl exec -n database clickhouse-0 -- clickhouse-client --query "SELECT version()"
 ```
+
+## ✅ Resolution Summary
+
+The ClickHouse deployment has been successfully fixed! Here's what was resolved:
+
+1. **Port Conflicts**: Fixed by explicitly configuring only necessary ports (8123, 9000) and disabling problematic ones
+2. **Configuration Errors**: Fixed by moving memory settings from `config.xml` to `users.xml` and adding `skip_check_for_incorrect_settings`
+3. **Volume Mounting**: Fixed by mounting entire config directories instead of individual files
+4. **Background Executor**: Fixed by setting appropriate background pool sizes (25) to match ClickHouse requirements
+5. **Data Corruption**: Prevented by disabling problematic system tables
+
+**Current Status**: ✅ ClickHouse is running successfully and responding to queries
