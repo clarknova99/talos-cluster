@@ -103,11 +103,11 @@ spec:
               - --ref=latest-release
               - --period=86400s
               - --root=/add-ons
-            # securityContext:
-            #   runAsUser: 1000
-            #   runAsGroup: 1000
-            #   fsGroup: 1000
-            #   fsGroupChangePolicy: OnRootMismatch
+            securityContext:
+              runAsUser: 1025
+              runAsGroup: 1025
+              fsGroup: 1025
+              fsGroupChangePolicy: OnRootMismatch
     # defaultPodOptions:
     #   securityContext:
     #     # runAsNonRoot: true
