@@ -45,10 +45,14 @@ spec:
               - secretRef:
                   name: qbt-secrets
             securityContext:
+              privileged: true
               runAsUser: 0
+              runAsGroup: 0
               capabilities:
                 add:
+                  - NET_RAW
                   - NET_ADMIN
+                  - SYS_MODULE
 
         containers:
           app:
