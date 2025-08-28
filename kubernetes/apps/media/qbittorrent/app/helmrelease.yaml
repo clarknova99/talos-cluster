@@ -85,9 +85,8 @@ spec:
               #     failureThreshold: 30
               #     periodSeconds: 10
             securityContext:
-              runAsUser: 1025
-              runAsGroup: 1025
-              fsGroup: 1025
+              runAsUser: 0
+              runAsGroup: 0
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -109,8 +108,6 @@ spec:
             securityContext:
               runAsUser: 1025
               runAsGroup: 1025
-              fsGroup: 1025
-              fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:
