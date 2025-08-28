@@ -38,13 +38,16 @@ spec:
             env:
               DOT: "off"
               DNS_ADDRESS: "127.0.0.2"
-              VPN_SERVICE_PROVIDER: airvpn
+              VPN_SERVICE_PROVIDER: custom
               VPN_TYPE: wireguard
               VPN_INTERFACE: wg0
             envFrom:
               - secretRef:
                   name: qbt-secrets
-
+            securityContext:
+              capabilities:
+                add:
+                  - NET_ADMIN
 
         containers:
           app:
