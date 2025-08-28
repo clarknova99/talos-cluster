@@ -69,11 +69,6 @@ spec:
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
                 10.69.0.0/16, 192.168.1.0/24
-              # QBT_Preferences__WebUI__AlternativeUIEnabled: false
-              # QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
-              # QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
-              #   10.42.0.0/16, 192.168.1.0/24
-              # QBT_Preferences__WebUI__LocalHostAuth: false
             # probes:
             #   liveness: &probes
             #     enabled: true
@@ -111,11 +106,11 @@ spec:
               - --ref=latest-release
               - --period=86400s
               - --root=/add-ons
-            securityContext:
-              runAsUser: 1000
-              runAsGroup: 1000
-              fsGroup: 1000
-              fsGroupChangePolicy: OnRootMismatch
+            # securityContext:
+            #   runAsUser: 1000
+            #   runAsGroup: 1000
+            #   fsGroup: 1000
+            #   fsGroupChangePolicy: OnRootMismatch
     # defaultPodOptions:
     #   securityContext:
     #     # runAsNonRoot: true
