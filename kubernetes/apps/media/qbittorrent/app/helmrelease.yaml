@@ -33,6 +33,9 @@ spec:
               QBT_TORRENTING_PORT: &torrentPort 50413
               QBT_Preferences__WebUI__AlternativeUIEnabled: true
               QBT_Preferences__WebUI__RootFolder: /add-ons/VueTorrent
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
+                10.69.0.0/16, 192.168.1.0/24
               # QBT_Preferences__WebUI__AlternativeUIEnabled: false
               # QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               # QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
