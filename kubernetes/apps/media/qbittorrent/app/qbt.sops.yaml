@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: qbt-secrets
+## sops --encrypt --in-place ./kubernetes/apps/media/invidious/app/inv.sops.yaml
+## sops --decrypt ./kubernetes/apps/media/invidious/app/inv.sops.yaml | kubectl apply -f -
+stringData:
+    VPN_SERVICE_PROVIDER: ENC[AES256_GCM,data:2vMJTm2+pQ==,iv:BQ4B4ebnIbigrRTOifOocd0Gs51ximuXOOhpXn6dBFY=,tag:wTMPPsNDC3qYzck8qb4TGg==,type:str]
+    WIREGUARD_PUBLIC_KEY: ENC[AES256_GCM,data:nMnkVPR9aABLWJ4BhGgah0wfrllbKzNc8rPqbdFTjcLeknRUJNx4M8dr7Bk=,iv:pRDgJj6hXkruuSeCfb1uFZnUlDKoADBLN058A7RMBAo=,tag:UWFBdBUi7gDO/gy4UAn8ZQ==,type:str]
+    WIREGUARD_PRIVATE_KEY: ENC[AES256_GCM,data:g/6oMOyMMUFfnWKD1AYRGPmm5dFMOroTYuzG03VSHCuDUf7O6I3HSZod4A4=,iv:LBKPlO55Fx9PebjoMPA/OxogZIOZma/E0hR9zS7itqY=,tag:GIp+MODXykwgVX2wd4aB4g==,type:str]
+    WIREGUARD_ADDRESSES: ENC[AES256_GCM,data:no1tuvpgsG3MiTik8mengg==,iv:vnojnAX4VbB+gWNZ2ulw0mFCoPLWsjovIW/OK5XHi64=,tag:vH72atwVedOQjwTDlMXpig==,type:str]
+    WIREGUARD_ENDPOINT_IP: ENC[AES256_GCM,data:YUxvdE4DQcZ6kjUw,iv:Nvwt7tGBXaqrtEVjQ60BEzvi7GPuV26AJZ9d2h5eGrI=,tag:OxH8p/1miU10ubsl2egzhw==,type:str]
+    WIREGUARD_ENDPOINT_PORT: ENC[AES256_GCM,data:W2IToCw=,iv:tnOii753Cr1gUYb7PmMHxX7wIkHTeN+qzv4TVC2pL78=,tag:2A0b2arznGfHDqQ1bpdaIQ==,type:int]
+sops:
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA1NTdadFFueGhUcy8yZUNj
+            ampzOERRczcwWTBnWnhtS0pDRU55V2RDYUQ0Cmx0L1J2cDFreWxTazlqeERvaTMv
+            RW5DaGsvaXJEMHNLaHFyYmpSdmlubkEKLS0tIFhYLysyV25oemI5WXpmYitWWlVs
+            cVNHMGY0aEhMQUNIN1JNY1I1UEUrYzAKawZFtq0WCeE3tiVD+ESFlFcYwUqfLRft
+            wg6xMXq0VJ4aaHSR5TPSVeHLYKiW0DY290uz8G8XsAaSXte8h7gtxA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-08-28T17:20:08Z"
+    mac: ENC[AES256_GCM,data:y1r+94t78NQ+NlbkcytdD+EZ6ILx770t2lvXWwWrGvfqpqsih4U0nPm5tHP4+sGvKKeMXLW/M0DKBuRYc/9QNn0yEwsR0NQdsSwB6dCyT/lFt3a6Z5rFbd8E/Fgej+nIQsq/mfOlsk8GC9pSqEwE02bcZw5TnoUiG1u6LKu6zLs=,iv:pKF37i6Ulb6fyulUDtOMj10q+qdGlk+HFM9Eqo3vs0A=,tag:EJtU6Aow3cBvb0uApFxYyg==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2
