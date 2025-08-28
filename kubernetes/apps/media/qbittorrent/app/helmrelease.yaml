@@ -43,7 +43,7 @@ spec:
               VPN_INTERFACE: wg0
             envFrom:
               - secretRef:
-                  name: qbittorrent-secrets
+                  name: qbt-secrets
 
 
         containers:
