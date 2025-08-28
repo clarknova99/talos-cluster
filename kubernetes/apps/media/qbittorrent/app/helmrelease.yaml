@@ -31,6 +31,8 @@ spec:
               TZ: America/New_York
               QBT_WEBUI_PORT: &port 80
               QBT_TORRENTING_PORT: &torrentPort 50413
+              QBT_Preferences__WebUI__AlternativeUIEnabled: true
+              QBT_Preferences__WebUI__RootFolder: /add-ons/VueTorrent
               # QBT_Preferences__WebUI__AlternativeUIEnabled: false
               # QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               # QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
@@ -63,6 +65,21 @@ spec:
                 cpu: 100m
               limits:
                 memory: 12Gi
+          vuetorrent:
+            dependsOn: app
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.4.2
+            args:
+              - --repo=https://github.com/WDaan/VueTorrent
+              - --ref=latest-release
+              - --period=86400s
+              - --root=/add-ons
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
+              fsGroupChangePolicy: OnRootMismatch
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -115,4 +132,8 @@ spec:
         path: /volume1/network-storage/downloads
         globalMounts:
           - path: /downloads
-
+      add-ons:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /add-ons
