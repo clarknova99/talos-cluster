@@ -14,7 +14,7 @@ spec:
             - name: sensei-secret
           containers:
             - name: dev-daily-user-refresh
-              image: ghcr.io/clarknova99/project-sensei/backend:dev-latest@sha256:67c628dcd6b528180551ef356fd184ba917f8f0c8cd449a571b0607b86886368
+              image: ghcr.io/clarknova99/project-sensei/backend:dev-latest@sha256:41b597874c985935770cee0ed21e530c53046efe15e4bf986b564b21a22dc65b
               imagePullPolicy: Always
               command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
               env:
