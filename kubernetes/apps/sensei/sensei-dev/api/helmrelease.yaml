@@ -84,6 +84,9 @@ spec:
     service:
       app:
         controller: sensei-dev-api
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.38
         ports:
           http:
             port: 3001
