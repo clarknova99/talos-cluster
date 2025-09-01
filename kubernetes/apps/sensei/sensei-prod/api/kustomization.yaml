@@ -8,3 +8,4 @@ resources:
   - ./helmrelease.yaml
   - ./daily-refresh.yaml
   - ./dailyrefresh.sops.yaml
+  - ./weekly-podcast.yaml

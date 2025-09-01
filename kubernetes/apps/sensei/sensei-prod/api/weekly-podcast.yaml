@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: sensei-prod-weekly-prodcast
+  name: sensei-prod-weekly-podcast
   namespace: sensei
 spec:
   schedule: "0 7 * * 1" # 2:00 AM EST every Monday (7:00 AM UTC)
@@ -15,10 +15,10 @@ spec:
           imagePullSecrets:
             - name: sensei-secret
           containers:
-            - name: prod-weekly-user-refresh
+            - name: prod-weekly-podcast
               image: ghcr.io/clarknova99/project-sensei/backend:main-1.0.0@sha256:affae81fd55f9a9b421f74d5c64408a52dfbe20e94d79979a1c47abca26100c3
               imagePullPolicy: Always
-              command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
+              command: ["/bin/sh", "-c", "python3 /app/weekly_podcast.py"]
               env:
                 - name: SENSEI_API_KEY
                   value: ${SECRET_SENSEI_API_KEY}
