@@ -51,7 +51,7 @@ spec:
                     path: /health
                     port: 8000
                   initialDelaySeconds: 45
-                  periodSeconds: 45
+                  periodSeconds: 60
                   timeoutSeconds: 10
                   failureThreshold: 3
                   successThreshold: 1
@@ -63,7 +63,7 @@ spec:
                     path: /health
                     port: 8000
                   initialDelaySeconds: 5
-                  periodSeconds: 45
+                  periodSeconds: 60
                   timeoutSeconds: 10
                   failureThreshold: 2
                   successThreshold: 1
