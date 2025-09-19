@@ -51,6 +51,11 @@ model_list:
     litellm_params:
       model: openrouter/openai/gpt-oss-120b:free
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+  - model_name: openrouter-openai-gpt-oss-120b
+    litellm_params:
+      model: openrouter/openai/gpt-oss-120b
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+
 
 general_settings:
   store_model_in_db: true
