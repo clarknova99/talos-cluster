@@ -43,6 +43,11 @@ model_list:
     litellm_params:
       model: gemini/gemini-2.5-flash-preview-05-20
       api_key: ${SECRET_SENSEI_GEMINI_KEY}
+  - model_name: openrouter
+    litellm_params:
+      model: openrouter/*
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+
 
 general_settings:
   store_model_in_db: true
