@@ -3372,7 +3372,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select \njob_type, \ncount(*) filter (where job_status = 'queued') as queued,\ncount(*) filter (where job_status = 'processing') as processing,\ncount(*) filter (where job_status = 'completed') as completed,\ncount(*) filter (where job_status = 'failed') as failed\nfrom job_queue \ngroup by job_type\norder by job_type",
+          "rawSql": "select \njob_type, \ncount(*) filter (where job_status = 'queued') as queued,\ncount(*) filter (where job_status = 'processing') as processing,\ncount(*) filter (where job_status = 'completed') as completed,\ncount(*) filter (where job_status = 'failed') as failed\nfrom job_queue \nwhere updated_at >= (CURRENT_DATE - INTERVAL '24 hours')\ngroup by job_type\norder by job_type",
           "refId": "A",
           "sql": {
             "columns": [
@@ -3393,7 +3393,7 @@
           }
         }
       ],
-      "title": "Job Queue",
+      "title": "Job Queue Last 24 Hours",
       "transformations": [
         {
           "id": "organize",
