@@ -55,6 +55,13 @@ model_list:
     litellm_params:
       model: openrouter/openai/gpt-oss-120b
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+  - model_name: databricks-llama-4-maverick
+    litellm_params:
+      model: databricks/databricks-llama-4-maverick
+      api_base: ${SECRET_SENSEI_DATABRICKS_API_BASE}
+      api_key: ${SECRET_SENSEI_DATABRICKS_API_KEY}
+
+
 
 
 general_settings:
@@ -63,6 +70,7 @@ general_settings:
 
 router_settings:
   fallbacks: [
+    {"gemini-2.5-flash-preview-05-20": ["databricks-llama-4-maverick"]},
     {"groq-llama-4-scout-17b-16e-instruct": ["llama-3.3-70b-versatile", "groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
     {"llama-3.3-70b-versatile": ["groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
     {"groq-deepseek-r1-distill-llama-70b": ["llama3-70b-8192", "gpt-4o-mini"]},
