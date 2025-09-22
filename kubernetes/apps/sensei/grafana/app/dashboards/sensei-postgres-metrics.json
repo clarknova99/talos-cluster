@@ -3515,7 +3515,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  date_trunc('hour', updated_at) AS job_hour, \n  COUNT(*) AS job_count\nFROM job_queue\nWHERE job_status = 'failed'\n  AND job_type = 'analysis'\n  and updated_at >= NOW() - INTERVAL '96 hours'\nGROUP BY job_hour\nORDER BY job_hour desc;",
+          "rawSql": "SELECT \n  date_trunc('hour', updated_at) AS job_hour, \n  COUNT(*) AS job_count\nFROM job_queue\nWHERE job_status = 'failed'\nand updated_at >= NOW() - INTERVAL '96 hours'\nGROUP BY job_hour\nORDER BY job_hour desc;",
           "refId": "A",
           "sql": {
             "columns": [
