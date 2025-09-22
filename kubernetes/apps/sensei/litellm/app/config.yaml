@@ -62,8 +62,6 @@ model_list:
       api_key: ${SECRET_SENSEI_DATABRICKS_API_KEY}
 
 
-
-
 general_settings:
   store_model_in_db: true
   store_prompts_in_spend_logs: true
@@ -71,6 +69,7 @@ general_settings:
 router_settings:
   fallbacks: [
     # {"gemini-2.5-flash-preview-05-20": ["databricks-llama-4-maverick"]},
+    {"openrouter-openai-gpt-oss-120b": ["llama-3.3-70b-versatile", "gpt-4o-mini"]},
     {"groq-llama-4-scout-17b-16e-instruct": ["llama-3.3-70b-versatile", "groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
     {"llama-3.3-70b-versatile": ["groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
     {"groq-deepseek-r1-distill-llama-70b": ["llama3-70b-8192", "gpt-4o-mini"]},
