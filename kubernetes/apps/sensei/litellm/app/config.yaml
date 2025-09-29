@@ -60,7 +60,11 @@ model_list:
       model: databricks/databricks-llama-4-maverick
       api_base: ${SECRET_SENSEI_DATABRICKS_API_BASE}
       api_key: ${SECRET_SENSEI_DATABRICKS_API_KEY}
-
+  - model_name: databricks-gpt-oss-120b
+    litellm_params:
+      model: databricks/databricks-gpt-oss-120b
+      api_base: ${SECRET_SENSEI_DATABRICKS_API_BASE}
+      api_key: ${SECRET_SENSEI_DATABRICKS_API_KEY}
 
 general_settings:
   store_model_in_db: true
