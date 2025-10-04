@@ -43,17 +43,13 @@ model_list:
     litellm_params:
       model: gemini/gemini-2.5-flash-preview-05-20
       api_key: ${SECRET_SENSEI_GEMINI_KEY}
-  - model_name: openrouter
-    litellm_params:
-      model: openrouter/*
-      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
-  - model_name: openrouter-openai-gpt-oss-120b-free
-    litellm_params:
-      model: openrouter/openai/gpt-oss-120b:free
-      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
   - model_name: openrouter-openai-gpt-oss-120b
     litellm_params:
       model: openrouter/openai/gpt-oss-120b
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+  - model_name: openrouter-openai-gpt-oss-20b
+    litellm_params:
+      model: openrouter/openai/gpt-oss-20b
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
   - model_name: databricks-llama-4-maverick
     litellm_params:
@@ -73,7 +69,7 @@ general_settings:
 router_settings:
   fallbacks: [
     # {"gemini-2.5-flash-preview-05-20": ["databricks-llama-4-maverick"]},
-    {"openrouter-openai-gpt-oss-120b": ["llama-3.3-70b-versatile", "gpt-4o-mini"]},
+    {"openrouter-openai-gpt-oss-120b": ["llama-3.3-70b-versatile", "openrouter-openai-gpt-oss-20b":]},
     {"groq-llama-4-scout-17b-16e-instruct": ["llama-3.3-70b-versatile", "groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
     {"llama-3.3-70b-versatile": ["groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
     {"groq-deepseek-r1-distill-llama-70b": ["llama3-70b-8192", "gpt-4o-mini"]},

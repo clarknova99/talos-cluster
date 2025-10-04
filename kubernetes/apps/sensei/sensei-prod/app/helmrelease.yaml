@@ -144,7 +144,7 @@ spec:
       #           service:
       #             identifier: app
       #             port: 8000
-        # tls:
-        #   - hosts:
-        #       - www.${SECRET_DOMAIN_TWO}
-        #       - ${SECRET_DOMAIN_TWO}
+      #   tls:
+      #     - hosts:
+      #         - www.${SECRET_DOMAIN_TWO}
+      #         - ${SECRET_DOMAIN_TWO}
