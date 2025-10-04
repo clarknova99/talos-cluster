@@ -51,6 +51,10 @@ model_list:
     litellm_params:
       model: openrouter/openai/gpt-oss-20b
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+  - model_name: openrouter-meta-llama-llama-4-scout
+    litellm_params:
+      model: openrouter/meta-llama/llama-4-scout
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
   - model_name: databricks-llama-4-maverick
     litellm_params:
       model: databricks/databricks-llama-4-maverick
