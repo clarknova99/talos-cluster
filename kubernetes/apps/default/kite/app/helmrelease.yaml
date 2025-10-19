@@ -32,7 +32,7 @@ spec:
             image:
               repository: ghcr.io/zxh326/kite
               tag: v0.6.9
-            probes:
+            # probes:
               # livenessProbe:
               #   httpGet:
               #     path: /healthz
