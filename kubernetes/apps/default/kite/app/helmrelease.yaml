@@ -33,16 +33,37 @@ spec:
               repository: ghcr.io/zxh326/kite
               tag: v0.6.9
             probes:
+              # livenessProbe:
+              #   httpGet:
+              #     path: /healthz
+              #     port: http
+              #   initialDelaySeconds: 10
+              #   periodSeconds: 10
+              # readinessProbe:
+              #   httpGet:
+              #     path: /healthz
+              #     port: http
+              #   initialDelaySeconds: 10
+              #   periodSeconds: 10
               liveness:
-                enabled: true
+                httpGet:
+                  path: /healthz
+                  port: http
+                initialDelaySeconds: 10
+                periodSeconds: 10
               readiness:
-                enabled: true
+                httpGet:
+                  path: /healthz
+                  port: http
+                initialDelaySeconds: 10
+                periodSeconds: 10
             resources:
-              requests:
-                cpu: 10m
-                memory: 16Mi
               limits:
-                memory: 32Mi
+                cpu: 100m
+                memory: 128Mi
+              requests:
+                cpu: 100m
+                memory: 128Mi
     service:
       app:
         controller: kite
