@@ -45,18 +45,18 @@ spec:
               #     port: http
               #   initialDelaySeconds: 10
               #   periodSeconds: 10
-              liveness:
-                httpGet:
-                  path: /healthz
-                  port: http
-                initialDelaySeconds: 10
-                periodSeconds: 10
-              readiness:
-                httpGet:
-                  path: /healthz
-                  port: http
-                initialDelaySeconds: 10
-                periodSeconds: 10
+              # liveness:
+              #   httpGet:
+              #     path: /healthz
+              #     port: http
+              #   initialDelaySeconds: 10
+              #   periodSeconds: 10
+              # readiness:
+              #   httpGet:
+              #     path: /healthz
+              #     port: http
+              #   initialDelaySeconds: 10
+              #   periodSeconds: 10
             resources:
               limits:
                 cpu: 100m
