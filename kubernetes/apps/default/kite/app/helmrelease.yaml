@@ -36,6 +36,7 @@ spec:
               KITE_USERNAME: ${SECRET_CAM_USERNAME}
               KITE_PASSWORD: ${SECRET_CAM_PASSWORD}
               HOST: ${SECRET_DOMAIN}
+              KUBECONFIG: /config/kubeconfig
             # probes:
               # livenessProbe:
               #   httpGet:
