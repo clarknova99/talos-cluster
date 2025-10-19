@@ -4,12 +4,12 @@ metadata:
     name: radarr-secrets
 ## sops --encrypt --in-place ./kubernetes/apps/media/radarr/app/radarr.sops.yaml
 stringData:
-    RADARR__API_KEY: ENC[AES256_GCM,data:ftK0pQHOGNPEjm+pzja2pH/wS7szo4/MQ2CB220U6uc=,iv:kpVz2tpUIWha138CQuszWHuyjpWJANM//4nogvfXpuM=,tag:QoNWMxqEkzix3C0ABxaO2g==,type:str]
-    RADARR__POSTGRES_HOST: ENC[AES256_GCM,data:nTxG/OgAN9ak4ijIPt0UgVCbP3cE/2kiEWWr0WsAMM+hvjyIEyDvmg==,iv:eGpfYXw/14CDGLZTC13Bbk/bTZJAT6Oc+ZlUVbEldQ8=,tag:u6IicJICisAVxEN4nrzY7g==,type:str]
-    RADARR__POSTGRES_PORT: ENC[AES256_GCM,data:xsbOKw==,iv:9PMGtV4h4G0tKctG0rRmfCxM9z54de1FRgO9aIGFRnU=,tag:tMLeB8tsZ8eQj3whosWSNw==,type:str]
-    RADARR__POSTGRES_USER: ENC[AES256_GCM,data:oQOkNrwrzKw=,iv:P16nAxxhsKkv0syzdCsVpo9MhoioA1VxbAtiBcbx+/8=,tag:ebtVxdrc8UOZHhw2mB98lw==,type:str]
-    RADARR__POSTGRES_PASSWORD: ENC[AES256_GCM,data:WZoYoE99jv+A,iv:DLXyb9mAr0a3yBoydZB3KT/43kOPyILLVrAoRo538Tc=,tag:FSQ4TkhopmQQUyvjOhaH7A==,type:str]
-    RADARR__POSTGRES_MAIN_DB: ENC[AES256_GCM,data:w9cCUZls,iv:9F8kuAScughATqnzG7Ss6izgKEkuRuhr6mu2xzs1OeQ=,tag:NzhprMO/IFfP9NNkXFE1rg==,type:str]
+    RADARR__API__KEY: ENC[AES256_GCM,data:lfwIH+8NmHDY9mi83Uo+baIyZrge2Xb9HvIvyiOoTJE=,iv:XLkOSPek2K05t4iMjmE6JU8jqnQY3vQbL7tsk1pmkdQ=,tag:HXnLJwnUmHxClIyfXpCUWw==,type:str]
+    RADARR__POSTGRES__HOST: ENC[AES256_GCM,data:r33sHSfyFLvGXjWEubcX9eGeRtKRQZgYrxH88Ouerze4yJQ8i6ZhOQ==,iv:+zOqq0RYQU/cTL50tJCuIjfbIAelqFBOVvADg/Osss0=,tag:UBjXuFIfLSX3OV/fRcmU1A==,type:str]
+    RADARR__POSTGRES__PORT: ENC[AES256_GCM,data:T8+v3Q==,iv:AN23xXMqyI+TkuMKS+OLZogmPjKD6CZH8UZRstZWaeU=,tag:4YzZYPpd2GZls78QcHK9MQ==,type:str]
+    RADARR__POSTGRES__USER: ENC[AES256_GCM,data:sjf5o72Zprc=,iv:tNga2fDAnU479vJ7NDapRlO0fJeONhNvM9p+3nBbnMQ=,tag:zARLb3PvCGc77J/V5ZzR9A==,type:str]
+    RADARR__POSTGRES__PASSWORD: ENC[AES256_GCM,data:d/COVMHy8VLH,iv:4DoNV5lfaKtw7j+Kl9Q/XGDP7EDiu24XnxG/hvX5J4Y=,tag:nZ6aHTPZJQRsaGJcdVxi+g==,type:str]
+    RADARR__POSTGRES__MAIN_DB: ENC[AES256_GCM,data:lBomWwPb,iv:oW8rI0mMpC7dgAUSBNhXgDedDUyT9YXjwrVib0e4QfE=,tag:a5JqNpD6H8DzpfSpVNXsZQ==,type:str]
     #ENC[AES256_GCM,data:wvWkFwBe2TVcvxlVhVo=,iv:E12zM6KiWuoo3U/rytyPK9mNx9PymSHk1XFoT7F5WIw=,tag:ucamxfyEzIoR2ghNJA+QIg==,type:comment]
     INIT_POSTGRES_DBNAME: ENC[AES256_GCM,data:6s+9ihHm,iv:F53wNSgQ/C+3uHHhxCbyPy/EUXg4cbiPBSlteE34Icg=,tag:2oyUIUYyJL+fY3AzxpAMLg==,type:str]
     INIT_POSTGRES_HOST: ENC[AES256_GCM,data:zzKn1FauYoNlqZR7CXeZ8JibninKgX1Gt6sQazN6NSQ4x35FlXodgQ==,iv:CLpC1YNf1DnW6LAMl9YvbberkVmhOaSfAL1C6neaQQA=,tag:jsUMgpRPnVrYJsxJYph+UA==,type:str]
@@ -17,10 +17,6 @@ stringData:
     INIT_POSTGRES_PASS: ENC[AES256_GCM,data:VPgwUl/DBPfc,iv:KsDjHjGbKHx6/ucntEbGGPJKAsthvaNhhPndeZPTHp8=,tag:qNq7Gfj7yqBrZMQL75Bx7Q==,type:str]
     INIT_POSTGRES_SUPER_PASS: ENC[AES256_GCM,data:luo/5fx1reDh,iv:pRgr0zghRcqCeE0mA/1uTcSq9pws0evGwa16K5YEwu8=,tag:eZ9OYBSwgUzEczts+7TRDg==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
     age:
         - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
           enc: |
@@ -31,8 +27,7 @@ sops:
             TXNQSEg1clhrUlVMN1h5OVhLeE1kYkUK5BOJmomhWATN0lH1sd+IeODEdTxGVFVq
             LhS1/N0j61wIwKHzeDdOwMlUFbMy6oiMxnIXra6+E8aKkJQzO2VKgg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-12-22T19:32:44Z"
-    mac: ENC[AES256_GCM,data:4uXH5Nm2b5A1JZC/t20Cef/62b0ioLmNBi7ARHsKBLR/6FRXfE58rTYiDyAf4V5zQnyN6CL6V+kLLJpzDnB3b4repjxhUeN/hBvIy2jp1rmVSitmzmHHgH1xyJe9VpjCjGYfNX0NR1XvssX/F8brGGVqPrR+pg+UleIdmg2qG1A=,iv:cHdxqdJC2aMXB82EzQb8MCxxPIj2QCJpKCaoZs3AGOU=,tag:GYcDM7IwF47cpCx1kCTILg==,type:str]
-    pgp: []
+    lastmodified: "2025-10-19T21:21:16Z"
+    mac: ENC[AES256_GCM,data:WcAnpxoJ7EOduFZjrLEVuiy7KH6rE+AZNXPilnK+86/COq79a9d50zzNpovm4+0lcVwvAYJRP5PMsHPHEi7TJT8HAlbjfs9fCXRLlKkcvCi/bjFTa+Ujf89Yc//TDVLxoZszjkN/qWN8MK4ImNFY7NgvICqWu9XVIcd/e3wite4=,iv:lT2PGQS0bKBGBx4ZryF4uXZ7xfVL/K8nFSwhR5ZQJdg=,tag:bRN8QQSbniwRcDYpWHi1fg==,type:str]
     encrypted_regex: ^(data|stringData)$
-    version: 3.8.1
+    version: 3.11.0
