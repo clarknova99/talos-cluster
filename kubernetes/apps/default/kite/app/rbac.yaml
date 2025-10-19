@@ -17,10 +17,10 @@ subjects:
   - kind: ServiceAccount
     name: kite
     namespace: default
----
-apiVersion: talos.dev/v1alpha1
-kind: ServiceAccount
-metadata:
-  name: kite
-spec:
-  roles: ["os:admin"]
+# ---
+# apiVersion: talos.dev/v1alpha1
+# kind: ServiceAccount
+# metadata:
+#   name: kite
+# spec:
+#   roles: ["os:admin"]
