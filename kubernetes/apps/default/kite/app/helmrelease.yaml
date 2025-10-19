@@ -35,7 +35,7 @@ spec:
             env:
               KITE_USERNAME: ${SECRET_CAM_USERNAME}
               KITE_PASSWORD: ${SECRET_CAM_PASSWORD}
-              HOST: kite.${SECRET_DOMAIN}
+              HOST: https://kite.${SECRET_DOMAIN}
               KUBECONFIG: /config/kubeconfig
               ENABLE_ANALYTICS: true
               DB_TYPE: postgres
