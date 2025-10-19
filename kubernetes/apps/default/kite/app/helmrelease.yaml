@@ -32,6 +32,10 @@ spec:
             image:
               repository: ghcr.io/zxh326/kite
               tag: v0.6.9
+            env:
+              KITE_USERNAME: ${SECRET_CAM_USERNAME}
+              KITE_PASSWORD: ${SECRET_CAM_PASSWORD}
+              HOST: ${SECRET_DOMAIN}
             # probes:
               # livenessProbe:
               #   httpGet:
