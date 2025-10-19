@@ -38,6 +38,7 @@ spec:
               HOST: ${SECRET_DOMAIN}
               KUBECONFIG: /config/kubeconfig
               ENABLE_ANALYTICS: true
+              DB_TYPE: postgres
               DB_DSN: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/kite
 
             # probes:
