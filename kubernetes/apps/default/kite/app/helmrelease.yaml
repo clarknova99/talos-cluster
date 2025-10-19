@@ -37,6 +37,13 @@ spec:
               KITE_PASSWORD: ${SECRET_CAM_PASSWORD}
               HOST: ${SECRET_DOMAIN}
               KUBECONFIG: /config/kubeconfig
+              ENABLE_ANALYTICS: true
+
+            debug: true
+            db:
+              type: postgres
+              dsn: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/kite
+
             # probes:
               # livenessProbe:
               #   httpGet:
