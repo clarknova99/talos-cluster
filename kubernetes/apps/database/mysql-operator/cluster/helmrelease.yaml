@@ -52,7 +52,7 @@ spec:
           storage: 10Gi
     tls:
       useSelfSigned: true
-    serverVersion: 8.0.31
+    serverVersion: 9.4.0
     serverInstances: 1
     routerInstances: 1 # or use router.instances
     baseServerId: 1000
@@ -80,7 +80,14 @@ spec:
         schedule: "0 1 * * *"
         backupProfileName: mysql-db-backup
         enabled: true
-
+    instanceService:
+      type: LoadBalancer
+      annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.88
+    credentials:
+      root:
+        user: ${SECRET_LITELLM_UI_USERNAME}
+        password: ${SECRET_LITELLM_UI_PASSWORD}
     #instanceService:
     #  annotations:
     #    ann1: "is_avalue1"
@@ -298,12 +305,12 @@ spec:
 
     # Set explicit FQDN for MySQL instances
     # serviceFqdnTemplate: "{service}.{namespace}.svc.{domain}"
-  valuesFrom:
-    - targetPath: credentials.root.user
-      kind: Secret
-      name: mysql-secret
-      valuesKey: rootUser
-    - targetPath: credentials.root.password
-      kind: Secret
-      name: mysql-secret
-      valuesKey: rootPassword
+  # valuesFrom:
+  #   - targetPath: credentials.root.user
+  #     kind: Secret
+  #     name: mysql-secret
+  #     valuesKey: rootUser
+  #   - targetPath: credentials.root.password
+  #     kind: Secret
+  #     name: mysql-secret
+  #     valuesKey: rootPassword
