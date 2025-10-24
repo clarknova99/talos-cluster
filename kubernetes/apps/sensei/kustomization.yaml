@@ -6,6 +6,7 @@ resources:
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./langfusev3/ks.yaml
+  - ./listmonk/ks.yaml
   - ./litellm/ks.yaml
   - ./n8n/ks.yaml
   - ./rybbit/ks.yaml
