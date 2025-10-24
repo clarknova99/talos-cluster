@@ -8,6 +8,7 @@ resources:
   - ./langfusev3/ks.yaml
   - ./listmonk/ks.yaml
   - ./litellm/ks.yaml
+  - ./mautic/ks.yaml
   - ./n8n/ks.yaml
   - ./rybbit/ks.yaml
   - ./sensei-prod/ks.yaml
