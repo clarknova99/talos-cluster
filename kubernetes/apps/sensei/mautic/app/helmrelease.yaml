@@ -43,28 +43,28 @@ spec:
                 memory: 128M
               limits:
                 memory: 2G
-      mautic_worker:
-        image:
-          repository: mautic/mautic
-          tag: 6.0.6-20251020-apache
-          env:
-            DOCKER_MAUTIC_ROLE: mautic_worker
-            MAUTIC_DB_HOST: postgres16vector-rw.database.svc.cluster.local
-            MAUTIC_DB_PORT: 3306
-            MAUTIC_DB_DATABASE: mautic
-            MAUTIC_DB_USER: ${SECRET_LITELLM_UI_USERNAME}
-            MAUTIC_DB_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
-      mautic_cron:
-        image:
-          repository: mautic/mautic
-          tag: 6.0.6-20251020-apache
-          env:
-            DOCKER_MAUTIC_ROLE: mautic_cron
-            MAUTIC_DB_HOST: postgres16vector-rw.database.svc.cluster.local
-            MAUTIC_DB_PORT: 3306
-            MAUTIC_DB_DATABASE: mautic
-            MAUTIC_DB_USER: ${SECRET_LITELLM_UI_USERNAME}
-            MAUTIC_DB_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
+          mautic_worker:
+            image:
+              repository: mautic/mautic
+              tag: 6.0.6-20251020-apache
+              env:
+                DOCKER_MAUTIC_ROLE: mautic_worker
+                MAUTIC_DB_HOST: postgres16vector-rw.database.svc.cluster.local
+                MAUTIC_DB_PORT: 3306
+                MAUTIC_DB_DATABASE: mautic
+                MAUTIC_DB_USER: ${SECRET_LITELLM_UI_USERNAME}
+                MAUTIC_DB_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
+          mautic_cron:
+            image:
+              repository: mautic/mautic
+              tag: 6.0.6-20251020-apache
+              env:
+                DOCKER_MAUTIC_ROLE: mautic_cron
+                MAUTIC_DB_HOST: postgres16vector-rw.database.svc.cluster.local
+                MAUTIC_DB_PORT: 3306
+                MAUTIC_DB_DATABASE: mautic
+                MAUTIC_DB_USER: ${SECRET_LITELLM_UI_USERNAME}
+                MAUTIC_DB_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
 
     defaultPodOptions:
       securityContext:
