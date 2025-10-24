@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-user-settings
+  namespace: flux-system
+data:
+  README: "User-specific substitutions go here; keep or overwrite this value as needed."
