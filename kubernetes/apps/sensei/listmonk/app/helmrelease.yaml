@@ -86,7 +86,6 @@ spec:
                   port: 9000
 
     persistence:
-      config:
       uploads:
         enabled: true
         type: nfs
