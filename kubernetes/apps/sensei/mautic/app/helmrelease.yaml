@@ -27,31 +27,45 @@ spec:
     controllers:
       mautic:
         containers:
-          app:
+          web:
             image:
-              repository: ghcr.io/knadh/listmonk
-              tag: v5.1.0
-            command: [sh, -c, "./listmonk --install --idempotent --yes --config '' && ./listmonk --upgrade --yes --config '' && ./listmonk --config ''"]
+              repository: mautic/mautic
+              tag: 6.0.6-20251020-apache
             env:
-              LISTMONK_app__address: 0.0.0.0:9000
-              LISTMONK_db__user: ${SECRET_PGADMIN_USER}
-              LISTMONK_db__password: ${SECRET_PGADMIN_PASSWORD}
-              LISTMONK_db__database: listmonk
-              LISTMONK_db__host: postgres16vector-rw.database.svc.cluster.local
-              LISTMONK_db__port: 5432
-              LISTMONK_db__ssl_mode: disable
-              LISTMONK_db__max_open: 25
-              LISTMONK_db__max_idle: 25
-              LISTMONK_db__max_lifetime: 300s
-              TZ: America/New_York
-              LISTMONK_ADMIN_USER: ${SECRET_LITELLM_UI_USERNAME}          # If these (optional) are set during the first `docker compose up`, then the Super Admin user is automatically created.
-              LISTMONK_ADMIN_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
+              MAUTIC_DB_HOST: postgres16vector-rw.database.svc.cluster.local
+              MAUTIC_DB_PORT: 3306
+              MAUTIC_DB_DATABASE: mautic
+              MAUTIC_DB_USER: ${SECRET_LITELLM_UI_USERNAME}
+              MAUTIC_DB_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
             resources:
               requests:
                 cpu: 5m
                 memory: 128M
               limits:
                 memory: 2G
+      mautic_worker:
+        image:
+          repository: mautic/mautic
+          tag: 6.0.6-20251020-apache
+          env:
+            DOCKER_MAUTIC_ROLE: mautic_worker
+            MAUTIC_DB_HOST: postgres16vector-rw.database.svc.cluster.local
+            MAUTIC_DB_PORT: 3306
+            MAUTIC_DB_DATABASE: mautic
+            MAUTIC_DB_USER: ${SECRET_LITELLM_UI_USERNAME}
+            MAUTIC_DB_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
+      mautic_cron:
+        image:
+          repository: mautic/mautic
+          tag: 6.0.6-20251020-apache
+          env:
+            DOCKER_MAUTIC_ROLE: mautic_cron
+            MAUTIC_DB_HOST: postgres16vector-rw.database.svc.cluster.local
+            MAUTIC_DB_PORT: 3306
+            MAUTIC_DB_DATABASE: mautic
+            MAUTIC_DB_USER: ${SECRET_LITELLM_UI_USERNAME}
+            MAUTIC_DB_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -61,11 +75,11 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      web:
         controller: mautic
         ports:
           http:
-            port: 9000
+            port: 80
     ingress:
       app:
         annotations:
@@ -83,13 +97,41 @@ spec:
                 pathType: Prefix
                 service:
                   identifier: app
-                  port: 9000
+                  port: 80
 
     persistence:
-      uploads:
+      config:
         enabled: true
         type: nfs
         server: 192.168.1.3
-        path: /volume1/network-storage/cluster/mautic/uploads
+        path: /volume1/network-storage/cluster/mautic/config
         globalMounts:
-          - path: /mautic/uploads
+          - path: /var/www/html/config
+      logs:
+        enabled: true
+        type: nfs
+        server: 192.168.1.3
+        path: /volume1/network-storage/cluster/mautic/logs
+        globalMounts:
+          - path: /var/www/html/var/logs
+      files:
+        enabled: true
+        type: nfs
+        server: 192.168.1.3
+        path: /volume1/network-storage/cluster/mautic/files
+        globalMounts:
+          - path: /var/www/html/docroot/media/files
+      images:
+        enabled: true
+        type: nfs
+        server: 192.168.1.3
+        path: /volume1/network-storage/cluster/mautic/images
+        globalMounts:
+          - path: /var/www/html/docroot/media/images
+      cron:
+        enabled: true
+        type: nfs
+        server: 192.168.1.3
+        path: /volume1/network-storage/cluster/mautic/images
+        globalMounts:
+          - path: /opt/mautic/cron
