@@ -52,39 +52,39 @@ spec:
               CLICKHOUSE_HOST: http://dittofeed-clickhouse.sensei.svc.cluster.local:8123
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-            probes:
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 3000
-                  initialDelaySeconds: 10
-                  periodSeconds: 5
-                  timeoutSeconds: 3
-                  failureThreshold: 30
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 3000
-                  periodSeconds: 10
-                  timeoutSeconds: 3
-                  failureThreshold: 3
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 3000
-                  initialDelaySeconds: 30
-                  periodSeconds: 30
-                  timeoutSeconds: 3
-                  failureThreshold: 3
+            # probes:
+            #   startup:
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /
+            #         port: 3000
+            #       initialDelaySeconds: 10
+            #       periodSeconds: 5
+            #       timeoutSeconds: 3
+            #       failureThreshold: 30
+            #   readiness:
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /
+            #         port: 3000
+            #       periodSeconds: 10
+            #       timeoutSeconds: 3
+            #       failureThreshold: 3
+            #   liveness:
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /
+            #         port: 3000
+            #       initialDelaySeconds: 30
+            #       periodSeconds: 30
+            #       timeoutSeconds: 3
+            #       failureThreshold: 3
 
           # worker:
           #   image:
