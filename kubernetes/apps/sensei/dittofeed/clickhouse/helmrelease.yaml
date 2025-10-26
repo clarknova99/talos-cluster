@@ -69,14 +69,14 @@ spec:
             #       timeoutSeconds: 5
             #       failureThreshold: 3
 
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 101
-        runAsGroup: 101
-        fsGroup: 101
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 101
+    #     runAsGroup: 101
+    #     fsGroup: 101
+    #     fsGroupChangePolicy: OnRootMismatch
+    #     seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: dittofeed-clickhouse
