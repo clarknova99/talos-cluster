@@ -49,7 +49,7 @@ spec:
               DATABASE_USER: ${SECRET_PGADMIN_USER}
               DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
               DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/dittofeed
-              CLICKHOUSE_HOST: http://localhost:8123
+              CLICKHOUSE_HOST: http://dittofeed-clickhouse.sensei.svc.cluster.local:8123
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
             probes:
@@ -97,7 +97,7 @@ spec:
               DATABASE_USER: ${SECRET_PGADMIN_USER}
               DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
               DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/dittofeed
-              CLICKHOUSE_HOST: http://localhost:8123
+              CLICKHOUSE_HOST: http://dittofeed-clickhouse.sensei.svc.cluster.local:8123
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
 
@@ -111,51 +111,9 @@ spec:
               DATABASE_USER: ${SECRET_PGADMIN_USER}
               DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
               DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/dittofeed
-              CLICKHOUSE_HOST: http://localhost:8123
+              CLICKHOUSE_HOST: http://dittofeed-clickhouse.sensei.svc.cluster.local:8123
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-
-          clickhouse:
-            image:
-              repository: clickhouse/clickhouse-server
-              tag: 25.7-alpine@sha256:193825bef496e029f56b014ef82f10c3c1355d79f60e8720f45d5abc5b78f6c9
-            env:
-              CLICKHOUSE_DB: dittofeed
-              CLICKHOUSE_USER: dittofeed
-              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-              CLICKHOUSE_DO_NOT_CHOWN: "1"
-            securityContext:
-              runAsUser: 101
-              runAsGroup: 101
-              runAsNonRoot: true
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities:
-                drop:
-                - ALL
-            probes:
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /ping
-                    port: 8123
-                  initialDelaySeconds: 30
-                  periodSeconds: 10
-                  timeoutSeconds: 5
-                  failureThreshold: 6
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /ping
-                    port: 8123
-                  initialDelaySeconds: 60
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 3
 
     defaultPodOptions:
       securityContext:
@@ -189,15 +147,3 @@ spec:
                 service:
                   identifier: web
                   port: 3000
-
-    persistence:
-      data:
-        enabled: true
-        type: nfs
-        server: 192.168.1.3
-        path: /volume1/network-storage/cluster/dittofeed/clickhouse
-        advancedMounts:
-          dittofeed:
-            clickhouse:
-              - path: /var/lib/clickhouse
-
