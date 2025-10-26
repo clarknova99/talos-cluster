@@ -1,0 +1,201 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dittofeed
+  namespace: sensei
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      dittofeed:
+        containers:
+          temporal:
+            image: temporalio/auto-setup:1.22.4
+            environment:
+              DB: postgresql
+              DB_PORT: 5432
+              POSTGRES_USER: ${SECRET_PGADMIN_USER}
+              POSTGRES_PWD: ${SECRET_PGADMIN_PASSWORD}
+              POSTGRES_SEEDS: postgres-lb-vector.database.svc.cluster.local
+
+          web:
+            image:
+              repository: dittofeed/dittofeed-lite
+              tag: v0.23.0-alpha.127
+            env:
+              NODE_ENV: production
+              TEMPORAL_ADDRESS: localhost:7233
+              DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
+              DATABASE_USER: ${SECRET_PGADMIN_USER}
+              DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
+              DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/dittofeed
+              CLICKHOUSE_HOST: http://localhost:8123
+              CLICKHOUSE_USER: dittofeed
+              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3000
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                  timeoutSeconds: 3
+                  failureThreshold: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3000
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 3000
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+
+          worker:
+            image:
+              repository: dittofeed/dittofeed-worker
+              tag: v0.23.0-alpha.127
+            env:
+              NODE_ENV: production
+              TEMPORAL_ADDRESS: localhost:7233
+              DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
+              DATABASE_USER: ${SECRET_PGADMIN_USER}
+              DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
+              DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/dittofeed
+              CLICKHOUSE_HOST: http://localhost:8123
+              CLICKHOUSE_USER: dittofeed
+              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+
+          admin-cli:
+            image:
+              repository: dittofeed/dittofeed-admin-cli
+              tag: v0.23.0-alpha.127
+            env:
+              NODE_ENV: production
+              DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
+              DATABASE_USER: ${SECRET_PGADMIN_USER}
+              DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
+              DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/dittofeed
+              CLICKHOUSE_HOST: http://localhost:8123
+              CLICKHOUSE_USER: dittofeed
+              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+
+          clickhouse:
+            image:
+              repository: clickhouse/clickhouse-server
+              tag: 25.7-alpine@sha256:193825bef496e029f56b014ef82f10c3c1355d79f60e8720f45d5abc5b78f6c9
+            env:
+              CLICKHOUSE_DB: dittofeed
+              CLICKHOUSE_USER: dittofeed
+              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+              CLICKHOUSE_DO_NOT_CHOWN: "1"
+            securityContext:
+              runAsUser: 101
+              runAsGroup: 101
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                - ALL
+            probes:
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: 8123
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 6
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: 8123
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 33
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      web:
+        controller: dittofeed
+        ports:
+          http:
+            port: 3000
+    ingress:
+      web:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:water-flow
+        className: external
+        hosts:
+          - host: dittofeed.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: web
+                  port: 3000
+
+    persistence:
+      data:
+        enabled: true
+        type: nfs
+        server: 192.168.1.3
+        path: /volume1/network-storage/cluster/dittofeed/clickhouse
+        advancedMounts:
+          dittofeed:
+            clickhouse:
+              - path: /var/lib/clickhouse
+
