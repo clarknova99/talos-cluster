@@ -43,6 +43,9 @@ spec:
               repository: dittofeed/dittofeed-lite
               tag: v0.23.0-alpha.127
             env:
+              PASSWORD: ${SECRET_PGADMIN_PASSWORD}
+              SECRET_KEY: ${SECRET_OAUTH_CLIENT_SECRET}
+              WORKSPACE_NAME: sensei
               NODE_ENV: production
               TEMPORAL_ADDRESS: dittofeed-temporal.sensei.svc.cluster.local:7233
               DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
