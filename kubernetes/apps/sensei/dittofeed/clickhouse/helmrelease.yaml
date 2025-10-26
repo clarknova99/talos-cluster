@@ -27,7 +27,7 @@ spec:
     controllers:
       dittofeed-clickhouse:
         containers:
-          clickhouse:
+          app:
             image:
               repository: clickhouse/clickhouse-server
               tag: 25.7-alpine@sha256:193825bef496e029f56b014ef82f10c3c1355d79f60e8720f45d5abc5b78f6c9
@@ -78,7 +78,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
-      web:
+      app:
         controller: dittofeed-clickhouse
         ports:
           http:
