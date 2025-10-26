@@ -44,7 +44,7 @@ spec:
               tag: v0.23.0-alpha.127
             env:
               NODE_ENV: production
-              TEMPORAL_ADDRESS: localhost:7233
+              TEMPORAL_ADDRESS: dittofeed-temporal.sensei.svc.cluster.local:7233
               DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
               DATABASE_USER: ${SECRET_PGADMIN_USER}
               DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
