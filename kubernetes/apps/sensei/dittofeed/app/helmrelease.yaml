@@ -129,6 +129,12 @@ spec:
         ports:
           http:
             port: 3000
+      temporal:
+        controller: dittofeed
+        ports:
+          grpc:
+            port: 7233
+
     ingress:
       web:
         annotations:
