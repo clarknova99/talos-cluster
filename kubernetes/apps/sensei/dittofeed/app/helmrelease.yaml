@@ -47,6 +47,7 @@ spec:
               SECRET_KEY: ${SECRET_OAUTH_CLIENT_SECRET}
               WORKSPACE_NAME: sensei
               NODE_ENV: production
+              AUTH_MODE: single-tenant
               SESSION_COOKIE_SECURE: true
               TEMPORAL_ADDRESS: dittofeed-temporal.sensei.svc.cluster.local:7233
               DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
