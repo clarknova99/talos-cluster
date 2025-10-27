@@ -99,5 +99,5 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: app
+                  identifier: dashboard
                   port: 3000
