@@ -71,7 +71,7 @@ spec:
           nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:water-flow
-        className: external
+        className: internal
         hosts:
           - host: dittofeed-temporal.${SECRET_DOMAIN_TWO}
             paths:
