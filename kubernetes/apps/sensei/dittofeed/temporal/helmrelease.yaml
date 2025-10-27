@@ -30,7 +30,7 @@ spec:
           temporal:
             image:
               repository: temporalio/auto-setup
-              tag: 1.22.4
+              tag: 1.29.0
             env:
               DB: postgresql
               DB_PORT: 5432
