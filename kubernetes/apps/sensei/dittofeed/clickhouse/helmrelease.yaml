@@ -25,7 +25,7 @@ spec:
       retries: 10
   values:
     controllers:
-      dittofeed-clickhouse2:
+      dittofeed-clickhouse:
         containers:
           app:
             image:
