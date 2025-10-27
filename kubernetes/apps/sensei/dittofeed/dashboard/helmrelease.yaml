@@ -38,7 +38,7 @@ spec:
               NODE_ENV: production
               AUTH_MODE: single-tenant
               SESSION_COOKIE_SECURE: true
-              DASHBOARD_API_BASE: http://dittofeed-api.sensei.svc.cluster.local:3000
+              DASHBOARD_API_BASE: http://dittofeed-api.sensei.svc.cluster.local:3001
               TEMPORAL_ADDRESS: dittofeed-temporal-temporal.sensei.svc.cluster.local:7233
               DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
               DATABASE_USER: ${SECRET_PGADMIN_USER}
