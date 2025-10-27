@@ -43,7 +43,7 @@ spec:
               repository: dittofeed/dittofeed-lite
               tag: v0.23.0-alpha.127
             env:
-              PASSWORD: ${SECRET_PGADMIN_PASSWORD}
+              PASSWORD: ${SECRET_SENSEI_PASSWORD}
               SECRET_KEY: ${SECRET_OAUTH_CLIENT_SECRET}
               WORKSPACE_NAME: sensei
               NODE_ENV: production
@@ -107,19 +107,20 @@ spec:
           #     CLICKHOUSE_USER: dittofeed
           #     CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
 
-          # admin-cli:
-          #   image:
-          #     repository: dittofeed/dittofeed-admin-cli
-          #     tag: v0.23.0-alpha.127
-          #   env:
-          #     NODE_ENV: production
-          #     DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
-          #     DATABASE_USER: ${SECRET_PGADMIN_USER}
-          #     DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
-          #     DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/dittofeed
-          #     CLICKHOUSE_HOST: http://dittofeed-clickhouse.sensei.svc.cluster.local:8123
-          #     CLICKHOUSE_USER: dittofeed
-          #     CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+          admin-cli:
+            image:
+              repository: dittofeed/dittofeed-admin-cli
+              tag: v0.23.0-alpha.127
+            command: [tail -f /dev/null]
+            env:
+              NODE_ENV: production
+              DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
+              DATABASE_USER: ${SECRET_PGADMIN_USER}
+              DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
+              DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/dittofeed
+              CLICKHOUSE_HOST: http://dittofeed-clickhouse.sensei.svc.cluster.local:8123
+              CLICKHOUSE_USER: dittofeed
+              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
 
     defaultPodOptions:
       securityContext:
