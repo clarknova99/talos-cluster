@@ -111,7 +111,10 @@ spec:
             image:
               repository: dittofeed/dittofeed-admin-cli
               tag: v0.23.0-alpha.127
-            command: [tail -f /dev/null]
+            command:
+              - /bin/sh
+              - -c
+              - tail -f /dev/null
             env:
               NODE_ENV: production
               DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
