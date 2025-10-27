@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dittofeed2-temporal
+  namespace: sensei
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      dittofeed2-temporal:
+        containers:
+          temporal:
+            image:
+              repository: temporalio/auto-setup
+              tag: 1.22.4
+            env:
+              DB: postgresql
+              DB_PORT: 5432
+              POSTGRES_USER: ${SECRET_PGADMIN_USER}
+              POSTGRES_PWD: ${SECRET_PGADMIN_PASSWORD}
+              POSTGRES_SEEDS: postgres-lb-vector.database.svc.cluster.local
+          temporal-ui:
+            image:
+              repository: temporalio/ui
+              tag: 1.22.4
+            env:
+              DB: postgresql
+              DB_PORT: 5432
+              POSTGRES_USER: ${SECRET_PGADMIN_USER}
+              POSTGRES_PWD: ${SECRET_PGADMIN_PASSWORD}
+              POSTGRES_SEEDS: postgres-lb-vector.database.svc.cluster.local
+              TEMPORAL_ADDRESS: dittofeed-temporal2-temporal.sensei.svc.cluster.local:7233
+
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 33
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      temporal:
+        controller: dittofeed2-temporal
+        ports:
+          grpc:
+            port: 7233
+      temporal-ui:
+        controller: dittofeed2-temporal
+        ports:
+          grpc:
+            port: 8080
+    ingress:
+      web:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:water-flow
+        className: external
+        hosts:
+          - host: dittofeed-temporal2.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: temporal-ui
+                  port: 8080
