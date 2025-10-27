@@ -79,11 +79,15 @@ spec:
     #     seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: dittofeed-clickhouse
+        controller: clickhouse
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.34
         ports:
           http:
             port: 8123
-
+          tcp:
+            port: 9000
 
     persistence:
       data:
