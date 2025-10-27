@@ -39,7 +39,7 @@ spec:
               AUTH_MODE: single-tenant
               SESSION_COOKIE_SECURE: true
               DASHBOARD_API_BASE: https://dittofeed.${SECRET_DOMAIN_TWO}
-              TEMPORAL_ADDRESS: dittofeed-temporal.sensei.svc.cluster.local:7233
+              TEMPORAL_ADDRESS: dittofeed-temporal-temporal.sensei.svc.cluster.local:7233
               DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
               DATABASE_USER: ${SECRET_PGADMIN_USER}
               DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
@@ -53,7 +53,7 @@ spec:
         controller: dittofeed-api
         ports:
           http:
-            port: 3000
+            port: 3001
 
 
     ingress:
@@ -73,4 +73,4 @@ spec:
                 pathType: Prefix
                 service:
                   identifier: app
-                  port: 3000
+                  port: 3001
