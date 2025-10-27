@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: dittofeed2-temporal
+  name: dittofeed-temporal
   namespace: sensei
 spec:
   interval: 15m
@@ -25,7 +25,7 @@ spec:
       retries: 5
   values:
     controllers:
-      dittofeed2-temporal:
+      dittofeed-temporal:
         containers:
           temporal:
             image:
@@ -47,27 +47,20 @@ spec:
               POSTGRES_USER: ${SECRET_PGADMIN_USER}
               POSTGRES_PWD: ${SECRET_PGADMIN_PASSWORD}
               POSTGRES_SEEDS: postgres-lb-vector.database.svc.cluster.local
-              TEMPORAL_ADDRESS: dittofeed-temporal2-temporal.sensei.svc.cluster.local:7233
-
-
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: false
-        runAsUser: 0
-        runAsGroup: 0
-        fsGroup: 33
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
+              TEMPORAL_ADDRESS: dittofeed-temporal.sensei.svc.cluster.local:7233
     service:
       temporal:
-        controller: dittofeed2-temporal
+        controller: dittofeed-temporal
         ports:
           grpc:
             port: 7233
       temporal-ui:
-        controller: dittofeed2-temporal
+        controller: dittofeed-temporal
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.37
         ports:
-          grpc:
+          http:
             port: 8080
     ingress:
       web:
@@ -80,7 +73,7 @@ spec:
           hajimari.io/icon: mdi:water-flow
         className: external
         hosts:
-          - host: dittofeed-temporal2.${SECRET_DOMAIN_TWO}
+          - host: dittofeed-temporal.${SECRET_DOMAIN_TWO}
             paths:
               - path: /
                 pathType: Prefix

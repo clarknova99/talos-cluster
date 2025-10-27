@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *appname
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/apps/sensei/dittofeed2/clickhouse"
+  path: "./kubernetes/apps/sensei/dittofeed/clickhouse"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -23,7 +23,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname dittofeed-temporal
+  name: &appname dittofeed
   namespace: flux-system
 spec:
   targetNamespace: sensei
@@ -31,33 +31,10 @@ spec:
     labels:
       app.kubernetes.io/name: *appname
   dependsOn:
-    - name: dittofeed2-clickhouse
+    - name: dittofeed-clickhouse
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/apps/sensei/dittofeed2/temporal"
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-kubernetes
-  wait: false
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &appname dittofeed-api
-  namespace: flux-system
-spec:
-  targetNamespace: sensei
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *appname
-  dependsOn:
-    - name: dittofeed2-clickhouse
-    - name: dittofeed2-temporal
-  interval: 30m
-  timeout: 5m
-  path: "./kubernetes/apps/sensei/dittofeed2/api"
+  path: "./kubernetes/apps/sensei/dittofeed/app"
   prune: true
   sourceRef:
     kind: GitRepository
