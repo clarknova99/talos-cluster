@@ -80,3 +80,6 @@ spec:
                 service:
                   identifier: temporal-ui
                   port: 8080
+        tls:
+          - hosts:
+              - dittofeed-temporal.${SECRET_DOMAIN_TWO}
