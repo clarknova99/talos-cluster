@@ -65,7 +65,7 @@ spec:
     ingress:
       web:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
           nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
           nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
@@ -73,7 +73,7 @@ spec:
           hajimari.io/icon: mdi:water-flow
         className: internal
         hosts:
-          - host: dittofeed-temporal.${SECRET_DOMAIN_TWO}
+          - host: dittofeed-temporal.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
@@ -82,4 +82,4 @@ spec:
                   port: 8080
         tls:
           - hosts:
-              - dittofeed-temporal.${SECRET_DOMAIN_TWO}
+              - dittofeed-temporal.${SECRET_DOMAIN}
