@@ -32,7 +32,7 @@ spec:
               repository: temporalio/auto-setup
               tag: 1.29.0
             env:
-              DB: postgresql
+              DB: postgres12
               DB_PORT: 5432
               POSTGRES_USER: ${SECRET_PGADMIN_USER}
               POSTGRES_PWD: ${SECRET_PGADMIN_PASSWORD}
@@ -42,7 +42,7 @@ spec:
               repository: temporalio/ui
               tag: 2.42.1
             env:
-              DB: postgresql
+              DB: postgres12
               DB_PORT: 5432
               POSTGRES_USER: ${SECRET_PGADMIN_USER}
               POSTGRES_PWD: ${SECRET_PGADMIN_PASSWORD}
