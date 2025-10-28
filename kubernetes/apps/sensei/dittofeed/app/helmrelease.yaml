@@ -72,3 +72,6 @@ spec:
                 service:
                   identifier: app
                   port: 3000
+        tls:
+          - hosts:
+              - dittofeed.${SECRET_DOMAIN}
