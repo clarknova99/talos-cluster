@@ -90,7 +90,7 @@ spec:
     #                 values: ["mars"]
     service:
       app:
-        controller: sensei-prod-app
+        controller: sensei-prod-admin
         ports:
           http:
             port: 3002
