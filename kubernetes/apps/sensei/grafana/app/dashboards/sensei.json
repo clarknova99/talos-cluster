@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 7,
   "links": [],
   "panels": [
     {
@@ -55,6 +55,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -69,7 +70,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -131,7 +133,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -187,20 +189,21 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
             "type": "loki",
             "uid": "loki"
           },
+          "direction": "backward",
           "editorMode": "code",
           "expr": "{app=\"sensei-prod-api\"} ",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Backend Logs",
+      "title": "Backend Logs - PROD",
       "type": "logs"
     },
     {
@@ -230,20 +233,65 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
             "type": "loki",
             "uid": "loki"
           },
+          "direction": "backward",
           "editorMode": "builder",
           "expr": "{app=\"sensei-prod-app\"} |= `` | logfmt",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Frontend Logs",
+      "title": "Frontend Logs - PROD",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 19,
+        "x": 0,
+        "y": 27
+      },
+      "id": 10,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{app=\"sensei-dev-api\"} ",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Backend Logs - DEV",
       "type": "logs"
     },
     {
@@ -259,7 +307,139 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 27
+        "y": 37
+      },
+      "id": 13,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{app=\"sensei-dev-app\"} |= `` | logfmt",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Frontend Logs - DEV",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 19,
+        "x": 0,
+        "y": 46
+      },
+      "id": 11,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{app=\"sensei-stage-api\"} ",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Backend Logs - STAGE",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 19,
+        "x": 0,
+        "y": 56
+      },
+      "id": 12,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{app=\"sensei-stage-app\"} |= `` | logfmt",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Frontend Logs - STAGE",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 19,
+        "x": 0,
+        "y": 65
       },
       "id": 4,
       "options": {
@@ -273,7 +453,7 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -303,7 +483,7 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 36
+        "y": 74
       },
       "id": 9,
       "options": {
@@ -317,7 +497,7 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -347,7 +527,7 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 45
+        "y": 83
       },
       "id": 7,
       "options": {
@@ -361,7 +541,7 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -391,7 +571,7 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 54
+        "y": 92
       },
       "id": 8,
       "options": {
@@ -405,7 +585,7 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -435,7 +615,7 @@
         "h": 10,
         "w": 19,
         "x": 0,
-        "y": 63
+        "y": 101
       },
       "id": 5,
       "options": {
@@ -449,7 +629,7 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -480,6 +660,9 @@
             "cellOptions": {
               "type": "auto"
             },
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -487,7 +670,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -502,20 +686,12 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 73
+        "y": 111
       },
       "id": 6,
       "interval": "24h",
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true,
         "sortBy": [
           {
@@ -524,7 +700,7 @@
           }
         ]
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -578,7 +754,7 @@
   ],
   "preload": false,
   "refresh": "30s",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": []
