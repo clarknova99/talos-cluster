@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/admin
-              tag: main-1.0.0@sha256:2c7d53c54f4d7b08f5383cb685f6b20367463941c4e3a9c6e60182da63338a83
+              tag: dev-latest@sha256:e377c47664405f54b8a8dea65128088da5df6f8ae4b007aaee8d8e25dd2e714b
               pullPolicy: Always
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
@@ -40,7 +40,6 @@ spec:
               ADMIN_USERNAME: ${SECRET_SENSEI_ADMIN_USERNAME}
               ADMIN_PASSWORD: ${SECRET_SENSEI_ADMIN_PASSWORD}
               SESSION_SECRET: ${SECRET_SENSEI_API_KEY}
-
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
