@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/zxh326/kite
-              tag: v0.7.1
+              tag: v0.7.2
             env:
               KITE_USERNAME: ${SECRET_CAM_USERNAME}
               KITE_PASSWORD: ${SECRET_CAM_PASSWORD}
