@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/admin
-              tag: dev-latest@sha256:27c266288e8c51a15a766cd5c85f2c5b0cf6d63ae12c5bf4d523e7eefa87345d
+              tag: dev-latest@sha256:e377c47664405f54b8a8dea65128088da5df6f8ae4b007aaee8d8e25dd2e714b
               pullPolicy: Always
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
@@ -44,7 +44,7 @@ spec:
               DITTOFEED_PAGE_ENDPOINT: https://dittofeed-dev.${SECRET_DOMAIN_TWO}/api/public/apps/page
               DITTOFEED_TRACK_ENDPOINT: https://dittofeed-dev.${SECRET_DOMAIN_TWO}/api/public/apps/track
               DITTOFEED_IDENTIFY_ENDPOINT: https://dittofeed-dev.${SECRET_DOMAIN_TWO}/api/public/apps/identify
-              BACKEND_API_URL: http://sensei-dev-api.sensei.svc.cluster.local
+              BACKEND_API_URL: http://sensei-dev-api.sensei.svc.cluster.local:3001
               BACKEND_API_KEY: ${SECRET_SENSEI_API_KEY}
         pod:
           # imagePullPolicy: Always
