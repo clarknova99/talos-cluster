@@ -75,7 +75,6 @@ spec:
               DITTOFEED_TRACK_ENDPOINT: https://dittofeed-dev.${SECRET_DOMAIN_TWO}/api/public/apps/track
               DITTOFEED_IDENTIFY_ENDPOINT: https://dittofeed-dev.${SECRET_DOMAIN_TWO}/api/public/apps/identify
         pod:
-        pod:
           # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-stage-secret
