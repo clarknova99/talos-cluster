@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: stage-latest@sha256:58baa696d349a1f92384a16c6cf898dd193b0b0f86efeef3c251101896233c31
+              tag: stage-latest@sha256:189c9ac8ff6d57fd6cf313416ab8e2ac89c2732a6b2e5016eea8f9b7aad4a262
               pullPolicy: IfNotPresent
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
@@ -75,7 +75,6 @@ spec:
               DITTOFEED_TRACK_ENDPOINT: https://dittofeed-dev.${SECRET_DOMAIN_TWO}/api/public/apps/track
               DITTOFEED_IDENTIFY_ENDPOINT: https://dittofeed-dev.${SECRET_DOMAIN_TWO}/api/public/apps/identify
         pod:
-
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
