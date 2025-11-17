@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: dittofeed/dittofeed-lite
-              tag: v0.23.0-alpha.127
+              tag: v0.23.0-alpha.134
             env:
               PASSWORD: ${SECRET_SENSEI_PASSWORD}
               SECRET_KEY: ${SECRET_OAUTH_CLIENT_SECRET}
