@@ -88,6 +88,21 @@ spec:
         serviceMonitorSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
+        initContainers:
+          - name: clear-corrupt-wal
+            image: docker.io/library/busybox:1.37.0
+            imagePullPolicy: IfNotPresent
+            command:
+              - /bin/sh
+              - -c
+              - |
+                if [ -d /prometheus/wal ]; then
+                  echo "Removing potentially corrupt WAL/head data";
+                  rm -rf /prometheus/wal /prometheus/chunks_head;
+                fi
+            volumeMounts:
+              - name: prometheus
+                mountPath: /prometheus
         enableFeatures:
           - memory-snapshot-on-shutdown
         retention: 14d
@@ -99,6 +114,8 @@ spec:
             memory: 1500Mi
         storageSpec:
           volumeClaimTemplate:
+            metadata:
+              name: prometheus
             spec:
               storageClassName: openebs-hostpath
               resources:
