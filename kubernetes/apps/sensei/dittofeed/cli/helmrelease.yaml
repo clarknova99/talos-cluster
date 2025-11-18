@@ -31,6 +31,9 @@ spec:
             image:
               repository: dittofeed/dittofeed-admin-cli
               tag: v0.23.0-alpha.134
+              command: ["/bin/sh"]  # Override entrypoint
+              args: ["-c", "tail -f /dev/null"]  # Keep container running
+              tty: true  # Enable TTY
             env:
               PASSWORD: ${SECRET_SENSEI_PASSWORD}
               SECRET_KEY: ${SECRET_OAUTH_CLIENT_SECRET}
