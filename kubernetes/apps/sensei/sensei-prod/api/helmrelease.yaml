@@ -72,6 +72,7 @@ spec:
               DITTOFEED_PAGE_ENDPOINT: https://dittofeed.${SECRET_DOMAIN_TWO}/api/public/apps/page
               DITTOFEED_TRACK_ENDPOINT: https://dittofeed.${SECRET_DOMAIN_TWO}/api/public/apps/track
               DITTOFEED_IDENTIFY_ENDPOINT: https://dittofeed.${SECRET_DOMAIN_TWO}/api/public/apps/identify
+              RYBBIT_API_KEY: ${SECRET_SENSEI_RYBBIT_API_KEY}
             probes:
               liveness:
                 enabled: true
