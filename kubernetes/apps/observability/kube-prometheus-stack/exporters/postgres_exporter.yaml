@@ -23,7 +23,7 @@ spec:
     config:
       datasource:
         host: postgres16vector-rw.database.svc.cluster.local
-        port: 5432
+        port: "5432"
         user: ${SECRET_SENSEI_USERNAME}
         password: ${SECRET_SENSEI_PASSWORD}
         database: sensei-prod
