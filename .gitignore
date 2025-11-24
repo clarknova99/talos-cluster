@@ -25,3 +25,5 @@ wiki
 # Bootstrap
 /config.yaml
 *tmp*
+.vscode
+settings.json
