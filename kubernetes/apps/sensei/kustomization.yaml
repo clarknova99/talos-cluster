@@ -7,7 +7,7 @@ resources:
   - ./dittofeed-dev/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
-  - ./langfusev3/ks.yaml
+  # - ./langfusev3/ks.yaml
   # - ./listmonk/ks.yaml
   - ./litellm/ks.yaml
   # - ./mautic/ks.yaml
