@@ -33,7 +33,7 @@ spec:
               # repository: docker.io/langfuse/langfuse
               # tag: 2.93@sha256:e05b4b389a07aba93a94d3a19c24c104b125b023792ff612706137e26067c23f
               repository: ghcr.io/langfuse/langfuse
-              tag: 3.134.0@sha256:ee5c508cd18bd3897726e31b7e6548eef9153e7e1fcffccbd82c5751a2497315
+              tag: 3.133.0@sha256:e122c89655e29e18167d78576ee47560e36873a0eccf344f9af93c950b6ce07a
             env:
               NEXTAUTH_URL: https://langfuse.${SECRET_DOMAIN_TWO}
               NEXTAUTH_SECRET: ${SECRET_LANGFUSE_SECRET}
@@ -73,7 +73,7 @@ spec:
           worker:
             image:
               repository: ghcr.io/langfuse/langfuse-worker
-              tag: 3.134.0@sha256:ba1a9a667b952548a7188776646ef12491ff4d172ea77ecb166987b157bd90e6
+              tag: 3.133.0@sha256:e1aeea141c876112aeaf87d3ef4a06d42c50aaa57815b1ae1f9dd54f1ee235ca
             env:
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/langfuse
               SALT: ${SECRET_LANGFUSE_SALT}
