@@ -101,6 +101,15 @@ spec:
               LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
               LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: true
               LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values: ["mars"]
     service:
       web:
         controller: langfuse-v3
