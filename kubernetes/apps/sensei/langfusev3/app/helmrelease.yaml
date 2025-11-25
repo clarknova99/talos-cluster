@@ -34,6 +34,7 @@ spec:
               # tag: 2.93@sha256:e05b4b389a07aba93a94d3a19c24c104b125b023792ff612706137e26067c23f
               repository: ghcr.io/langfuse/langfuse
               tag: 3.133.0@sha256:e122c89655e29e18167d78576ee47560e36873a0eccf344f9af93c950b6ce07a
+              imagePullPolicy: IfNotPresent
             env:
               NEXTAUTH_URL: https://langfuse.${SECRET_DOMAIN_TWO}
               NEXTAUTH_SECRET: ${SECRET_LANGFUSE_SECRET}
@@ -100,8 +101,6 @@ spec:
               LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
               LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: true
               LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
-        pod:
-          imagePullPolicy: IfNotPresent
     service:
       web:
         controller: langfuse-v3
