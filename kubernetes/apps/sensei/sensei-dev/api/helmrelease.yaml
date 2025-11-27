@@ -74,6 +74,7 @@ spec:
               DITTOFEED_TRACK_ENDPOINT: https://dittofeed-dev.${SECRET_DOMAIN_TWO}/api/public/apps/track
               DITTOFEED_IDENTIFY_ENDPOINT: https://dittofeed-dev.${SECRET_DOMAIN_TWO}/api/public/apps/identify
               RYBBIT_API_KEY: ${SECRET_SENSEI_RYBBIT_API_KEY}
+              ENABLE_REASONING_DISPLAY: "true"
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
