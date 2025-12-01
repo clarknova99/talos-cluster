@@ -18,49 +18,68 @@ spec:
               imagePullPolicy: Always
               command: ["/bin/sh", "-c", "python3 /app/daily_refresh.py"]
               env:
+                - name: SENSEI_API_KEY
+                  value: ${SECRET_SENSEI_API_KEY}
+                - name: OPENAI_API_KEY
+                  value: ${SECRET_OPENAPI_KEY}
+                - name: SENSEI_OPENAI_API_KEY
+                  value: ${SECRET_SENSEI_OPENAI_KEY}
+                - name: ENVIRONMENT
+                  value: prod
                 - name: PG_URI
                   value: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-dev
+                - name: DISCORD_WEBHOOK
+                  value: ${SECRET_SENSEI_DISCORD_WEBHOOK}
+                - name: DISCORD_SIGNUP_WEBHOOK
+                  value: ${SECRET_DISCORD_SIGNUP_WEBOOK}
+                - name: LICHESS_API_TOKEN
+                  value: ${LICHESS_API_TOKEN}
+                - name: GROQ_API_KEY
+                  value: ${GROQ_API_KEY_LLM}
+                - name: STOCKFISH_PATH
+                  value: /usr/games/stockfish
                 - name: LANGFUSE_PUBLIC_KEY
                   value: ${SECRET_LANGFUSE_PUBLIC_KEY}
                 - name: LANGFUSE_SECRET_KEY
                   value: ${SECRET_LANGFUSE_SECRET_KEY}
                 - name: LANGFUSE_HOST
                   value: http://langfuse-v3-web.sensei.svc.cluster.local:3000
-                - name: GROQ_API_KEY_LLM
-                  valueFrom:
-                    secretKeyRef:
-                      name: sensei-prod-daily-refresh-secrets
-                      key: GROQ_API_KEY_LLM
-                - name: GROQ_API_KEY_PGN_TEXT
-                  valueFrom:
-                    secretKeyRef:
-                      name: sensei-prod-daily-refresh-secrets
-                      key: GROQ_API_KEY_PGN_TEXT
                 - name: LITELLM_BASE_URL
-                  valueFrom:
-                    secretKeyRef:
-                      name: sensei-prod-daily-refresh-secrets
-                      key: LITELLM_BASE_URL
+                  value: http://litellm.sensei.svc.cluster.local:4000
                 - name: LITELLM_API_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: sensei-prod-daily-refresh-secrets
-                      key: LITELLM_API_KEY
-                # - name: PG_URI
-                #   valueFrom:
-                #     secretKeyRef:
-                #       name: sensei-prod-daily-refresh-secrets
-                #       key: PG_URI
-                - name: DISCORD_WEBHOOK
-                  valueFrom:
-                    secretKeyRef:
-                      name: sensei-prod-daily-refresh-secrets
-                      key: DISCORD_WEBHOOK
-                - name: LICHESS_API_TOKEN
-                  valueFrom:
-                    secretKeyRef:
-                      name: sensei-prod-daily-refresh-secrets
-                      key: LICHESS_API_TOKEN
-                - name: ENVIRONMENT
-                  value: "dev"
+                  value: ${SECRET_LITELLM_API_KEY}
+                - name: GOOGLE_TTS_API_KEY
+                  value: ${SECRET_SENSEI_GEMINI_KEY}
+                - name: FRONTEND_BASE_URL
+                  value: https://dev.${SECRET_DOMAIN_TWO}
+                - name: EMAIL_VERIFICATION_TOKEN_EXPIRES_HOURS
+                  value: "24"
+                - name: SENDER_EMAIL
+                  value: ${SECRET_SENSEI_SENDER_EMAIL}
+                - name: SMTP_SENDER_NAME
+                  value: ${SECRET_SENSEI_SMTP_SENDER_NAME}
+                - name: GMAIL_SERVICE_ACCOUNT_FILE
+                  value: ${SECRET_SENSEI_GMAIL_SERVICE_ACCOUNT_FILE}
+                - name: MAILJET_API_KEY
+                  value: ${SECRET_MAIL_USERNAME}
+                - name: MAILJET_API_SECRET
+                  value: ${SECRET_MAIL_PASSWORD}
+                - name: AWS_ACCESS_KEY_ID
+                  value: ${SECRET_AWS_ACCESS_KEY_ID}
+                - name: AWS_SECRET_ACCESS_KEY
+                  value: ${SECRET_AWS_SECRET_ACCESS_KEY}
+                - name: AWS_S3_BUCKET_NAME
+                  value: ${SECRET_AWS_S3_BUCKET_NAME}
+                - name: AWS_REGION_NAME
+                  value: ${SECRET_AWS_REGION_NAME}
+                - name: AWS_S3_REGION
+                  value: ${SECRET_SENSEI_AWS_S3_REGION}
+                - name: STRIPE_PUBLISHABLE_KEY
+                  value: ${SECRET_SENSEI_STRIPE_TEST_PUBLISHABLE_KEY}
+                - name: STRIPE_SECRET_KEY
+                  value: ${SECRET_SENSEI_STRIPE_TEST_SECRET_KEY}
+                - name: STRIPE_WEBHOOK_SIGNING_SECRET
+                  value: ${SECRET_SENSEI_STRIPE_TEST_WEBHOOK_SIGNING_SECRET}
+                - name: CLOUDFLARE_TURNSTILE_SECRET_KEY
+                  value: ${SECRET_SENSEI_CLOUDFLARE_TURNSTILE_SECRET_KEY}
           restartPolicy: OnFailure
