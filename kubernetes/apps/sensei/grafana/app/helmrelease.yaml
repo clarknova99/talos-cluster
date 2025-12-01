@@ -125,6 +125,23 @@ spec:
               connMaxLifetime: 14400 # Grafana v5.4+
               postgresVersion: 1000 # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10
               timescaledb: false
+          - name: postgres-dev
+            type: postgres
+            #url: 192.168.3.42:5432
+            # use RO replica
+            url: postgres16vector-ro.database.svc.cluster.local:5432
+            user: ${SECRET_PGADMIN_USER}
+            secureJsonData:
+              password: ${SECRET_PGADMIN_PASSWORD}
+            jsonData:
+              database: sensei-dev
+              sslmode: 'disable' # disable/require/verify-ca/verify-full
+              maxOpenConns: 100 # Grafana v5.4+
+              maxIdleConns: 100 # Grafana v5.4+
+              maxIdleConnsAuto: true # Grafana v9.5.1+
+              connMaxLifetime: 14400 # Grafana v5.4+
+              postgresVersion: 1630 # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10
+              timescaledb: false
     sidecar:
       dashboards:
         enabled: true
