@@ -39,6 +39,7 @@ spec:
           enabled: true
           ingressClassName: internal
           annotations:
+            hajimari.io/enable: "true"
           hosts:
             - host: goldilocks.${SECRET_DOMAIN}
               paths:
