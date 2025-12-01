@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./actions-runner-controller.yaml
-  - ./authentik.yaml
+  # - ./authentik.yaml
   - ./backube.yaml
   - ./bitnami.yaml
   - ./bernd-schorgers.yaml
@@ -12,10 +12,11 @@ resources:
   - ./cloudnative-pg.yaml
   - ./coredns.yaml
   - ./external-dns.yaml
+  - ./fairwinds.yaml
   - ./fluent.yaml
   - ./grafana.yaml
   - ./hajimari.yaml
-  - ./influxdata.yaml 
+  - ./influxdata.yaml
   - ./ingress-nginx.yaml
   - ./intel.yaml
   - ./jetstack.yaml
@@ -27,7 +28,7 @@ resources:
   - ./piraeus.yaml
   - ./prefect.yaml
   - ./prometheus-community.yaml
-  - ./rook-ceph.yaml  
+  - ./rook-ceph.yaml
   - ./runix.yaml
   - ./spegel.yaml
   - ./stakater.yaml
