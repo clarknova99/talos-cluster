@@ -6,6 +6,13 @@ Requires:
 - Access to the Kubernetes API via kubectl in the current context.
 - Prometheus HTTP API endpoint (no extra Python dependencies needed).
 
+Output columns:
+- Deployment/Container: namespace/name/container.
+- CPU req / Mem req: current requests from the deployment spec (or "-" if none).
+- CPU lim / Mem lim: current limits from the deployment spec (or "-" if none).
+- CPU rec / Mem rec: recommended limits using the chosen quantile * headroom, rounded.
+- Details: quantile/window/headroom used for the recommendation.
+
 Example:
   ./scripts/recommend-resources.py \
     --prom-url http://prometheus.example.svc:9090 \
@@ -16,10 +23,8 @@ Example:
 """
 
 import argparse
-import datetime as dt
 import json
 import math
-import os
 import subprocess
 import sys
 import time
@@ -77,6 +82,40 @@ def build_rs_to_deploy() -> Dict[Tuple[str, str], Tuple[str, str]]:
             if owner.get("kind") == "Deployment":
                 mapping[(ns, rs_name)] = (ns, owner["name"])
     return mapping
+
+
+def list_deployments(namespaces: Optional[Iterable[str]]) -> List[dict]:
+    if namespaces:
+        args = ["get", "deploy"]
+        for ns in namespaces:
+            args.extend(["-n", ns])
+    else:
+        args = ["get", "deploy", "-A"]
+    args.extend(["-o", "json"])
+    return run_kubectl(args)
+
+
+def build_deploy_resources(namespaces: Optional[Iterable[str]]) -> Dict[Tuple[str, str, str], Dict[str, Optional[str]]]:
+    """Map (ns, deploy, container) to current requests/limits."""
+    data = list_deployments(namespaces)
+    result: Dict[Tuple[str, str, str], Dict[str, Optional[str]]] = {}
+    for item in data.get("items", []):
+        ns = item["metadata"]["namespace"]
+        name = item["metadata"]["name"]
+        for c in item.get("spec", {}).get("template", {}).get("spec", {}).get("containers", []):
+            cname = c.get("name")
+            if not cname:
+                continue
+            resources = c.get("resources", {})
+            req = resources.get("requests", {}) if isinstance(resources, dict) else {}
+            lim = resources.get("limits", {}) if isinstance(resources, dict) else {}
+            result[(ns, name, cname)] = {
+                "cpu_req": req.get("cpu"),
+                "mem_req": req.get("memory"),
+                "cpu_lim": lim.get("cpu"),
+                "mem_lim": lim.get("memory"),
+            }
+    return result
 
 
 def list_pods(namespaces: Optional[Iterable[str]]) -> List[dict]:
@@ -143,6 +182,10 @@ def format_mem(bytes_val: float) -> str:
     return f"{int(math.ceil(mib))}Mi"
 
 
+def pad(value: str, width: int) -> str:
+    return value.ljust(width)[:width]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--prom-url", required=True, help="Prometheus base URL (no trailing /api)")
@@ -167,6 +210,7 @@ def main() -> None:
     min_mem = parse_memory(args.min_memory)
 
     rs_map = build_rs_to_deploy()
+    deploy_resources = build_deploy_resources(args.namespace)
     pods_data = list_pods(args.namespace)
 
     deployments: Dict[Tuple[str, str], Dict[str, List[str]]] = {}
@@ -195,7 +239,18 @@ def main() -> None:
         sys.stderr.write("No deployments found from pods/replicasets\n")
         sys.exit(1)
 
-    print("Deployment/Container\tCPU (limit)\tMemory (limit)\tDetails")
+    columns = [
+        ("Deployment/Container", 40),
+        ("CPU req", 10),
+        ("Mem req", 10),
+        ("CPU lim", 10),
+        ("Mem lim", 10),
+        ("CPU rec", 10),
+        ("Mem rec", 10),
+        ("Details", 28),
+    ]
+    header = "  ".join(pad(name, width) for name, width in columns)
+    print(header)
     for (ns, deploy), containers in sorted(deployments.items()):
         for container, pod_refs in containers.items():
             pod_filter = "|".join({p for _, p in pod_refs})
@@ -218,12 +273,24 @@ def main() -> None:
             cpu_rec = max(cpu_q * args.headroom, min_cpu)
             mem_rec = max(mem_q * args.headroom, min_mem)
 
-            print(
-                f"{ns}/{deploy}/{container}\t"
-                f"{format_cpu(cpu_rec)}\t"
-                f"{format_mem(mem_rec)}\t"
-                f"p{int(args.quantile*100)} over {args.window}s @ {args.headroom}x"
-            )
+            res = deploy_resources.get((ns, deploy, container), {})
+            cpu_req = res.get("cpu_req") or "-"
+            mem_req = res.get("mem_req") or "-"
+            cpu_lim = res.get("cpu_lim") or "-"
+            mem_lim = res.get("mem_lim") or "-"
+            details = f"p{int(args.quantile*100)} over {args.window}s @ {args.headroom}x"
+
+            row = [
+                f"{ns}/{deploy}/{container}",
+                cpu_req,
+                mem_req,
+                cpu_lim,
+                mem_lim,
+                format_cpu(cpu_rec),
+                format_mem(mem_rec),
+                details,
+            ]
+            print("  ".join(pad(str(val), width) for val, (_, width) in zip(row, columns)))
 
 
 if __name__ == "__main__":
