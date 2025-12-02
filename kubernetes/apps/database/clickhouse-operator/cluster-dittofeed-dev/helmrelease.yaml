@@ -10,6 +10,7 @@ spec:
     templates:
       dataVolumeClaimTemplate: data-volumeclaim-template
       serviceTemplate: service-template
+      clusterServiceTemplate: cluster-service-template
   configuration:
     profiles:
       default/max_memory_usage: 6871947672  # 6.4GB (80% of 8GB limit)
