@@ -9,7 +9,7 @@ spec:
   defaults:
     templates:
       dataVolumeClaimTemplate: data-volumeclaim-template
-      serviceTemplate: service-template
+      #serviceTemplate: service-template
       clusterServiceTemplate: cluster-service-template
   configuration:
     profiles:
@@ -22,7 +22,7 @@ spec:
           replicasCount: 1
         templates:
           podTemplate: pod-template
-          clusterServiceTemplate: cluster-service-template  # Add this for LoadBalancer
+          # clusterServiceTemplate: cluster-service-template  # Add this for LoadBalancer
     files:
       config.d/path.xml: |
         <clickhouse>
@@ -71,15 +71,15 @@ spec:
               storage: 20Gi
           storageClassName: ceph-block
     serviceTemplates:
-      - name: service-template
-        generateName: dittofeed-dev-cluster
-        spec:
-          ports:
-            - name: http
-              port: 8123
-            - name: tcp
-              port: 9000
-          type: ClusterIP
+      # - name: service-template
+      #   generateName: dittofeed-dev-cluster
+      #   spec:
+      #     ports:
+      #       - name: http
+      #         port: 8123
+      #       - name: tcp
+      #         port: 9000
+      #     type: ClusterIP
       - name: cluster-service-template  # Add this new template
         generateName: dittofeed-dev-cluster
         spec:
