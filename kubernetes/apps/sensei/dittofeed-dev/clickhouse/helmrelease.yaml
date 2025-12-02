@@ -59,13 +59,6 @@ spec:
             ports:
               - name: backup-api
                 containerPort: 7171
-            volumeMounts:
-              - name: data
-                mountPath: /var/lib/clickhouse  # Must match ClickHouse data path
-                readOnly: false
-              - name: backups
-                mountPath: /backups
-                readOnly: false
             # securityContext:
             #   runAsUser: 101
             #   runAsGroup: 101
