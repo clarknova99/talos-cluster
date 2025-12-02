@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://kochhaus-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -11,7 +11,7 @@ spec:
   storage:
     size: 50Gi
     storageClass: openebs-hostpath
-    resizeInUseVolumes: False 
+    resizeInUseVolumes: False
   superuserSecret:
     name: cloudnative-pg-secrets
   enableSuperuserAccess: true
@@ -19,8 +19,9 @@ spec:
     parameters:
       max_connections: "400"
       shared_buffers: 256MB
-    # shared_preload_libraries:
-    #   - "vectors.so"      
+    shared_preload_libraries:
+      - "pg_stat_statements"
+      # - "vectors.so"
   nodeMaintenanceWindow:
     inProgress: false
     reusePVC: true
@@ -61,7 +62,7 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secrets
           key: SENSEI_AWS_SECRET_ACCESS_KEY
- 
+
   bootstrap:
     # initdb:
     #   postInitSQL:
