@@ -53,7 +53,7 @@ spec:
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_BACKUP_PATH: "/backups"
               # Add these to explicitly connect to ClickHouse via IPv4
-              CLICKHOUSE_HOST: "127.0.0.1"  # Use IPv4 explicitly instead of localhost
+              CLICKHOUSE_HOST: dittofeed-dev-clickhouse.sensei.svc.cluster.local  # Use IPv4 explicitly instead of localhost
               CLICKHOUSE_PORT: "9000"        # Explicit port
               CLICKHOUSE_USER: "dittofeed"   # Match the user from main container
             ports:
