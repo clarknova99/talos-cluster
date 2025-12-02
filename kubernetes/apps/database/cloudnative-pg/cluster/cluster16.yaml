@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://kochhaus-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -10,7 +10,7 @@ spec:
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
-    storageClass: openebs-hostpath  
+    storageClass: openebs-hostpath
   superuserSecret:
     name: cloudnative-pg-secrets
   enableSuperuserAccess: true
@@ -18,8 +18,9 @@ spec:
     parameters:
       max_connections: "400"
       shared_buffers: 256MB
-    # shared_preload_libraries:
-    #   - "vectors.so"      
+    shared_preload_libraries:
+      - "pg_stat_statements"
+      # - "vectors.so"
   nodeMaintenanceWindow:
     inProgress: false
     reusePVC: true
@@ -60,7 +61,7 @@ spec:
         secretAccessKey:
           name: cloudnative-pg-secrets
           key: AWS_SECRET_ACCESS_KEY
- 
+
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *previousCluster
