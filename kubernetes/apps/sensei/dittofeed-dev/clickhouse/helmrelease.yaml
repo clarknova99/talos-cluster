@@ -36,29 +36,29 @@ spec:
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_DO_NOT_CHOWN: "1"
-          clickhouse-backup:
-            image:
-              repository: altinity/clickhouse-backup
-              tag: 2.6.0
-            command:
-              - /bin/clickhouse-backup
-              - server
-            env:
-              LOG_LEVEL: "info"
-              ALLOW_EMPTY_BACKUPS: "true"
-              API_LISTEN: "0.0.0.0:7171"
-              BACKUPS_TO_KEEP_LOCAL: "3"
-              BACKUPS_TO_KEEP_REMOTE: "0"
-              CLICKHOUSE_SKIP_TABLES: "system.*,INFORMATION_SCHEMA.*"
-              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-              CLICKHOUSE_BACKUP_PATH: "/backups"
-              # Add these to explicitly connect to ClickHouse via IPv4
-              CLICKHOUSE_HOST: dittofeed-dev-clickhouse.sensei.svc.cluster.local  # Use IPv4 explicitly instead of localhost
-              CLICKHOUSE_PORT: "9000"        # Explicit port
-              CLICKHOUSE_USER: "dittofeed"   # Match the user from main container
-            ports:
-              - name: backup-api
-                containerPort: 7171
+          # clickhouse-backup:
+          #   image:
+          #     repository: altinity/clickhouse-backup
+          #     tag: 2.6.0
+          #   command:
+          #     - /bin/clickhouse-backup
+          #     - server
+          #   env:
+          #     LOG_LEVEL: "info"
+          #     ALLOW_EMPTY_BACKUPS: "true"
+          #     API_LISTEN: "0.0.0.0:7171"
+          #     BACKUPS_TO_KEEP_LOCAL: "3"
+          #     BACKUPS_TO_KEEP_REMOTE: "0"
+          #     CLICKHOUSE_SKIP_TABLES: "system.*,INFORMATION_SCHEMA.*"
+          #     CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+          #     CLICKHOUSE_BACKUP_PATH: "/backups"
+          #     # Add these to explicitly connect to ClickHouse via IPv4
+          #     CLICKHOUSE_HOST: dittofeed-dev-clickhouse.sensei.svc.cluster.local  # Use IPv4 explicitly instead of localhost
+          #     CLICKHOUSE_PORT: "9000"        # Explicit port
+          #     CLICKHOUSE_USER: "dittofeed"   # Match the user from main container
+          #   ports:
+          #     - name: backup-api
+          #       containerPort: 7171
             # securityContext:
             #   runAsUser: 101
             #   runAsGroup: 101
