@@ -36,6 +36,26 @@ spec:
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_DO_NOT_CHOWN: "1"
+          clickhouse-backup:
+            image:
+              repository: altinity/clickhouse-backup
+              tag: 2.6.0
+            command:
+              - /bin/clickhouse-backup
+              - server
+            env:
+              LOG_LEVEL: "info"
+              ALLOW_EMPTY_BACKUPS: "true"
+              API_LISTEN: "0.0.0.0:7171"
+              BACKUPS_TO_KEEP_LOCAL: "3"
+              BACKUPS_TO_KEEP_REMOTE: "0"  # Disable remote storage, use local NFS
+              CLICKHOUSE_SKIP_TABLES: "system.*,INFORMATION_SCHEMA.*"
+              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+              # Override backup path to use the NFS volume
+              CLICKHOUSE_BACKUP_PATH: "/backups"
+            ports:
+              - name: backup-api
+                containerPort: 7171
             # securityContext:
             #   runAsUser: 101
             #   runAsGroup: 101
@@ -99,4 +119,11 @@ spec:
           dittofeed-dev-clickhouse:
             app:
               - path: /var/lib/clickhouse
-
+      # Add new NFS volume for backups
+      backups:
+        enabled: true
+        type: nfs
+        server: 192.168.1.3
+        path: /volume1/network-storage/cluster/dittofeed-dev/clickhouse-backups
+        globalMounts:
+          - path: /backups
