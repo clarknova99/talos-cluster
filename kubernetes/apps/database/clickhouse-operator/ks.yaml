@@ -24,7 +24,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app clickhouse-cluster
+  name: &app clickhouse-dittofeed-dev
   namespace: flux-system
 spec:
   targetNamespace: database
@@ -32,8 +32,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg
-  path: ./kubernetes/apps/database/cloudnative-pg/cluster
+    - name: clickhouse-operator
+  path: ./kubernetes/apps/database/clickhouse-operator/cluster-dittofeed-dev
   prune: true
   sourceRef:
     kind: GitRepository

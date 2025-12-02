@@ -1,0 +1,107 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Altinity/clickhouse-operator/master/deploy/helm/clickhouse-operator/crds/CustomResourceDefinition-clickhouseinstallations.clickhouse.altinity.com.yaml
+---
+apiVersion: clickhouse.altinity.com/v1
+kind: ClickHouseInstallation
+metadata:
+  name: clickhouse-dittofeed-dev
+  namespace: database
+spec:
+  defaults:
+    templates:
+      dataVolumeClaimTemplate: data-volumeclaim-template
+      serviceTemplate: service-template
+  configuration:
+    profiles:
+      default/max_memory_usage: 6871947672  # 6.4GB (80% of 8GB limit)
+      default/max_bytes_before_external_group_by: 4294967296  # 4GB
+    clusters:
+      - name: dittofeed-dev-cluster
+        layout:
+          shardsCount: 1
+          replicasCount: 1
+        templates:
+          podTemplate: pod-template
+    files:
+      config.d/path.xml: |
+        <clickhouse>
+          <path>/var/lib/clickhouse/</path>
+        </clickhouse>
+      config.d/server.xml: |
+        <clickhouse>
+          <http_port>8123</http_port>
+          <tcp_port>9000</tcp_port>
+          <max_connections>4096</max_connections>
+          <keep_alive_timeout>3</keep_alive_timeout>
+          <max_concurrent_queries>100</max_concurrent_queries>
+          <dictionaries_lazy_load>1</dictionaries_lazy_load>
+        </clickhouse>
+      config.d/logger.xml: |
+        <clickhouse>
+          <logger>
+            <level>warning</level>
+            <console>true</console>
+          </logger>
+        </clickhouse>
+      users.d/dittofeed-dev.xml: |
+        <clickhouse>
+          <users>
+            <dittofeed-dev>
+              <password from_env="CLICKHOUSE_PASSWORD" />
+              <networks>
+                <ip>::/0</ip>
+              </networks>
+              <profile>default</profile>
+              <quota>default</quota>
+              <access_management>1</access_management>
+            </dittofeed-dev>
+          </users>
+        </clickhouse>
+  templates:
+    volumeClaimTemplates:
+      - name: data-volumeclaim-template
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+          storageClassName: ceph-block
+    serviceTemplates:
+      - name: service-template
+        generateName: dittofeed-dev-cluster
+        spec:
+          ports:
+            - name: http
+              port: 8123
+            - name: tcp
+              port: 9000
+          # type: ClusterIP
+          type: LoadBalancer
+          annotations:
+            io.cilium/lb-ipam-ips: 192.168.3.27
+    podTemplates:
+      - name: pod-template
+        spec:
+          containers:
+            - name: clickhouse
+              image: clickhouse/clickhouse-server:25.11
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 2Gi
+                limits:
+                  memory: 8Gi
+              securityContext:
+                runAsUser: 101
+                runAsGroup: 101
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+              env:
+                CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 101
+            fsGroup: 101
+            fsGroupChangePolicy: OnRootMismatch
