@@ -21,6 +21,7 @@ spec:
           replicasCount: 1
         templates:
           podTemplate: pod-template
+        clusterServiceTemplate: cluster-service-template  # Add this for LoadBalancer
     files:
       config.d/path.xml: |
         <clickhouse>
@@ -28,8 +29,10 @@ spec:
         </clickhouse>
       config.d/server.xml: |
         <clickhouse>
+          <listen_host>0.0.0.0</listen_host>  # Explicitly bind to IPv4 only
           <http_port>8123</http_port>
           <tcp_port>9000</tcp_port>
+          <interserver_http_port>9009</interserver_http_port>
           <max_connections>4096</max_connections>
           <keep_alive_timeout>3</keep_alive_timeout>
           <max_concurrent_queries>100</max_concurrent_queries>
@@ -75,8 +78,16 @@ spec:
               port: 8123
             - name: tcp
               port: 9000
-          # type: ClusterIP
-          type: LoadBalancer
+          type: ClusterIP
+      - name: cluster-service-template  # Add this new template
+        generateName: dittofeed-dev-cluster
+        spec:
+          ports:
+            - name: http
+              port: 8123
+            - name: tcp
+              port: 9000
+          type: LoadBalancer  # This will be the external LoadBalancer
           annotations:
             io.cilium/lb-ipam-ips: 192.168.3.27
     podTemplates:
