@@ -21,7 +21,7 @@ spec:
           replicasCount: 1
         templates:
           podTemplate: pod-template
-        clusterServiceTemplate: cluster-service-template  # Add this for LoadBalancer
+          clusterServiceTemplate: cluster-service-template  # Add this for LoadBalancer
     files:
       config.d/path.xml: |
         <clickhouse>
