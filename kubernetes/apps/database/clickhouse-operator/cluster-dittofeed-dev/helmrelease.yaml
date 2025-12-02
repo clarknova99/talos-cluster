@@ -99,7 +99,8 @@ spec:
                 capabilities:
                   drop: ["ALL"]
               env:
-                CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+                - name: CLICKHOUSE_PASSWORD
+                  value: ${SECRET_CLICKHOUSE_PASSWORD}
           securityContext:
             runAsUser: 101
             runAsGroup: 101
