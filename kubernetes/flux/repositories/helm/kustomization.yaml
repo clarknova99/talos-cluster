@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./actions-runner-controller.yaml
   # - ./authentik.yaml
+  - ./altinity.yaml
   - ./backube.yaml
   - ./bitnami.yaml
   - ./bernd-schorgers.yaml
