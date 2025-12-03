@@ -31,27 +31,6 @@ spec:
         statefulset:
           podManagementPolicy: OrderedReady
 
-        initContainers:
-          fix-permissions:
-            image:
-              repository: busybox
-              tag: latest
-              pullPolicy: IfNotPresent
-            command:
-              - sh
-              - -c
-              - |
-                echo "Fixing ClickHouse data directory ownership..."
-                chown -R 101:101 /var/lib/clickhouse 2>/dev/null || true
-                echo "Cleaning up any stuck tmp directories..."
-                find /var/lib/clickhouse/store -name '*delete_tmp*' -type d -exec rm -rf {} + 2>/dev/null || true
-                find /var/lib/clickhouse/store -name '*tmp_merge*' -type d -exec rm -rf {} + 2>/dev/null || true
-                echo "Permission fix complete."
-            securityContext:
-              runAsUser: 0
-              runAsGroup: 0
-              runAsNonRoot: false
-
         containers:
           app:
             image:
@@ -103,15 +82,15 @@ spec:
 
 
 
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 101
-        runAsGroup: 101
-        fsGroup: 101
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 100, 101, 1025]
-        seccompProfile: { type: RuntimeDefault }
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 101
+    #     runAsGroup: 101
+    #     fsGroup: 101
+    #     fsGroupChangePolicy: OnRootMismatch
+    #     supplementalGroups: [44, 100, 101, 1025]
+    #     seccompProfile: { type: RuntimeDefault }
 
     service:
       app:
