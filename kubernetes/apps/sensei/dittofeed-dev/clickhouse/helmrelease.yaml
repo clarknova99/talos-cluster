@@ -66,7 +66,7 @@ spec:
               S3_BUCKET: "dittofeed-backup"  # Your S3 bucket name
               S3_ACCESS_KEY: "${SECRET_SENSEI_AWS_ACCESS_KEY_ID}"  # AWS Access Key ID
               S3_SECRET_KEY: "${SECRET_SENSEI_AWS_SECRET_ACCESS_KEY}"  # AWS Secret Access Key
-              S3_REGION: "${SECRET_ASECRET_SENSEI_AWS_REGION_NAMEWS_S3_REGION}"  # AWS region (e.g., us-east-1)
+              S3_REGION: "${SECRET_SENSEI_AWS_S3_REGION}"  # AWS region (e.g., us-east-1)
               S3_ENDPOINT: ""  # Leave empty for AWS S3 (uses default AWS endpoints)
               S3_PATH: "dittofeed-dev/clickhouse/"  # Optional: prefix path in bucket
               S3_DISABLE_SSL: "false"  # Use HTTPS for AWS S3
