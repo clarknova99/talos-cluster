@@ -72,7 +72,7 @@ spec:
               S3_SECRET_KEY: "${SECRET_SENSEI_AWS_SECRET_ACCESS_KEY}"  # AWS Secret Access Key
               S3_REGION: "${SECRET_SENSEI_AWS_S3_REGION}"  # AWS region (e.g., us-east-1)
               S3_ENDPOINT: ""  # Leave empty for AWS S3 (uses default AWS endpoints)
-              S3_PATH: "/clickhouse/"  # Optional: prefix path in bucket
+              S3_PATH: "clickhouse/"  # Optional: prefix path in bucket
               S3_DISABLE_SSL: "false"  # Use HTTPS for AWS S3
               S3_FORCE_PATH_STYLE: "false"  # Use virtual-hosted-style for AWS S3
 
