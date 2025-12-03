@@ -31,6 +31,27 @@ spec:
         statefulset:
           podManagementPolicy: OrderedReady
 
+        initContainers:
+          fix-permissions:
+            image:
+              repository: busybox
+              tag: latest
+              pullPolicy: IfNotPresent
+            command:
+              - sh
+              - -c
+              - |
+                echo "Fixing ClickHouse data directory ownership..."
+                chown -R 101:101 /var/lib/clickhouse 2>/dev/null || true
+                echo "Cleaning up any stuck tmp directories..."
+                find /var/lib/clickhouse/store -name '*delete_tmp*' -type d -exec rm -rf {} + 2>/dev/null || true
+                find /var/lib/clickhouse/store -name '*tmp_merge*' -type d -exec rm -rf {} + 2>/dev/null || true
+                echo "Permission fix complete."
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+
         containers:
           app:
             image:
@@ -165,6 +186,11 @@ spec:
                 <!-- Set background pool sizes to prevent configuration conflicts -->
                 <background_pool_size>25</background_pool_size>
                 <background_schedule_pool_size>25</background_schedule_pool_size>
+
+                <!-- Disable merges for system tables to prevent corruption -->
+                <merge_tree>
+                    <max_bytes_to_merge_at_max_space_in_pool>161061273600</max_bytes_to_merge_at_max_space_in_pool>
+                </merge_tree>
 
 
 
