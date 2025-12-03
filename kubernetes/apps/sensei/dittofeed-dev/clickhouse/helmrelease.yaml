@@ -50,6 +50,7 @@ spec:
               BACKUPS_TO_KEEP_LOCAL: "3"
               BACKUPS_TO_KEEP_REMOTE: "0"  # Disable remote storage, use local NFS
               CLICKHOUSE_SKIP_TABLES: "system.*,INFORMATION_SCHEMA.*"
+              CLICKHOUSE_USERNAME: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               # Override backup path to use the NFS volume
               CLICKHOUSE_BACKUP_PATH: "/backups"
