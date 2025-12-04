@@ -91,6 +91,15 @@ spec:
     #     fsGroupChangePolicy: OnRootMismatch
     #     supplementalGroups: [44, 100, 101, 1025]
     #     seccompProfile: { type: RuntimeDefault }
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values: ["mars"]
 
     service:
       app:
