@@ -38,7 +38,7 @@ model_list:
   - model_name: gemini-2.5-pro
     litellm_params:
       model: gemini/gemini-2.5-pro
-      api_key: ${SECRET_SENSEI_GEMINI_KEY}
+      api_key: ${SECRET_SENSEI_GEMINI_KEY2}
   - model_name: openrouter-openai-gpt-oss-120b
     litellm_params:
       model: openrouter/openai/gpt-oss-120b
@@ -68,7 +68,7 @@ general_settings:
 
 router_settings:
   fallbacks: [
-    # {"gemini-2.5-flash-preview-05-20": ["databricks-llama-4-maverick"]},
+    {"gemini-3-pro-preview": ["gemini-2.5-pro", "databricks-gpt-oss-120b"]},
     {"openrouter-openai-gpt-oss-120b": ["llama-3.3-70b-versatile", "openrouter-openai-gpt-oss-20b":]},
     {"groq-llama-4-scout-17b-16e-instruct": ["llama-3.3-70b-versatile", "groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
     {"llama-3.3-70b-versatile": ["groq-deepseek-r1-distill-llama-70b", "llama3-70b-8192", "gpt-4o-mini"]},
