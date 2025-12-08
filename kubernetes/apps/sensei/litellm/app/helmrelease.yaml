@@ -49,6 +49,7 @@ spec:
               GENERIC_USERINFO_ENDPOINT: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
               GENERIC_USER_PROVIDER_ATTRIBUTE: authelia
               PROXY_ADMIN_ID: ${SECRET_MQTT_USERNAME}
+              PROXY_LOGOUT_URL: https://auth.${SECRET_DOMAIN}/api/logout
             envFrom: &envFrom
               - secretRef:
                   name: litellm-secrets
