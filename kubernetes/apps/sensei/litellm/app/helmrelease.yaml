@@ -40,11 +40,14 @@ spec:
               UI_USERNAME: ${SECRET_LITELLM_UI_USERNAME}
               UI_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
               PROXY_BASE_URL: https://litellm.${SECRET_DOMAIN_TWO}
+              GENERIC_SCOPE: openid profile email groups
+              GENERIC_CLIENT_STATE: some-state
               GENERIC_CLIENT_ID: litellm
               GENERIC_CLIENT_SECRET:  ${SECRET_OAUTH_CLIENT_SECRET}
               GENERIC_AUTHORIZATION_ENDPOINT: https://auth.${SECRET_DOMAIN}/api/oidc/authorization
               GENERIC_TOKEN_ENDPOINT: https://auth.${SECRET_DOMAIN}/api/oidc/token
               GENERIC_USERINFO_ENDPOINT: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
+              GENERIC_USER_PROVIDER_ATTRIBUTE: authelia
             envFrom: &envFrom
               - secretRef:
                   name: litellm-secrets
