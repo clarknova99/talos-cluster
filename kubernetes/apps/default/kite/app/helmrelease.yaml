@@ -41,6 +41,7 @@ spec:
               DB_TYPE: postgres
               DB_DSN: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/kite
               DEBUG: true
+              ANONYMOUS_USER_ENABLED: true
 
             # probes:
               # livenessProbe:
