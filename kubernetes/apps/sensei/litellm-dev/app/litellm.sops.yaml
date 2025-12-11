@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: litellm-secrets
+    namespace: sensei
+# ## sops --encrypt --in-place ./kubernetes/apps/default/lldap/app/lldap.sops.yaml
+# ## sops --decrypt ./kubernetes/apps/default/lldap/app/lldap.sops.yaml | kubectl apply -f -
+stringData:
+    LITELLM_MASTER_KEY: ENC[AES256_GCM,data:nUDLyjqqMg==,iv:L0+KHE/RXFXSa3LsXsC18fVDz1UxuRPkiAQo04rEeYE=,tag:BvRiDrxybt68JS3+g9/cWA==,type:str]
+    LITELLM_UI_USERNAME: ENC[AES256_GCM,data:Dd9sFuUu,iv:6pCRI7fod++9YHQ/lPod3OYxZsgPKAnoLsKg1Rpwgus=,tag:OmNytR5fbB6OrHY50Ltinw==,type:str]
+    LITELLM_UI_PASSWORD: ENC[AES256_GCM,data:LvR8FcNK,iv:Cpz96cQB9qMsHsGncL6vv3TrUB8rh3Ep2VrEvF0/jjg=,tag:OQHipVzQ7RIHEHKI29D5HA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAwNHB6TGNjdlR6OFlmWG1s
+            K0ZvK2hyUVRkU3QrenVIZWdZU21oYXUxa0FnCndNL3FpempsV0d5N3poMTFZdXRs
+            N1FMT1pNQTcyeXY0bHRNQzliUUVyaXcKLS0tIGU0R1hRejAzT2hycEROb21MMWhL
+            QktEZ2F3TlFaeXlLYXdJWURvaXpxNHMKKn+TZy2D4OxznFDETFXceZkcIq08IZpx
+            cQqqNxGbiEgEc7Z3zen0ourv1xCFE9/+nDA2PEQVZUuElZCwyv21yA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-01-27T23:04:46Z"
+    mac: ENC[AES256_GCM,data:2OYZyEWA6ELHErhvtKZiKhgd+3nhGNWXYkoNlnFwKbrwZLgrXDc5Ez50zQYRl7/qbdTtcNfmKU3/84X1+JWmDVe9ELCiWbwnuOkQucavbzVgn2OmCUU3VLOev0f00bdvZc3cfP/co1dxWlyuOvLG8yyQ3nZC/YfoWjfRkXPxlJo=,iv:aXREQNBVa4Ml9Vx9UlQJ9YLe3ZW/BLiug3FK1/TQ5qs=,tag:5QR+wb4rika1uL1teFhtBA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1

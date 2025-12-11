@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: litellm-dev
+  namespace: sensei
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      litellm-dev:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: ghcr.io/berriai/litellm
+              tag: main-stable@sha256:129f35725ea5a5e3a2f96b7e7eb39d1377096999a66b6748cab42b07e58289c3
+            env:
+              DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/litellm-dev
+              STORE_MODEL_IN_DB: "True"
+              UI_USERNAME: ${SECRET_LITELLM_UI_USERNAME}
+              UI_PASSWORD: ${SECRET_LITELLM_UI_PASSWORD}
+              PROXY_BASE_URL: https://litellm-dev.${SECRET_DOMAIN_TWO}
+              GENERIC_SCOPE: openid profile email groups
+              GENERIC_CLIENT_STATE: some-state
+              GENERIC_CLIENT_ID: litellm
+              GENERIC_CLIENT_SECRET:  ${SECRET_OAUTH_CLIENT_SECRET}
+              GENERIC_AUTHORIZATION_ENDPOINT: https://auth.${SECRET_DOMAIN}/api/oidc/authorization
+              GENERIC_TOKEN_ENDPOINT: https://auth.${SECRET_DOMAIN}/api/oidc/token
+              GENERIC_USERINFO_ENDPOINT: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
+              GENERIC_USER_PROVIDER_ATTRIBUTE: authelia
+              PROXY_ADMIN_ID: ${SECRET_MQTT_USERNAME}
+              PROXY_LOGOUT_URL: https://auth.${SECRET_DOMAIN}/api/logout
+            envFrom: &envFrom
+              - secretRef:
+                  name: litellm-secrets
+            args:
+              - "--config"
+              - "/app/config.yaml"
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: "In"
+                    values: ["earth"]
+    service:
+      app:
+        controller: litellm-dev
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: litellm-dev.${SECRET_DOMAIN_TWO}
+          io.cilium/lb-ipam-ips: 192.168.3.43
+        ports:
+          http:
+            port: 4000
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+          nginx.ingress.kubernetes.io/app-root: /ui
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:math-compass
+        className: external
+        enabled: true
+        hosts:
+          - host: litellm-dev.${SECRET_DOMAIN_TWO}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: 4000
+        tls:
+          - hosts:
+              - litellm-dev.${SECRET_DOMAIN_TWO}
+    persistence:
+      config-file:
+        type: configMap
+        name: litellm-configmap
+        globalMounts:
+          - path: /app/config.yaml
+            subPath: config.yaml
+            readOnly: true
