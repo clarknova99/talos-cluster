@@ -42,7 +42,7 @@ spec:
               PROXY_BASE_URL: https://litellm-dev.${SECRET_DOMAIN_TWO}
               GENERIC_SCOPE: openid profile email groups
               GENERIC_CLIENT_STATE: some-state
-              GENERIC_CLIENT_ID: litellm
+              GENERIC_CLIENT_ID: litellm-dev
               GENERIC_CLIENT_SECRET:  ${SECRET_OAUTH_CLIENT_SECRET}
               GENERIC_AUTHORIZATION_ENDPOINT: https://auth.${SECRET_DOMAIN}/api/oidc/authorization
               GENERIC_TOKEN_ENDPOINT: https://auth.${SECRET_DOMAIN}/api/oidc/token
