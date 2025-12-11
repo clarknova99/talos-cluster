@@ -32,13 +32,13 @@ spec:
               repository: ghcr.io/cyborgtests/playwright-reports-server
               tag: 5.7.4
     service:
-      web:
+      app:
         controller: playwright
         ports:
           http:
             port: 3000
     ingress:
-      web:
+      app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
