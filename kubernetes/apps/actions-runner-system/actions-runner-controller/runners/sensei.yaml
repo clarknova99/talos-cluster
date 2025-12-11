@@ -85,8 +85,10 @@ spec:
 
                 # Install docker-compose plugin
                 COMPOSE_VERSION=v5.0.0
+                ARCH=$(uname -m)
                 mkdir -p /usr/local/lib/docker/cli-plugins
-                wget -q "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-$(uname -m)" -O /usr/local/lib/docker/cli-plugins/docker-compose
+                echo "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-${ARCH}"
+                wget -q "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-${ARCH}" -O /usr/local/lib/docker/cli-plugins/docker-compose
                 chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
                 # Wait for dockerd to exit
