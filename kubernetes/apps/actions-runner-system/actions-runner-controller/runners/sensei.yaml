@@ -72,6 +72,25 @@ spec:
             env:
               - name: DOCKER_TLS_CERTDIR
                 value: /certs
+            command:
+              - sh
+              - -c
+              - |
+                # Start dockerd in background
+                dockerd-entrypoint.sh &
+                DOCKERD_PID=$!
+
+                # Wait for docker to be ready
+                until docker info >/dev/null 2>&1; do sleep 1; done
+
+                # Install docker-compose plugin
+                COMPOSE_VERSION=v2.32.0
+                mkdir -p /usr/local/lib/docker/cli-plugins
+                wget -q "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-$(uname -m)" -O /usr/local/lib/docker/cli-plugins/docker-compose
+                chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+                # Wait for dockerd to exit
+                wait $DOCKERD_PID
             volumeMounts:
               - mountPath: /certs
                 name: docker-certs
