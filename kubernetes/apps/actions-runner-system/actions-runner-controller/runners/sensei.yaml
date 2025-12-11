@@ -43,7 +43,7 @@ spec:
       spec:
         initContainers:
           - name: install-compose
-            image: docker:28-dind
+            image: docker:29.1.2-dind
             command:
               - sh
               - -c
