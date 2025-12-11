@@ -72,6 +72,7 @@ spec:
             env:
               - name: DOCKER_TLS_CERTDIR
                 value: /certs
+            #wget -q "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-${ARCH}" -O /usr/local/lib/docker/cli-plugins/docker-compose
             command:
               - sh
               - -c
@@ -88,7 +89,7 @@ spec:
                 ARCH=$(uname -m)
                 mkdir -p /usr/local/lib/docker/cli-plugins
                 echo "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-${ARCH}"
-                wget -q "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-${ARCH}" -O /usr/local/lib/docker/cli-plugins/docker-compose
+                wget -q "https://github.com/docker/compose/releases/download/v5.0.0/docker-compose-linux-x86_64" -O /usr/local/lib/docker/cli-plugins/docker-compose
                 chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
                 # Wait for dockerd to exit
