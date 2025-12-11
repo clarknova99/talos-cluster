@@ -61,7 +61,6 @@ spec:
               LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
               LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: true
               LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
-              LANGFUSE_MEDIA_UPLOAD_ENABLED: false
               LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse-dev
               LANGFUSE_S3_MEDIA_UPLOAD_REGION: us-east-1
@@ -91,7 +90,6 @@ spec:
               LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
               LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: true
               LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
-
               LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
               LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse-dev
               LANGFUSE_S3_MEDIA_UPLOAD_REGION: us-east-1
