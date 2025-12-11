@@ -82,7 +82,7 @@ spec:
                 subPath: docker-compose
                 readOnly: true
           - name: dind
-            image: docker:28-dind
+            image: docker:29.1.2-dind
             securityContext:
               privileged: true
             env:
