@@ -84,7 +84,7 @@ spec:
                 until docker info >/dev/null 2>&1; do sleep 1; done
 
                 # Install docker-compose plugin
-                COMPOSE_VERSION=v2.32.0
+                COMPOSE_VERSION=v5.0.0
                 mkdir -p /usr/local/lib/docker/cli-plugins
                 wget -q "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-$(uname -m)" -O /usr/local/lib/docker/cli-plugins/docker-compose
                 chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
