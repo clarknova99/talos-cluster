@@ -50,6 +50,12 @@ spec:
               DITTOFEED_IDENTIFY_ENDPOINT: https://dittofeed.${SECRET_DOMAIN_TWO}/api/public/apps/identify
               DITTOFEED_WORKSPACE_ID: ${SECRET_DITTOFEED_PROD_WORKSPACE_ID}
               DITTOFEED_ADMIN_TOKEN: ${SECRET_DITTOFEED_PROD_ADMIN_TOKEN}
+              AWS_ACCESS_KEY_ID: ${SECRET_AWS_ACCESS_KEY_ID}
+              AWS_SECRET_ACCESS_KEY: ${SECRET_AWS_SECRET_ACCESS_KEY}
+              AWS_REGION: us-east-1
+              S3_BUCKET: sensei-tests
+              ADMIN_API_KEY: ${SECRET_SENSEI_API_KEY}
+              GITHUB_REPO: ${SECRET_SENSEI_API_KEY}
               # probes:
               #   liveness:
               #     enabled: true
