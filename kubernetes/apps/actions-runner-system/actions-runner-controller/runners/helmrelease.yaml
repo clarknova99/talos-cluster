@@ -22,10 +22,10 @@ spec:
     remediation:
       retries: 3
   uninstall:
-    keepHistory: false      
+    keepHistory: false
   values:
     githubConfigUrl: https://github.com/clarknova99/talos-cluster
-    githubConfigSecret: actions-runner-runner-secrets    
+    githubConfigSecret: actions-runner-runner-secrets
     minRunners: 1
     maxRunners: 3
     containerMode:
@@ -43,7 +43,7 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/home-operations/actions-runner:2.328.0@sha256:c43873ef6800697dfa181582f6bb02366a9a0afb52026bde7bad7c71b21b1052
+            image: ghcr.io/home-operations/actions-runner:2.330.0@sha256:c43873ef6800697dfa181582f6bb02366a9a0afb52026bde7bad7c71b21b1052
             command: ["/home/runner/run.sh"]
             env:
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
