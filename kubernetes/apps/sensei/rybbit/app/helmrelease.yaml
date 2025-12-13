@@ -31,7 +31,7 @@ spec:
           backend:
             image:
               repository: ghcr.io/rybbit-io/rybbit-backend
-              tag: v2.2.2
+              tag: v2.2.3
             env:
               NODE_ENV: production
               #CLICKHOUSE_HOST: http://rybbit-clickhouse.sensei.svc.cluster.local:8123
