@@ -26,8 +26,8 @@ spec:
   values:
     githubConfigUrl: https://github.com/clarknova99/project-sensei
     githubConfigSecret: actions-runner-runner-secrets
-    minRunners: 1
-    maxRunners: 3
+    minRunners: 3
+    maxRunners: 6
     containerMode:
       type: kubernetes
       kubernetesModeWorkVolumeClaim:
