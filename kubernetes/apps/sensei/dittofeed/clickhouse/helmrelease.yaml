@@ -39,7 +39,7 @@ spec:
           clickhouse-backup:
             image:
               repository: altinity/clickhouse-backup
-              tag: 2.6.0
+              tag: 2.6.41
             # - server for API triggered backups, - watch for scheduled backups
             command:
               - /bin/clickhouse-backup
