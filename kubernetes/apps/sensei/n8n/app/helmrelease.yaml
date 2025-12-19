@@ -38,7 +38,7 @@ spec:
               N8N_HOST: &host "n8n.${SECRET_DOMAIN_TWO}"
               WEBHOOK_URL: "https://n8n.${SECRET_DOMAIN_TWO}"
               N8N_ENCRYPTION_KEY: ${SECRET_N8N_ENCRYPTION_KEY}
-              N8N_LOG_LEVEL: verbose
+              N8N_LOG_LEVEL: debug
               N8N_LOG_OUTPUT: console, file
               N8N_PERSONALIZATION_ENABLED: false
               N8N_VERSION_NOTIFICATIONS_ENABLED: true
