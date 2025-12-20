@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.2.0
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -52,8 +52,8 @@ spec:
     route:
       main:
         parentRefs:
-          - name: external-gateway
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
         hostnames:
           - whoami.${SECRET_DOMAIN}
