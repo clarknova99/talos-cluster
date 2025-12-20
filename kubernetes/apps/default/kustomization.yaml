@@ -12,4 +12,4 @@ resources:
   # - ./mosquitto/ks.yaml
   # - ./troddit/ks.yaml
   - ./website/ks.yaml
-  # - ./whoami/ks.yaml
+  - ./whoami/ks.yaml
