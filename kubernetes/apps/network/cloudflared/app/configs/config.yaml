@@ -4,10 +4,13 @@ originRequest:
   noHappyEyeballs: false          # Improves connection reliability
 
 ingress:
-  # - hostname: "whoami.${SECRET_DOMAIN}"
-  #   service: https://cilium-gateway-external-gateway.kube-system.svc.cluster.local:443
-  #   originRequest:
-  #     originServerName: "external-gateway.${SECRET_DOMAIN}"
+  # Envoy Gateway rules (commented out - uncomment as you migrate services)
+  - hostname: "whoami.${SECRET_DOMAIN}"
+    service: https://envoy-network-envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "whoami.${SECRET_DOMAIN}"
+
+  # Ingress-NGINX rules (current production)
   - hostname: "${SECRET_DOMAIN}"
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
     originRequest:
@@ -24,11 +27,6 @@ ingress:
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
     originRequest:
       originServerName: "external.${SECRET_DOMAIN_TWO}"
-  - service: http_status:404
 
-  # Add new rules for Envoy Gateway (commented out initially)
-  # Uncomment these as you migrate services
-  - hostname: "whoami.${SECRET_DOMAIN}"  # Specific service
-    service: https://envoy-network-envoy-external.network.svc.cluster.local:443
-    originRequest:
-      originServerName: "whoami.${SECRET_DOMAIN}"
+  # Catch-all rule - MUST be last
+  - service: http_status:404
