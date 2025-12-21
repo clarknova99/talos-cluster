@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.2.0
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -39,34 +39,46 @@ spec:
               tag: 1.28.0
     service:
       app:
-        # controller: web
         ports:
           http:
             port: 80
-    ingress:
-      app:
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:web
-        className: external
-        hosts:
-          - host: www.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 80
-          - host: ${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 80
-        tls:
-          - hosts:
-              - ${SECRET_DOMAIN}
-              - www.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        hostnames:
+          - ${SECRET_DOMAIN}
+          - www.${SECRET_DOMAIN}
+    # ingress:
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:web
+    #     className: external
+    #     hosts:
+    #       - host: www.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: 80
+    #       - host: ${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: 80
+    #     tls:
+    #       - hosts:
+    #           - ${SECRET_DOMAIN}
+    #           - www.${SECRET_DOMAIN}
             # secretName: "${SECRET_DOMAIN/./-}-production-tls"
     persistence:
       config:
