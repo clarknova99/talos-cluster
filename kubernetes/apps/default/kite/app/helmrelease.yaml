@@ -81,23 +81,35 @@ spec:
         ports:
           http:
             port: 8080
-    ingress:
-      app:
-        enabled: true
-        className: internal
+    route:
+      main:
         annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           hajimari.io/enable: "true"
-          hajimari.io/icon: "account-group"
-        hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 8080
-        tls:
-          - hosts:
-              - *host
+          hajimari.io/icon: mdi:web
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - kite.${SECRET_DOMAIN}
+    # ingress:
+    #   app:
+    #     enabled: true
+    #     className: internal
+    #     annotations:
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: "account-group"
+    #     hosts:
+    #       - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: 8080
+    #     tls:
+    #       - hosts:
+    #           - *host
 
     persistence:
       config:
