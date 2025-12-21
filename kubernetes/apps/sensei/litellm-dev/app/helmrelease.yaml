@@ -98,7 +98,7 @@ spec:
     persistence:
       config-file:
         type: configMap
-        name: litellm-configmap
+        name: litellm-dev-configmap
         globalMounts:
           - path: /app/config.yaml
             subPath: config.yaml
