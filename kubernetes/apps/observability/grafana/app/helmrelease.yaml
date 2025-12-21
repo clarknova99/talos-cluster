@@ -90,6 +90,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/flux-folder
+          - name: envoy
+            orgId: 1
+            folder: envoy
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/envoy-folder
           - name: kubernetes
             orgId: 1
             folder: Kubernetes
@@ -202,11 +210,11 @@ spec:
           revision: 6
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
-        envoy:
-           # renovate: depName="Envoy Proxy Monitoring gRPC"
-           gnetId: 23239
-           revision: 1
-           datasource: Prometheus
+        # envoy:
+        #    # renovate: depName="Envoy Proxy Monitoring gRPC"
+        #    gnetId: 23239
+        #    revision: 1
+        #    datasource: Prometheus
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
@@ -239,7 +247,7 @@ spec:
         node-feature-discovery:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
           datasource: Prometheus
-      envoy-service:
+      envoy:
         envoy-gateway:
           url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/envoy-gateway-global.json
           datasource:
