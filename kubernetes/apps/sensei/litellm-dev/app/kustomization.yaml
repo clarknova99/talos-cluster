@@ -9,6 +9,6 @@ resources:
 configMapGenerator:
   - name: litellm-dev-configmap
     files:
-      - config-dev.yaml=./config.yaml
+      - config.yaml=./config-dev.yaml
 generatorOptions:
   disableNameSuffixHash: true
