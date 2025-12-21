@@ -9,6 +9,14 @@ ingress:
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "whoami.${SECRET_DOMAIN}"
+  - hostname: "www.${SECRET_DOMAIN}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "www.${SECRET_DOMAIN}"
+  - hostname: "${SECRET_DOMAIN}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "${SECRET_DOMAIN}"
 
   # Ingress-NGINX rules (current production)
   - hostname: "${SECRET_DOMAIN}"
