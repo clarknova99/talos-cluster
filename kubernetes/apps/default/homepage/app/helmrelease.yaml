@@ -62,10 +62,10 @@ spec:
             sectionName: https
         hostnames:
           - homepage.${SECRET_DOMAIN}
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
+        # rules:
+        #   - backendRefs:
+        #       - name: *app
+        #         port: *port
     persistence:
       config:
         enabled: true
