@@ -5,6 +5,10 @@ originRequest:
 
 ingress:
   # Envoy Gateway rules (commented out - uncomment as you migrate services)
+  - hostname: "homepage.${SECRET_DOMAIN}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "homepage.${SECRET_DOMAIN}"
   - hostname: "kite.${SECRET_DOMAIN}"
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
