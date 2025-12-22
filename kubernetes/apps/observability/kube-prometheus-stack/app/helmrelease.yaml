@@ -174,7 +174,7 @@ spec:
           hostnames:
             - "prometheus.${SECRET_DOMAIN}"
           parentRefs:
-            - name: internal
+            - name: envoy-internal
               namespace: network
               sectionName: https
           rules:
