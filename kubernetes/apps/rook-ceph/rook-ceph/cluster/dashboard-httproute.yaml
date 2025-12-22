@@ -7,7 +7,7 @@ metadata:
   annotations:
     internal-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: Home
+    gethomepage.dev/group: Infra
     gethomepage.dev/icon: ceph.svg
 spec:
   parentRefs:

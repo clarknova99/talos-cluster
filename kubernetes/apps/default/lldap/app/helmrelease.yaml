@@ -112,8 +112,8 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Home
-          gethomepage.dev/icon: lldap.png
+          gethomepage.dev/group: Infra
+          gethomepage.dev/icon: lldap.svg
         parentRefs:
           - name: envoy-internal
             namespace: network
