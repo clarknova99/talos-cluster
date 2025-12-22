@@ -9,6 +9,10 @@ ingress:
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
       originServerName: "prometheus.${SECRET_DOMAIN}"
+  - hostname: "rook.${SECRET_DOMAIN}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "rook.${SECRET_DOMAIN}"
   - hostname: "grafana.${SECRET_DOMAIN}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
