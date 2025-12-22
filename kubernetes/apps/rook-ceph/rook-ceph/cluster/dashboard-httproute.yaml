@@ -11,7 +11,7 @@ metadata:
     gethomepage.dev/icon: ceph.svg
 spec:
   parentRefs:
-    - name: internal
+    - name: envoy-internal
       namespace: network
       sectionName: https
   hostnames: ["rook.${SECRET_DOMAIN}"]
