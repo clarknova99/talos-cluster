@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.5.0
+      version: 3.7.3
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -87,43 +87,26 @@ spec:
             port: *port
           ldap:
             port: *ldapPort
-    # ingress:
-    #   app:
-    #     enabled: true
-    #     className: internal
-    #     annotations:
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: "account-group"
-    #       gethomepage.dev/enabled: "true"
-    #       gethomepage.dev/group: Home
-    #       gethomepage.dev/icon: lldap.png
-    #     hosts:
-    #       - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: http
-    #     tls:
-    #       - hosts:
-    #           - *host
-    route:
-      main:
+    ingress:
+      app:
+        enabled: true
+        className: internal
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "account-group"
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home
           gethomepage.dev/icon: lldap.png
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
-        hostnames:
-          - lldap.${SECRET_DOMAIN}
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
     persistence:
       data:
         type: emptyDir

@@ -13,6 +13,10 @@ ingress:
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
       originServerName: "kite.${SECRET_DOMAIN}"
+  - hostname: "lldap.${SECRET_DOMAIN}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "lldap.${SECRET_DOMAIN}"
   - hostname: "whoami.${SECRET_DOMAIN}"
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
