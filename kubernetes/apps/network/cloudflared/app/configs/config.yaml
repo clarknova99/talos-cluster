@@ -5,6 +5,10 @@ originRequest:
 
 ingress:
   # Envoy Gateway rules (commented out - uncomment as you migrate services)
+  - hostname: "grafana.${SECRET_DOMAIN}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "grafana.${SECRET_DOMAIN}"
   - hostname: "homepage.${SECRET_DOMAIN}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
