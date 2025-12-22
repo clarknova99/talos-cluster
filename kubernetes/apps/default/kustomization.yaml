@@ -9,7 +9,7 @@ resources:
   - ./homepage/ks.yaml
   - ./hajimari/ks.yaml
   - ./kite/ks.yaml
-  # - ./lldap/ks.yaml
+  - ./lldap/ks.yaml
   # - ./mosquitto/ks.yaml
   # - ./troddit/ks.yaml
   - ./website/ks.yaml
