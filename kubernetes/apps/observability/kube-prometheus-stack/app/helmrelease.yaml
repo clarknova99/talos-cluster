@@ -73,13 +73,13 @@ spec:
     kubeProxy:
       enabled: false
     prometheus:
-      ingress:
-        enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        ingressClassName: internal
-        hosts: ["prometheus.${SECRET_DOMAIN}"]
-        pathType: Prefix
+      # ingress:
+      #   enabled: true
+      #   annotations:
+      #     external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+      #   ingressClassName: internal
+      #   hosts: ["prometheus.${SECRET_DOMAIN}"]
+      #   pathType: Prefix
       prometheusSpec:
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
@@ -121,6 +121,71 @@ spec:
               resources:
                 requests:
                   storage: 55Gi
+    extraManifests:
+      # - apiVersion: gateway.networking.k8s.io/v1
+      #   kind: HTTPRoute
+      #   metadata:
+      #     name: kube-prometheus-stack-alertmanager
+      #     namespace: "{{ .Release.Namespace }}"
+      #     annotations:
+      #       gethomepage.dev/enabled: "true"
+      #       gethomepage.dev/icon: prometheus.png
+      #       gethomepage.dev/name: Prometheus
+      #       gethomepage.dev/group: Observability
+      #       gethomepage.dev/app: prometheus
+      #       gethomepage.dev/description: Monitoring Scrape Service
+      #       gethomepage.dev/widget.type: prometheus
+      #       gethomepage.dev/widget.url: http://kube-prometheus-stack-prometheus.observability:9090
+      #       internal-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+      #   spec:
+      #     hostnames:
+      #       - "alertmanager.${SECRET_DOMAIN}"
+      #     parentRefs:
+      #       - name: internal
+      #         namespace: network
+      #         sectionName: https
+      #     rules:
+      #       - matches:
+      #           - path:
+      #               type: PathPrefix
+      #               value: /
+      #         backendRefs:
+      #           - group: ""
+      #             kind: Service
+      #             name: kube-prometheus-stack-alertmanager
+      #             port: 9093
+      - apiVersion: gateway.networking.k8s.io/v1
+        kind: HTTPRoute
+        metadata:
+          name: kube-prometheus-stack-prometheus
+          namespace: "{{ .Release.Namespace }}"
+          annotations:
+            internal-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/icon: prometheus.png
+            gethomepage.dev/name: Prometheus
+            gethomepage.dev/group: Observability
+            gethomepage.dev/app: prometheus
+            gethomepage.dev/description: Monitoring Scrape Service
+            gethomepage.dev/widget.type: prometheus
+            gethomepage.dev/widget.url: http://kube-prometheus-stack-prometheus.observability:9090
+        spec:
+          hostnames:
+            - "prometheus.${SECRET_DOMAIN}"
+          parentRefs:
+            - name: internal
+              namespace: network
+              sectionName: https
+          rules:
+            - matches:
+                - path:
+                    type: PathPrefix
+                    value: /
+              backendRefs:
+                - group: ""
+                  kind: Service
+                  name: kube-prometheus-stack-prometheus
+                  port: 9090
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       prometheus:
