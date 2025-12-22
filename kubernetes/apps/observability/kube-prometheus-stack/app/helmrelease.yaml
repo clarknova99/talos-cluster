@@ -172,7 +172,7 @@ spec:
             gethomepage.dev/widget.url: http://kube-prometheus-stack-prometheus.observability:9090
         spec:
           hostnames:
-            - "prom.${SECRET_DOMAIN}"
+            - "prometheus.${SECRET_DOMAIN}"
           parentRefs:
             - name: internal
               namespace: network
