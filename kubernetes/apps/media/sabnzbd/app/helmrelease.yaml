@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -59,7 +59,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }              
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
@@ -80,20 +80,33 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      app:
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:download
-        className: internal
-        hosts:
-          - host: sab.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http            
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: sabnzbd.svg
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - sabnzbd.${SECRET_DOMAIN}
+    # ingress:
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:download
+    #     className: internal
+    #     hosts:
+    #       - host: sab.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: http
     persistence:
       config:
         enabled: true
