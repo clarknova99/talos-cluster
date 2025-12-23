@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -85,18 +85,33 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      app:
+    # ingress:
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+    #       hajimari.io/icon: mdi:subtitles-outline
+    #     hosts:
+    #       - host: bazarr.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: http
+
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-          hajimari.io/icon: mdi:subtitles-outline
-        hosts:
-          - host: bazarr.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: bazarr.svg
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - bazarr.${SECRET_DOMAIN}
+
     persistence:
       config:
         enabled: true
@@ -104,7 +119,7 @@ spec:
         server: 192.168.1.3
         path: /volume1/network-storage/cluster/bazarr
         globalMounts:
-          - path: /config    
+          - path: /config
       subcleaner:
         type: emptyDir
       cache:
@@ -132,7 +147,7 @@ spec:
         server: 192.168.1.3
         path: /volume1/network-storage/Video
         globalMounts:
-          - path: /video          
+          - path: /video
       # movies:
       #   enabled: true
       #   type: nfs

@@ -5,6 +5,19 @@ originRequest:
 
 ingress:
   # Envoy Gateway rules (commented out - uncomment as you migrate services)
+  # media
+  - hostname: "bazarr.${SECRET_DOMAIN}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "bazarr.${SECRET_DOMAIN}"
+  - hostname: "radarr.${SECRET_DOMAIN}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "radarr.${SECRET_DOMAIN}"
+  - hostname: "sonarr.${SECRET_DOMAIN}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "sonarr.${SECRET_DOMAIN}"
   - hostname: "prometheus.${SECRET_DOMAIN}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
