@@ -18,6 +18,7 @@ ingress:
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
       originServerName: "sonarr.${SECRET_DOMAIN}"
+
   - hostname: "prometheus.${SECRET_DOMAIN}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
