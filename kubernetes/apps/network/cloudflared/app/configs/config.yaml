@@ -26,6 +26,10 @@ ingress:
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
       originServerName: "prowlarr.${SECRET_DOMAIN}"
+  - hostname: "qb.${SECRET_DOMAIN}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "qb.${SECRET_DOMAIN}"
   - hostname: "sabnzbd.${SECRET_DOMAIN}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:

@@ -126,23 +126,37 @@ spec:
             enabled: true
             port: *torrentPort
             protocol: TCP
-    ingress:
-      app:
+    route:
+      main:
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: material-symbols:cloud-download
-        enabled: true
-        className: internal
-        hosts:
-          - host: &host qb.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: *port
-        tls:
-          - hosts:
-              - *host
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: qbittorrent.svg
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - qb.${SECRET_DOMAIN}
+
+    # ingress:
+    #   app:
+    #     annotations:
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: material-symbols:cloud-download
+    #     enabled: true
+    #     className: internal
+    #     hosts:
+    #       - host: &host qb.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: *port
+    #     tls:
+    #       - hosts:
+    #           - *host
     persistence:
       config:
         enabled: true
