@@ -139,6 +139,10 @@ spec:
             sectionName: https
         hostnames:
           - qb.${SECRET_DOMAIN}
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     # ingress:
     #   app:
