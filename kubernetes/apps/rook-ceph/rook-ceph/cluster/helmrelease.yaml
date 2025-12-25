@@ -32,6 +32,15 @@ spec:
     monitoring:
       enabled: true
       createPrometheusRules: true
+    route:
+      dashboard:
+        host:
+          name: rook.${SECRET_DOMAIN}
+          path: /
+          pathType: PathPrefix
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     # ingress:
     #   dashboard:
     #     annotations:
