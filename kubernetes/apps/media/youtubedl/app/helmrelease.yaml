@@ -36,7 +36,7 @@ spec:
             image:
               repository: docker.io/tzahi12345/youtubedl-material
               #tag: 4.3.2
-              tag: nightly@sha256:ca6f08a9c3aeca75ddee7356252fb712998f45e99da9542d0e14c2eaef5e8e08
+              tag: nightly
             env:
               TZ: America/New_York
               write_ytdl_config: true
