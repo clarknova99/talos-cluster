@@ -92,7 +92,7 @@ spec:
           io.cilium/lb-ipam-ips: 192.168.3.50
         ports:
           http:
-            port: 32400
+            port: &port 32400
           # GDM Network discovery
           # https://support.plex.tv/articles/200430283-network/
           # gdm-1-udp:
@@ -136,7 +136,7 @@ spec:
     #       - hosts:
     #           - *host
     route:
-      main:
+      app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
@@ -148,6 +148,11 @@ spec:
             sectionName: https
         hostnames:
           - plex.${SECRET_DOMAIN}
+        rules:
+          - # Ref: https://forums.plex.tv/t/external-srt-subtitles-are-not-working-w-reverse-proxy/886540
+            backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       config:
         existingClaim: plex
