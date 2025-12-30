@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: clickhouse/clickhouse-server
-              tag: 25.10-alpine
+              tag: 25.12-alpine
             env:
               CLICKHOUSE_DB: dittofeed
               CLICKHOUSE_USER: dittofeed
