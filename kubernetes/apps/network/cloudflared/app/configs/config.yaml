@@ -35,6 +35,11 @@ ingress:
     originRequest:
       originServerName: "sabnzbd.${SECRET_DOMAIN}"
 
+  - hostname: "adguard.${SECRET_DOMAIN}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "adguard.${SECRET_DOMAIN}"
+
   - hostname: "prometheus.${SECRET_DOMAIN}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:

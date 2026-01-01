@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.5.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -88,19 +88,34 @@ spec:
         globalMounts:
           - path: /opt/adguardhome/certs
             readOnly: true
-    ingress:
-      app:
-        className: internal
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-        hosts:
-          - host: &host "adguard.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Infra
+          gethomepage.dev/icon: adguard.svg
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - adguard.${SECRET_DOMAIN}
+
+
+    # ingress:
+    #   app:
+    #     className: internal
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+    #     hosts:
+    #       - host: &host "adguard.${SECRET_DOMAIN}"
+    #         paths:
+    #           - path: /
+    #             pathType: Prefix
+    #             service:
+    #               identifier: app
+    #               port: http
+    #     tls:
+    #       - hosts:
+    #           - *host
