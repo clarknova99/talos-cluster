@@ -58,7 +58,7 @@ spec:
           clickhouse:
             image:
               repository: clickhouse/clickhouse-server
-              tag: 25.10-alpine
+              tag: 25.12-alpine
             env:
               CLICKHOUSE_DB: analytics
               CLICKHOUSE_USER: default
