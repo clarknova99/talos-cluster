@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: docker.io/chronograf
-              tag: 1.10.8-alpine
+              tag: 1.10.9-alpine
     service:
       app:
         controller: chronograf
