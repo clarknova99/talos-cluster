@@ -31,7 +31,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     controllers:
       web:
-        replicas: 2
+        replicas: 1
         containers:
           app:
             image:
