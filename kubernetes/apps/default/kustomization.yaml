@@ -11,6 +11,5 @@ resources:
   - ./kite/ks.yaml
   - ./lldap/ks.yaml
   # - ./mosquitto/ks.yaml
-  # - ./troddit/ks.yaml
-  # - ./website/ks.yaml
+  - ./website/ks.yaml
   - ./whoami/ks.yaml

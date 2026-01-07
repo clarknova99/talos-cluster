@@ -24,62 +24,46 @@ spec:
     remediation:
       retries: 5
   values:
-    defaultPodOptions:
-      securityContext:
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [100, 1001, 1025]
-        seccompProfile: { type: RuntimeDefault }
     controllers:
-      web:
-        replicas: 1
+      website:
         containers:
           app:
             image:
-              repository: docker.io/bitnami/nginx
+              repository: ghcr.io/linuxserver/nginx
               tag: 1.28.0
+            env:
+              PUID: "1025"
+              PGID: "1025"
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 64Mi
     service:
       app:
         ports:
           http:
-            port: 80
+            port: &port 80
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
     route:
-      main:
+      app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:web
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: nginx.svg
+        hostnames:
+          - ${SECRET_DOMAIN}
+          - www.${SECRET_DOMAIN}
         parentRefs:
           - name: envoy-external
             namespace: network
             sectionName: https
-        hostnames:
-          - ${SECRET_DOMAIN}
-          - www.${SECRET_DOMAIN}
-    # ingress:
-    #   app:
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: mdi:web
-    #     className: external
-    #     hosts:
-    #       - host: www.${SECRET_DOMAIN}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: 80
-    #       - host: ${SECRET_DOMAIN}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: 80
-    #     tls:
-    #       - hosts:
-    #           - ${SECRET_DOMAIN}
-    #           - www.${SECRET_DOMAIN}
-            # secretName: "${SECRET_DOMAIN/./-}-production-tls"
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
     persistence:
       config:
         enabled: true
@@ -87,11 +71,11 @@ spec:
         server: 192.168.1.3
         path: /volume1/network-storage/cluster/nginx/conf
         globalMounts:
-          - path: /opt/bitnami/nginx/conf/server_blocks
+          - path: /config/nginx
       www:
         enabled: true
         type: nfs
         server: 192.168.1.3
         path: /volume1/network-storage/cluster/nginx/www
         globalMounts:
-          - path: /opt/bitnami/nginx/html
+          - path: /config/www
