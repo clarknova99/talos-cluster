@@ -123,10 +123,10 @@ spec:
           - name: envoy-external
             namespace: network
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: *app
-                port: *port
+        # rules:
+        #   - backendRefs:
+        #       - identifier: *app
+        #         port: *port
     # ingress:
     #   app:
     #     className: external
