@@ -94,7 +94,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Infra
-          gethomepage.dev/icon: adguard.svg
+          gethomepage.dev/icon: adguard-home.svg
         parentRefs:
           - name: envoy-internal
             namespace: network
