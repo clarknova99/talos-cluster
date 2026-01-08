@@ -173,6 +173,7 @@ spec:
         hostnames:
           - grafana.${SECRET_DOMAIN_TWO}
         annotations:
+          gethomepage.dev/app: grafana
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: grafana.png
           gethomepage.dev/name: Grafana
