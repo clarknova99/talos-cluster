@@ -35,7 +35,7 @@ spec:
     route:
       dashboard:
         annotations:
-          gethomepage.dev/app: rook-ceph-dashboard
+          gethomepage.dev/app: ceph-mgr
           gethomepage.dev/enabled: "true"
           gethomepage.dev/name: Rook Ceph Dashboard
           gethomepage.dev/group: Storage
