@@ -56,6 +56,15 @@ ingress:
     originRequest:
       originServerName: "adguard.${SECRET_DOMAIN}"
 
+  - hostname: "auth.${SECRET_DOMAIN}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "auth.${SECRET_DOMAIN}"
+  - hostname: "auth.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "auth.${SECRET_DOMAIN_TWO}"
+
   - hostname: "prometheus.${SECRET_DOMAIN}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
