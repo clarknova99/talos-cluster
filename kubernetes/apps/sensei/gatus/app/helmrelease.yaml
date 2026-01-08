@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: gatus
+  name: &app gatus
   namespace: sensei
 spec:
   interval: 15m
@@ -103,6 +103,10 @@ spec:
             sectionName: https
         hostnames:
           - status.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     # ingress:
     #   app:
     #     className: external
