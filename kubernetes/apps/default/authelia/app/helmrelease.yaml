@@ -111,7 +111,7 @@ spec:
             interval: 1m
             scrapeTimeout: 10s
     route:
-      app:
+      main:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Infra
