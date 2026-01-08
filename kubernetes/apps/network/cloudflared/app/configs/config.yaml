@@ -8,14 +8,14 @@ ingress:
 
 
   # sensei
-  - hostname: "dittofeed-dev.${SECRET_DOMAIN}"
+  - hostname: "dittofeed-dev.${SECRET_DOMAIN_TWO}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
-      originServerName: "dittofeed-dev.${SECRET_DOMAIN}"
-  - hostname: "status.${SECRET_DOMAIN}"
+      originServerName: "dittofeed-dev.${SECRET_DOMAIN_TWO}"
+  - hostname: "status.${SECRET_DOMAIN_TWO}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
-      originServerName: "status.${SECRET_DOMAIN}"
+      originServerName: "status.${SECRET_DOMAIN_TWO}"
 
   # media
   - hostname: "bazarr.${SECRET_DOMAIN}"
