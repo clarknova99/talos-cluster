@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.2.0
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -67,37 +67,6 @@ spec:
             envFrom:
               - secretRef:
                   name: sensei-gatus-secrets
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /health
-            #         port: *port
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities: { drop: ["ALL"] }
-            # resources: *resources
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /health
-            #         port: *port
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -107,32 +76,6 @@ spec:
                 cpu: 100m
               limits:
                 memory: 256Mi
-
-    # defaultPodOptions:
-    #   dnsConfig:
-    #     options:
-    #       - { name: ndots, value: "1" }
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 1000
-    #     runAsGroup: 1000
-    #     seccompProfile: { type: RuntimeDefault }
-    # # service:
-    #   app:
-    #     controller: gatus
-    #     ports:
-    #       http:
-    #         port: *port
-
-    # serviceMonitor:
-    #   app:
-    #     serviceName: gatus
-    #     endpoints:
-    #       - port: http
-    #         scheme: http
-    #         path: /metrics
-    #         interval: 1m
-    #         scrapeTimeout: 10s
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -147,33 +90,38 @@ spec:
       app:
         endpoints:
           - port: http
-    # route:
+    route:
+      main:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Sensei
+          gethomepage.dev/icon: agatus.svg
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - status.${SECRET_DOMAIN}
+    # ingress:
     #   app:
+    #     className: external
     #     annotations:
     #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
     #       hajimari.io/icon: mdi:cog-outline
-    #     hostnames:
-    #       - status.${SECRET_DOMAIN_TWO}
-    #     parentRefs:
-    #       - name: external
-    #         namespace: kube-system
-    #         sectionName: https
-    ingress:
-      app:
-        className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          hajimari.io/icon: mdi:cog-outline
-        hosts:
-          - host: status.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - status.${SECRET_DOMAIN_TWO}
+    #     hosts:
+    #       - host: status.${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: http
+    #     tls:
+    #       - hosts:
+    #           - status.${SECRET_DOMAIN_TWO}
+
+
+
     rbac:
       roles:
         gatus:
