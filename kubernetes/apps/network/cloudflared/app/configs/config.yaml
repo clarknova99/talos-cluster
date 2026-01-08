@@ -9,11 +9,11 @@ ingress:
 
   # sensei
   - hostname: "dittofeed-dev.${SECRET_DOMAIN_TWO}"
-    service: https://envoy-internal.network.svc.cluster.local:443
+    service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "dittofeed-dev.${SECRET_DOMAIN_TWO}"
   - hostname: "status.${SECRET_DOMAIN_TWO}"
-    service: https://envoy-internal.network.svc.cluster.local:443
+    service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "status.${SECRET_DOMAIN_TWO}"
 
