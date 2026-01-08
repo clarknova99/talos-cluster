@@ -170,7 +170,8 @@ spec:
     route:
       main:
         enabled: true
-        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        hostnames:
+          - dittofeed-dev.${SECRET_DOMAIN_TWO}
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: grafana.png
