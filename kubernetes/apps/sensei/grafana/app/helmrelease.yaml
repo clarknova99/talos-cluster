@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: grafana-sensei
+  name: &app grafana-sensei
 spec:
   interval: 30m
   chart:
@@ -182,6 +182,10 @@ spec:
           - name: envoy-external
             namespace: network
             sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: 80
     # ingress:
     #   enabled: true
     #   annotations:
