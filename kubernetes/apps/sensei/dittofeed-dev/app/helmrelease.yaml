@@ -57,7 +57,7 @@ spec:
     route:
       main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN_TWO}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Sensei
           gethomepage.dev/icon: https://cdn.prod.website-files.com/664393f5bd2b0c6d4fdf5437/6644bdae885be8fd1dc8e029_Logo.svg
@@ -66,7 +66,7 @@ spec:
             namespace: network
             sectionName: https
         hostnames:
-          - dittofeed-dev.${SECRET_DOMAIN}
+          - dittofeed-dev.${SECRET_DOMAIN_TWO}
     # ingress:
     #   app:
     #     annotations:
