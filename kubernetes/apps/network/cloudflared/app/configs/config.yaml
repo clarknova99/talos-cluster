@@ -16,6 +16,10 @@ ingress:
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "status.${SECRET_DOMAIN_TWO}"
+  - hostname: "grafana.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "grafana.${SECRET_DOMAIN_TWO}"
 
   # media
   - hostname: "bazarr.${SECRET_DOMAIN}"
