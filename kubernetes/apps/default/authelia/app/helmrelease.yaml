@@ -125,7 +125,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: *app
                 port: *port
     # ingress:
     #   app:
