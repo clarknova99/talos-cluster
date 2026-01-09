@@ -34,7 +34,7 @@ spec:
               tag: v2.3.1
             env:
               NODE_ENV: production
-              CLICKHOUSE_HOST: http://localhost:8123
+              CLICKHOUSE_HOST: http://rybbit-clickhouse.sensei.svc.cluster.local:8123
               CLICKHOUSE_DB: analytics
               CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
@@ -55,15 +55,15 @@ spec:
               NEXT_PUBLIC_BACKEND_URL: https://rybbit-backend.${SECRET_DOMAIN_TWO}
               NEXT_PUBLIC_DISABLE_SIGNUP: false
               BETTER_AUTH_SECRET: ${SECRET_RYBBIT_BETTER_AUTH_SECRET}
-          clickhouse:
-            image:
-              repository: clickhouse/clickhouse-server
-              tag: 25.12-alpine
-            env:
-              CLICKHOUSE_DB: analytics
-              CLICKHOUSE_USER: default
-              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-              CLICKHOUSE_DO_NOT_CHOWN: "1"
+          # clickhouse:
+          #   image:
+          #     repository: clickhouse/clickhouse-server
+          #     tag: 25.12-alpine
+          #   env:
+          #     CLICKHOUSE_DB: analytics
+          #     CLICKHOUSE_USER: default
+          #     CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+          #     CLICKHOUSE_DO_NOT_CHOWN: "1"
     service:
       backend:
         controller: rybbit
@@ -75,42 +75,42 @@ spec:
         ports:
           http:
             port: 3002
-      clickhouse:
-        controller: rybbit
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: 192.168.3.83
-        ports:
-          http:
-            port: 8123
-          tcp:
-            port: 9000
+      # clickhouse:
+      #   controller: rybbit
+      #   type: LoadBalancer
+      #   annotations:
+      #     io.cilium/lb-ipam-ips: 192.168.3.83
+      #   ports:
+      #     http:
+      #       port: 8123
+      #     tcp:
+      #       port: 9000
 
-    persistence:
-      data:
-        enabled: true
-        type: nfs
-        server: 192.168.1.3
-        path: /volume1/network-storage/cluster/rybbit/clickhouse
-        advancedMounts:
-          rybbit:
-            clickhouse:
-              - path: /var/lib/clickhouse
-      tmp:
-        enabled: true
-        type: emptyDir
-        medium: Memory
-        advancedMounts:
-          rybbit:
-            clickhouse:
-              - path: /tmp
-      logs:
-        enabled: true
-        type: emptyDir
-        advancedMounts:
-          rybbit:
-            clickhouse:
-              - path: /var/log/clickhouse-server
+    # persistence:
+    #   data:
+    #     enabled: true
+    #     type: nfs
+    #     server: 192.168.1.3
+    #     path: /volume1/network-storage/cluster/rybbit/clickhouse
+    #     advancedMounts:
+    #       rybbit:
+    #         clickhouse:
+    #           - path: /var/lib/clickhouse
+    #   tmp:
+    #     enabled: true
+    #     type: emptyDir
+    #     medium: Memory
+    #     advancedMounts:
+    #       rybbit:
+    #         clickhouse:
+    #           - path: /tmp
+    #   logs:
+    #     enabled: true
+    #     type: emptyDir
+    #     advancedMounts:
+    #       rybbit:
+    #         clickhouse:
+    #           - path: /var/log/clickhouse-server
 
     route:
       main:
