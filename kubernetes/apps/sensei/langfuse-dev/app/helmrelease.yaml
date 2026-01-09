@@ -135,7 +135,7 @@ spec:
           - langfuse-dev.${SECRET_DOMAIN_TWO}
         rules:
           - backendRefs:
-              - name: *app
+              - name: langfuse-dev-web
                 port: *port
     # ingress:
     #   web:
