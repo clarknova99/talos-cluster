@@ -12,6 +12,10 @@ ingress:
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "dittofeed-dev.${SECRET_DOMAIN_TWO}"
+  - hostname: "dittofeed-dev-temporal.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "dittofeed-dev-temporal.${SECRET_DOMAIN_TWO}"
   - hostname: "status.${SECRET_DOMAIN_TWO}"
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
