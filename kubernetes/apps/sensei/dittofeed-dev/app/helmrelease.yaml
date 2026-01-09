@@ -67,7 +67,6 @@ spec:
             sectionName: https
         hostnames:
           - dittofeed-dev.${SECRET_DOMAIN_TWO}
-
         rules:
           - backendRefs:
               - name: *app
