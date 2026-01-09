@@ -81,7 +81,7 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Sensei
-          gethomepage.dev/icon: https://langfuse.senseichess.com/icon.svg
+          gethomepage.dev/icon: https://opensource.muenchen.de/logo/litellm.png
         parentRefs:
           - name: envoy-external
             namespace: network
