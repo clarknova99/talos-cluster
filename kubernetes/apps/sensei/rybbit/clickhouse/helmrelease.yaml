@@ -100,7 +100,6 @@ spec:
         name: rybbit-clickhouse
         globalMounts:
           - path: /etc/clickhouse-server/config.d
-          - path: /etc/clickhouse-server/users.d
 
     configMaps:
       config:
@@ -154,18 +153,4 @@ spec:
                 <postgresql_port remove="remove"/>
                 <prometheus_port remove="remove"/>
                 <port remove="remove"/>
-            </clickhouse>
-          users.xml: |
-            <clickhouse>
-                <users>
-                    <default>
-                        <password>clickhouse</password>
-                        <profile>default</profile>
-                        <quota>default</quota>
-                        <networks>
-                            <ip>::/0</ip>
-                        </networks>
-                        <access_management>1</access_management>
-                    </default>
-                </users>
             </clickhouse>
