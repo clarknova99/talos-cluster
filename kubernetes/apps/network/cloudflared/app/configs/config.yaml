@@ -21,6 +21,12 @@ ingress:
     originRequest:
       originServerName: "langfuse-dev.${SECRET_DOMAIN_TWO}"
 
+
+  - hostname: "litellm-dev.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "litellm-dev.${SECRET_DOMAIN_TWO}"
+
   - hostname: "status.${SECRET_DOMAIN_TWO}"
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:

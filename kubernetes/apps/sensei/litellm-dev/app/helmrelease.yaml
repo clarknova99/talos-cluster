@@ -75,26 +75,42 @@ spec:
           io.cilium/lb-ipam-ips: 192.168.3.43
         ports:
           http:
-            port: 4000
-    ingress:
-      app:
+            port: &port 4000
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          nginx.ingress.kubernetes.io/app-root: /ui
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:math-compass
-        className: external
-        enabled: true
-        hosts:
-          - host: litellm-dev.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 4000
-        tls:
-          - hosts:
-              - litellm-dev.${SECRET_DOMAIN_TWO}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Sensei
+          gethomepage.dev/icon: https://langfuse.senseichess.com/icon.svg
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        hostnames:
+          - litellm-dev.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - name: litellm-dev
+                port: *port
+    # ingress:
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+    #       nginx.ingress.kubernetes.io/app-root: /ui
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:math-compass
+    #     className: external
+    #     enabled: true
+    #     hosts:
+    #       - host: litellm-dev.${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: 4000
+    #     tls:
+    #       - hosts:
+    #           - litellm-dev.${SECRET_DOMAIN_TWO}
     persistence:
       config-file:
         type: configMap
