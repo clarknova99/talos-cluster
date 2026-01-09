@@ -131,7 +131,7 @@ spec:
                 value: /api
             backendRefs:
               - kind: Service
-                name: backend
+                name: rybbit-backend
                 port: 3001
           - matches:
             - path:
@@ -139,7 +139,7 @@ spec:
                 value: /
             backendRefs:
               - kind: Service
-                name: client
+                name: rybbit-client
                 port: 3002
 
     # ingress:
