@@ -52,7 +52,7 @@ spec:
               BACKUPS_TO_KEEP_LOCAL: "0"
               BACKUPS_TO_KEEP_REMOTE: "30"
               CLICKHOUSE_SKIP_TABLES: "system.*,INFORMATION_SCHEMA.*"
-              CLICKHOUSE_USERNAME: dittofeed
+              CLICKHOUSE_USERNAME: analytics
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_HOST: "127.0.0.1"  # Use IPv4 explicitly
               CLICKHOUSE_PORT: "9000"
