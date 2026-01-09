@@ -32,7 +32,6 @@ spec:
             image:
               repository: ghcr.io/langfuse/langfuse
               tag: 3.144.0@sha256:2c7de9960e2c96b1ee4fdcd9af4a16b39b94369ee56ff7ac94ffd6e2468c2e74
-              # imagePullPolicy: IfNotPresent
             env:
               NEXTAUTH_URL: https://langfuse-dev.${SECRET_DOMAIN_TWO}
               NEXTAUTH_SECRET: ${SECRET_LANGFUSE_SECRET}
@@ -97,15 +96,7 @@ spec:
               LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
               LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: true
               LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
-    # defaultPodOptions:
-    #   affinity:
-    #     nodeAffinity:
-    #       requiredDuringSchedulingIgnoredDuringExecution:
-    #         nodeSelectorTerms:
-    #           - matchExpressions:
-    #               - key: kubernetes.io/hostname
-    #                 operator: NotIn
-    #                 values: ["mars"]
+
     service:
       web:
         controller: langfuse-dev
@@ -136,22 +127,3 @@ spec:
           - backendRefs:
               - name: langfuse-dev-web
                 port: *port
-    # ingress:
-    #   web:
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: mdi:math-compass
-    #     className: external
-    #     enabled: true
-    #     hosts:
-    #       - host: langfuse-dev.${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: web
-    #               port: 3000
-    #     tls:
-    #       - hosts:
-    #           - langfuse-dev.${SECRET_DOMAIN_TWO}
-            # secretName: "${SECRET_DOMAIN/./-}-production-tls"
