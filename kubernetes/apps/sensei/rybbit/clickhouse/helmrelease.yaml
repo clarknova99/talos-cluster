@@ -94,25 +94,63 @@ spec:
         path: /volume1/network-storage/cluster/rybbit/clickhouse
         globalMounts:
           - path: /var/lib/clickhouse
+      config:
+        enabled: true
+        type: configMap
+        name: clickhouse-config
+        globalMounts:
+          - path: /etc/clickhouse-server/config.d
 
+    configMaps:
+      config:
+        enabled: true
+        data:
+          config.xml: |
+            <clickhouse>
+                <logger>
+                    <level>warning</level>
+                    <console>true</console>
+                </logger>
 
-    # persistence:
-    #   data:
-    #     enabled: true
-    #     type: nfs
-    #     server: 192.168.1.3
-    #     path: /volume1/network-storage/cluster/dittofeed-dev/clickhouse
-    #     globalMounts:
-    #       - path: /var/lib/clickhouse
-        # advancedMounts:
-        #   dittofeed-dev-clickhouse:
-        #     app:
-        #       - path: /var/lib/clickhouse
-      # # Add new NFS volume for backups
-      # backups:
-      #   enabled: true
-      #   type: nfs
-      #   server: 192.168.1.3
-      #   path: /volume1/network-storage/cluster/dittofeed-dev/clickhouse-backups
-      #   globalMounts:
-      #     - path: /var/lib/clickhouse/backup
+                <!-- Skip check for incorrect settings to avoid configuration errors -->
+                <skip_check_for_incorrect_settings>1</skip_check_for_incorrect_settings>
+
+                <!-- Explicitly set listen hosts to avoid conflicts -->
+                <listen_host>0.0.0.0</listen_host>
+
+                <!-- Configure ports explicitly to avoid conflicts -->
+                <tcp_port>9000</tcp_port>
+                <http_port>8123</http_port>
+
+                <!-- Disable problematic system tables that are causing corruption -->
+                <query_thread_log remove="remove"/>
+                <query_log remove="remove"/>
+                <text_log remove="remove"/>
+                <trace_log remove="remove"/>
+                <metric_log remove="remove"/>
+                <asynchronous_metric_log remove="remove"/>
+                <session_log remove="remove"/>
+                <part_log remove="remove"/>
+                <latency_log remove="remove"/>
+
+                <!-- Disable OpenTelemetry and other problematic system tables -->
+                <opentelemetry_span_log remove="remove"/>
+                <processors_profile_log remove="remove"/>
+                <error_log remove="remove"/>
+
+                <!-- Set background pool sizes to prevent configuration conflicts -->
+                <background_pool_size>25</background_pool_size>
+                <background_schedule_pool_size>25</background_schedule_pool_size>
+
+                <!-- Disable merges for system tables to prevent corruption -->
+                <merge_tree>
+                    <max_bytes_to_merge_at_max_space_in_pool>161061273600</max_bytes_to_merge_at_max_space_in_pool>
+                </merge_tree>
+
+                <!-- Disable additional ports that are causing conflicts -->
+                <interserver_http_port remove="remove"/>
+                <mysql_port remove="remove"/>
+                <postgresql_port remove="remove"/>
+                <prometheus_port remove="remove"/>
+                <port remove="remove"/>
+            </clickhouse>
