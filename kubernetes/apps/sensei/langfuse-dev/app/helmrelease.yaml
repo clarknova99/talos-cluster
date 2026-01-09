@@ -3,14 +3,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: langfuse-dev
+  name: &app langfuse-dev
   namespace: sensei
 spec:
   interval: 15m
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -111,33 +111,48 @@ spec:
         controller: langfuse-dev
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: langfuse-dev.${SECRET_DOMAIN_TWO}
+          # external-dns.alpha.kubernetes.io/hostname: langfuse-dev.${SECRET_DOMAIN_TWO}
           io.cilium/lb-ipam-ips: 192.168.3.44
         ports:
           http:
-            port: 3000
+            port: &port 3000
       worker:
         controller: langfuse-dev
         ports:
           http:
             port: 3030
-
-    ingress:
-      web:
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:math-compass
-        className: external
-        enabled: true
-        hosts:
-          - host: langfuse-dev.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                service:
-                  identifier: web
-                  port: 3000
-        tls:
-          - hosts:
-              - langfuse-dev.${SECRET_DOMAIN_TWO}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Sensei
+          gethomepage.dev/icon: https://langfuse.senseichess.com/icon.svg
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        hostnames:
+          - langfuse-dev.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    # ingress:
+    #   web:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:math-compass
+    #     className: external
+    #     enabled: true
+    #     hosts:
+    #       - host: langfuse-dev.${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: web
+    #               port: 3000
+    #     tls:
+    #       - hosts:
+    #           - langfuse-dev.${SECRET_DOMAIN_TWO}
             # secretName: "${SECRET_DOMAIN/./-}-production-tls"
