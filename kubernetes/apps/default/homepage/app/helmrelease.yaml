@@ -53,7 +53,7 @@ spec:
     route:
       main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          # external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:web
         parentRefs:
