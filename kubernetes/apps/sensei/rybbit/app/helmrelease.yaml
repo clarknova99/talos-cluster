@@ -3,14 +3,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: rybbit
+  name: &app rybbit
   namespace: sensei
 spec:
   interval: 15m
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -59,45 +59,11 @@ spec:
             image:
               repository: clickhouse/clickhouse-server
               tag: 25.12-alpine
-              # tag: 25.12
             env:
               CLICKHOUSE_DB: analytics
               CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_DO_NOT_CHOWN: "1"
-            # securityContext:
-            #   runAsUser: 101
-            #   runAsGroup: 101
-            #   runAsNonRoot: true
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: false
-            #   capabilities:
-            #     drop:
-            #     - ALL
-            # probes:
-            #   readiness:
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /ping
-            #         port: 8123
-            #       initialDelaySeconds: 60
-            #       periodSeconds: 10
-            #       timeoutSeconds: 10
-            #       failureThreshold: 6
-            #   liveness:
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /ping
-            #         port: 8123
-            #       initialDelaySeconds: 60
-            #       periodSeconds: 30
-            #       timeoutSeconds: 5
-            #       failureThreshold: 3
-
     service:
       backend:
         controller: rybbit
@@ -146,28 +112,58 @@ spec:
             clickhouse:
               - path: /var/log/clickhouse-server
 
-    ingress:
-      client:
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          nginx.ingress.kubernetes.io/enable-cors: "true"
-          nginx.ingress.kubernetes.io/cors-allow-origin: "*"
-          nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:math-compass
-        className: external
-        enabled: true
-        hosts:
-          - host: rybbit.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /api
-                service:
-                  identifier: backend
-                  port: 3001
-              - path: /
-                service:
-                  identifier: client
-                  port: 3002
-        tls:
-          - hosts:
-              - rybbit.${SECRET_DOMAIN_TWO}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Sensei
+          gethomepage.dev/icon: https://rybbit.com/rybbit-text.svg
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        hostnames:
+          - rybbit.${SECRET_DOMAIN_TWO}
+        rules:
+          - matches:
+            - path:
+                type: PathPrefix
+                value: /api
+            backendRefs:
+              - kind: Service
+                name: backend
+                port: 3001
+          - matches:
+            - path:
+                type: PathPrefix
+                value: /
+            backendRefs:
+              - kind: Service
+                name: client
+                port: 3002
+
+    # ingress:
+    #   client:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+    #       nginx.ingress.kubernetes.io/enable-cors: "true"
+    #       nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    #       nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:math-compass
+    #     className: external
+    #     enabled: true
+    #     hosts:
+    #       - host: rybbit.${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /api
+    #             service:
+    #               identifier: backend
+    #               port: 3001
+    #           - path: /
+    #             service:
+    #               identifier: client
+    #               port: 3002
+    #     tls:
+    #       - hosts:
+    #           - rybbit.${SECRET_DOMAIN_TWO}
