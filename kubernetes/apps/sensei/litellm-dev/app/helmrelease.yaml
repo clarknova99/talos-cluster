@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -71,7 +71,7 @@ spec:
         controller: litellm-dev
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: litellm-dev.${SECRET_DOMAIN_TWO}
+          # external-dns.alpha.kubernetes.io/hostname: litellm-dev.${SECRET_DOMAIN_TWO}
           io.cilium/lb-ipam-ips: 192.168.3.43
         ports:
           http:

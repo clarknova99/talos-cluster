@@ -10,7 +10,7 @@ resources:
   - ./langfusev3/ks.yaml
   - ./langfuse-dev/ks.yaml
   - ./litellm/ks.yaml
-  # - ./litellm-dev/ks.yaml
+  - ./litellm-dev/ks.yaml
   - ./n8n/ks.yaml
   # - ./playwright/ks.yaml
   - ./rybbit/ks.yaml
