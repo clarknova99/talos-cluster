@@ -65,17 +65,15 @@ spec:
               CLICKHOUSE_USER: default
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_DO_NOT_CHOWN: "1"
-            securityContext:
-              runAsUser: 101
-              # runAsGroup: 101
-              # runAsNonRoot: true
-              runAsGroup: 0
-
-              # allowPrivilegeEscalation: false
-              # readOnlyRootFilesystem: false
-              capabilities:
-                drop:
-                - ALL
+            # securityContext:
+            #   runAsUser: 101
+            #   runAsGroup: 101
+            #   runAsNonRoot: true
+            #   allowPrivilegeEscalation: false
+            #   readOnlyRootFilesystem: false
+            #   capabilities:
+            #     drop:
+            #     - ALL
             # probes:
             #   readiness:
             #     enabled: true
