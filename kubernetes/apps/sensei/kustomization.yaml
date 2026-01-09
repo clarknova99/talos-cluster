@@ -8,7 +8,7 @@ resources:
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./langfusev3/ks.yaml
-  # - ./langfuse-dev/ks.yaml
+  - ./langfuse-dev/ks.yaml
   - ./litellm/ks.yaml
   - ./litellm-dev/ks.yaml
   - ./n8n/ks.yaml
