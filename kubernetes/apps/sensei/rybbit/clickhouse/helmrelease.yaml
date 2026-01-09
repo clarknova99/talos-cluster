@@ -97,7 +97,7 @@ spec:
       config:
         enabled: true
         type: configMap
-        name: clickhouse-config
+        name: rybbit-clickhouse-config
         globalMounts:
           - path: /etc/clickhouse-server/config.d
 
