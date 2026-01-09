@@ -13,7 +13,7 @@ resources:
   - ./litellm-dev/ks.yaml
   - ./n8n/ks.yaml
   # - ./playwright/ks.yaml
-  # - ./rybbit/ks.yaml
+  - ./rybbit/ks.yaml
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
   - ./sensei-dev/ks.yaml
