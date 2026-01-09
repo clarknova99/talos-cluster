@@ -142,10 +142,16 @@ spec:
                 <background_pool_size>25</background_pool_size>
                 <background_schedule_pool_size>25</background_schedule_pool_size>
 
-                <!-- Disable merges for system tables to prevent corruption -->
+                <!-- Configure merge behavior to be more conservative on NFS -->
                 <merge_tree>
                     <max_bytes_to_merge_at_max_space_in_pool>161061273600</max_bytes_to_merge_at_max_space_in_pool>
+                    <max_suspicious_broken_parts>0</max_suspicious_broken_parts>
+                    <max_suspicious_broken_parts_bytes>0</max_suspicious_broken_parts_bytes>
                 </merge_tree>
+
+                <!-- Disable background operations for system tables -->
+                <merge_max_block_size>8192</merge_max_block_size>
+                <max_bytes_to_merge_at_min_space_in_pool>1048576</max_bytes_to_merge_at_min_space_in_pool>
 
                 <!-- Disable additional ports that are causing conflicts -->
                 <interserver_http_port remove="remove"/>
