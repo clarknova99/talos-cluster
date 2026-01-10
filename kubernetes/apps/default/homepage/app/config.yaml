@@ -5,6 +5,7 @@ metadata:
   name: homepage-config
   labels:
     app.kubernetes.io/name: homepage
+    kustomize.toolkit.fluxcd.io/substitute: enabled
 data:
   kubernetes.yaml: |
     mode: cluster
