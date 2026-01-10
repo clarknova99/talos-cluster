@@ -40,7 +40,7 @@ spec:
               SESSION_COOKIE_SECURE: true
               DASHBOARD_API_BASE: https://dittofeed-dev.${SECRET_DOMAIN_TWO}
               DASHBOARD_URL: https://dittofeed-dev.${SECRET_DOMAIN_TWO}
-              TEMPORAL_ADDRESS: dittofeed-dev-temporal-temporal.sensei.svc.cluster.local:7233
+              TEMPORAL_ADDRESS: dittofeed-dev-temporal.sensei.svc.cluster.local:7233
               DATABASE_HOST: postgres-lb-vector.database.svc.cluster.local
               DATABASE_USER: ${SECRET_PGADMIN_USER}
               DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}

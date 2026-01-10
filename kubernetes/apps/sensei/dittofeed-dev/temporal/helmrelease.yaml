@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app dittofeed-dev-temporal
+  name: dittofeed-dev-temporal
   namespace: sensei
 spec:
   interval: 15m
@@ -47,7 +47,7 @@ spec:
               POSTGRES_USER: ${SECRET_PGADMIN_USER}
               POSTGRES_PWD: ${SECRET_PGADMIN_PASSWORD}
               POSTGRES_SEEDS: postgres16-rw.database.svc.cluster.local
-              TEMPORAL_ADDRESS: dittofeed-dev-temporal-temporal.sensei.svc.cluster.local:7233
+              TEMPORAL_ADDRESS: dittofeed-dev-temporal.sensei.svc.cluster.local:7233
     service:
       temporal:
         controller: dittofeed-dev-temporal
@@ -76,7 +76,7 @@ spec:
           - dittofeed-dev-temporal.${SECRET_DOMAIN_TWO}
         rules:
           - backendRefs:
-              - name: *app
+              - name: dittofeed-dev-temporal-temporal-ui
                 port: *port
     # ingress:
     #   web:
