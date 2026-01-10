@@ -65,14 +65,14 @@ data:
   custom.js: ""
   bookmarks.yaml: |
     - Internal:
-      - Adguard:
-        href: https://app.${SECRET_DOMAIN_THREE}
-        icon: adguard-home.svg
-        widget:
-          type: adguard
-          url: https://app.${SECRET_DOMAIN_THREE}
-          username: ${SECRET_MQTT_USERNAME}
-          password: ${SECRET_MQTT_PASSWORD}
+        - Adguard:
+          href: https://app.${SECRET_DOMAIN_THREE}
+          icon: adguard-home.svg
+          widget:
+            type: adguard
+            url: https://app.${SECRET_DOMAIN_THREE}
+            username: ${SECRET_MQTT_USERNAME}
+            password: ${SECRET_MQTT_PASSWORD}
     - Social:
         - Discord:
             - icon: discord.png
