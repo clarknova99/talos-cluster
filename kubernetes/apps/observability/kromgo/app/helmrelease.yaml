@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -76,21 +76,30 @@ spec:
             port: *serverPort
           health:
             port: *healthPort
-    ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        className: external
-        hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - "{{ .Release.Name }}.${SECRET_DOMAIN}"                  
+    route:
+      main:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - kromgo.${SECRET_DOMAIN}
+
+    # ingress:
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    #     className: external
+    #     hosts:
+    #       - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: http
+    #     tls:
+    #       - hosts:
+    #           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
     persistence:
       config-file:
         type: configMap

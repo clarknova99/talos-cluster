@@ -99,22 +99,6 @@ spec:
             sectionName: https
         hostnames:
           - prowlarr.${SECRET_DOMAIN}
-    # ingress:
-    #   app:
-    #     annotations:
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: download-box
-    #     className: internal
-    #     hosts:
-    #       - host: prowlarr.${SECRET_DOMAIN}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: *port
-    #     tls:
-    #       - hosts:
-    #           - prowlarr.${SECRET_DOMAIN}
     persistence:
       config:
         enabled: true

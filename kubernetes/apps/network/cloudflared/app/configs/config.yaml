@@ -86,6 +86,11 @@ ingress:
     originRequest:
       originServerName: "auth.${SECRET_DOMAIN_TWO}"
 
+  - hostname: "kromgo.${SECRET_DOMAIN}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "prkromgoometheus.${SECRET_DOMAIN}"
+
   - hostname: "prometheus.${SECRET_DOMAIN}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
