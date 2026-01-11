@@ -27,6 +27,7 @@ data:
     layout:
       Internal:
         style: row
+        columns: 3
         header: false
       Calendar:
         style: row
