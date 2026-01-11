@@ -142,6 +142,10 @@ spec:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: minio.svg
+          gethomepage.dev/name: MinIO
+          gethomepage.dev/group: Storage
+          gethomepage.dev/app: minio
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=minio
         enabled: true
         parentRefs:
           - name: envoy-internal
