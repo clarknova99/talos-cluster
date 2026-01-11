@@ -113,7 +113,7 @@ data:
               username: ${SECRET_MQTT_USERNAME}
               password: ${SECRET_MQTT_PASSWORD}
         - DS1513+:
-            icon: synology.svg
+            icon: synology-dsm.svg
             href: https://192.168.1.2:5001
             widget:
               type: diskstation
