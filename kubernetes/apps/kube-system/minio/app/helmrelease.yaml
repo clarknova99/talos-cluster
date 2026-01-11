@@ -139,6 +139,7 @@ spec:
     route:
       console:
         annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: minio.svg
         enabled: true
@@ -153,6 +154,8 @@ spec:
               - name: minio
                 port: 9001
       s3:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         enabled: true
         parentRefs:
           - name: internal
