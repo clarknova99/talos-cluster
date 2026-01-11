@@ -144,7 +144,7 @@ spec:
           gethomepage.dev/icon: minio.svg
         enabled: true
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: network
             sectionName: https
         hostnames:
@@ -158,7 +158,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         enabled: true
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: network
             sectionName: https
         hostnames:
