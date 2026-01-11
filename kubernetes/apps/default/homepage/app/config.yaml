@@ -112,7 +112,7 @@ data:
               url: https://adguard.${SECRET_DOMAIN_THREE}
               username: ${SECRET_MQTT_USERNAME}
               password: ${SECRET_MQTT_PASSWORD}
-        - Diskstation:
+        - DS1513+:
             icon: synology.svg
             href: https://192.168.1.2:5001
             widget:
