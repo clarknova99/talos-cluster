@@ -20,8 +20,8 @@ data:
     favicon: https://github.com/walkxcode/dashboard-icons/blob/main/png/heimdall.png
     theme: dark
     headerStyle: clean
-    hideVersion: true
-    showStats: true
+    #hideVersion: true
+    #showStats: true
     quicklaunch:
       searchDescriptions: true
       hideInternetSearch: true
