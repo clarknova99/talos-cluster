@@ -64,15 +64,6 @@ data:
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
-    - Internal:
-        - Adguard:
-          href: https://app.${SECRET_DOMAIN_THREE}
-          icon: adguard-home.svg
-          widget:
-            type: adguard
-            url: https://app.${SECRET_DOMAIN_THREE}
-            username: ${SECRET_MQTT_USERNAME}
-            password: ${SECRET_MQTT_PASSWORD}
     - Social:
         - Discord:
             - icon: discord.png
@@ -110,7 +101,17 @@ data:
         - Homepage SI:
             - icon: si-simpleicons
               href: https://simpleicons.org/
-  services.yaml: ""
+  services.yaml: |
+    ---
+    - Internal:
+        - Adguard:
+            icon: adguard-home.svg
+            href: https://app.${SECRET_DOMAIN_THREE}
+            widget:
+              type: adguard
+              url: https://app.${SECRET_DOMAIN_THREE}
+              username: ${SECRET_MQTT_USERNAME}
+              password: ${SECRET_MQTT_PASSWORD}
   widgets.yaml: |
     - search:
         provider: [google]
