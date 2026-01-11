@@ -25,6 +25,9 @@ data:
       searchDescriptions: true
       hideInternetSearch: true
     layout:
+      services:
+        style: row
+        header: false
       Calendar:
         style: row
         header: false
