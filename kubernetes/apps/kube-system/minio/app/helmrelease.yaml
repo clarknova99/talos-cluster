@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -113,29 +113,57 @@ spec:
             interval: 1m
             scrapeTimeout: 10s
 
-    ingress:
-      app:
-        enabled: true
-        className: internal
+    # ingress:
+    #   app:
+    #     enabled: true
+    #     className: internal
+    #     annotations:
+    #       hajimari.io/icon: mdi:pail
+    #     hosts:
+    #       - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: http
+    #       - host: &s3Host s3.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: s3
+    #     tls:
+    #       - hosts:
+    #           - *host
+    #           - *s3Host
+    route:
+      console:
         annotations:
-          hajimari.io/icon: mdi:pail
-        hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-          - host: &s3Host s3.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: s3
-        tls:
-          - hosts:
-              - *host
-              - *s3Host
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: minio.svg
+        enabled: true
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - "minio.${SECRET_DOMAIN}"
+        rules:
+          - backendRefs:
+              - name: minio
+                port: 9001
+      s3:
+        enabled: true
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - "s3.${SECRET_DOMAIN}"
+        rules:
+          - backendRefs:
+              - name: minio
+                port: 9000
     persistence:
       config:
         existingClaim: minio-nfs-pvc
