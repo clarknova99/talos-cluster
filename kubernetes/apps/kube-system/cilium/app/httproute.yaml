@@ -1,20 +1,18 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: hubble-dashboard
   annotations:
     # -- Homepage annotations
-    external-dns.alpha.kubernetes.io/hostname: hubble.${SECRET_DOMAIN}
     gethomepage.dev/enabled: "true"
     gethomepage.dev/group: Networking
     gethomepage.dev/name: Hubble
     gethomepage.dev/icon: cilium.png
     gethomepage.dev/pod-selector: app.kubernetes.io/name=hubble-ui
 spec:
-  # hostnames:
-  #   - hubble.${SECRET_DOMAIN}
+  hostnames:
+    - hubble.${SECRET_DOMAIN}
   parentRefs:
     - name: envoy-internal
       namespace: networking
