@@ -21,6 +21,7 @@ data:
     theme: dark
     headerStyle: clean
     hideVersion: true
+    showStats: true
     quicklaunch:
       searchDescriptions: true
       hideInternetSearch: true
