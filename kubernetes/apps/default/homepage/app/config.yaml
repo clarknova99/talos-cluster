@@ -120,6 +120,14 @@ data:
               url: https://192.168.1.2:5001
               username: ${SECRET_CAM_USERNAME}
               password: ${SECRET_MQTT_PASSWORD}
+        - DS1522+:
+            icon: synology.svg
+            href: https://192.168.1.3:5001
+            widget:
+              type: diskstation
+              url: https://192.168.1.3:5001
+              username: ${SECRET_MQTT_USERNAME}
+              password: ${SECRET_DS1522_PASSWORD}
   widgets.yaml: |
     - search:
         provider: [google]
