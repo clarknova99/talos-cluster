@@ -114,10 +114,10 @@ data:
               password: ${SECRET_MQTT_PASSWORD}
         - Diskstation:
             icon: synology.svg
-            href: https://192.168.1.2:5000
+            href: https://192.168.1.2:5001
             widget:
               type: diskstation
-              url: https://192.168.1.2:5000
+              url: https://192.168.1.2:5001
               username: ${SECRET_CAM_USERNAME}
               password: ${SECRET_MQTT_PASSWORD}
   widgets.yaml: |
