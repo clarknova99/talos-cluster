@@ -95,7 +95,14 @@ ingress:
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
       originServerName: "hubble.${SECRET_DOMAIN}"
-
+  - hostname: "minio.${SECRET_DOMAIN}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "minio.${SECRET_DOMAIN}"
+  - hostname: "s3.${SECRET_DOMAIN}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "s3.${SECRET_DOMAIN}"
 
   - hostname: "prometheus.${SECRET_DOMAIN}"
     service: https://envoy-internal.network.svc.cluster.local:443
