@@ -44,6 +44,11 @@ ingress:
     originRequest:
       originServerName: "n8n.${SECRET_DOMAIN_TWO}"
 
+  - hostname: "dev.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "dev.${SECRET_DOMAIN_TWO}"
+
 
   # media
   - hostname: "bazarr.${SECRET_DOMAIN}"

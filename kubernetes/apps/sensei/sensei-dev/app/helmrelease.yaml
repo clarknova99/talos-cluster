@@ -3,14 +3,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sensei-dev-app
+  name:
   namespace: sensei
 spec:
   interval: 15m
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -63,24 +63,41 @@ spec:
         controller: sensei-dev-app
         ports:
           http:
-            port: 8000
-    ingress:
-      app:
+            port: &port 8000
+    route:
+      main:
         annotations:
-          nginx.ingress.kubernetes.io/affinity: "cookie"
-          nginx.ingress.kubernetes.io/session-cookie-name: "route"
-          nginx.ingress.kubernetes.io/session-cookie-max-age: "3600"
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:math-compass
-        className: external
-        hosts:
-          - host: dev.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 8000
-        tls:
-          - hosts:
-              - dev.${SECRET_DOMAIN_TWO}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Sensei
+          gethomepage.dev/icon: https://senseichess.com/static/images/knight2.svg
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        hostnames:
+          - dev.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - name: nsensei-dev-app
+                port: *port
+
+    # ingress:
+    #   app:
+    #     annotations:
+    #       nginx.ingress.kubernetes.io/affinity: "cookie"
+    #       nginx.ingress.kubernetes.io/session-cookie-name: "route"
+    #       nginx.ingress.kubernetes.io/session-cookie-max-age: "3600"
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:math-compass
+    #     className: external
+    #     hosts:
+    #       - host: dev.${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: 8000
+    #     tls:
+    #       - hosts:
+    #           - dev.${SECRET_DOMAIN_TWO}
