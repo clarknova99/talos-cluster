@@ -69,7 +69,7 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Sensei
-          gethomepage.dev/icon: https://senseichess.com/static/images/knight2.svg
+          gethomepage.dev/icon: mdi-chess-knight
         parentRefs:
           - name: envoy-external
             namespace: network
