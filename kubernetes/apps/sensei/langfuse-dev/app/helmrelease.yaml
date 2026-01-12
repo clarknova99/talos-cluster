@@ -115,7 +115,7 @@ spec:
       main:
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Sensei
+          gethomepage.dev/group: "Sensei Services"
           gethomepage.dev/icon: https://langfuse.senseichess.com/icon.svg
         parentRefs:
           - name: envoy-external

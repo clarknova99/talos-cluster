@@ -80,7 +80,7 @@ spec:
       main:
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Sensei
+          gethomepage.dev/group: "Sensei Services"
           gethomepage.dev/icon: https://opensource.muenchen.de/logo/litellm.png
         parentRefs:
           - name: envoy-external

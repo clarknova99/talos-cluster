@@ -116,7 +116,7 @@ spec:
       main:
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Sensei
+          gethomepage.dev/group: "Sensei Services"
           gethomepage.dev/icon: https://rybbit.com/rybbit-text.svg
         parentRefs:
           - name: envoy-external

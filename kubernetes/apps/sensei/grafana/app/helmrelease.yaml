@@ -176,9 +176,8 @@ spec:
           gethomepage.dev/app: grafana
           gethomepage.dev/enabled: "true"
           gethomepage.dev/icon: grafana.png
-          gethomepage.dev/name: Grafana
-          gethomepage.dev/group: Sensei
-          gethomepage.dev/description: Monitoring Dashboards
+          gethomepage.dev/name: grafana
+          gethomepage.dev/group: "Sensei Services"
         parentRefs:
           - name: envoy-external
             namespace: network

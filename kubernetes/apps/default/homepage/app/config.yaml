@@ -54,9 +54,15 @@ data:
         Sensei Services:
           style: row
           columns: 1
+          header: false
         Sensei App:
           style: row
           columns: 1
+          header: false
+        Sensei Admin:
+          style: row
+          columns: 1
+          header: false
 
   custom.css: ""
   custom.js: ""
