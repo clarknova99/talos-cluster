@@ -49,6 +49,15 @@ spec:
               CLICKHOUSE_HOST: http://dittofeed-clickhouse.sensei.svc.cluster.local:8123
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: NotIn
+                    values: ["mars"]
     # service:
     #   app:
     #     controller: dittofeed-admin-cli
