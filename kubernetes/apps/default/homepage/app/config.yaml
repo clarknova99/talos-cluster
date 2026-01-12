@@ -30,25 +30,10 @@ data:
         style: row
         columns: 3
         header: false
-      Calendar:
-        style: row
-        header: false
-      Home:
-        style: row
-        columns: 2
-        icon: mdi-home-analytics
       Media:
         style: row
         columns: 2
         icon: mdi-play-circle
-      Downloads:
-        style: row
-        columns: 3
-        icon: mdi-download-circle
-      Automation:
-        style: column
-        columns: 2
-        icon: mdi-home-automation
       Observability:
         style: column
         icon: mdi-monitor-eye
@@ -65,6 +50,7 @@ data:
       Sensei:
         style: row
         columns: 3
+        icon: mdi-chess-rook
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
