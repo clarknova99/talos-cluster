@@ -37,7 +37,7 @@ data:
       Observability:
         style: column
         icon: mdi-monitor-eye
-      Infrastructure:
+      Infra:
         style: column
         icon: mdi-server-network
       Storage:
@@ -50,19 +50,14 @@ data:
       Sensei Services:
         style: row
         columns: 3
-        header: false
       Sensei Apps:
         style: row
         columns: 2
         icon: mdi-chess-rook
         Sensei App:
-          style: row
-          columns: 1
-          header: false
+          style: column
         Sensei Admin:
-          style: row
-          columns: 1
-          header: false
+          style: column
 
   custom.css: ""
   custom.js: ""
