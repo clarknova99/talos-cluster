@@ -47,7 +47,7 @@ spec:
               POSTGRES_USER: ${SECRET_PGADMIN_USER}
               POSTGRES_PWD: ${SECRET_PGADMIN_PASSWORD}
               POSTGRES_SEEDS: postgres-lb-vector.database.svc.cluster.local
-              TEMPORAL_ADDRESS: dittofeed-temporal-temporal.sensei.svc.cluster.local:7233
+              TEMPORAL_ADDRESS: dittofeed-temporal.sensei.svc.cluster.local:7233
     service:
       temporal:
         controller: dittofeed-temporal
