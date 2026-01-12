@@ -68,7 +68,7 @@ spec:
       main:
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Sensei
+          gethomepage.dev/group: "Sensei App"
           gethomepage.dev/icon: mdi-chess-knight-#7C4DFF
         parentRefs:
           - name: envoy-external

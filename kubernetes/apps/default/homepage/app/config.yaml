@@ -47,10 +47,15 @@ data:
         style: row
         columns: 4
         icon: mdi-application
-      Sensei:
+      Sensei App:
         style: row
         columns: 3
         icon: mdi-chess-rook
+      Sensei Services:
+        style: row
+        columns: 3
+        icon: mdi-chess-rook
+
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
