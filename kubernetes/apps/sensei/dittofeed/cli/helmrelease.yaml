@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: dittofeed/dittofeed-admin-cli
-              tag: v0.23.0-alpha.134
+              tag: v0.23.0
             command: ["/bin/sh", "-c", "tail -f /dev/null"]  # Override entrypoint
             env:
               PASSWORD: ${SECRET_SENSEI_PASSWORD}
