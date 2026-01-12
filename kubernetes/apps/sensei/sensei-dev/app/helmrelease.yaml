@@ -78,7 +78,7 @@ spec:
           - dev.${SECRET_DOMAIN_TWO}
         rules:
           - backendRefs:
-              - name: nsensei-dev-app
+              - name: sensei-dev-app
                 port: *port
 
     # ingress:
