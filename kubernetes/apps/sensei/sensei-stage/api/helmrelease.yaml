@@ -93,23 +93,4 @@ spec:
         ports:
           http:
             port: 3001
-    # ingress:
-    #   app:
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-    #       nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
-    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "180"
-    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "180"
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: mdi:math-compass
-    #     className: external
-    #     hosts:
-    #       - host: stageapi.${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: 3001
-    #     tls:
-    #       - hosts:
-    #           - stageapi.${SECRET_DOMAIN_TWO}
+
