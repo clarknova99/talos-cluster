@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -61,7 +61,23 @@ spec:
         controller: sensei-stage-app
         ports:
           http:
-            port: 8000
+            port: &port 8000
+    route:
+      main:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: "Sensei App"
+          gethomepage.dev/icon: mdi-chess-knight-#7C4DFF
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        hostnames:
+          - stage.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - name: sensei-stage-app
+                port: *port
     ingress:
       app:
         annotations:
