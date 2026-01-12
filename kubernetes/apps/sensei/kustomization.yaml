@@ -16,4 +16,4 @@ resources:
   - ./rybbit/ks.yaml
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
-  # - ./sensei-dev/ks.yaml
+  - ./sensei-dev/ks.yaml
