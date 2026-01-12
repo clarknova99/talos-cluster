@@ -69,7 +69,7 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Sensei
-          gethomepage.dev/icon: mdi-chess-knight
+          gethomepage.dev/icon: mdi-chess-knight-#800080
         parentRefs:
           - name: envoy-external
             namespace: network
