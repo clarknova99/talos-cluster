@@ -48,9 +48,9 @@ data:
         columns: 4
         icon: mdi-application
       Sensei:
-          style: row
-          columns: 3
-          icon: mdi-chess-rook
+        style: row
+        columns: 3
+        icon: mdi-chess-rook
         Sensei Services:
           style: row
           columns: 1
