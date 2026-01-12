@@ -75,47 +75,6 @@ spec:
             ports:
               - name: backup-api
                 containerPort: 7171
-            # securityContext:
-            #   runAsUser: 101
-            #   runAsGroup: 101
-            #   runAsNonRoot: true
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: false
-            #   capabilities:
-            #     drop:
-            #     - ALL
-            # probes:
-            #   readiness:
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /ping
-            #         port: 8123
-            #       initialDelaySeconds: 30
-            #       periodSeconds: 10
-            #       timeoutSeconds: 5
-            #       failureThreshold: 6
-            #   liveness:
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /ping
-            #         port: 8123
-            #       initialDelaySeconds: 60
-            #       periodSeconds: 30
-            #       timeoutSeconds: 5
-            #       failureThreshold: 3
-
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 101
-    #     runAsGroup: 101
-    #     fsGroup: 101
-    #     fsGroupChangePolicy: OnRootMismatch
-    #     seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: dittofeed-clickhouse
@@ -139,3 +98,69 @@ spec:
             app:
               - path: /var/lib/clickhouse
 
+      config:
+        enabled: true
+        type: configMap
+        name: dittofeed-clickhouse
+        globalMounts:
+          - path: /etc/clickhouse-server/config.d
+
+    configMaps:
+      config:
+        enabled: true
+        data:
+          config.xml: |
+            <clickhouse>
+                <logger>
+                    <level>warning</level>
+                    <console>true</console>
+                </logger>
+
+                <!-- Skip check for incorrect settings to avoid configuration errors -->
+                <skip_check_for_incorrect_settings>1</skip_check_for_incorrect_settings>
+
+                <!-- Explicitly set listen hosts to avoid conflicts -->
+                <listen_host>0.0.0.0</listen_host>
+
+                <!-- Configure ports explicitly to avoid conflicts -->
+                <tcp_port>9000</tcp_port>
+                <http_port>8123</http_port>
+
+                <!-- Disable problematic system tables that are causing corruption -->
+                <query_thread_log remove="remove"/>
+                <query_log remove="remove"/>
+                <text_log remove="remove"/>
+                <trace_log remove="remove"/>
+                <metric_log remove="remove"/>
+                <asynchronous_metric_log remove="remove"/>
+                <session_log remove="remove"/>
+                <part_log remove="remove"/>
+                <latency_log remove="remove"/>
+
+                <!-- Disable OpenTelemetry and other problematic system tables -->
+                <opentelemetry_span_log remove="remove"/>
+                <processors_profile_log remove="remove"/>
+                <error_log remove="remove"/>
+
+                <!-- Set background pool sizes to prevent configuration conflicts -->
+                <background_pool_size>25</background_pool_size>
+                <background_schedule_pool_size>25</background_schedule_pool_size>
+
+                <!-- Configure merge behavior to be more conservative on NFS -->
+                <merge_tree>
+                    <max_bytes_to_merge_at_max_space_in_pool>161061273600</max_bytes_to_merge_at_max_space_in_pool>
+                    <max_suspicious_broken_parts>0</max_suspicious_broken_parts>
+                    <max_suspicious_broken_parts_bytes>0</max_suspicious_broken_parts_bytes>
+                </merge_tree>
+
+                <!-- Disable background operations for system tables -->
+                <merge_max_block_size>8192</merge_max_block_size>
+                <max_bytes_to_merge_at_min_space_in_pool>1048576</max_bytes_to_merge_at_min_space_in_pool>
+
+                <!-- Disable additional ports that are causing conflicts -->
+                <interserver_http_port remove="remove"/>
+                <mysql_port remove="remove"/>
+                <postgresql_port remove="remove"/>
+                <prometheus_port remove="remove"/>
+                <port remove="remove"/>
+            </clickhouse>
