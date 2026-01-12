@@ -15,5 +15,5 @@ resources:
   # - ./playwright/ks.yaml
   - ./rybbit/ks.yaml
   - ./sensei-prod/ks.yaml
-  # - ./sensei-stage/ks.yaml
+  - ./sensei-stage/ks.yaml
   - ./sensei-dev/ks.yaml
