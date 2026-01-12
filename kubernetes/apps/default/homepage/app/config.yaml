@@ -50,6 +50,7 @@ data:
       Sensei Services:
         style: row
         columns: 3
+        icon: mdi-chess-queen
       Sensei Apps:
         style: row
         columns: 2

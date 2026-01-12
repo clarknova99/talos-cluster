@@ -128,7 +128,7 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: "Sensei Services"
-          gethomepage.dev/icon: https://langfuse.senseichess.com/icon.svg
+          gethomepage.dev/icon: openai.svg
         parentRefs:
           - name: envoy-external
             namespace: network

@@ -78,7 +78,7 @@ spec:
       main:
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Sensei
+          gethomepage.dev/group: "Sensei Services"
           gethomepage.dev/icon: n8n.svg
         parentRefs:
           - name: envoy-external
