@@ -37,10 +37,6 @@ data:
         style: row
         columns: 2
         icon: mdi-home-analytics
-      AI:
-        style: row
-        columns: 2
-        icon: si-openapiinitiative
       Media:
         style: row
         columns: 2
@@ -66,6 +62,10 @@ data:
         style: row
         columns: 4
         icon: mdi-application
+      Sensei:
+        style: row
+        columns: 3
+        header: false
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
