@@ -12,20 +12,36 @@ ingress:
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "dittofeed-dev.${SECRET_DOMAIN_TWO}"
+  - hostname: "dittofeed.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "dittofeed.${SECRET_DOMAIN_TWO}"
   - hostname: "dittofeed-dev-temporal.${SECRET_DOMAIN_TWO}"
     service: https://envoy-internal.network.svc.cluster.local:443
     originRequest:
       originServerName: "dittofeed-dev-temporal.${SECRET_DOMAIN_TWO}"
+  - hostname: "dittofeed-temporal.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-internal.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "dittofeed-temporal.${SECRET_DOMAIN_TWO}"
   - hostname: "langfuse-dev.${SECRET_DOMAIN_TWO}"
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "langfuse-dev.${SECRET_DOMAIN_TWO}"
-
+  - hostname: "langfuse.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "langfuse.${SECRET_DOMAIN_TWO}"
 
   - hostname: "litellm-dev.${SECRET_DOMAIN_TWO}"
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "litellm-dev.${SECRET_DOMAIN_TWO}"
+  - hostname: "litellm.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "litellm.${SECRET_DOMAIN_TWO}"
+
 
   - hostname: "status.${SECRET_DOMAIN_TWO}"
     service: https://envoy-external.network.svc.cluster.local:443
@@ -52,6 +68,16 @@ ingress:
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "stage.${SECRET_DOMAIN_TWO}"
+  - hostname: "www.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "www.${SECRET_DOMAIN_TWO}"
+  - hostname: "${SECRET_DOMAIN_TWO}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "${SECRET_DOMAIN_TWO}"
+
+
 
   - hostname: "admin-dev.${SECRET_DOMAIN_TWO}"
     service: https://envoy-external.network.svc.cluster.local:443
@@ -61,7 +87,10 @@ ingress:
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "admin-stage.${SECRET_DOMAIN_TWO}"
-
+  - hostname: "admin.${SECRET_DOMAIN_TWO}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "admin.${SECRET_DOMAIN_TWO}"
 
 
   # media

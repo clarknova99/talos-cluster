@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -61,25 +61,41 @@ spec:
           io.cilium/lb-ipam-ips: 192.168.3.37
         ports:
           http:
-            port: 8080
-    ingress:
-      web:
+            port: &port 8080
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
-          nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
-          nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:water-flow
-        className: internal
-        hosts:
-          - host: dittofeed-temporal.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: temporal-ui
-                  port: 8080
-        tls:
-          - hosts:
-              - dittofeed-temporal.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: "Sensei Services"
+          gethomepage.dev/icon: https://docs.temporal.io/img/favicon.png
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - dittofeed-temporal.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - name: dittofeed-temporal-temporal-ui
+                port: *port
+    # ingress:
+    #   web:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+    #       nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
+    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
+    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:water-flow
+    #     className: internal
+    #     hosts:
+    #       - host: dittofeed-temporal.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             pathType: Prefix
+    #             service:
+    #               identifier: temporal-ui
+    #               port: 8080
+    #     tls:
+    #       - hosts:
+    #           - dittofeed-temporal.${SECRET_DOMAIN}

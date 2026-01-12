@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -75,33 +75,49 @@ spec:
           io.cilium/lb-ipam-ips: 192.168.3.39
         ports:
           http:
-            port: 4000
-    ingress:
-      app:
+            port: &port 4000
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          nginx.ingress.kubernetes.io/app-root: /ui
-          # nginx.ingress.kubernetes.io/temporal-redirect: https://litellm.${SECRET_DOMAIN_TWO}/ui
-          #nginx.ingress.kubernetes.io/rewrite-target:
-          # nginx.ingress.kubernetes.io/auth-method: GET
-          # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
-          # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN}?rm=$request_method
-          # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-          # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:math-compass
-        className: external
-        enabled: true
-        hosts:
-          - host: litellm.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 4000
-        tls:
-          - hosts:
-              - litellm.${SECRET_DOMAIN_TWO}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: "Sensei Services"
+          gethomepage.dev/icon: https://opensource.muenchen.de/logo/litellm.png
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        hostnames:
+          - litellm.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - name: litellm
+                port: *port
+    # ingress:
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+    #       nginx.ingress.kubernetes.io/app-root: /ui
+    #       # nginx.ingress.kubernetes.io/temporal-redirect: https://litellm.${SECRET_DOMAIN_TWO}/ui
+    #       #nginx.ingress.kubernetes.io/rewrite-target:
+    #       # nginx.ingress.kubernetes.io/auth-method: GET
+    #       # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
+    #       # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN}?rm=$request_method
+    #       # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+    #       # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:math-compass
+    #     className: external
+    #     enabled: true
+    #     hosts:
+    #       - host: litellm.${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: 4000
+    #     tls:
+    #       - hosts:
+    #           - litellm.${SECRET_DOMAIN_TWO}
     persistence:
       config-file:
         type: configMap

@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -96,56 +96,51 @@ spec:
         controller: sensei-prod-app
         ports:
           http:
-            port: 8000
-    ingress:
-      app:
+            port: &port 8000
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
-          nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
-          nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:math-compass
-        className: external
-        hosts:
-          - host: www.${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: 8000
-          - host: ${SECRET_DOMAIN_TWO}
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: 8000
-        tls:
-          - hosts:
-              - www.${SECRET_DOMAIN_TWO}
-              - ${SECRET_DOMAIN_TWO}
-      # adstxt:
-      #   annotations:
-      #     nginx.ingress.kubernetes.io/permanent-redirect: https://srv.adstxtmanager.com/19390/${SECRET_DOMAIN_TWO}
-      #   className: external
-      #   hosts:
-      #     - host: www.${SECRET_DOMAIN_TWO}
-      #       paths:
-      #         - path: /ads.txt
-      #           pathType: Exact
-      #           service:
-      #             identifier: app
-      #             port: 8000
-      #     - host: ${SECRET_DOMAIN_TWO}
-      #       paths:
-      #         - path: /ads.txt
-      #           pathType: Exact
-      #           service:
-      #             identifier: app
-      #             port: 8000
-      #   tls:
-      #     - hosts:
-      #         - www.${SECRET_DOMAIN_TWO}
-      #         - ${SECRET_DOMAIN_TWO}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: "Sensei App"
+          gethomepage.dev/icon: mdi-chess-knight-#7C4DFF
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        hostnames:
+          - ${SECRET_DOMAIN_TWO}
+          - www.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - name: sensei-prod-app
+                port: *port
+    # ingress:
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+    #       nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
+    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
+    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:math-compass
+    #     className: external
+    #     hosts:
+    #       - host: www.${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /
+    #             pathType: Prefix
+    #             service:
+    #               identifier: app
+    #               port: 8000
+    #       - host: ${SECRET_DOMAIN_TWO}
+    #         paths:
+    #           - path: /
+    #             pathType: Prefix
+    #             service:
+    #               identifier: app
+    #               port: 8000
+    #     tls:
+    #       - hosts:
+    #           - www.${SECRET_DOMAIN_TWO}
+    #           - ${SECRET_DOMAIN_TWO}
+
