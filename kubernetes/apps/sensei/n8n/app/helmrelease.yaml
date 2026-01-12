@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -74,24 +74,40 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      app:
+    route:
+      main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
-          nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
-          nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
-          hajimari.io/enable: "true"
-          hajimari.io/icon: mdi:water-flow
-        className: external
-        hosts:
-          - host: *host
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: *port
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Sensei
+          gethomepage.dev/icon: n8n.svg
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        hostnames:
+          - n8n.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - name: n8n
+                port: *port
+    # ingress:
+    #   app:
+    #     annotations:
+    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
+    #       nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
+    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
+    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
+    #       hajimari.io/enable: "true"
+    #       hajimari.io/icon: mdi:water-flow
+    #     className: external
+    #     hosts:
+    #       - host: *host
+    #         paths:
+    #           - path: /
+    #             pathType: Prefix
+    #             service:
+    #               identifier: app
+    #               port: *port
 
     persistence:
       config:

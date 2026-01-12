@@ -11,7 +11,7 @@ resources:
   - ./langfuse-dev/ks.yaml
   - ./litellm/ks.yaml
   - ./litellm-dev/ks.yaml
-  # - ./n8n/ks.yaml
+  - ./n8n/ks.yaml
   # - ./playwright/ks.yaml
   - ./rybbit/ks.yaml
   - ./sensei-prod/ks.yaml
