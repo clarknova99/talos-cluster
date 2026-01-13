@@ -71,7 +71,7 @@ spec:
         controller: litellm
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: litellm.${SECRET_DOMAIN_TWO}
+          # external-dns.alpha.kubernetes.io/hostname: litellm.${SECRET_DOMAIN_TWO}
           io.cilium/lb-ipam-ips: 192.168.3.39
         ports:
           http:
