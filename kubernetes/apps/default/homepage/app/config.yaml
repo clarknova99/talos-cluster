@@ -87,10 +87,8 @@ data:
             - icon: aws.png
               href: https://aws.amazon.com/console/
     - Git:
-        - Removate:
-            - name: Renovate
-              #url: https://app.renovatebot.com/dashboard#github/clarknova99/
-              url: https://developer.mend.io/github/clarknova99/talos-cluster
+        - Kubesearch:
+              url: https://app.renovatebot.com/dashboard#github/clarknova99/
         - Kubesearch:
             - icon: kubernetes-dashboard.png
               description: Helm Chart Search
