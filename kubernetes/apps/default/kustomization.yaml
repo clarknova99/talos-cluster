@@ -5,12 +5,9 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./authelia/ks.yaml
-#  - ./frigate/ks.yaml
   - ./homepage/ks.yaml
   - ./it-tools/ks.yaml
-  - ./hajimari/ks.yaml
   - ./kite/ks.yaml
   - ./lldap/ks.yaml
-  # - ./mosquitto/ks.yaml
   - ./website/ks.yaml
   - ./whoami/ks.yaml
