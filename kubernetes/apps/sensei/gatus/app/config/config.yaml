@@ -37,7 +37,7 @@ endpoints:
       - type: discord
         description: "healthcheck failed"
         send-on-resolved: true
-              
+
   - name: sensei backend
     group: sensei
     url: "tcp://sensei-prod-api.sensei.svc.cluster.local:3001"
@@ -45,13 +45,13 @@ endpoints:
       hide-hostname: true
       hide-url: true
     conditions:
-      - "[CONNECTED] == true"      
+      - "[CONNECTED] == true"
     alerts:
       - type: discord
         description: "healthcheck failed"
         send-on-resolved: true
 
-  ## Services  
+  ## Services
   - name: postgresql
     group: services
     url: "tcp://192.168.3.42:5432"
@@ -72,7 +72,21 @@ endpoints:
     interval: 1m
     ui:
       hide-hostname: true
-      hide-url: true    
+      hide-url: true
+    client:
+      dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: discord
+        description: "healthcheck failed"
+        send-on-resolved: true
+
+
+  - name: langfuse
+    group: services
+    url: https://dittofeed.${SECRET_DOMAIN_TWO}
+    interval: 1m
     client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
