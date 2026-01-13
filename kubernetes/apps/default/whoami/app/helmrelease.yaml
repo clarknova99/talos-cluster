@@ -52,7 +52,9 @@ spec:
     route:
       main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Apps
+          gethomepage.dev/icon: mdi-account-#535dff
         parentRefs:
           - name: envoy-external
             namespace: network

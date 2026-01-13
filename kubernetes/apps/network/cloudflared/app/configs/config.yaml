@@ -183,6 +183,10 @@ ingress:
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "whoami.${SECRET_DOMAIN}"
+  - hostname: "echo-server.${SECRET_DOMAIN}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "echo-server.${SECRET_DOMAIN}"
   - hostname: "www.${SECRET_DOMAIN}"
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
