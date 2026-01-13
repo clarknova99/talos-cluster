@@ -29,8 +29,6 @@ endpoints:
     group: sensei
     url: https://www.${SECRET_DOMAIN_TWO}
     interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
     alerts:
@@ -73,8 +71,6 @@ endpoints:
     ui:
       hide-hostname: true
       hide-url: true
-    client:
-      dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
     alerts:
@@ -87,8 +83,6 @@ endpoints:
     group: services
     url: https://dittofeed.${SECRET_DOMAIN_TWO}
     interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
     alerts:
