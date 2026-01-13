@@ -93,44 +93,30 @@ Expected output should show `totalProcessed` > 0 and the workflow processing wor
 
 5. **Note on system table configuration:**
 
-   **Important:** ClickHouse system tables cannot be permanently disabled via configuration in recent versions. Attempting to use `<engine>None</engine>` or `<ttl>` settings will cause ClickHouse to fail to start with error:
-   ```
-   If 'engine' is specified for system table, PARTITION BY/TTL parameters should be
-   specified directly inside 'engine' and the setting doesn't make sense.
+   **Good news!** System tables are now configured with automatic TTL (Time To Live) retention policies in the ClickHouse configuration. Data older than 1 day is automatically deleted, preventing the tables from growing too large.
+
+   The configuration in `kubernetes/apps/sensei/dittofeed/clickhouse/helmrelease.yaml` includes:
+   ```xml
+   <query_log>
+       <database>system</database>
+       <table>query_log</table>
+       <partition_by>toYYYYMM(event_date)</partition_by>
+       <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
+   </query_log>
    ```
 
-   The system tables will automatically recreate themselves. This is normal ClickHouse behavior. The key is to **monitor disk usage** and periodically drop them if they grow too large (>10GB).
+   This is applied to all major system tables (query_log, metric_log, trace_log, text_log, part_log, session_log).
 
-6. **Create a cron job to periodically clean system tables (recommended):**
+   **Note:** Attempting to use `<engine>None</engine>` will cause ClickHouse to fail. Always use the full table configuration with explicit database, table, partition_by, and ttl parameters.
 
-   Create a Kubernetes CronJob to drop system tables weekly:
-   ```yaml
-   apiVersion: batch/v1
-   kind: CronJob
-   metadata:
-     name: clickhouse-cleanup
-     namespace: sensei
-   spec:
-     schedule: "0 2 * * 0"  # Every Sunday at 2 AM
-     jobTemplate:
-       spec:
-         template:
-           spec:
-             containers:
-             - name: cleanup
-               image: curlimages/curl:latest
-               command:
-               - /bin/sh
-               - -c
-               - |
-                 kubectl exec -n sensei $(kubectl get pod -n sensei -l app.kubernetes.io/name=dittofeed-clickhouse -o jsonpath='{.items[0].metadata.name}') -c app -- clickhouse-client --query "
-                 DROP TABLE IF EXISTS system.query_log;
-                 DROP TABLE IF EXISTS system.text_log;
-                 DROP TABLE IF EXISTS system.trace_log;
-                 DROP TABLE IF EXISTS system.metric_log;
-                 "
-             restartPolicy: OnFailure
+6. **Verify TTL is applied:**
+
+   You can verify the TTL is working:
+   ```bash
+   kubectl exec -n sensei $CH_POD -c app -- clickhouse-client --query "SHOW CREATE TABLE system.query_log" | grep TTL
    ```
+
+   Expected output: `TTL event_date + toIntervalDay(1)`
 
 7. **Restart ClickHouse to apply clean state:**
    ```bash
