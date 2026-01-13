@@ -122,21 +122,64 @@ spec:
                 <tcp_port>9000</tcp_port>
                 <http_port>8123</http_port>
 
-                <!-- Disable problematic system tables that are causing corruption -->
-                <query_thread_log remove="remove"/>
-                <query_log remove="remove"/>
-                <text_log remove="remove"/>
-                <trace_log remove="remove"/>
-                <metric_log remove="remove"/>
-                <asynchronous_metric_log remove="remove"/>
-                <session_log remove="remove"/>
-                <part_log remove="remove"/>
-                <latency_log remove="remove"/>
-
-                <!-- Disable OpenTelemetry and other problematic system tables -->
-                <opentelemetry_span_log remove="remove"/>
-                <processors_profile_log remove="remove"/>
-                <error_log remove="remove"/>
+                <!-- Configure automatic retention/cleanup for system tables -->
+                <!-- These settings define how long data is kept before automatic deletion -->
+                <query_log>
+                    <database>system</database>
+                    <table>query_log</table>
+                    <partition_by>toYYYYMM(event_date)</partition_by>
+                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
+                </query_log>
+                <query_thread_log>
+                    <database>system</database>
+                    <table>query_thread_log</table>
+                    <partition_by>toYYYYMM(event_date)</partition_by>
+                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
+                </query_thread_log>
+                <metric_log>
+                    <database>system</database>
+                    <table>metric_log</table>
+                    <partition_by>toYYYYMM(event_date)</partition_by>
+                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
+                </metric_log>
+                <asynchronous_metric_log>
+                    <database>system</database>
+                    <table>asynchronous_metric_log</table>
+                    <partition_by>toYYYYMM(event_date)</partition_by>
+                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
+                </asynchronous_metric_log>
+                <trace_log>
+                    <database>system</database>
+                    <table>trace_log</table>
+                    <partition_by>toYYYYMM(event_date)</partition_by>
+                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
+                </trace_log>
+                <text_log>
+                    <database>system</database>
+                    <table>text_log</table>
+                    <partition_by>toYYYYMM(event_date)</partition_by>
+                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
+                </text_log>
+                <part_log>
+                    <database>system</database>
+                    <table>part_log</table>
+                    <partition_by>toYYYYMM(event_date)</partition_by>
+                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
+                </part_log>
+                <session_log>
+                    <database>system</database>
+                    <table>session_log</table>
+                    <partition_by>toYYYYMM(event_date)</partition_by>
+                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
+                </session_log>
 
                 <!-- Set background pool sizes to prevent configuration conflicts -->
                 <background_pool_size>25</background_pool_size>
@@ -160,3 +203,4 @@ spec:
                 <prometheus_port remove="remove"/>
                 <port remove="remove"/>
             </clickhouse>
+
