@@ -53,6 +53,9 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/icon: it-tools.svg
         hostnames:
           - it-tools.${SECRET_DOMAIN}
         parentRefs:
