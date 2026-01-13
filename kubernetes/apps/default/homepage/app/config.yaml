@@ -87,6 +87,9 @@ data:
             - icon: aws.png
               href: https://aws.amazon.com/console/
     - Git:
+        - Renovate:
+            - icon: kubernetes-dashboard.png
+              href: https://app.renovatebot.com/dashboard#github/clarknova99/
         - Kubesearch:
             - icon: kubernetes-dashboard.png
               description: Helm Chart Search
