@@ -26,10 +26,6 @@ data:
       searchDescriptions: true
       hideInternetSearch: true
     layout:
-      Internal:
-        style: row
-        columns: 3
-        header: false
       Media:
         style: row
         columns: 2
@@ -43,9 +39,10 @@ data:
       Storage:
         style: column
         icon: mdi-database
-      System:
+      Apps:
         style: row
-        columns: 4
+        columns: 3
+        header: false
         icon: mdi-application
       Sensei Services:
         style: row
@@ -96,6 +93,12 @@ data:
             - icon: kubernetes-dashboard.png
               description: Helm Chart Search
               href: https://kubesearch.dev/
+        - Talos Cluster:
+            - icon: kubernetes-dashboard.png
+              href: https://github.com/clarknova99/talos-cluster/pulls
+        - Pi Cluster:
+            - icon: kubernetes-dashboard.png
+              href: https://github.com/clarknova99/talos-cluster/pulls
         - 0nedr0p GitHub:
             - icon: kubernetes-dashboard.png
               description: Helm Chart Search

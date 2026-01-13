@@ -48,6 +48,7 @@ spec:
       app:
         annotations:
           gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Apps
           gethomepage.dev/icon: nginx.svg
         hostnames:
           - ${SECRET_DOMAIN}

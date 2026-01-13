@@ -60,6 +60,7 @@ spec:
       app:
         annotations:
           gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Apps
           gethomepage.dev/icon: it-tools.svg
         hostnames:
           - it-tools.${SECRET_DOMAIN}

@@ -6,7 +6,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: Networking
+    gethomepage.dev/group: Observability
     gethomepage.dev/name: Hubble
     gethomepage.dev/icon: cilium.png
     gethomepage.dev/pod-selector: app.kubernetes.io/name=hubble-ui
