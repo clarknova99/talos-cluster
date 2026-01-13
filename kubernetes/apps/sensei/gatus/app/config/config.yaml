@@ -6,7 +6,7 @@ storage:
   path: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/gatus?sslmode=disable
   caching: true
 metrics: true
-debug: false
+debug: true
 ui:
   title: sensei chess service status
   header: sensei chess service status
@@ -83,6 +83,8 @@ endpoints:
     group: services
     url: https://dittofeed.${SECRET_DOMAIN_TWO}
     interval: 1m
+    client:
+      dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
     alerts:
