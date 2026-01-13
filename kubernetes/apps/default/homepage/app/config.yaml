@@ -89,7 +89,7 @@ data:
     - Git:
         - Renovate:
               icon: kubernetes-dashboard.png
-              url: https://app.renovatebot.com/dashboard#github/clarknova99/
+              href: https://app.renovatebot.com/dashboard#github/clarknova99/
         - Kubesearch:
             - icon: kubernetes-dashboard.png
               description: Helm Chart Search
