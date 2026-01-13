@@ -57,8 +57,10 @@ data:
         icon: mdi-chess-rook
         Sensei App:
           style: column
+          header: false
         Sensei Admin:
           style: column
+          header: false
 
   custom.css: ""
   custom.js: ""
