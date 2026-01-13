@@ -21,7 +21,7 @@ alerting:
       success-threshold: 5
 connectivity:
   checker:
-    target: 1.1.1.1:53
+    target: 8.8.8.8:53
     interval: 1m
 endpoints:
   ## services
@@ -31,10 +31,10 @@ endpoints:
     interval: 1m
     conditions:
       - "[STATUS] == 200"
-    alerts:
-      - type: discord
-        description: "healthcheck failed"
-        send-on-resolved: true
+    # alerts:
+    #   - type: discord
+    #     description: "healthcheck failed"
+    #     send-on-resolved: true
 
   - name: sensei backend
     group: sensei
@@ -73,10 +73,10 @@ endpoints:
       hide-url: true
     conditions:
       - "[STATUS] == 200"
-    alerts:
-      - type: discord
-        description: "healthcheck failed"
-        send-on-resolved: true
+    # alerts:
+    #   - type: discord
+    #     description: "healthcheck failed"
+    #     send-on-resolved: true
 
 
   - name: dittofeed
@@ -87,7 +87,7 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
-    alerts:
-      - type: discord
-        description: "healthcheck failed"
-        send-on-resolved: true
+    # alerts:
+    #   - type: discord
+    #     description: "healthcheck failed"
+    #     send-on-resolved: true
