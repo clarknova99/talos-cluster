@@ -26,6 +26,15 @@ data:
       searchDescriptions: true
       hideInternetSearch: true
     layout:
+      Internal:
+        style: row
+        columns: 3
+        header: false
+      Apps:
+        style: row
+        columns: 3
+        header: false
+        icon: mdi-application
       Media:
         style: row
         columns: 2
@@ -39,11 +48,6 @@ data:
       Storage:
         style: column
         icon: mdi-database
-      Apps:
-        style: row
-        columns: 3
-        header: false
-        icon: mdi-application
       Sensei Services:
         style: row
         columns: 3
