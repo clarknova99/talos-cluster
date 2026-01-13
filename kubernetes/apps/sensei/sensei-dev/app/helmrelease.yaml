@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -45,6 +45,7 @@ spec:
               STRIPE_WEBHOOK_SIGNING_SECRET: ${SECRET_SENSEI_STRIPE_TEST_WEBHOOK_SIGNING_SECRET}
               PADDLE_TEST_TOKEN: ${SECRET_SENSEI_PADDLE_TEST_TOKEN}
               CLOUDFLARE_TURNSTILE_SITE_KEY: ${SECRET_SENSEI_CLOUDFLARE_TURNSTILE_SITE_KEY}
+              ENABLE_REASONING_DISPLAY: true
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
@@ -80,23 +81,3 @@ spec:
           - backendRefs:
               - name: sensei-dev-app
                 port: *port
-# ingress:
-#   app:
-#     annotations:
-#       nginx.ingress.kubernetes.io/affinity: "cookie"
-#       nginx.ingress.kubernetes.io/session-cookie-name: "route"
-#       nginx.ingress.kubernetes.io/session-cookie-max-age: "3600"
-#       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-#       hajimari.io/enable: "true"
-#       hajimari.io/icon: mdi:math-compass
-#     className: external
-#     hosts:
-#       - host: dev.${SECRET_DOMAIN_TWO}
-#         paths:
-#           - path: /
-#             service:
-#               identifier: app
-#               port: 8000
-#     tls:
-#       - hosts:
-#           - dev.${SECRET_DOMAIN_TWO}

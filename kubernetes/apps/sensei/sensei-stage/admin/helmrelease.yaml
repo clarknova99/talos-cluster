@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -75,24 +75,3 @@ spec:
           - backendRefs:
               - name: sensei-stage-admin
                 port: *port
-    # ingress:
-    #   app:
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-    #       nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
-    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
-    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: mdi:math-compass
-    #     className: external
-    #     hosts:
-    #       - host: admin-stage.${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             pathType: Prefix
-    #             service:
-    #               identifier: app
-    #               port: 3002
-    #     tls:
-    #       - hosts:
-    #           - admin-stage.${SECRET_DOMAIN_TWO}
