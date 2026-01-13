@@ -123,11 +123,10 @@ ingress:
     originRequest:
       originServerName: "sabnzbd.${SECRET_DOMAIN}"
 
-  - hostname: "adguard.${SECRET_DOMAIN}"
-    service: https://envoy-internal.network.svc.cluster.local:443
+  - hostname: "flux-webhook.${SECRET_DOMAIN}"
+    service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
-      originServerName: "adguard.${SECRET_DOMAIN}"
-
+      originServerName: "flux-webhook.${SECRET_DOMAIN}"
   - hostname: "auth.${SECRET_DOMAIN}"
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
