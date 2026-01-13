@@ -343,7 +343,6 @@ spec:
           gethomepage.dev/icon: grafana.png
           gethomepage.dev/name: Grafana
           gethomepage.dev/group: Observability
-          gethomepage.dev/description: Monitoring Dashboards
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         parentRefs:
           - name: envoy-external

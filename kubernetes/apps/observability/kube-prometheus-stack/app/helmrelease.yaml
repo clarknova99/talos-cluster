@@ -167,7 +167,6 @@ spec:
             gethomepage.dev/name: Prometheus
             gethomepage.dev/group: Observability
             gethomepage.dev/app: prometheus
-            gethomepage.dev/description: Monitoring Scrape Service
             # gethomepage.dev/widget.type: prometheus
             # gethomepage.dev/widget.url: http://kube-prometheus-stack-prometheus.observability:9090
         spec:
