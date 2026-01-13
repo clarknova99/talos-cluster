@@ -91,17 +91,48 @@ Expected output should show `totalProcessed` > 0 and the workflow processing wor
    kubectl exec -n sensei $CH_POD -c app -- sh -c "find /var/lib/clickhouse/store -name 'delete_tmp_*' -type d -exec rm -rf {} + 2>/dev/null || true"
    ```
 
-5. **Verify system tables are disabled in configuration:**
+5. **Note on system table configuration:**
 
-   The configuration in `kubernetes/apps/sensei/dittofeed/clickhouse/helmrelease.yaml` should have:
-   ```xml
-   <query_log>
-       <engine>None</engine>
-   </query_log>
-   <!-- Repeat for all system log tables -->
+   **Important:** ClickHouse system tables cannot be permanently disabled via configuration in recent versions. Attempting to use `<engine>None</engine>` or `<ttl>` settings will cause ClickHouse to fail to start with error:
+   ```
+   If 'engine' is specified for system table, PARTITION BY/TTL parameters should be
+   specified directly inside 'engine' and the setting doesn't make sense.
    ```
 
-6. **Restart ClickHouse to apply clean state:**
+   The system tables will automatically recreate themselves. This is normal ClickHouse behavior. The key is to **monitor disk usage** and periodically drop them if they grow too large (>10GB).
+
+6. **Create a cron job to periodically clean system tables (recommended):**
+
+   Create a Kubernetes CronJob to drop system tables weekly:
+   ```yaml
+   apiVersion: batch/v1
+   kind: CronJob
+   metadata:
+     name: clickhouse-cleanup
+     namespace: sensei
+   spec:
+     schedule: "0 2 * * 0"  # Every Sunday at 2 AM
+     jobTemplate:
+       spec:
+         template:
+           spec:
+             containers:
+             - name: cleanup
+               image: curlimages/curl:latest
+               command:
+               - /bin/sh
+               - -c
+               - |
+                 kubectl exec -n sensei $(kubectl get pod -n sensei -l app.kubernetes.io/name=dittofeed-clickhouse -o jsonpath='{.items[0].metadata.name}') -c app -- clickhouse-client --query "
+                 DROP TABLE IF EXISTS system.query_log;
+                 DROP TABLE IF EXISTS system.text_log;
+                 DROP TABLE IF EXISTS system.trace_log;
+                 DROP TABLE IF EXISTS system.metric_log;
+                 "
+             restartPolicy: OnFailure
+   ```
+
+7. **Restart ClickHouse to apply clean state:**
    ```bash
    kubectl rollout restart deployment -n sensei dittofeed-clickhouse
    kubectl rollout status deployment -n sensei dittofeed-clickhouse
