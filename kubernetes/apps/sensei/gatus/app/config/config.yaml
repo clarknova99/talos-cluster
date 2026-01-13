@@ -104,11 +104,19 @@ endpoints:
     group: services
     url: https://dittofeed.${SECRET_DOMAIN_TWO}
     interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
+    # client:
+    #   dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 200"
     # alerts:
     #   - type: discord
     #     description: "healthcheck failed"
     #     send-on-resolved: true
+  - name: litellm
+    group: services
+    url: https://litellm.${SECRET_DOMAIN_TWO}
+    interval: 1m
+    # client:
+    #   dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - "[STATUS] == 200"
