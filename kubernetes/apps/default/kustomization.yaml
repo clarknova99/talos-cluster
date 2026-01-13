@@ -7,7 +7,7 @@ resources:
   - ./authelia/ks.yaml
 #  - ./frigate/ks.yaml
   - ./homepage/ks.yaml
-  - ./it-tools/ks.yaml
+  # - ./it-tools/ks.yaml
   - ./hajimari/ks.yaml
   - ./kite/ks.yaml
   - ./lldap/ks.yaml
