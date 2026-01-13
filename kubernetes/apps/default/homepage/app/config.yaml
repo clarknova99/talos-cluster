@@ -33,7 +33,7 @@ data:
       Apps:
         style: row
         columns: 3
-        header: false
+        header: true
         icon: mdi-application
       Media:
         style: row
