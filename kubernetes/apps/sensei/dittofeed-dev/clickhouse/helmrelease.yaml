@@ -36,6 +36,12 @@ spec:
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_DO_NOT_CHOWN: "1"
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                memory: 6Gi
           clickhouse-backup:
             image:
               repository: altinity/clickhouse-backup
@@ -75,6 +81,8 @@ spec:
             ports:
               - name: backup-api
                 containerPort: 7171
+
+
     service:
       app:
         controller: dittofeed-dev-clickhouse
