@@ -127,20 +127,58 @@ spec:
                 <http_port>8123</http_port>
 
                 <!-- Disable problematic system tables that are causing corruption -->
-                <query_thread_log remove="remove"/>
-                <query_log remove="remove"/>
-                <text_log remove="remove"/>
-                <trace_log remove="remove"/>
-                <metric_log remove="remove"/>
-                <asynchronous_metric_log remove="remove"/>
-                <session_log remove="remove"/>
-                <part_log remove="remove"/>
-                <latency_log remove="remove"/>
-
-                <!-- Disable OpenTelemetry and other problematic system tables -->
-                <opentelemetry_span_log remove="remove"/>
-                <processors_profile_log remove="remove"/>
-                <error_log remove="remove"/>
+                <!-- Using engine None to disable table creation -->
+                <query_thread_log>
+                    <engine>None</engine>
+                </query_thread_log>
+                <query_log>
+                    <engine>None</engine>
+                </query_log>
+                <text_log>
+                    <engine>None</engine>
+                </text_log>
+                <trace_log>
+                    <engine>None</engine>
+                </trace_log>
+                <metric_log>
+                    <engine>None</engine>
+                </metric_log>
+                <asynchronous_metric_log>
+                    <engine>None</engine>
+                </asynchronous_metric_log>
+                <session_log>
+                    <engine>None</engine>
+                </session_log>
+                <part_log>
+                    <engine>None</engine>
+                </part_log>
+                <latency_log>
+                    <engine>None</engine>
+                </latency_log>
+                <opentelemetry_span_log>
+                    <engine>None</engine>
+                </opentelemetry_span_log>
+                <processors_profile_log>
+                    <engine>None</engine>
+                </processors_profile_log>
+                <error_log>
+                    <engine>None</engine>
+                </error_log>
+                <query_metric_log>
+                    <engine>None</engine>
+                </query_metric_log>
+                <query_views_log>
+                    <engine>None</engine>
+                </query_views_log>
+                <asynchronous_insert_log>
+                    <engine>None</engine>
+                </asynchronous_insert_log>
+                <crash_log>
+                    <engine>None</engine>
+                </crash_log>
+                <background_schedule_pool_log>
+                    <engine>None</engine>
+                </background_schedule_pool_log>
 
                 <!-- Set background pool sizes to prevent configuration conflicts -->
                 <background_pool_size>25</background_pool_size>
