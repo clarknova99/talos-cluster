@@ -126,59 +126,9 @@ spec:
                 <tcp_port>9000</tcp_port>
                 <http_port>8123</http_port>
 
-                <!-- Disable problematic system tables that are causing corruption -->
-                <!-- Set to 0 TTL to effectively disable logging -->
-                <query_thread_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </query_thread_log>
-                <query_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </query_log>
-                <text_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </text_log>
-                <trace_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </trace_log>
-                <metric_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </metric_log>
-                <asynchronous_metric_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </asynchronous_metric_log>
-                <session_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </session_log>
-                <part_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </part_log>
-                <latency_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </latency_log>
-                <opentelemetry_span_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </opentelemetry_span_log>
-                <processors_profile_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </processors_profile_log>
-                <error_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </error_log>
-                <query_metric_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </query_metric_log>
-                <query_views_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </query_views_log>
-                <asynchronous_insert_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </asynchronous_insert_log>
-                <crash_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </crash_log>
-                <background_schedule_pool_log>
-                    <ttl>event_date + INTERVAL 0 SECOND</ttl>
-                </background_schedule_pool_log>
+                <!-- Note: System tables cannot be easily disabled via config -->
+                <!-- They must be manually dropped if they become corrupted -->
+                <!-- See TROUBLESHOOTING.md for instructions -->
 
                 <!-- Set background pool sizes to prevent configuration conflicts -->
                 <background_pool_size>25</background_pool_size>
