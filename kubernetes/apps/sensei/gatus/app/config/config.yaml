@@ -83,7 +83,7 @@ endpoints:
         send-on-resolved: true
 
 
-  - name: langfuse
+  - name: dittofeed
     group: services
     url: https://dittofeed.${SECRET_DOMAIN_TWO}
     interval: 1m
