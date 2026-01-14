@@ -67,6 +67,7 @@ FILTER_NAMESPACE=""
 MIN_LIMIT_GIB=0
 SAMPLE_COUNT=3
 SAMPLE_INTERVAL=5
+SORT_BY_DISCREPANCY=0
 
 # Usage function
 usage() {
@@ -83,6 +84,7 @@ OPTIONS:
     -m, --min-limit SIZE    Only show apps with memory limit >= SIZE (e.g., 1Gi, 500Mi)
     -s, --samples N         Number of samples for avg/max calculation (default: 3)
     -i, --interval SEC      Seconds between samples (default: 5)
+    -d, --sort-discrepancy  Sort by memory discrepancy (limit - max usage), biggest first
     --no-color              Disable colored output
 
 EXAMPLES:
@@ -91,6 +93,7 @@ EXAMPLES:
     $0 -s 5 -i 10                   # 5 samples, 10s apart for better avg/max
     $0 -f csv > report.csv          # Export as CSV
     $0 -n media                     # Only media namespace
+    $0 -d                           # Sort by memory over-provisioning
 
 EOF
     exit 0
@@ -121,6 +124,10 @@ while [[ $# -gt 0 ]]; do
         -i|--interval)
             SAMPLE_INTERVAL="$2"
             shift 2
+            ;;
+        -d|--sort-discrepancy)
+            SORT_BY_DISCREPANCY=1
+            shift
             ;;
         --no-color)
             RED=''
@@ -289,8 +296,14 @@ find kubernetes/apps -name "helmrelease.yaml" -not -path "*/_archive/*" | while 
     fi
 
     if [ "$filter_pass" = "1" ]; then
-        # Format: name|ns|cpu_lim|cpu_req|mem_lim|mem_req|cpu_avg|mem_avg|cpu_max|mem_max|file
-        echo "$name|$namespace|$cpu_limit_m|$cpu_request_m|$mem_limit_gib|$mem_request_gib|$cpu_avg|$mem_avg|$cpu_max|$mem_max|$file" >> "$tmpfile"
+        # Calculate memory discrepancy (limit - max usage) for sorting
+        if [ "$mem_limit_gib" != "0" ] && [ "$mem_max" != "0" ]; then
+            mem_discrepancy=$(echo "scale=6; $mem_limit_gib - $mem_max" | bc -l)
+        else
+            mem_discrepancy="0"
+        fi
+        # Format: name|ns|cpu_lim|cpu_req|mem_lim|mem_req|cpu_avg|mem_avg|cpu_max|mem_max|file|mem_discrepancy
+        echo "$name|$namespace|$cpu_limit_m|$cpu_request_m|$mem_limit_gib|$mem_request_gib|$cpu_avg|$mem_avg|$cpu_max|$mem_max|$file|$mem_discrepancy" >> "$tmpfile"
     fi
 done
 
@@ -305,8 +318,18 @@ echo -e "\n${GREEN}Found $(wc -l < "$tmpfile" | tr -d ' ') HelmReleases${NC}\n" 
 # Output based on format
 case "$OUTPUT_FORMAT" in
     csv)
-        echo "HelmRelease,Namespace,CPU Limit (m),CPU Request (m),CPU Avg (m),CPU Max (m),Mem Limit (GiB),Mem Request (GiB),Mem Avg (GiB),Mem Max (GiB),Mem Usage %,Path"
-        sort -t'|' -k5 -n -r "$tmpfile" | while IFS='|' read -r name ns cpu_lim cpu_req mem_lim mem_req cpu_avg mem_avg cpu_max mem_max file; do
+        if [ "$SORT_BY_DISCREPANCY" = "1" ]; then
+            echo "HelmRelease,Namespace,CPU Limit (m),CPU Request (m),CPU Avg (m),CPU Max (m),Mem Limit (GiB),Mem Request (GiB),Mem Avg (GiB),Mem Max (GiB),Mem Usage %,Mem Discrepancy (GiB),Path"
+        else
+            echo "HelmRelease,Namespace,CPU Limit (m),CPU Request (m),CPU Avg (m),CPU Max (m),Mem Limit (GiB),Mem Request (GiB),Mem Avg (GiB),Mem Max (GiB),Mem Usage %,Path"
+        fi
+        # Sort by discrepancy (field 12) if requested, otherwise by mem_lim (field 5)
+        if [ "$SORT_BY_DISCREPANCY" = "1" ]; then
+            sort_cmd="sort -t'|' -k12 -g -r"
+        else
+            sort_cmd="sort -t'|' -k5 -n -r"
+        fi
+        eval "$sort_cmd" "$tmpfile" | while IFS='|' read -r name ns cpu_lim cpu_req mem_lim mem_req cpu_avg mem_avg cpu_max mem_max file mem_discrepancy; do
             # Format values
             cpu_lim_d=$([ "$cpu_lim" = "0" ] && echo "N/A" || printf "%.0f" "$cpu_lim")
             cpu_req_d=$([ "$cpu_req" = "0" ] && echo "N/A" || printf "%.0f" "$cpu_req")
@@ -323,21 +346,43 @@ case "$OUTPUT_FORMAT" in
                 mem_pct="N/A"
             fi
 
-            echo "$name,$ns,$cpu_lim_d,$cpu_req_d,$cpu_avg_d,$cpu_max_d,$mem_lim_d,$mem_req_d,$mem_avg_d,$mem_max_d,$mem_pct,$file"
+            if [ "$SORT_BY_DISCREPANCY" = "1" ]; then
+                mem_disc_d=$([ "$mem_discrepancy" = "0" ] && echo "N/A" || printf "%.2f" "$mem_discrepancy")
+                echo "$name,$ns,$cpu_lim_d,$cpu_req_d,$cpu_avg_d,$cpu_max_d,$mem_lim_d,$mem_req_d,$mem_avg_d,$mem_max_d,$mem_pct,$mem_disc_d,$file"
+            else
+                echo "$name,$ns,$cpu_lim_d,$cpu_req_d,$cpu_avg_d,$cpu_max_d,$mem_lim_d,$mem_req_d,$mem_avg_d,$mem_max_d,$mem_pct,$file"
+            fi
         done
         ;;
 
     table|*)
         echo "=========================================================================================================================================================================================================="
-        echo "HELMRELEASE RESOURCE REPORT - ALL RELEASES"
+        if [ "$SORT_BY_DISCREPANCY" = "1" ]; then
+            echo "HELMRELEASE RESOURCE REPORT - SORTED BY MEMORY DISCREPANCY (OVER-PROVISIONED)"
+        else
+            echo "HELMRELEASE RESOURCE REPORT - ALL RELEASES"
+        fi
         echo "=========================================================================================================================================================================================================="
-        printf "%-25s %-17s | %-8s %-8s %-8s %-8s | %-8s %-8s %-8s %-8s | %-6s\n" \
-            "HelmRelease" "Namespace" \
-            "CPU Req" "CPU Lim" "CPU Avg" "CPU Max" \
-            "Mem Req" "Mem Lim" "Mem Avg" "Mem Max" "Mem %"
+        if [ "$SORT_BY_DISCREPANCY" = "1" ]; then
+            printf "%-25s %-17s | %-8s %-8s %-8s %-8s | %-8s %-8s %-8s %-8s | %-6s | %-10s\n" \
+                "HelmRelease" "Namespace" \
+                "CPU Req" "CPU Lim" "CPU Avg" "CPU Max" \
+                "Mem Req" "Mem Lim" "Mem Avg" "Mem Max" "Mem %" "Discrepancy"
+        else
+            printf "%-25s %-17s | %-8s %-8s %-8s %-8s | %-8s %-8s %-8s %-8s | %-6s\n" \
+                "HelmRelease" "Namespace" \
+                "CPU Req" "CPU Lim" "CPU Avg" "CPU Max" \
+                "Mem Req" "Mem Lim" "Mem Avg" "Mem Max" "Mem %"
+        fi
         echo "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 
-        sort -t'|' -k5 -n -r "$tmpfile" | while IFS='|' read -r name ns cpu_lim cpu_req mem_lim mem_req cpu_avg mem_avg cpu_max mem_max file; do
+        # Sort by discrepancy (field 12) if requested, otherwise by mem_lim (field 5)
+        if [ "$SORT_BY_DISCREPANCY" = "1" ]; then
+            sort_cmd="sort -t'|' -k12 -g -r"
+        else
+            sort_cmd="sort -t'|' -k5 -n -r"
+        fi
+        eval "$sort_cmd" "$tmpfile" | while IFS='|' read -r name ns cpu_lim cpu_req mem_lim mem_req cpu_avg mem_avg cpu_max mem_max file mem_discrepancy; do
             # Sanitize numeric values
             cpu_lim=$(echo "$cpu_lim" | grep -E '^[0-9.]+$' || echo "0")
             cpu_req=$(echo "$cpu_req" | grep -E '^[0-9.]+$' || echo "0")
@@ -382,12 +427,25 @@ case "$OUTPUT_FORMAT" in
                 color="$YELLOW"
             fi
 
-            if [ -n "$color" ]; then
-                printf "${color}%-25s %-17s | %-8s %-8s %-8s %-8s | %-8s %-8s %-8s %-8s | %-6s${NC}\n" \
-                    "$name" "$ns" "$cpu_req_d" "$cpu_lim_d" "$cpu_avg_d" "$cpu_max_d" "$mem_req_d" "$mem_lim_d" "$mem_avg_d" "$mem_max_d" "$mem_pct_d"
+            # Format discrepancy for display
+            mem_disc_d=$([ "$mem_discrepancy" = "0" ] || [ -z "$mem_discrepancy" ] && echo "-" || printf "%.2fG" "$mem_discrepancy")
+
+            if [ "$SORT_BY_DISCREPANCY" = "1" ]; then
+                if [ -n "$color" ]; then
+                    printf "${color}%-25s %-17s | %-8s %-8s %-8s %-8s | %-8s %-8s %-8s %-8s | %-6s | %-10s${NC}\n" \
+                        "$name" "$ns" "$cpu_req_d" "$cpu_lim_d" "$cpu_avg_d" "$cpu_max_d" "$mem_req_d" "$mem_lim_d" "$mem_avg_d" "$mem_max_d" "$mem_pct_d" "$mem_disc_d"
+                else
+                    printf "%-25s %-17s | %-8s %-8s %-8s %-8s | %-8s %-8s %-8s %-8s | %-6s | %-10s\n" \
+                        "$name" "$ns" "$cpu_req_d" "$cpu_lim_d" "$cpu_avg_d" "$cpu_max_d" "$mem_req_d" "$mem_lim_d" "$mem_avg_d" "$mem_max_d" "$mem_pct_d" "$mem_disc_d"
+                fi
             else
-                printf "%-25s %-17s | %-8s %-8s %-8s %-8s | %-8s %-8s %-8s %-8s | %-6s\n" \
-                    "$name" "$ns" "$cpu_req_d" "$cpu_lim_d" "$cpu_avg_d" "$cpu_max_d" "$mem_req_d" "$mem_lim_d" "$mem_avg_d" "$mem_max_d" "$mem_pct_d"
+                if [ -n "$color" ]; then
+                    printf "${color}%-25s %-17s | %-8s %-8s %-8s %-8s | %-8s %-8s %-8s %-8s | %-6s${NC}\n" \
+                        "$name" "$ns" "$cpu_req_d" "$cpu_lim_d" "$cpu_avg_d" "$cpu_max_d" "$mem_req_d" "$mem_lim_d" "$mem_avg_d" "$mem_max_d" "$mem_pct_d"
+                else
+                    printf "%-25s %-17s | %-8s %-8s %-8s %-8s | %-8s %-8s %-8s %-8s | %-6s\n" \
+                        "$name" "$ns" "$cpu_req_d" "$cpu_lim_d" "$cpu_avg_d" "$cpu_max_d" "$mem_req_d" "$mem_lim_d" "$mem_avg_d" "$mem_max_d" "$mem_pct_d"
+                fi
             fi
         done
 
