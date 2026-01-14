@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.7.3
+      version: 4.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -55,19 +55,31 @@ spec:
         ports:
           http:
             port: 3000
-    ingress:
-      app:
-        enabled: true
-        className: internal
+    route:
+      main:
         annotations:
-          hajimari.io/icon: mdi:youtube
-        hosts:
-          - host: invidious.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - invidious.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: mdi-youtube
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - invidious.${SECRET_DOMAIN}
+    # ingress:
+    #   app:
+    #     enabled: true
+    #     className: internal
+    #     annotations:
+    #       hajimari.io/icon: mdi:youtube
+    #     hosts:
+    #       - host: invidious.${SECRET_DOMAIN}
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: http
+    #     tls:
+    #       - hosts:
+    #           - invidious.${SECRET_DOMAIN}
