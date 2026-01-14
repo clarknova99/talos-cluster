@@ -57,7 +57,7 @@ spec:
             namespace: network
             sectionName: https
         hostnames:
-          - influxdb-brad.${SECRET_DOMAIN_TWO}
+          - influxdb-brad.${SECRET_DOMAIN}
         rules:
           - backendRefs:
               - name: influxdb
