@@ -49,6 +49,13 @@ spec:
               BACKEND_API_KEY: ${SECRET_SENSEI_API_KEY}
               DITTOFEED_WORKSPACE_ID: ${SECRET_DITTOFEED_DEV_WORKSPACE_ID}
               DITTOFEED_ADMIN_TOKEN: ${SECRET_DITTOFEED_DEV_ADMIN_TOKEN}
+            resources:
+              requests:
+                memory: 500Mi
+                cpu: 25m
+              limits:
+                cpu: 50m
+                memory: 1Gi
         pod:
           imagePullSecrets:
             - name: sensei-secret

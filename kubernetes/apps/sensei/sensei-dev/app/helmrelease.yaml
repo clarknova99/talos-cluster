@@ -46,6 +46,13 @@ spec:
               PADDLE_TEST_TOKEN: ${SECRET_SENSEI_PADDLE_TEST_TOKEN}
               CLOUDFLARE_TURNSTILE_SITE_KEY: ${SECRET_SENSEI_CLOUDFLARE_TURNSTILE_SITE_KEY}
               ENABLE_REASONING_DISPLAY: true
+            resources:
+              requests:
+                memory: 400Mi
+                cpu: 10m
+              limits:
+                cpu: 50m
+                memory: 1.2Gi
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
