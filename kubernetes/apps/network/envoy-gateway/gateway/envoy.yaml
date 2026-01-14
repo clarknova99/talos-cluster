@@ -62,7 +62,14 @@ spec:
       port: 80
       allowedRoutes:
         namespaces:
-          from: Same
+          from: Selector
+          selector:
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: In
+                values:
+                  - network
+                  - database
     - name: https
       protocol: HTTPS
       port: 443
