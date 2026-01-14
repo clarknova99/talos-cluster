@@ -37,27 +37,7 @@ spec:
         controller: influxdb
         ports:
           http:
-            port: 8086
-    ingress:
-      app:
-        annotations:
-          hajimari.io/enable: "false"
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          nginx.ingress.kubernetes.io/ssl-redirect: "false"
-          ingress.kubernetes.io/proxy-ssl-verify: "off"
-          ingress.kubernetes.io/force-ssl-redirect: "false"
-          ingress.kubernetes.io/ssl-redirect: "false"
-        className: external
-        hosts:
-          - host: influxdb-brad.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: 8086
-        # tls:
-        #   - hosts:
-        #       - influxdb-brad.${SECRET_DOMAIN}
+            port: &port 8086
 
     persistence:
       config:
@@ -67,3 +47,15 @@ spec:
         path: /volume1/network-storage/cluster/influxdb
         globalMounts:
           - path: /var/lib/influxdb
+    route:
+      main:
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: http
+        hostnames:
+          - influxdb-brad.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - name: influxdb
+                port: *port
