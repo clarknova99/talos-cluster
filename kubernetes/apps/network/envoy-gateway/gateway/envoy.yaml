@@ -129,7 +129,7 @@ spec:
   type: JSONPatch
   jsonPatches:
     - type: type.googleapis.com/envoy.config.listener.v3.Listener
-      name: network_envoy-external_https
+      name: network/envoy-external/https
       operation:
         op: add
         path: /filter_chains/0/filters/0/typed_config/http_filters/0
@@ -157,7 +157,7 @@ spec:
   type: JSONPatch
   jsonPatches:
     - type: type.googleapis.com/envoy.config.listener.v3.Listener
-      name: network_envoy-internal_https
+      name: network/envoy-internal/https
       operation:
         op: add
         path: /filter_chains/0/filters/0/typed_config/http_filters/0
@@ -235,7 +235,7 @@ spec:
   type: JSONPatch
   jsonPatches:
     - type: type.googleapis.com/envoy.config.listener.v3.Listener
-      name: network_envoy-external_https
+      name: network/envoy-external/https
       operation:
         op: add
         path: /filter_chains/0/filters/0/typed_config/http_filters/0
