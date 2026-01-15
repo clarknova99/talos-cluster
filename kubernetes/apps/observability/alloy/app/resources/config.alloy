@@ -140,11 +140,12 @@ loki.process "envoy_access_logs" {
   }
 
   // GeoIP enrichment using MaxMind database
-  stage.geoip {
-    db = "/etc/alloy/geoip/GeoLite2-City.mmdb"
-    source = "client_ip"
-    db_type = "city"
-  }
+  // NOTE: Temporarily disabled until geoip volume is mounted
+  // stage.geoip {
+  //   db = "/etc/alloy/geoip/GeoLite2-City.mmdb"
+  //   source = "client_ip"
+  //   db_type = "city"
+  // }
 
   // Extract service/app name from route_name (format: httproute/namespace/app-name/rule/...)
   stage.regex {
@@ -159,9 +160,10 @@ loki.process "envoy_access_logs" {
       response_code = "",
       service_name = "",
       service_namespace = "",
-      geoip_country_code = "",
-      geoip_country_name = "",
-      geoip_city = "",
+      // geoip labels - uncomment when geoip stage is enabled
+      // geoip_country_code = "",
+      // geoip_country_name = "",
+      // geoip_city = "",
     }
   }
 
