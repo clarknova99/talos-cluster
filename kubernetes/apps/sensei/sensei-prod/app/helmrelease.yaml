@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: main-1.0.0@sha256:e077387ad2c820aed0bd404a6b2e93b0c2e433f582dd7b19f1cac1540d3f589a
+              tag: main-1.0.0@sha256:ad597a525383a75d0204144b47f59aadd60c235afa41bda5ba3bddaa33c3a073
               pullPolicy: Always
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
@@ -124,6 +124,12 @@ spec:
           - backendRefs:
               - name: sensei-prod-app
                 port: *port
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  set:
+                    - name: X-Forwarded-Proto
+                      value: https
     # ingress:
     #   app:
     #     annotations:
