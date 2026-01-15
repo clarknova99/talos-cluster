@@ -61,7 +61,6 @@ spec:
                 memory: 500Mi
                 cpu: 25m
               limits:
-                cpu: 50m
                 memory: 1Gi
         pod:
           # imagePullPolicy: Always
