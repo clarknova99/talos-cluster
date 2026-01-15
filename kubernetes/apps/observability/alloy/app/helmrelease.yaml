@@ -49,7 +49,7 @@ spec:
           image: ghcr.io/maxmind/geoipupdate:v7
           env:
             - name: GEOIPUPDATE_ACCOUNT_ID
-              value: "${SECRET_MAXMIND_ACCOUNT_ID}"
+              value: "416665"
             - name: GEOIPUPDATE_LICENSE_KEY
               value: "${SECRET_MAXMIND_LICENSE_KEY}"
             - name: GEOIPUPDATE_EDITION_IDS
