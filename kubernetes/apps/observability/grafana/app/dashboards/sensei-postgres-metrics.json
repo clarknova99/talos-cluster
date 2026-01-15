@@ -694,7 +694,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select count(distinct sensei_user_id ) from subscriptions ",
+          "rawSql": "select count(*) from subscriptions",
           "refId": "A",
           "sql": {
             "columns": [
@@ -777,7 +777,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select count(distinct sensei_user_id ) from subscriptions\nwhere status = 'active'",
+          "rawSql": "select count(*) from subscriptions where status = 'active'",
           "refId": "A",
           "sql": {
             "columns": [
