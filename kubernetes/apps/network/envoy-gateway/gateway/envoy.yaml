@@ -204,6 +204,11 @@ spec:
   connection:
     bufferLimit: 8Mi
   enableProxyProtocol: false
+  headers:
+    xForwardedClientCert:
+      mode: Sanitize
+    preserveXRequestId: true
+    withUnderscoresAction: Allow
   http2:
     initialStreamWindowSize: 2Mi
     initialConnectionWindowSize: 32Mi
@@ -221,6 +226,44 @@ spec:
     alpnProtocols:
       - h2
       - http/1.1
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyPatchPolicy
+metadata:
+  name: envoy-external-headers
+  namespace: network
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: envoy-external
+  type: JSONPatch
+  jsonPatches:
+    - type: type.googleapis.com/envoy.config.listener.v3.Listener
+      name: network_envoy-external_https
+      operation:
+        op: add
+        path: /filter_chains/0/filters/0/typed_config/http_filters/0
+        value:
+          name: envoy.filters.http.lua
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
+            defaultSourceCode:
+              inlineString: |
+                function envoy_on_request(request_handle)
+                  -- Get the X-Forwarded-For header to extract the real client IP
+                  local xff = request_handle:headers():get("x-forwarded-for")
+                  if xff then
+                    -- Get the first IP in the X-Forwarded-For chain (original client)
+                    local client_ip = xff:match("^([^,]+)")
+                    if client_ip then
+                      client_ip = client_ip:gsub("^%s*(.-)%s*$", "%1")  -- trim whitespace
+                      request_handle:headers():add("X-Real-IP", client_ip)
+                    end
+                  end
+                  -- CF-Connecting-IP is passed through automatically by Cloudflare
+                  -- X-Forwarded-For is handled by ClientTrafficPolicy
+                end
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
