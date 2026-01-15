@@ -133,16 +133,16 @@ loki.process "envoy_access_logs" {
   }
 
   // Extract the first IP from X-Forwarded-For (client_ip may be comma-separated)
-  stage.replace {
-    expression = "^([^,]+),.*$"
+  // Use stage.regex to extract just the first IP address into a new field
+  stage.regex {
     source = "client_ip"
-    replace = "{{ .Value | regexReplaceAll \"^([^,]+),.*$\" \"$1\" | trim }}"
+    expression = "^(?P<real_client_ip>[^,\\s]+)"
   }
 
   // GeoIP enrichment using MaxMind database
   stage.geoip {
     db = "/etc/alloy/geoip/GeoLite2-City.mmdb"
-    source = "client_ip"
+    source = "real_client_ip"
     db_type = "city"
   }
 
