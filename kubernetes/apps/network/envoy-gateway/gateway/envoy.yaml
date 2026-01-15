@@ -204,11 +204,6 @@ spec:
   connection:
     bufferLimit: 8Mi
   enableProxyProtocol: false
-  headers:
-    xForwardedClientCert:
-      mode: Sanitize
-    preserveXRequestId: true
-    withUnderscoresAction: Allow
   http2:
     initialStreamWindowSize: 2Mi
     initialConnectionWindowSize: 32Mi
