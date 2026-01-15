@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: alloy-maxmind-secret
+## sops --encrypt --in-place ./kubernetes/apps/observability/alloy/app/alloy.sops.yaml
+stringData:
+    GEOIPUPDATE_ACCOUNT_ID: ENC[AES256_GCM,data:mau4ZTBP,iv:c20H9iRL1CcqFfkM1BBtxMIE9N572El6jvBqaE/BFtI=,tag:vqg7fXOnmSnPMRQo7mfa8g==,type:str]
+    GEOIPUPDATE_LICENSE_KEY: ENC[AES256_GCM,data:q0HfHXRXS0G/cpplMQX/vzP2a8/olXvpciekTuf4JPDr0SmX0Ez/dA==,iv:bnySoxJEhNVSNRyHVMreDHDAMcjAeh73mE+JukR02fU=,tag:kfh9tq6j2O4FIt6KwnnMCw==,type:str]
+sops:
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBWc1ZQTE16aUI2ZkNMU1gx
+            aHN1Q1I3YWx1cjV6Y21HQTcyaFd0MFQ1R2xjCjVGdlN2NVZRT1FPbHk2YWdvUmlm
+            aFJBYXllTUQ1MzN0OXpZRnNEZGlheWMKLS0tIG91V1U0YTQxQ01oVzZnZ3dzaTJE
+            VmE1QXBWbmpFcWl3ejVDL0l1cnNnb0kKq8lh/t4bOFajfRyFaq1uwS5zVx+xB2hx
+            RW2BsPlDmbKUPHcHb1LLMKpjQSOj/LhyFDEp6DhsJMO4kRneeosIjA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-15T22:32:03Z"
+    mac: ENC[AES256_GCM,data:4ETVQpan6i/AHXEeoKJHtFaVvKkvkYdqbG0pBo6MpNpCWxu9nrSTQth8kXoG132RPFmopSDf41hSWG+tuk5slZlFncs3FqHe1tVxqkyQjFgW8h6oD754U8TJibdEX3smshGdZP1Y7S6C1cy8CwNz5mR8m+k+qv6+B9KmqFgSB1E=,iv:fRBFmfOaj5vDoY4SwD25Cb6Bc9Ak3jDhuhZaiCinAl8=,tag:mOjE4ojvp9nXUtwkS+99Pg==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.11.0
