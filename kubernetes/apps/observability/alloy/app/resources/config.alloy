@@ -52,10 +52,10 @@ discovery.relabel "envoy_proxy_logs" {
     target_label = "container"
   }
 
-  // Extract gateway name from pod name (envoy-network-envoy-external-xxx or envoy-network-envoy-internal-xxx)
+  // Extract gateway name from pod name (envoy-external-xxx or envoy-internal-xxx)
   rule {
     source_labels = ["__meta_kubernetes_pod_name"]
-    regex = "envoy-network-(envoy-[^-]+)-.*"
+    regex = "(envoy-(?:external|internal))-.*"
     replacement = "$1"
     target_label = "gateway"
   }
