@@ -37,8 +37,31 @@ spec:
         create: false
         name: &name alloy-configmap
         key: config.alloy
+      mounts:
+        extra:
+          - name: geoip
+            mountPath: /etc/alloy/geoip
     controller:
       podAnnotations:
         configmap.reloader.stakater.com/reload: *name
+      initContainers:
+        - name: geoip-download
+          image: ghcr.io/maxmind/geoipupdate:v7
+          env:
+            - name: GEOIPUPDATE_ACCOUNT_ID
+              value: "${SECRET_MAXMIND_ACCOUNT_ID}"
+            - name: GEOIPUPDATE_LICENSE_KEY
+              value: "${SECRET_MAXMIND_LICENSE_KEY}"
+            - name: GEOIPUPDATE_EDITION_IDS
+              value: GeoLite2-City GeoLite2-ASN
+            - name: GEOIPUPDATE_DB_DIR
+              value: /etc/alloy/geoip
+          volumeMounts:
+            - name: geoip
+              mountPath: /etc/alloy/geoip
+      volumes:
+        extra:
+          - name: geoip
+            emptyDir: {}
     serviceMonitor:
       enabled: true
