@@ -133,6 +133,12 @@ spec:
               - kind: Service
                 name: rybbit-backend
                 port: 3001
+            filters:
+              - type: ResponseHeaderModifier
+                responseHeaderModifier:
+                  add:
+                    - name: Cross-Origin-Resource-Policy
+                      value: cross-origin
           - matches:
             - path:
                 type: PathPrefix
@@ -141,6 +147,12 @@ spec:
               - kind: Service
                 name: rybbit-client
                 port: 3002
+            filters:
+              - type: ResponseHeaderModifier
+                responseHeaderModifier:
+                  add:
+                    - name: Cross-Origin-Resource-Policy
+                      value: cross-origin
 
     # ingress:
     #   client:
