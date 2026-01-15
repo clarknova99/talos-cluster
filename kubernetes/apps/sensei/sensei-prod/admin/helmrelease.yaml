@@ -43,11 +43,11 @@ spec:
               BACKEND_API_URL: http://sensei-prod-api.sensei.svc.cluster.local:3001
               BACKEND_API_KEY: ${SECRET_SENSEI_API_KEY}
               DITTOFEED_AUTH_HEADER: ${SECRET_DITTOFEED_AUTH_HEADER}
-              DITTOFEED_ADMIN_ENDPOINT: https://dittofeed.${SECRET_DOMAIN_TWO}/api/admin/
-              DITTOFEED_PAGE_ENDPOINT: https://dittofeed.${SECRET_DOMAIN_TWO}/api/public/apps/page
-              DITTOFEED_TRACK_ENDPOINT: https://dittofeed.${SECRET_DOMAIN_TWO}/api/public/apps/track
-              DITTOFEED_BATCH_ENDPOINT: https://dittofeed.${SECRET_DOMAIN_TWO}/api/public/apps/batch
-              DITTOFEED_IDENTIFY_ENDPOINT: https://dittofeed.${SECRET_DOMAIN_TWO}/api/public/apps/identify
+              DITTOFEED_ADMIN_ENDPOINT: http://dittofeed.sensei.svc.cluster.local:3000/api/admin/
+              DITTOFEED_PAGE_ENDPOINT: http://dittofeed.sensei.svc.cluster.local:3000/api/public/apps/page
+              DITTOFEED_TRACK_ENDPOINT: http://dittofeed.sensei.svc.cluster.local:3000/api/public/apps/track
+              DITTOFEED_BATCH_ENDPOINT: http://dittofeed.sensei.svc.cluster.local:3000/api/public/apps/batch
+              DITTOFEED_IDENTIFY_ENDPOINT: http://dittofeed.sensei.svc.cluster.local:3000/api/public/apps/identify
               DITTOFEED_WORKSPACE_ID: ${SECRET_DITTOFEED_PROD_WORKSPACE_ID}
               DITTOFEED_ADMIN_TOKEN: ${SECRET_DITTOFEED_PROD_ADMIN_TOKEN}
               AWS_ACCESS_KEY_ID: ${SECRET_SENSEI_AWS_ACCESS_KEY_ID}
