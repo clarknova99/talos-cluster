@@ -47,6 +47,14 @@ spec:
       initContainers:
         - name: geoip-download
           image: ghcr.io/maxmind/geoipupdate:v7
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              if [ -f /etc/alloy/geoip/GeoLite2-City.mmdb ]; then
+                echo "GeoIP database already exists, skipping download"
+                exit 0
+              fi
+              exec /usr/bin/geoipupdate
           env:
             - name: GEOIPUPDATE_ACCOUNT_ID
               valueFrom:
@@ -68,6 +76,8 @@ spec:
       volumes:
         extra:
           - name: geoip
-            emptyDir: {}
+            hostPath:
+              path: /var/lib/alloy/geoip
+              type: DirectoryOrCreate
     serviceMonitor:
       enabled: true
