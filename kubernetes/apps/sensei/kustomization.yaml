@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./dittofeed/ks.yaml
-  # - ./dittofeed-dev/ks.yaml
+  - ./dittofeed-dev/ks.yaml
   # - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./langfusev3/ks.yaml
@@ -12,7 +12,6 @@ resources:
   - ./litellm/ks.yaml
   - ./litellm-dev/ks.yaml
   - ./n8n/ks.yaml
-  # - ./playwright/ks.yaml
   - ./rybbit/ks.yaml
   - ./sensei-prod/ks.yaml
   - ./sensei-stage/ks.yaml
