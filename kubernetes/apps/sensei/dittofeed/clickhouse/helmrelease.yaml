@@ -96,7 +96,7 @@ spec:
           tcp:
             port: 9000
 
-    # persistence:
+    persistence:
     #   data:
     #     existingClaim: dittofeed-clickhouse
     #     globalMounts:
