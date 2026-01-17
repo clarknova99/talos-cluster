@@ -75,6 +75,14 @@ spec:
             ports:
               - name: backup-api
                 containerPort: 7171
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: Always
+
     service:
       app:
         controller: dittofeed-clickhouse
