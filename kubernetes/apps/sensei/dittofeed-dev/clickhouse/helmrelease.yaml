@@ -35,7 +35,6 @@ spec:
               CLICKHOUSE_DB: dittofeed
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-              CLICKHOUSE_DO_NOT_CHOWN: "1"
             resources:
               requests:
                 cpu: 200m
@@ -82,6 +81,13 @@ spec:
               - name: backup-api
                 containerPort: 7171
 
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: OnRootMismatch
 
     service:
       app:
@@ -170,4 +176,3 @@ spec:
                 <prometheus_port remove="remove"/>
                 <port remove="remove"/>
             </clickhouse>
-
