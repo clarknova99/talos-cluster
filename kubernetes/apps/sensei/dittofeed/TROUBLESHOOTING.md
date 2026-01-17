@@ -251,7 +251,7 @@ To prevent future issues:
 Backup:
 clickhouse-backup create prod_manual_backup
 clickhouse-backup list remote
-clickhouse-backup restore_remote <backup_name>
+clickhouse-backup restore_remote prod_manual_backup
 
 # physical size of db
 ```sql
