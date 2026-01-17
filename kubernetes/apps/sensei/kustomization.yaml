@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./dittofeed/ks.yaml
-  - ./dittofeed-dev/ks.yaml
+  # - ./dittofeed-dev/ks.yaml
   # - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./langfusev3/ks.yaml
