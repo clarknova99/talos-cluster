@@ -75,6 +75,7 @@ spec:
             ports:
               - name: backup-api
                 containerPort: 7171
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
