@@ -249,3 +249,43 @@ To prevent future issues:
 ### References
 
 Backup:
+clickhouse-backup create prod_manual_backup
+clickhouse-backup list remote
+clickhouse-backup restore_remote <backup_name>
+
+# physical size of db
+```sql
+SELECT
+  formatReadableSize(sum(bytes_on_disk)) AS size_on_disk
+FROM system.parts
+WHERE active AND database = 'dittofeed';
+```
+```
+size_on_disk|
+------------+
+257.62 MiB  |
+```
+# tables row counts
+```sql
+SELECT
+  table,
+  sum(rows) AS rows
+FROM system.parts
+WHERE active
+  AND database = 'dittofeed'
+GROUP BY table
+ORDER BY rows DESC;
+```
+```
+table                           |rows   |
+--------------------------------+-------+
+updated_property_assignments_v2 |3565619|
+computed_property_state_v3      |1383044|
+computed_property_assignments_v2| 543069|
+resolved_segment_state          | 522568|
+user_events_v2                  | 276917|
+computed_property_state_index   | 162036|
+internal_events                 | 125597|
+processed_computed_properties_v2|  32545|
+updated_computed_property_state |   4666|
+```
