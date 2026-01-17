@@ -110,6 +110,8 @@ spec:
           dittofeed-clickhouse:
             app:
               - path: /var/lib/clickhouse
+            clickhouse-backup:
+              - path: /var/lib/clickhouse
 
       config:
         enabled: true
