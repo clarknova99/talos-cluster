@@ -97,10 +97,7 @@ spec:
 
     persistence:
       data:
-        enabled: true
-        type: nfs
-        server: 192.168.1.3
-        path: /volume1/network-storage/cluster/dittofeed-dev/clickhouse
+        existingClaim: dittofeed-dev-clickhouse
         globalMounts:
           - path: /var/lib/clickhouse
 
