@@ -89,7 +89,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: dittofeed-dev-clickhouse
+        existingClaim: dittofeed-clickhouse
         globalMounts:
           - path: /var/lib/clickhouse
       # data:
