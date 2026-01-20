@@ -75,6 +75,15 @@ spec:
             ports:
               - name: backup-api
                 containerPort: 7171
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: Always
+
     service:
       app:
         controller: rybbit-clickhouse
@@ -88,12 +97,16 @@ spec:
             port: 9000
     persistence:
       data:
-        enabled: true
-        type: nfs
-        server: 192.168.1.3
-        path: /volume1/network-storage/cluster/rybbit/clickhouse
+        existingClaim: dittofeed-clickhouse
         globalMounts:
           - path: /var/lib/clickhouse
+      # data:
+      #   enabled: true
+      #   type: nfs
+      #   server: 192.168.1.3
+      #   path: /volume1/network-storage/cluster/rybbit/clickhouse
+      #   globalMounts:
+      #     - path: /var/lib/clickhouse
       config:
         enabled: true
         type: configMap
