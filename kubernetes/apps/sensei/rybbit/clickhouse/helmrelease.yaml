@@ -95,9 +95,10 @@ spec:
             port: 8123
           tcp:
             port: 9000
+
     persistence:
       data:
-        existingClaim: dittofeed-clickhouse
+        existingClaim: rybbit-clickhouse
         globalMounts:
           - path: /var/lib/clickhouse
       # data:
