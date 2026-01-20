@@ -17,7 +17,7 @@ spec:
   enableSuperuserAccess: true
   postgresql:
     parameters:
-      max_connections: "400"
+      max_connections: "600"
       shared_buffers: 256MB
     shared_preload_libraries:
       - "pg_stat_statements"
