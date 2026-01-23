@@ -36,6 +36,12 @@ spec:
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_DO_NOT_CHOWN: "1"
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                memory: 4Gi
           clickhouse-backup:
             image:
               repository: altinity/clickhouse-backup
@@ -141,77 +147,41 @@ spec:
                 <tcp_port>9000</tcp_port>
                 <http_port>8123</http_port>
 
-                <!-- Configure automatic retention/cleanup for system tables -->
-                <!-- These settings define how long data is kept before automatic deletion -->
+                <!-- Keep only query_log with short retention, disable heavy system tables -->
                 <query_log>
                     <database>system</database>
                     <table>query_log</table>
                     <partition_by>toYYYYMM(event_date)</partition_by>
-                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
+                    <flush_interval_milliseconds>60000</flush_interval_milliseconds>
+                    <ttl>event_date + INTERVAL 1 HOUR DELETE</ttl>
                 </query_log>
-                <query_thread_log>
-                    <database>system</database>
-                    <table>query_thread_log</table>
-                    <partition_by>toYYYYMM(event_date)</partition_by>
-                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
-                </query_thread_log>
-                <metric_log>
-                    <database>system</database>
-                    <table>metric_log</table>
-                    <partition_by>toYYYYMM(event_date)</partition_by>
-                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
-                </metric_log>
-                <asynchronous_metric_log>
-                    <database>system</database>
-                    <table>asynchronous_metric_log</table>
-                    <partition_by>toYYYYMM(event_date)</partition_by>
-                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
-                </asynchronous_metric_log>
-                <trace_log>
-                    <database>system</database>
-                    <table>trace_log</table>
-                    <partition_by>toYYYYMM(event_date)</partition_by>
-                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
-                </trace_log>
-                <text_log>
-                    <database>system</database>
-                    <table>text_log</table>
-                    <partition_by>toYYYYMM(event_date)</partition_by>
-                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
-                </text_log>
-                <part_log>
-                    <database>system</database>
-                    <table>part_log</table>
-                    <partition_by>toYYYYMM(event_date)</partition_by>
-                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
-                </part_log>
-                <session_log>
-                    <database>system</database>
-                    <table>session_log</table>
-                    <partition_by>toYYYYMM(event_date)</partition_by>
-                    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-                    <ttl>event_date + INTERVAL 1 DAY DELETE</ttl>
-                </session_log>
+                <query_thread_log remove="remove"/>
+                <metric_log remove="remove"/>
+                <asynchronous_metric_log remove="remove"/>
+                <trace_log remove="remove"/>
+                <text_log remove="remove"/>
+                <part_log remove="remove"/>
+                <session_log remove="remove"/>
+                <processors_profile_log remove="remove"/>
+                <query_views_log remove="remove"/>
+                <query_metric_log remove="remove"/>
+                <asynchronous_insert_log remove="remove"/>
 
-                <!-- Set background pool sizes to prevent configuration conflicts -->
-                <background_pool_size>25</background_pool_size>
-                <background_schedule_pool_size>25</background_schedule_pool_size>
+                <!-- Reduce background pool sizes to limit I/O pressure -->
+                <background_pool_size>16</background_pool_size>
+                <background_schedule_pool_size>16</background_schedule_pool_size>
 
-                <!-- Configure merge behavior to be more conservative on NFS -->
+                <!-- Configure merge behavior - throttled to avoid overwhelming Ceph -->
                 <merge_tree>
-                    <max_bytes_to_merge_at_max_space_in_pool>161061273600</max_bytes_to_merge_at_max_space_in_pool>
-                    <max_suspicious_broken_parts>0</max_suspicious_broken_parts>
-                    <max_suspicious_broken_parts_bytes>0</max_suspicious_broken_parts_bytes>
+                    <max_bytes_to_merge_at_max_space_in_pool>1073741824</max_bytes_to_merge_at_max_space_in_pool>
+                    <max_suspicious_broken_parts>50</max_suspicious_broken_parts>
+                    <max_suspicious_broken_parts_bytes>1073741824</max_suspicious_broken_parts_bytes>
+                    <number_of_free_entries_in_pool_to_lower_max_size_of_merge>6</number_of_free_entries_in_pool_to_lower_max_size_of_merge>
+                    <max_replicated_merges_in_queue>2</max_replicated_merges_in_queue>
+                    <parts_to_delay_insert>300</parts_to_delay_insert>
+                    <parts_to_throw_insert>600</parts_to_throw_insert>
                 </merge_tree>
 
-                <!-- Disable background operations for system tables -->
                 <merge_max_block_size>8192</merge_max_block_size>
                 <max_bytes_to_merge_at_min_space_in_pool>1048576</max_bytes_to_merge_at_min_space_in_pool>
 
