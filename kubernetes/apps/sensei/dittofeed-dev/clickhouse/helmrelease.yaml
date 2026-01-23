@@ -118,12 +118,12 @@ spec:
       #         - path: /var/lib/clickhouse
       #       clickhouse-backup:
       #         - path: /var/lib/clickhouse
-      # config:
-      #   enabled: true
-      #   type: configMap
-      #   name: dittofeed-dev-clickhouse
-      #   globalMounts:
-      #     - path: /etc/clickhouse-server/config.d
+      config:
+        enabled: true
+        type: configMap
+        name: dittofeed-dev-clickhouse
+        globalMounts:
+          - path: /etc/clickhouse-server/config.d
 
 
     configMaps:
