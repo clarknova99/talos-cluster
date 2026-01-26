@@ -18,7 +18,10 @@ spec:
   postgresql:
     parameters:
       max_connections: "600"
-      shared_buffers: 256MB
+      shared_buffers: 2GB # 25% of RAM
+      effective_cache_size: '6GB'     #75% of RAM
+      work_mem: '128MB'               # Per-operation (be conservative)
+      maintenance_work_mem: '512MB'   # For VACUUM, indexes
     shared_preload_libraries:
       - "pg_stat_statements"
       # - "vectors.so"
@@ -29,7 +32,7 @@ spec:
     requests:
       cpu: 250m
     limits:
-      memory: 4Gi
+      memory: 8Gi
   monitoring:
     enablePodMonitor: true
     # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501
