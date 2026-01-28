@@ -1,4 +1,44 @@
 {
+  "title": "Kubernetes Pods – Workload View",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "timezone": "browser",
+  "templating": {
+    "list": [
+      {
+        "name": "namespace",
+        "type": "query",
+        "datasource": "prometheus",
+        "query": "label_values(kube_pod_info, namespace)",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "multi": true
+      },
+      {
+        "name": "status",
+        "type": "custom",
+        "options": [
+          { "text": "Running", "value": "Running" },
+          { "text": "Pending", "value": "Pending" },
+          { "text": "Failed", "value": "Failed" },
+          { "text": "Succeeded", "value": "Succeeded" },
+          { "text": "Unknown", "value": "Unknown" }
+        ],
+        "current": {
+          "text": "Running",
+          "value": "Running"
+        },
+        "multi": true,
+        "includeAll": true
+      }
+    ]
+  },
+  "panels": [
+{
   "type": "table",
   "title": "Pods",
   "datasource": {
@@ -10,88 +50,55 @@
       "refId": "INFO",
       "format": "table",
       "instant": true,
-      "expr": "max by (namespace, pod, node, pod_ip) (kube_pod_info{namespace=~\"$namespace\"})"
+      "expr": "label_join(max by (namespace, pod, node, pod_ip) (kube_pod_info{namespace=~\"$namespace\"}), \"pod_key\", \"/\", \"namespace\", \"pod\")"
     },
     {
       "refId": "OWNER",
       "format": "table",
       "instant": true,
-      "expr": "max by (namespace, pod, owner_kind) (kube_pod_owner{namespace=~\"$namespace\"})"
+      "expr": "label_join(max by (namespace, pod, owner_kind) (kube_pod_owner{namespace=~\"$namespace\"}), \"pod_key\", \"/\", \"namespace\", \"pod\")"
     },
     {
       "refId": "CPU",
       "format": "table",
       "instant": true,
-      "expr": "sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\",container!=\"\",image!=\"\"}[5m]))"
+      "expr": "label_join(sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\",container!=\"\",image!=\"\"}[5m])), \"pod_key\", \"/\", \"namespace\", \"pod\")"
     },
     {
       "refId": "MEM",
       "format": "table",
       "instant": true,
-      "expr": "sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\",container!=\"\",image!=\"\"})"
+      "expr": "label_join(sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\",container!=\"\",image!=\"\"}), \"pod_key\", \"/\", \"namespace\", \"pod\")"
     },
     {
       "refId": "RESTARTS",
       "format": "table",
       "instant": true,
-      "expr": "sum by (namespace, pod) (kube_pod_container_status_restarts_total{namespace=~\"$namespace\"})"
+      "expr": "label_join(sum by (namespace, pod) (kube_pod_container_status_restarts_total{namespace=~\"$namespace\"}), \"pod_key\", \"/\", \"namespace\", \"pod\")"
     },
     {
       "refId": "PHASE",
       "format": "table",
       "instant": true,
-      "expr": "max by (namespace, pod, phase) (kube_pod_status_phase{namespace=~\"$namespace\",phase=~\"$status\"} == 1)"
+      "expr": "label_join(max by (namespace, pod, phase) (kube_pod_status_phase{namespace=~\"$namespace\",phase=~\"$status\"} == 1), \"pod_key\", \"/\", \"namespace\", \"pod\")"
     },
-
     {
       "refId": "CBOX",
       "format": "table",
       "instant": true,
-      "expr": "(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_ready{namespace=~\"$namespace\"}==1, \"cbox\", \"🟩 $1\", \"container\", \"(.*)\")\n  )\n)\nOR\n(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_waiting{namespace=~\"$namespace\"}==1, \"cbox\", \"🟧 $1\", \"container\", \"(.*)\")\n  )\n)\nOR\n(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_terminated{namespace=~\"$namespace\"}==1, \"cbox\", \"🟥 $1\", \"container\", \"(.*)\")\n  )\n)"
+      "expr": "(\nlabel_join(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_ready{namespace=~\"$namespace\"}==1, \"cbox\", \"🟩 $1\", \"container\", \"(.*)\")\n  ),\n  \"pod_key\",\"/\",\"namespace\",\"pod\"\n)\n)\nOR\n(\nlabel_join(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_waiting{namespace=~\"$namespace\"}==1, \"cbox\", \"🟧 $1\", \"container\", \"(.*)\")\n  ),\n  \"pod_key\",\"/\",\"namespace\",\"pod\"\n)\n)\nOR\n(\nlabel_join(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_terminated{namespace=~\"$namespace\"}==1, \"cbox\", \"🟥 $1\", \"container\", \"(.*)\")\n  ),\n  \"pod_key\",\"/\",\"namespace\",\"pod\"\n)\n)"
     }
   ],
   "transformations": [
-    {
-      "id": "labelsToFields",
-      "options": {}
-    },
-    {
-      "id": "calculateField",
-      "options": {
-        "alias": "pod_key",
-        "mode": "reduceRow",
-        "reduce": { "reducer": "lastNotNull" },
-        "replaceFields": false
-      }
-    },
-    {
-      "id": "addFieldFromCalculation",
-      "options": {
-        "mode": "binary",
-        "binary": {
-          "left": "namespace",
-          "operator": "+",
-          "right": "pod"
-        },
-        "alias": "pod_key",
-        "replaceFields": true
-      }
-    },
-    {
-      "id": "joinByField",
-      "options": {
-        "byField": "pod_key",
-        "mode": "outer"
-      }
-    },
+    { "id": "labelsToFields", "options": {} },
+    { "id": "joinByField", "options": { "byField": "pod_key", "mode": "outer" } },
     {
       "id": "groupBy",
       "options": {
-        "fields": {
-          "namespace": true,
-          "pod": true
-        },
+        "fields": { "pod_key": true },
         "aggregations": [
+          { "fieldName": "pod", "reducer": "lastNotNull", "alias": "Name" },
+          { "fieldName": "namespace", "reducer": "lastNotNull", "alias": "Namespace" },
           { "fieldName": "node", "reducer": "lastNotNull", "alias": "Node" },
           { "fieldName": "pod_ip", "reducer": "lastNotNull", "alias": "Pod IP" },
           { "fieldName": "owner_kind", "reducer": "lastNotNull", "alias": "Controlled By" },
@@ -106,10 +113,6 @@
     {
       "id": "organize",
       "options": {
-        "renameByName": {
-          "pod": "Name",
-          "namespace": "Namespace"
-        },
         "excludeByName": {
           "endpoint": true,
           "host_ip": true,
@@ -144,9 +147,7 @@
     }
   ],
   "fieldConfig": {
-    "defaults": {
-      "custom": { "align": "left" }
-    },
+    "defaults": { "custom": { "align": "left" } },
     "overrides": [
       {
         "matcher": { "id": "byName", "options": "CPU (cores)" },
@@ -171,9 +172,8 @@
   },
   "options": {
     "showHeader": true,
-    "cellHeight": "sm",
-    "sortBy": [
-      { "displayName": "CPU (cores)", "desc": true }
-    ]
+    "cellHeight": "sm"
   }
+}
+  ]
 }
