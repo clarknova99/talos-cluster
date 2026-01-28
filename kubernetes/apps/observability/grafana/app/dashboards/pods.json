@@ -1,0 +1,126 @@
+{
+  "title": "Kubernetes Pods – Workload View",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "timezone": "browser",
+  "templating": {
+    "list": [
+      {
+        "name": "namespace",
+        "type": "query",
+        "datasource": "prometheus",
+        "query": "label_values(kube_pod_info, namespace)",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "multi": true
+      },
+      {
+        "name": "status",
+        "type": "custom",
+        "options": [
+          { "text": "Running", "value": "Running" },
+          { "text": "Pending", "value": "Pending" },
+          { "text": "Failed", "value": "Failed" },
+          { "text": "Succeeded", "value": "Succeeded" },
+          { "text": "Unknown", "value": "Unknown" }
+        ],
+        "current": {
+          "text": "Running",
+          "value": "Running"
+        },
+        "multi": true,
+        "includeAll": true
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "table",
+      "title": "Pods",
+      "datasource": "prometheus",
+      "gridPos": { "x": 0, "y": 0, "w": 24, "h": 16 },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "kube_pod_info{namespace=~\"$namespace\"}",
+          "format": "table"
+        },
+        {
+          "refId": "B",
+          "expr": "sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\",container!=\"\",image!=\"\"}[5m]))",
+          "format": "table"
+        },
+        {
+          "refId": "C",
+          "expr": "sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\",container!=\"\",image!=\"\"})",
+          "format": "table"
+        },
+        {
+          "refId": "D",
+          "expr": "sum by (pod, namespace) (kube_pod_container_status_restarts_total{namespace=~\"$namespace\"})",
+          "format": "table"
+        },
+        {
+          "refId": "E",
+          "expr": "kube_pod_status_phase{namespace=~\"$namespace\",phase=~\"$status\"} == 1",
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        { "id": "joinByField", "options": { "byField": "pod", "mode": "outer" } },
+        { "id": "organize", "options": {
+          "renameByName": {
+            "Value #A": "Node",
+            "Value #B": "CPU (cores)",
+            "Value #C": "Memory (bytes)",
+            "Value #D": "Restarts",
+            "phase": "Status"
+          },
+          "excludeByName": {
+            "Time": true,
+            "__name__": true
+          }
+        }},
+        { "id": "calculateField", "options": {
+          "mode": "reduceRow",
+          "reduce": { "reducer": "last" },
+          "alias": "Memory (MiB)",
+          "replaceFields": false
+        }}
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "align": "left"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Memory (bytes)" },
+            "properties": [
+              { "id": "unit", "value": "bytes" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "CPU (cores)" },
+            "properties": [
+              { "id": "unit", "value": "cores" },
+              { "id": "decimals", "value": 3 }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          { "displayName": "CPU (cores)", "desc": true }
+        ]
+      }
+    }
+  ]
+}
