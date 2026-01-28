@@ -7,154 +7,102 @@
   },
   "targets": [
     {
-      "refId": "A",
-      "expr": "kube_pod_owner{namespace=~\"$namespace\"}",
+      "refId": "INFO",
       "format": "table",
-      "instant": true
+      "instant": true,
+      "expr": "max by (namespace, pod, node, pod_ip) (kube_pod_info{namespace=~\"$namespace\"})"
     },
     {
-      "refId": "B",
-      "expr": "kube_pod_info{namespace=~\"$namespace\"}",
+      "refId": "OWNER",
       "format": "table",
-      "instant": true
+      "instant": true,
+      "expr": "max by (namespace, pod, owner_kind) (kube_pod_owner{namespace=~\"$namespace\"})"
     },
     {
-      "refId": "C",
-      "expr": "sum by (namespace,pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\",container!=\"\",image!=\"\"}[5m]))",
+      "refId": "CPU",
       "format": "table",
-      "instant": true
+      "instant": true,
+      "expr": "sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\",container!=\"\",image!=\"\"}[5m]))"
     },
     {
-      "refId": "D",
-      "expr": "sum by (namespace,pod) (container_memory_working_set_bytes{namespace=~\"$namespace\",container!=\"\",image!=\"\"})",
+      "refId": "MEM",
       "format": "table",
-      "instant": true
+      "instant": true,
+      "expr": "sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\",container!=\"\",image!=\"\"})"
     },
     {
-      "refId": "E",
-      "expr": "sum by (namespace,pod) (kube_pod_container_status_restarts_total{namespace=~\"$namespace\"})",
+      "refId": "RESTARTS",
       "format": "table",
-      "instant": true
+      "instant": true,
+      "expr": "sum by (namespace, pod) (kube_pod_container_status_restarts_total{namespace=~\"$namespace\"})"
     },
     {
-      "refId": "F",
-      "expr": "max by (namespace,pod,phase) (kube_pod_status_phase{namespace=~\"$namespace\",phase=~\"$status\"} == 1)",
+      "refId": "PHASE",
       "format": "table",
-      "instant": true
-    },
-
-    {
-      "refId": "G",
-      "expr": "kube_pod_container_status_ready{namespace=~\"$namespace\"} == 1",
-      "format": "table",
-      "instant": true
-    },
-    {
-      "refId": "H",
-      "expr": "kube_pod_container_status_waiting{namespace=~\"$namespace\"} == 1",
-      "format": "table",
-      "instant": true
-    },
-    {
-      "refId": "I",
-      "expr": "kube_pod_container_status_terminated{namespace=~\"$namespace\"} == 1",
-      "format": "table",
-      "instant": true
+      "instant": true,
+      "expr": "max by (namespace, pod, phase) (kube_pod_status_phase{namespace=~\"$namespace\",phase=~\"$status\"} == 1)"
     },
 
     {
-      "refId": "J",
-      "expr": "kube_pod_created{namespace=~\"$namespace\"}",
+      "refId": "CBOX",
       "format": "table",
-      "instant": true
+      "instant": true,
+      "expr": "(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_ready{namespace=~\"$namespace\"}==1, \"cbox\", \"🟩 $1\", \"container\", \"(.*)\")\n  )\n)\nOR\n(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_waiting{namespace=~\"$namespace\"}==1, \"cbox\", \"🟧 $1\", \"container\", \"(.*)\")\n  )\n)\nOR\n(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_terminated{namespace=~\"$namespace\"}==1, \"cbox\", \"🟥 $1\", \"container\", \"(.*)\")\n  )\n)"
     }
   ],
   "transformations": [
-    { "id": "labelsToFields", "options": {} },
-
+    {
+      "id": "labelsToFields",
+      "options": {}
+    },
+    {
+      "id": "calculateField",
+      "options": {
+        "alias": "pod_key",
+        "mode": "reduceRow",
+        "reduce": { "reducer": "lastNotNull" },
+        "replaceFields": false
+      }
+    },
+    {
+      "id": "addFieldFromCalculation",
+      "options": {
+        "mode": "binary",
+        "binary": {
+          "left": "namespace",
+          "operator": "+",
+          "right": "pod"
+        },
+        "alias": "pod_key",
+        "replaceFields": true
+      }
+    },
     {
       "id": "joinByField",
-      "options": { "byField": "pod", "mode": "outer" }
-    },
-
-    {
-      "id": "calculateField",
       "options": {
-        "mode": "reduceRow",
-        "reduce": { "reducer": "lastNotNull" },
-        "alias": "CPU",
-        "replaceFields": false
+        "byField": "pod_key",
+        "mode": "outer"
       }
     },
-
-    {
-      "id": "calculateField",
-      "options": {
-        "mode": "reduceRow",
-        "reduce": { "reducer": "lastNotNull" },
-        "alias": "Memory",
-        "replaceFields": false
-      }
-    },
-
-    {
-      "id": "calculateField",
-      "options": {
-        "mode": "reduceRow",
-        "reduce": { "reducer": "lastNotNull" },
-        "alias": "Restarts",
-        "replaceFields": false
-      }
-    },
-
-    {
-      "id": "calculateField",
-      "options": {
-        "mode": "reduceRow",
-        "reduce": { "reducer": "lastNotNull" },
-        "alias": "Status",
-        "replaceFields": false
-      }
-    },
-
     {
       "id": "groupBy",
       "options": {
-        "fields": { "namespace": true, "pod": true },
+        "fields": {
+          "namespace": true,
+          "pod": true
+        },
         "aggregations": [
           { "fieldName": "node", "reducer": "lastNotNull", "alias": "Node" },
+          { "fieldName": "pod_ip", "reducer": "lastNotNull", "alias": "Pod IP" },
           { "fieldName": "owner_kind", "reducer": "lastNotNull", "alias": "Controlled By" },
-          { "fieldName": "owner_name", "reducer": "lastNotNull", "alias": "Controller Name" },
-          { "fieldName": "CPU", "reducer": "lastNotNull", "alias": "CPU (cores)" },
-          { "fieldName": "Memory", "reducer": "lastNotNull", "alias": "Memory (bytes)" },
-          { "fieldName": "Restarts", "reducer": "lastNotNull", "alias": "Restarts" },
+          { "fieldName": "Value #CPU", "reducer": "lastNotNull", "alias": "CPU (cores)" },
+          { "fieldName": "Value #MEM", "reducer": "lastNotNull", "alias": "Memory" },
+          { "fieldName": "Value #RESTARTS", "reducer": "lastNotNull", "alias": "Restarts" },
           { "fieldName": "phase", "reducer": "lastNotNull", "alias": "Status" },
-
-          { "fieldName": "container", "reducer": "uniqueValues", "alias": "Containers_all" },
-
-          { "fieldName": "Value #G", "reducer": "uniqueValues", "alias": "Containers_running_flag" },
-          { "fieldName": "Value #H", "reducer": "uniqueValues", "alias": "Containers_waiting_flag" },
-          { "fieldName": "Value #I", "reducer": "uniqueValues", "alias": "Containers_terminated_flag" },
-
-          { "fieldName": "Value #J", "reducer": "lastNotNull", "alias": "created" }
+          { "fieldName": "cbox", "reducer": "uniqueValues", "alias": "Containers" }
         ]
       }
     },
-
-    {
-      "id": "calculateField",
-      "options": {
-        "alias": "Age",
-        "mode": "binary",
-        "binary": {
-          "left": "created",
-          "operator": "-",
-          "right": "__time"
-        },
-        "replaceFields": false
-      }
-    },
-
     {
       "id": "organize",
       "options": {
@@ -162,24 +110,35 @@
           "pod": "Name",
           "namespace": "Namespace"
         },
+        "excludeByName": {
+          "endpoint": true,
+          "host_ip": true,
+          "host_network": true,
+          "instance": true,
+          "job": true,
+          "kubernetes_node": true,
+          "uid": true,
+          "priority_class": true,
+          "pod_key": true,
+          "namespace 1": true,
+          "namespace 2": true,
+          "namespace 3": true,
+          "namespace 4": true,
+          "Memory (bytes)": true,
+          "Memory (MiB)": true,
+          "container": true
+        },
         "indexByName": {
           "Name": 0,
           "Namespace": 1,
-          "Containers_all": 2,
+          "Containers": 2,
           "CPU (cores)": 3,
-          "Memory (bytes)": 4,
+          "Memory": 4,
           "Restarts": 5,
           "Controlled By": 6,
           "Node": 7,
-          "Age": 8,
+          "Pod IP": 8,
           "Status": 9
-        },
-        "excludeByName": {
-          "Controller Name": true,
-          "created": true,
-          "Containers_running_flag": true,
-          "Containers_waiting_flag": true,
-          "Containers_terminated_flag": true
         }
       }
     }
@@ -197,41 +156,24 @@
         ]
       },
       {
-        "matcher": { "id": "byName", "options": "Memory (bytes)" },
+        "matcher": { "id": "byName", "options": "Memory" },
         "properties": [
           { "id": "unit", "value": "bytes" }
         ]
       },
       {
-        "matcher": { "id": "byName", "options": "Age" },
+        "matcher": { "id": "byName", "options": "Restarts" },
         "properties": [
-          { "id": "unit", "value": "s" }
-        ]
-      },
-      {
-        "matcher": { "id": "byName", "options": "Status" },
-        "properties": [
-          {
-            "id": "mappings",
-            "value": [
-              {
-                "type": "value",
-                "options": {
-                  "Running": { "text": "Running" },
-                  "Pending": { "text": "Pending" },
-                  "Failed": { "text": "Failed" },
-                  "Succeeded": { "text": "Succeeded" },
-                  "Unknown": { "text": "Unknown" }
-                }
-              }
-            ]
-          }
+          { "id": "decimals", "value": 0 }
         ]
       }
     ]
   },
   "options": {
     "showHeader": true,
-    "cellHeight": "sm"
+    "cellHeight": "sm",
+    "sortBy": [
+      { "displayName": "CPU (cores)", "desc": true }
+    ]
   }
 }
