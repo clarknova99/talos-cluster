@@ -11,7 +11,7 @@ configMapGenerator:
       - iotawatt.json
   - name: pods-dashboard
     files:
-      - pods.json
+      - pods-dashboard.json
   - name: ingress-logs
     files:
       - ingress-logs.json
