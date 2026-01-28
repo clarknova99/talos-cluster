@@ -97,12 +97,6 @@ spec:
           osd_use_stale_snap: "false"
       crashCollector:
         disable: false
-        resources:
-          requests:
-            cpu: 15m
-            memory: 64Mi
-          limits:
-            memory: 64Mi
       dashboard:
         enabled: true
         urlPrefix: /
@@ -153,6 +147,12 @@ spec:
             memory: 128Mi
           limits:
             memory: 256Mi
+        crashcollector:
+          requests:
+            cpu: 15m
+            memory: 64Mi
+          limits:
+            memory: 64Mi
     cephBlockPools:
       - name: ceph-blockpool
         spec:
