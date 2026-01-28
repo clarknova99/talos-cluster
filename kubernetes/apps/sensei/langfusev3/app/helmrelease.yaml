@@ -31,7 +31,7 @@ spec:
           web:
             image:
               repository: ghcr.io/langfuse/langfuse
-              tag: 3.148.0@sha256:be1f0a089673cd85e2f2e65f2a7abd9ede784e73fb14ffc26ccf74e5506c120a
+              tag: 3.150.0@sha256:7f47fd823a5d6f8b1195e0ca6830f8f99e78a659b150ccdb077d188674efb1b6
               # imagePullPolicy: IfNotPresent
             env:
               NEXTAUTH_URL: https://langfuse.${SECRET_DOMAIN_TWO}
