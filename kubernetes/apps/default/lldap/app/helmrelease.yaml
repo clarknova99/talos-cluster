@@ -82,6 +82,9 @@ spec:
     service:
       app:
         controller: lldap
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.49
         ports:
           http:
             port: *port
