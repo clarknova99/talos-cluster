@@ -16,6 +16,7 @@ apiVersion: v1
 kind: Endpoints
 metadata:
   name: ds1522
+  namespace: default
 subsets:
   - addresses:
       - ip: 192.168.1.3
