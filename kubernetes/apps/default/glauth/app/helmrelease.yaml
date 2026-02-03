@@ -36,7 +36,7 @@ spec:
             image:
               repository: docker.io/glauth/glauth
               tag: v2.4.0@sha256:b3efd79fc32ac626ad1b18e36ab42fac2e2ac662454582fdfa21cc82efab786b
-              command: ["/app/glauth", "-c", "/config"]
+            command: ["/app/glauth", "-c", "/config"]
             probes:
               liveness: &probes
                 enabled: true
