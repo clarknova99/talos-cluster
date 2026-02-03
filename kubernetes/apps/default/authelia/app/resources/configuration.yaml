@@ -84,6 +84,13 @@ regulation:
 identity_providers:
   oidc:
     enable_client_debug_messages: true
+    claims_policies:
+      synology:
+        id_token:
+          - 'preferred_username'
+          - 'name'
+          - 'email'
+          - 'groups'
     cors:
       endpoints: ["authorization", "token", "revocation", "introspection"]
       allowed_origins_from_client_redirect_uris: true
@@ -196,7 +203,7 @@ identity_providers:
         access_token_signed_response_alg: 'none'
         userinfo_signed_response_alg: 'none'
         token_endpoint_auth_method: 'client_secret_post'
-
+        claims_policy: synology
         # userinfo_signed_response_alg: none
         # token_endpoint_auth_method: client_secret_post
         # id_token_signed_response_alg: RS256
