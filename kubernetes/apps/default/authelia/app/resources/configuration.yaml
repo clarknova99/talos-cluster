@@ -189,4 +189,5 @@ identity_providers:
         redirect_uris: ['https://diskstation.{{ env "SECRET_DOMAIN" }}']
         userinfo_signed_response_alg: none
         token_endpoint_auth_method: client_secret_post
+        id_token_signed_response_alg: RS256
         # subject_identifier: public
