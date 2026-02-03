@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: glauth-secrets
+    namespace: default
+    ## sops --encrypt --in-place ./kubernetes/apps/default/lldap/app/lldap.sops.yaml
+    ## sops --decrypt ./kubernetes/apps/default/lldap/app/lldap.sops.yaml | kubectl apply -f -
+    # Create passbcrypt:
+    #   "https://cyberchef.rafaribe.com/#recipe=Bcrypt(12)To_Hex('None',0)"
+    # or
+    #   htpasswd -bnBC 10 "" YOUR_PASSWORD | tr -d ':\n' | od -A n -t x1 | sed 's/ *//g' | tr -d '\n'
+data:
+    server.toml: ENC[AES256_GCM,data:huVF1Fg7tSfcS1ny0u+A4mGkmebl6yNr+OL0YLdhuCK8k7I4X11BtbKMiUBMiUID7yQ8Spe4t25VCNUs23lA40ofy3f8Z8qNkxxNZ2ueOuZdCMH5yokdbYp2aaG/ac7hBnMZwEcKpNNufIJE94sU15s+LLWLEmnVNwfjClSd6H+TwGzQZ7I4Sj3ip2AqETlu1Us6vyoZ9Nh725YP0ZxnmfAM9PoAWL2Ssx8aVj1mcAw2xw7Ugq3qyqgkqba/EnOzF1lghNyJ4ANI9bVc1FHsjRTw8wt8,iv:iTlcLN1Iym2JYno/qE8/fo5EsbcM6Wlf1lh4UH4ing0=,tag:TWklalk5CfBO6uiIwb+GOw==,type:str]
+    groups.toml: ENC[AES256_GCM,data:Qs6E2j5kCcfnK4ZFHmS58DyXl36gGlRRPBR3ZKc9oWHpPB6/dbDPzmgwfMJsC3+uhfSo3G5Y7J5PPzYx7I+KB5yeZhu5qyvQ5TL8wsHH4zKqz5APTRx3R7i1ubB6fPqU1c9/lbCPPrAvufVfQzoB0g8JdJopIo62rixU0TVz1qoIVYMF8JDkfQ8lwagAlMefJV8=,iv:+RPZeoB0+Bq0sozG8o7hLLlJkaTRyJQRwMqLLUcdXR4=,tag:Q8s7UIOAz2AaatvfrpBfng==,type:str]
+    users.toml: ENC[AES256_GCM,data:85GkoyqvoIJR+BKkuX+pSwONg1TlQEmMkAi99376jAZlemh8DPvtATAzpqufJrK0b8ry4GDUvzJQW1gb7nZR9yf2Z0F6+pQQBiFUJ5kFqEymbDTNooEkfDwwsWhpmNhb3aujtcKYeypgEf7X+j8zSobmWSTC5RoQVx5af94O1uUht874VVfR6r4eBe2tLNP9hhiYOgcO5Z4tOXtW8F1JduqqVHkuqvxOWE5W7x1BuSgjP8T+O1LK4OVlbfZ3h4KGNcTMje89b4seIcnL4H9YFiPYM7IJmbF3IuaGv0U5DX1XmlybMEnqH+e6qJ4/wPjC3B15bh7Lwwx2H8NUfUD5PQ9HSDK9dkttvfIXDVpX39BLLkW5K7WS+i8k6SpjD1YNNnF473KC9Kc7qPdJGkkdx69ZgxNz/PSv1PstgqHcwdswNewTEwSaEN3XJpr3ROfXPTJs4V9dzv3Sy1FYMzElvFmmBsQmYfJR0HJzvN/kggMxyXq8QdvZCb/4QgEgNIekEFOIFXewhZA4p4WyowRLDlZSdea8nH2qYq13Kcptl9fuDRcr79oJcSHX9yq40SxU/rME7z0NGif62Qo4an+qCUhEphqg83qYJXELXCSr/5XZblLQBE3i9zsbsbK7ZxqhfxM4syqiCDqMm3vJ1xTY33h4HRm0P9Do0PeuLzHfPDm8KLkEAgTaUu7oZuyaACr/Pe7tRlOVDyR323JNkNuq4OkLB0iZs1qEGeaCb2ESjgdNjJvG/sljr8Fb5kgY02t02oDTjPvI9fwdVD7b5F4=,iv:A6da4W3PNJJEClcQ+VnZwwsKszrioK3RmAjR2bEk804=,tag:ZMTGCqi+CLC9hEXQr7emRg==,type:str]
+sops:
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAwNHB6TGNjdlR6OFlmWG1s
+            K0ZvK2hyUVRkU3QrenVIZWdZU21oYXUxa0FnCndNL3FpempsV0d5N3poMTFZdXRs
+            N1FMT1pNQTcyeXY0bHRNQzliUUVyaXcKLS0tIGU0R1hRejAzT2hycEROb21MMWhL
+            QktEZ2F3TlFaeXlLYXdJWURvaXpxNHMKKn+TZy2D4OxznFDETFXceZkcIq08IZpx
+            cQqqNxGbiEgEc7Z3zen0ourv1xCFE9/+nDA2PEQVZUuElZCwyv21yA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-02-03T18:12:33Z"
+    mac: ENC[AES256_GCM,data:VXY63MPW1WmtTX5KfRMrnjZFCAE5ZriaP3jP0AL2etWdzBVlm1vi+xP6T1pTay8dbgtgfgE/lJeY+009odpAaOe/VTXFC5+ENsmMss2on9MxxayGbjEkCtyxaTxmWhO26X0+LtHcm5Z+KHbktgZLaht/u6ArKv3/W7s+IGa1hpo=,iv:+JLQdRCP6VPAi2/vTjNgJDX8UJpSJxKCiQerR7pghkM=,tag:OQMmj8VNbeNTeWp3nCTa9Q==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.11.0
