@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/service.json
+apiVersion: v1
+kind: Service
+metadata:
+  name: diskstation
+spec:
+  ports:
+    - name: http
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/endpoints.json
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: diskstation
+subsets:
+  - addresses:
+      - ip: 192.168.1.2
+    ports:
+      - name: http
+        port: 5000
+        protocol: TCP
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: diskstation
+spec:
+  hostnames:
+    - diskstation.${SECRET_DOMAIN}
+  parentRefs:
+    - name: envoy-external
+      namespace: network
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: diskstation
+          port: 5000
