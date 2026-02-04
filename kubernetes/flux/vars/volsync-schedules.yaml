@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://k8s-schemas.pages.dev/kubernetes/master/configmap-v1.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: volsync-schedules
+  namespace: flux-system
+data:
+  # ============================================================================
+  # VolSync Backup Schedules
+  # Staggered to prevent I/O storms on Ceph cluster
+  # ============================================================================
+
+  # --- Hourly NFS Backups (spread across the hour, ~3min apart) ---
+  VOLSYNC_SCHEDULE_SABNZBD: "0 1 * * *"

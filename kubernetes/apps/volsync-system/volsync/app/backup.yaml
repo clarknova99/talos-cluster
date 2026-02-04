@@ -1,0 +1,26 @@
+# NFS PVC for the rest server
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: volsync-backup-nfs
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes: [ReadWriteMany]
+  nfs:
+    server: 192.168.1.3        # your second Synology
+    path: /volume1/network-storage/volsync-backups
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: volsync-backup-nfs
+  namespace: volsync-system
+spec:
+  accessModes: [ReadWriteMany]
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: volsync-backup-nfs
+  storageClassName: ""
