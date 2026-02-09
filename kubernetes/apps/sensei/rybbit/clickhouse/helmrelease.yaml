@@ -161,6 +161,7 @@ spec:
                 <query_views_log remove="remove"/>
                 <query_metric_log remove="remove"/>
                 <asynchronous_insert_log remove="remove"/>
+                <error_log remove="remove"/>
 
                 <!-- Reduce background pool sizes to limit I/O pressure -->
                 <background_pool_size>16</background_pool_size>
