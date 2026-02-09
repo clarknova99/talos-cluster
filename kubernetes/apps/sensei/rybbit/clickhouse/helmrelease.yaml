@@ -163,9 +163,9 @@ spec:
                 <asynchronous_insert_log remove="remove"/>
                 <error_log remove="remove"/>
 
-                <!-- Reduce background pool sizes to limit I/O pressure -->
-                <background_pool_size>16</background_pool_size>
-                <background_schedule_pool_size>16</background_schedule_pool_size>
+                <!-- TEMPORARILY disabled to prevent crash from corrupted parts during merge -->
+                <background_pool_size>0</background_pool_size>
+                <background_schedule_pool_size>0</background_schedule_pool_size>
 
                 <!-- Configure merge behavior - throttled to avoid overwhelming Ceph -->
                 <merge_tree>
