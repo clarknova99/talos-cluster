@@ -92,25 +92,6 @@ spec:
           - backendRefs:
               - name: litellm-dev
                 port: *port
-    # ingress:
-    #   app:
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-    #       nginx.ingress.kubernetes.io/app-root: /ui
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: mdi:math-compass
-    #     className: external
-    #     enabled: true
-    #     hosts:
-    #       - host: litellm-dev.${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: 4000
-    #     tls:
-    #       - hosts:
-    #           - litellm-dev.${SECRET_DOMAIN_TWO}
     persistence:
       config-file:
         type: configMap
