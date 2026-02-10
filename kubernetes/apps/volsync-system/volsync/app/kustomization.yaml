@@ -6,4 +6,4 @@ resources:
   - ./helmrelease.yaml
   - ./prometheusrule.yaml
   # TODO: Re-enable after upgrading Kubernetes to 1.32+ (MutatingAdmissionPolicy API)
-  # - ./mutatingadmissionpolicy.yaml
+  - ./mutatingadmissionpolicy.yaml
