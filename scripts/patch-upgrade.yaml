@@ -1,0 +1,8 @@
+machine:
+  features:
+    kubernetesTalosAPIAccess:
+      allowedKubernetesNamespaces:
+        - system-upgrade # or the namespace the controller will be installed to
+      allowedRoles:
+        - os:admin
+      enabled: true
