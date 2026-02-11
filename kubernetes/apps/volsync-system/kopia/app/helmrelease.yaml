@@ -46,10 +46,14 @@ spec:
                 cp /config-ro/repository.config /config/repository.config
                 kopia repository connect filesystem --path /repository \
                   --override-hostname volsync.volsync-system.svc.cluster.local \
-                  --override-username volsync || \
+                  --override-username volsync \
+                  --file-mode 0660 \
+                  --dir-mode 0770 || \
                 kopia repository create filesystem --path /repository \
                   --override-hostname volsync.volsync-system.svc.cluster.local \
-                  --override-username volsync
+                  --override-username volsync \
+                  --file-mode 0660 \
+                  --dir-mode 0770
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -76,7 +80,7 @@ spec:
                   httpGet:
                     path: /
                     port: *port
-                  initialDelaySeconds: 0
+                  initialDelaySeconds: 5
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
