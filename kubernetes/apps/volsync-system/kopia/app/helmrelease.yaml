@@ -27,6 +27,32 @@ spec:
       kopia:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-repo:
+            image:
+              repository: ghcr.io/home-operations/kopia
+              tag: 0.22.3@sha256:17ab64542280197a5368247deaefadc3e3bbe15714ab666c2455a06824e86efd
+            env:
+              KOPIA_CONFIG_PATH: /tmp/repository.config
+              KOPIA_CACHE_DIRECTORY: /tmp/cache
+              KOPIA_LOG_DIR: /tmp/logs
+              TZ: America/New_York
+            envFrom:
+              - secretRef:
+                  name: kopia-secret
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                kopia repository connect filesystem --path /repository \
+                  --override-hostname volsync.volsync-system.svc.cluster.local \
+                  --override-username volsync || \
+                kopia repository create filesystem --path /repository \
+                  --override-hostname volsync.volsync-system.svc.cluster.local \
+                  --override-username volsync
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image:
@@ -119,6 +145,9 @@ spec:
         type: emptyDir
         advancedMounts:
           kopia:
+            init-repo:
+              - path: /tmp
+                subPath: init-tmp
             app:
               - path: /config/cache
                 subPath: cache
