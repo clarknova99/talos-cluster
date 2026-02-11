@@ -11,6 +11,14 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/media/plex/app
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: plex
+      VOLSYNC_CAPACITY: 75Gi
+      VOLSYNC_UID: "568"
+      VOLSYNC_GID: "568"
   prune: true
   sourceRef:
     kind: GitRepository
