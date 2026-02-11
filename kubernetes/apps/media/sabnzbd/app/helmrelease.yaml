@@ -113,20 +113,6 @@ spec:
             sectionName: https
         hostnames:
           - sabnzbd.${SECRET_DOMAIN}
-    # ingress:
-    #   app:
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: mdi:download
-    #     className: internal
-    #     hosts:
-    #       - host: sab.${SECRET_DOMAIN}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: http
     persistence:
       config:
         existingClaim: sabnzbd
