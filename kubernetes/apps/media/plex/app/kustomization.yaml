@@ -9,7 +9,7 @@ resources:
 patches:
   - target:
       kind: PersistentVolumeClaim
-      name: plex
+      name: '\$\{APP\}'
     patch: |
       - op: remove
         path: /spec/dataSourceRef
