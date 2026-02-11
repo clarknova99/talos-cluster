@@ -81,13 +81,10 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 1025
-    #     runAsGroup: 1025
-    #     fsGroup: 1025
-    #     fsGroupChangePolicy: OnRootMismatch
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
     service:
       app:
         controller: kopia
