@@ -11,8 +11,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   # TODO: Re-enable volsync component after bootstrap
-  # components:
-  #   - ../../../../components/volsync
+  components:
+    - ../../../../components/volsync
   path: ./kubernetes/apps/media/sabnzbd/app
   postBuild:
     substitute:
