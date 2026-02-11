@@ -1,0 +1,12 @@
+---
+# TODO: Remove after bootstrap - volsync component will manage PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sabnzbd
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: ceph-block

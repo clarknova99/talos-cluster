@@ -27,6 +27,26 @@ spec:
       sabnzbd:
         annotations:
           reloader.stakater.com/auto: "true"
+        # TODO: Remove init container after bootstrap
+        initContainers:
+          copy-config:
+            image:
+              repository: ghcr.io/home-operations/busybox
+              tag: 1.37.0@sha256:026ed7273270ec08f6902b4ae8334c23b473e5394bec3bbbdbfe580c710d50bc
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                if [ -z "$(ls -A /config)" ]; then
+                  echo "Config is empty, copying from NFS..."
+                  cp -a /old-config/. /config/
+                  echo "Done."
+                else
+                  echo "Config already exists, skipping copy."
+                fi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image:
@@ -138,3 +158,13 @@ spec:
         type: emptyDir
       tmp:
         type: emptyDir
+      # TODO: Remove after bootstrap
+      old-config:
+        type: nfs
+        server: 192.168.1.3
+        path: /volume1/network-storage/cluster/sabnzbd
+        advancedMounts:
+          sabnzbd:
+            copy-config:
+              - path: /old-config
+                readOnly: true
