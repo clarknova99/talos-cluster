@@ -6,3 +6,10 @@ namespace: media
 resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
+patches:
+  - target:
+      kind: PersistentVolumeClaim
+      name: plex
+    patch: |
+      - op: remove
+        path: /spec/dataSourceRef
