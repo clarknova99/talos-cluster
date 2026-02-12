@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: clickhouse/clickhouse-server
-              tag: 25.12-alpine
+              tag: 26.1-alpine
               pullPolicy: IfNotPresent
             env:
               CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
