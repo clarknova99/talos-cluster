@@ -120,6 +120,14 @@ spec:
         name: rybbit-clickhouse
         globalMounts:
           - path: /etc/clickhouse-server/config.d
+      # subPath mount leaves users.d/ writable so the entrypoint can write default-user.xml
+      users-config:
+        enabled: true
+        type: configMap
+        name: rybbit-clickhouse-users
+        globalMounts:
+          - path: /etc/clickhouse-server/users.d/profiles.xml
+            subPath: profiles.xml
     configMaps:
       config:
         enabled: true
@@ -189,5 +197,16 @@ spec:
                 <prometheus_port remove="remove"/>
                 <port remove="remove"/>
             </clickhouse>
-
-
+      # Disable simdjson to prevent JSON column corruption on VMs with non-host CPU types
+      # See: https://github.com/rybbit-io/rybbit/issues/559
+      users:
+        enabled: true
+        data:
+          profiles.xml: |
+            <clickhouse>
+                <profiles>
+                    <default>
+                        <allow_simdjson>0</allow_simdjson>
+                    </default>
+                </profiles>
+            </clickhouse>
