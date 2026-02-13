@@ -17,6 +17,7 @@ spec:
     substitute:
       APP: plex
       VOLSYNC_CAPACITY: 75Gi
+      VOLSYNC_SCHEDULE: "0 4 * * *"
       VOLSYNC_UID: "568"
       VOLSYNC_GID: "568"
   prune: true
