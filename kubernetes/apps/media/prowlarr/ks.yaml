@@ -13,6 +13,15 @@ spec:
   dependsOn:
     - name: cloudnative-pg-cluster
   path: ./kubernetes/apps/media/prowlarr/app
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: prowlarr
+      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_SCHEDULE: "0 7 * * *"
+      VOLSYNC_UID: "1025"
+      VOLSYNC_GID: "1025"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,4 +30,3 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-

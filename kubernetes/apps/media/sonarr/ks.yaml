@@ -13,6 +13,15 @@ spec:
   dependsOn:
     - name: cloudnative-pg-cluster
   path: ./kubernetes/apps/media/sonarr/app
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: sonarr
+      VOLSYNC_CAPACITY: 15Gi
+      VOLSYNC_SCHEDULE: "0 8 * * *"
+      VOLSYNC_UID: "1025"
+      VOLSYNC_GID: "1025"
   prune: true
   sourceRef:
     kind: GitRepository

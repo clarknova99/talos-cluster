@@ -11,6 +11,15 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/media/bazarr/app
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: bazarr
+      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_SCHEDULE: "0 6 * * *"
+      VOLSYNC_UID: "1025"
+      VOLSYNC_GID: "1025"
   prune: true
   sourceRef:
     kind: GitRepository

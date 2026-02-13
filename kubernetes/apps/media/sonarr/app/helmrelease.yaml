@@ -106,7 +106,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: sonarr-new
+        existingClaim: sonarr
       # config:
       #   enabled: true
       #   type: nfs
