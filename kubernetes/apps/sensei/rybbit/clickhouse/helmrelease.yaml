@@ -163,10 +163,17 @@ spec:
                 <asynchronous_insert_log remove="remove"/>
                 <error_log remove="remove"/>
 
-                <!-- TEMPORARY: Disable background merges to prevent corrupt part generation -->
-                <!-- The props column (JSON/Object type) is producing corrupt data during merges -->
-                <!-- causing SIGSEGV crashes. Re-enable once root cause is resolved. -->
-                <background_pool_size>0</background_pool_size>
+                <!-- Disable SIMD JSON parsing to prevent data corruption in JSON columns -->
+                <!-- on VMs with non-host CPU types (Proxmox x86-64-v2-AES/v3) -->
+                <!-- See: https://github.com/rybbit-io/rybbit/issues/559 -->
+                <profiles>
+                    <default>
+                        <allow_simdjson>0</allow_simdjson>
+                    </default>
+                </profiles>
+
+                <!-- Reduce background pool sizes to limit I/O pressure -->
+                <background_pool_size>16</background_pool_size>
                 <background_schedule_pool_size>16</background_schedule_pool_size>
 
                 <merge_tree>
