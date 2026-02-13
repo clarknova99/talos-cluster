@@ -120,6 +120,12 @@ spec:
         name: rybbit-clickhouse
         globalMounts:
           - path: /etc/clickhouse-server/config.d
+      users-config:
+        enabled: true
+        type: configMap
+        name: rybbit-clickhouse-users
+        globalMounts:
+          - path: /etc/clickhouse-server/users.d
 
     configMaps:
       config:
@@ -163,15 +169,6 @@ spec:
                 <asynchronous_insert_log remove="remove"/>
                 <error_log remove="remove"/>
 
-                <!-- Disable SIMD JSON parsing to prevent data corruption in JSON columns -->
-                <!-- on VMs with non-host CPU types (Proxmox x86-64-v2-AES/v3) -->
-                <!-- See: https://github.com/rybbit-io/rybbit/issues/559 -->
-                <profiles>
-                    <default>
-                        <allow_simdjson>0</allow_simdjson>
-                    </default>
-                </profiles>
-
                 <!-- Reduce background pool sizes to limit I/O pressure -->
                 <background_pool_size>16</background_pool_size>
                 <background_schedule_pool_size>16</background_schedule_pool_size>
@@ -195,5 +192,19 @@ spec:
                 <postgresql_port remove="remove"/>
                 <prometheus_port remove="remove"/>
                 <port remove="remove"/>
+            </clickhouse>
+      users-config:
+        enabled: true
+        data:
+          users.xml: |
+            <clickhouse>
+                <!-- Disable SIMD JSON parsing to prevent data corruption in JSON columns -->
+                <!-- on VMs with non-host CPU types (Proxmox x86-64-v2-AES/v3) -->
+                <!-- See: https://github.com/rybbit-io/rybbit/issues/559 -->
+                <profiles>
+                    <default>
+                        <allow_simdjson>0</allow_simdjson>
+                    </default>
+                </profiles>
             </clickhouse>
 
