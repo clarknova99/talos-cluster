@@ -117,7 +117,7 @@ spec:
       config:
         enabled: true
         type: configMap
-        name: rybbit-clickhouse
+        name: rybbit-clickhouse-config
         globalMounts:
           - path: /etc/clickhouse-server/config.d
       # subPath mount leaves users.d/ writable so the entrypoint can write default-user.xml
