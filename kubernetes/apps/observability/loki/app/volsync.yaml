@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: loki-volsync-secret
+stringData:
+  KOPIA_PASSWORD: ${VOLSYNC_KOPIA_PASSWORD}
+  KOPIA_FS_PATH: /repository
+  KOPIA_REPOSITORY: "filesystem:///repository"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: loki
+spec:
+  sourcePVC: storage-loki-0
+  trigger:
+    schedule: "0 3 * * *"
+  kopia:
+    compression: zstd-fastest
+    copyMethod: Direct
+    parallelism: 2
+    repository: loki-volsync-secret
+    retain:
+      daily: 7
+    storageClassName: openebs-hostpath
+    moverSecurityContext:
+      runAsUser: 10001
+      runAsGroup: 10001
+      fsGroup: 10001
+    accessModes: ["ReadWriteOnce"]

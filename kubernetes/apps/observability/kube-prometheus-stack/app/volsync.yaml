@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kube-prometheus-stack-volsync-secret
+stringData:
+  KOPIA_PASSWORD: ${VOLSYNC_KOPIA_PASSWORD}
+  KOPIA_FS_PATH: /repository
+  KOPIA_REPOSITORY: "filesystem:///repository"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: kube-prometheus-stack
+spec:
+  sourcePVC: prometheus-prometheus-kube-prometheus-stack-prometheus-0
+  trigger:
+    schedule: "0 2 * * *"
+  kopia:
+    compression: zstd-fastest
+    copyMethod: Direct
+    parallelism: 2
+    repository: kube-prometheus-stack-volsync-secret
+    retain:
+      daily: 7
+    storageClassName: openebs-hostpath
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 2000
+      fsGroup: 2000
+    accessModes: ["ReadWriteOnce"]

@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./loki.sops.yaml
   - ./helmrelease.yaml
+  - ./volsync.yaml
   #- ./prometheus-rule.yaml
