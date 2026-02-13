@@ -120,13 +120,6 @@ spec:
         name: rybbit-clickhouse
         globalMounts:
           - path: /etc/clickhouse-server/config.d
-      users-config:
-        enabled: true
-        type: configMap
-        name: rybbit-clickhouse-users
-        globalMounts:
-          - path: /etc/clickhouse-server/users.d
-
     configMaps:
       config:
         enabled: true
@@ -174,7 +167,10 @@ spec:
                 <background_schedule_pool_size>16</background_schedule_pool_size>
 
                 <merge_tree>
-                    <max_bytes_to_merge_at_max_space_in_pool>1073741824</max_bytes_to_merge_at_max_space_in_pool>
+                    <!-- Limit merge size to 1 byte to effectively disable merges -->
+                    <!-- Workaround for SIMD JSON corruption: https://github.com/rybbit-io/rybbit/issues/559 -->
+                    <!-- Fix: set Proxmox CPU type to 'host' on mars, then restore to 1073741824 -->
+                    <max_bytes_to_merge_at_max_space_in_pool>1</max_bytes_to_merge_at_max_space_in_pool>
                     <max_suspicious_broken_parts>50</max_suspicious_broken_parts>
                     <max_suspicious_broken_parts_bytes>1073741824</max_suspicious_broken_parts_bytes>
                     <number_of_free_entries_in_pool_to_lower_max_size_of_merge>6</number_of_free_entries_in_pool_to_lower_max_size_of_merge>
@@ -184,7 +180,7 @@ spec:
                 </merge_tree>
 
                 <merge_max_block_size>8192</merge_max_block_size>
-                <max_bytes_to_merge_at_min_space_in_pool>1048576</max_bytes_to_merge_at_min_space_in_pool>
+                <max_bytes_to_merge_at_min_space_in_pool>1</max_bytes_to_merge_at_min_space_in_pool>
 
                 <!-- Disable additional ports that are causing conflicts -->
                 <interserver_http_port remove="remove"/>
@@ -193,18 +189,5 @@ spec:
                 <prometheus_port remove="remove"/>
                 <port remove="remove"/>
             </clickhouse>
-      users-config:
-        enabled: true
-        data:
-          users.xml: |
-            <clickhouse>
-                <!-- Disable SIMD JSON parsing to prevent data corruption in JSON columns -->
-                <!-- on VMs with non-host CPU types (Proxmox x86-64-v2-AES/v3) -->
-                <!-- See: https://github.com/rybbit-io/rybbit/issues/559 -->
-                <profiles>
-                    <default>
-                        <allow_simdjson>0</allow_simdjson>
-                    </default>
-                </profiles>
-            </clickhouse>
+
 
