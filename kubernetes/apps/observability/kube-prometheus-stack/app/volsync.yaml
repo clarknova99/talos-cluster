@@ -13,7 +13,7 @@ kind: ReplicationSource
 metadata:
   name: kube-prometheus-stack
 spec:
-  sourcePVC: prometheus-prometheus-kube-prometheus-stack-prometheus-0
+  sourcePVC: prometheus-prometheus-kube-prometheus-stack-0
   trigger:
     schedule: "0 2 * * *"
   kopia:
