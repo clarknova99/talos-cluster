@@ -40,7 +40,7 @@ spec:
           temporal-ui:
             image:
               repository: temporalio/ui
-              tag: 2.44.1
+              tag: 2.45.3
             env:
               DB: postgres12
               DB_PORT: 5432
