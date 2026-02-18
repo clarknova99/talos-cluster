@@ -57,7 +57,7 @@ spec:
       endpointURL: https://s3.us-east-1.amazonaws.com
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres16vector-v3
+      serverName: &currentCluster postgres16vector-v4
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secrets
@@ -71,7 +71,7 @@ spec:
     #   postInitSQL:
     #   - create EXTENSION vector
     recovery:
-      source: &previousCluster postgres16vector-v2
+      source: &previousCluster postgres16vector-v3
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
