@@ -10,7 +10,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: flux-system
   targetNamespace: system-upgrade
   wait: true
 ---
@@ -27,5 +27,5 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: flux-system
   targetNamespace: system-upgrade

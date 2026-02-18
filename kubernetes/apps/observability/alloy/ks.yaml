@@ -15,7 +15,7 @@ spec:
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: flux-system
   targetNamespace: observability
   timeout: 5m
   wait: false
