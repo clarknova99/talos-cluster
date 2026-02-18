@@ -175,7 +175,7 @@ spec:
                 <background_schedule_pool_size>16</background_schedule_pool_size>
 
                 <merge_tree>
-                    <!-- Restored from 1 (merges disabled) now that allow_simdjson=0 prevents JSON corruption -->
+                    <!-- Restored from 1 (merges disabled) now that corrupted data is cleared and allow_simdjson=0 -->
                     <max_bytes_to_merge_at_max_space_in_pool>1073741824</max_bytes_to_merge_at_max_space_in_pool>
                     <max_bytes_to_merge_at_min_space_in_pool>1048576</max_bytes_to_merge_at_min_space_in_pool>
                     <max_suspicious_broken_parts>50</max_suspicious_broken_parts>
