@@ -224,7 +224,12 @@ Consider increasing memory limits in `flux-instance/app/helmrelease.yaml`.
 
 3. **SOPS key rotation** -- if the age key changes, all `.sops.yaml` files must be re-encrypted. The kustomize-controller reads the key from the `sops-age` secret.
 
-4. **ConfigMap-based configs don't trigger pod restarts** -- when a HelmRelease renders a ConfigMap (like ClickHouse's `config.xml`), updating the ConfigMap content doesn't automatically restart the pod. The Helm chart must use a checksum annotation on the ConfigMap, or you need a manual `kubectl rollout restart`.
+4. **ConfigMap-based configs don't trigger pod restarts** -- when a HelmRelease renders a ConfigMap (like ClickHouse's `config.xml`), updating the ConfigMap content doesn't automatically restart the pod. To get automatic restarts, add the [Reloader](https://github.com/stakater/Reloader) annotation to the pod spec (Reloader runs in `kube-system`):
+   ```yaml
+   annotations:
+     reloader.stakater.com/auto: "true"
+   ```
+   Without this annotation, you'll need a manual `kubectl rollout restart`.
 
 5. **Flux reconciles from git, not local files** -- `flux reconcile` pulls from the GitRepository source. Local uncommitted changes have no effect unless applied via `kubectl apply` (which you should avoid -- see point 1).
 
