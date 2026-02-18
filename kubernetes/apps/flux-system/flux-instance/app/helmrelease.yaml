@@ -34,7 +34,7 @@ spec:
             patch: |
               - op: add
                 path: /spec/template/spec/containers/0/args/-
-                value: --concurrent=3
+                value: --concurrent=10
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --requeue-dependency=5s
@@ -62,7 +62,7 @@ spec:
             patch: |
               - op: add
                 path: /spec/template/spec/containers/0/args/-
-                value: --concurrent=5
+                value: --concurrent=20
               - op: replace
                 path: /spec/template/spec/volumes/0
                 value:
