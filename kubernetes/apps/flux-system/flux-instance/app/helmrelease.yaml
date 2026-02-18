@@ -30,7 +30,7 @@ spec:
           app.kubernetes.io/name: flux
       kustomize:
         patches:
-          - # Increase the number of workers
+          - # Increase the number of workers and API throughput
             patch: |
               - op: add
                 path: /spec/template/spec/containers/0/args/-
@@ -38,6 +38,12 @@ spec:
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --requeue-dependency=5s
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --kube-api-qps=500
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --kube-api-burst=1000
             target:
               kind: Deployment
               name: (kustomize-controller|helm-controller|source-controller)
@@ -54,7 +60,7 @@ spec:
                       - name: manager
                         resources:
                           limits:
-                            memory: 1Gi
+                            memory: 2Gi
             target:
               kind: Deployment
               name: (kustomize-controller|helm-controller|source-controller)
