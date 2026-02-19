@@ -3,10 +3,7 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
-        },
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -23,474 +20,249 @@
   "links": [],
   "panels": [
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
+          "color": { "mode": "thresholds" },
           "custom": {
             "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
+            "cellOptions": { "type": "auto" },
             "filterable": true,
-            "footer": {
-              "reducers": [
-                "countAll"
-              ]
-            },
+            "footer": { "reducers": ["countAll"] },
             "inspect": false
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
+            "steps": [{ "color": "green", "value": null }]
           }
         },
         "overrides": [
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Pod"
-            },
+            "matcher": { "id": "byName", "options": "Pod" },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 366
-              },
-              {
-                "id": "links",
-                "value": []
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "auto"
-                }
-              }
+              { "id": "custom.width", "value": 340 },
+              { "id": "links", "value": [] },
+              { "id": "custom.cellOptions", "value": { "type": "auto" } }
             ]
           },
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Namespace"
-            },
+            "matcher": { "id": "byName", "options": "Namespace" },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 140
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "super-light-blue",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              }
+              { "id": "custom.width", "value": 140 },
+              { "id": "color", "value": { "fixedColor": "super-light-blue", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
             ]
           },
           {
-            "matcher": {
-              "id": "byName",
-              "options": "CPU"
-            },
+            "matcher": { "id": "byName", "options": "CPU Bar" },
             "properties": [
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 3
-              },
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Memory"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "decbytes"
-              },
-              {
-                "id": "decimals",
-                "value": 1
-              },
-              {
-                "id": "custom.width",
-                "value": 110
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "auto"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Containers"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 130
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "gauge",
-                  "valueDisplayMode": "hidden"
-                }
-              },
-              {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "max",
-                "value": 1
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "red",
-                      "value": 0
-                    },
-                    {
-                      "color": "orange",
-                      "value": 0.5
-                    },
-                    {
-                      "color": "#73BF69",
-                      "value": 1
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "noValue",
-                "value": "N/A"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 87
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "auto"
-                }
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Restarts"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": 0
-                    },
-                    {
-                      "color": "yellow",
-                      "value": 5
-                    },
-                    {
-                      "color": "orange",
-                      "value": 10
-                    },
-                    {
-                      "color": "red",
-                      "value": 25
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Controlled By"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 130
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "DaemonSet": {
-                        "color": "blue",
-                        "index": 0,
-                        "text": "DaemonSet"
-                      }
-                    },
-                    "type": "value"
-                  },
-                  {
-                    "options": {
-                      "ReplicaSet": {
-                        "color": "purple",
-                        "index": 1,
-                        "text": "ReplicaSet"
-                      }
-                    },
-                    "type": "value"
-                  },
-                  {
-                    "options": {
-                      "StatefulSet": {
-                        "color": "orange",
-                        "index": 2,
-                        "text": "StatefulSet"
-                      }
-                    },
-                    "type": "value"
-                  },
-                  {
-                    "options": {
-                      "Job": {
-                        "color": "yellow",
-                        "index": 3,
-                        "text": "Job"
-                      }
-                    },
-                    "type": "value"
-                  },
-                  {
-                    "options": {
-                      "Node": {
-                        "color": "green",
-                        "index": 4,
-                        "text": "Node"
-                      }
-                    },
-                    "type": "value"
-                  }
+              { "id": "custom.width", "value": 65 },
+              { "id": "custom.cellOptions", "value": {
+                "type": "gauge",
+                "mode": "basic",
+                "valueDisplayMode": "hidden"
+              }},
+              { "id": "min", "value": 0 },
+              { "id": "max", "value": 1 },
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "#3274D9", "value": null },
+                  { "color": "#FADE2A", "value": 0.65 },
+                  { "color": "#FF4444", "value": 0.85 }
                 ]
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              }
+              }},
+              { "id": "noValue", "value": "-" },
+              { "id": "displayName", "value": " " }
             ]
           },
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Node"
-            },
+            "matcher": { "id": "byName", "options": "CPU" },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 110
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "super-light-blue",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              }
+              { "id": "unit", "value": "short" },
+              { "id": "decimals", "value": 3 },
+              { "id": "custom.width", "value": 80 }
             ]
           },
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Status"
-            },
+            "matcher": { "id": "byName", "options": "Mem Bar" },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 110
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "Running": {
-                        "color": "green",
-                        "index": 0,
-                        "text": "Running"
-                      }
-                    },
-                    "type": "value"
-                  },
-                  {
-                    "options": {
-                      "Succeeded": {
-                        "color": "blue",
-                        "index": 1,
-                        "text": "Succeeded"
-                      }
-                    },
-                    "type": "value"
-                  },
-                  {
-                    "options": {
-                      "Pending": {
-                        "color": "orange",
-                        "index": 2,
-                        "text": "Pending"
-                      }
-                    },
-                    "type": "value"
-                  },
-                  {
-                    "options": {
-                      "Failed": {
-                        "color": "red",
-                        "index": 3,
-                        "text": "Failed"
-                      }
-                    },
-                    "type": "value"
-                  },
-                  {
-                    "options": {
-                      "Unknown": {
-                        "color": "red",
-                        "index": 4,
-                        "text": "Unknown"
-                      }
-                    },
-                    "type": "value"
-                  }
+              { "id": "custom.width", "value": 65 },
+              { "id": "custom.cellOptions", "value": {
+                "type": "gauge",
+                "mode": "basic",
+                "valueDisplayMode": "hidden"
+              }},
+              { "id": "min", "value": 0 },
+              { "id": "max", "value": 1 },
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "#3274D9", "value": null },
+                  { "color": "#FADE2A", "value": 0.65 },
+                  { "color": "#FF4444", "value": 0.85 }
                 ]
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              }
+              }},
+              { "id": "noValue", "value": "-" },
+              { "id": "displayName", "value": "  " }
             ]
           },
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Age"
-            },
+            "matcher": { "id": "byName", "options": "Memory" },
             "properties": [
-              {
-                "id": "unit",
-                "value": "dtdurations"
-              },
-              {
-                "id": "custom.width",
-                "value": 100
-              }
+              { "id": "unit", "value": "bytes" },
+              { "id": "decimals", "value": 1 },
+              { "id": "custom.width", "value": 100 },
+              { "id": "custom.cellOptions", "value": { "type": "auto" } }
             ]
           },
           {
-            "matcher": {
-              "id": "byName",
-              "options": "namespace"
-            },
+            "matcher": { "id": "byName", "options": "CPU Req" },
             "properties": [
-              {
-                "id": "custom.width",
-                "value": 216
-              }
+              { "id": "custom.width", "value": 55 },
+              { "id": "custom.cellOptions", "value": {
+                "type": "gauge",
+                "mode": "basic",
+                "valueDisplayMode": "hidden"
+              }},
+              { "id": "min", "value": 0 },
+              { "id": "max", "value": 1 },
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "transparent", "value": null },
+                  { "color": "#FF9830", "value": 0.001 }
+                ]
+              }},
+              { "id": "noValue", "value": "-" },
+              { "id": "displayName", "value": "   " }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Mem Req" },
+            "properties": [
+              { "id": "custom.width", "value": 55 },
+              { "id": "custom.cellOptions", "value": {
+                "type": "gauge",
+                "mode": "basic",
+                "valueDisplayMode": "hidden"
+              }},
+              { "id": "min", "value": 0 },
+              { "id": "max", "value": 1 },
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "transparent", "value": null },
+                  { "color": "#FF9830", "value": 0.001 }
+                ]
+              }},
+              { "id": "noValue", "value": "-" },
+              { "id": "displayName", "value": "    " }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Containers" },
+            "properties": [
+              { "id": "custom.width", "value": 130 },
+              { "id": "custom.cellOptions", "value": {
+                "mode": "basic",
+                "type": "gauge",
+                "valueDisplayMode": "hidden"
+              }},
+              { "id": "min", "value": 0 },
+              { "id": "max", "value": 1 },
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "orange", "value": 0.5 },
+                  { "color": "#73BF69", "value": 1 }
+                ]
+              }},
+              { "id": "noValue", "value": "N/A" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Total" },
+            "properties": [
+              { "id": "custom.width", "value": 87 },
+              { "id": "custom.cellOptions", "value": { "type": "auto" } },
+              { "id": "decimals", "value": 0 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Restarts" },
+            "properties": [
+              { "id": "custom.width", "value": 90 },
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 5 },
+                  { "color": "orange", "value": 10 },
+                  { "color": "red", "value": 25 }
+                ]
+              }},
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Controlled By" },
+            "properties": [
+              { "id": "custom.width", "value": 130 },
+              { "id": "mappings", "value": [
+                { "options": { "DaemonSet": { "color": "blue", "index": 0, "text": "DaemonSet" } }, "type": "value" },
+                { "options": { "ReplicaSet": { "color": "purple", "index": 1, "text": "ReplicaSet" } }, "type": "value" },
+                { "options": { "StatefulSet": { "color": "orange", "index": 2, "text": "StatefulSet" } }, "type": "value" },
+                { "options": { "Job": { "color": "yellow", "index": 3, "text": "Job" } }, "type": "value" },
+                { "options": { "Node": { "color": "green", "index": 4, "text": "Node" } }, "type": "value" }
+              ]},
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Node" },
+            "properties": [
+              { "id": "custom.width", "value": 110 },
+              { "id": "color", "value": { "fixedColor": "super-light-blue", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Status" },
+            "properties": [
+              { "id": "custom.width", "value": 110 },
+              { "id": "mappings", "value": [
+                { "options": { "Running": { "color": "green", "index": 0, "text": "Running" } }, "type": "value" },
+                { "options": { "Succeeded": { "color": "blue", "index": 1, "text": "Succeeded" } }, "type": "value" },
+                { "options": { "Pending": { "color": "orange", "index": 2, "text": "Pending" } }, "type": "value" },
+                { "options": { "Failed": { "color": "red", "index": 3, "text": "Failed" } }, "type": "value" },
+                { "options": { "Unknown": { "color": "red", "index": 4, "text": "Unknown" } }, "type": "value" }
+              ]},
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Age" },
+            "properties": [
+              { "id": "unit", "value": "dtdurations" },
+              { "id": "custom.width", "value": 100 }
             ]
           }
         ]
       },
-      "gridPos": {
-        "h": 30,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
+      "gridPos": { "h": 30, "w": 24, "x": 0, "y": 0 },
       "id": 1,
       "options": {
         "cellHeight": "sm",
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "Pod"
-          }
-        ]
+        "sortBy": [{ "desc": false, "displayName": "Pod" }]
       },
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "editorMode": "code",
           "exemplar": false,
           "expr": "kube_pod_info{namespace=~\"$namespace\"}",
@@ -501,10 +273,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "editorMode": "code",
           "exemplar": false,
           "expr": "sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}[5m]))",
@@ -516,10 +285,7 @@
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "editorMode": "code",
           "exemplar": false,
           "expr": "sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"})",
@@ -531,10 +297,7 @@
           "refId": "C"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "editorMode": "code",
           "exemplar": false,
           "expr": "sum by (pod, namespace) (kube_pod_container_status_restarts_total{namespace=~\"$namespace\"})",
@@ -546,10 +309,7 @@
           "refId": "D"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "editorMode": "code",
           "exemplar": false,
           "expr": "kube_pod_status_phase{namespace=~\"$namespace\"} == 1",
@@ -561,10 +321,7 @@
           "refId": "E"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "editorMode": "code",
           "exemplar": false,
           "expr": "time() - kube_pod_created{namespace=~\"$namespace\"}",
@@ -576,10 +333,7 @@
           "refId": "F"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "editorMode": "code",
           "exemplar": false,
           "expr": "sum by (pod, namespace) (kube_pod_container_status_running{namespace=~\"$namespace\"})",
@@ -591,10 +345,7 @@
           "refId": "G"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "editorMode": "code",
           "exemplar": false,
           "expr": "sum by (pod, namespace) (kube_pod_container_status_waiting{namespace=~\"$namespace\"})",
@@ -606,10 +357,7 @@
           "refId": "H"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "editorMode": "code",
           "exemplar": false,
           "expr": "sum by (pod, namespace) (kube_pod_container_status_terminated{namespace=~\"$namespace\"})",
@@ -621,10 +369,7 @@
           "refId": "I"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
           "editorMode": "code",
           "exemplar": false,
           "expr": "count by (pod, namespace) (kube_pod_container_info{namespace=~\"$namespace\"})",
@@ -634,54 +379,111 @@
           "legendFormat": "__auto",
           "range": false,
           "refId": "J"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"cpu\", namespace=~\"$namespace\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "K"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_resource_requests{resource=\"cpu\", namespace=~\"$namespace\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "L"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"memory\", namespace=~\"$namespace\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "M"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_resource_requests{resource=\"memory\", namespace=~\"$namespace\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "N"
         }
       ],
       "title": "Pods",
       "transformations": [
         {
           "id": "joinByField",
-          "options": {
-            "byField": "pod",
-            "mode": "outer"
-          }
+          "options": { "byField": "pod", "mode": "outer" }
         },
         {
           "id": "calculateField",
           "options": {
             "alias": "Container Health",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value #G"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value #J"
-                }
-              }
-            },
+            "binary": { "left": "Value #G", "operator": "/", "right": "Value #J" },
             "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "CPU Pct",
+            "binary": { "left": "Value #B", "operator": "/", "right": "Value #K" },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mem Pct",
+            "binary": { "left": "Value #C", "operator": "/", "right": "Value #M" },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "CPU Req Pct",
+            "binary": { "left": "Value #L", "operator": "/", "right": "Value #K" },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Mem Req Pct",
+            "binary": { "left": "Value #N", "operator": "/", "right": "Value #M" },
+            "mode": "binary",
             "replaceFields": false
           }
         },
         {
           "id": "filterByValue",
           "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "isNotNull"
-                },
-                "fieldName": "pod"
-              }
-            ],
+            "filters": [{ "config": { "id": "isNotNull" }, "fieldName": "pod" }],
             "match": "any",
             "type": "include"
           }
@@ -691,140 +493,67 @@
           "options": {
             "excludeByName": {
               "Time": true,
-              "Time 1": true,
-              "Time 10": true,
-              "Time 2": true,
-              "Time 3": true,
-              "Time 4": true,
-              "Time 5": true,
-              "Time 6": true,
-              "Time 7": true,
-              "Time 8": true,
-              "Time 9": true,
-              "Value #A": true,
-              "Value #E": true,
-              "Value #G": true,
-              "Value #H": true,
-              "Value #I": true,
-              "__name__": true,
-              "__name__ 1": true,
-              "__name__ 2": true,
-              "container": true,
-              "container_id": true,
-              "created_by_name": true,
-              "endpoint": true,
-              "host_ip": true,
-              "host_network": true,
-              "image": true,
-              "image_id": true,
-              "image_spec": true,
-              "instance": true,
-              "instance 1": true,
-              "internal_ip": true,
-              "ip": true,
-              "job": true,
-              "job 1": true,
-              "job 2": true,
-              "kubernetes_node 1": true,
-              "kubernetes_node 2": true,
-              "kubernetes_node 3": true,
+              "Time 1": true, "Time 2": true, "Time 3": true, "Time 4": true,
+              "Time 5": true, "Time 6": true, "Time 7": true, "Time 8": true,
+              "Time 9": true, "Time 10": true, "Time 11": true, "Time 12": true,
+              "Time 13": true, "Time 14": true,
+              "Value #A": true, "Value #E": true,
+              "Value #G": true, "Value #H": true, "Value #I": true,
+              "Value #K": true, "Value #L": true, "Value #M": true, "Value #N": true,
+              "__name__": true, "__name__ 1": true, "__name__ 2": true,
+              "container": true, "container 1": true, "container 2": true, "container 3": true, "container 4": true,
+              "container_id": true, "created_by_name": true,
+              "endpoint": true, "endpoint 1": true, "endpoint 2": true, "endpoint 3": true,
+              "host_ip": true, "host_network": true,
+              "image": true, "image_id": true, "image_spec": true,
+              "instance": true, "instance 1": true, "instance 2": true, "instance 3": true,
+              "internal_ip": true, "ip": true,
+              "job": true, "job 1": true, "job 2": true, "job 3": true,
+              "kubernetes_node 1": true, "kubernetes_node 2": true, "kubernetes_node 3": true,
               "metrics_path": true,
-              "namespace 1": true,
-              "namespace 10": false,
-              "namespace 2": true,
-              "namespace 3": true,
-              "namespace 4": true,
-              "namespace 5": true,
-              "namespace 6": true,
-              "namespace 7": true,
-              "namespace 8": true,
-              "namespace 9": true,
-              "pod_ip": true,
-              "priority_class": true,
-              "service": true,
-              "uid": true,
-              "uid 1": true,
-              "uid 2": true
+              "namespace 1": true, "namespace 2": true, "namespace 3": true,
+              "namespace 4": true, "namespace 5": true, "namespace 6": true,
+              "namespace 7": true, "namespace 8": true, "namespace 9": true,
+              "namespace 10": true, "namespace 11": true, "namespace 12": true, "namespace 13": true,
+              "pod_ip": true, "priority_class": true,
+              "resource 1": true, "resource 2": true, "resource 3": true, "resource 4": true,
+              "service": true, "service 1": true, "service 2": true, "service 3": true,
+              "uid": true, "uid 1": true, "uid 2": true, "uid 3": true,
+              "unit 1": true, "unit 2": true, "unit 3": true, "unit 4": true
             },
-            "includeByName": {},
             "indexByName": {
-              "Container Health": 5,
-              "Time 1": 11,
-              "Time 10": 62,
-              "Time 2": 27,
-              "Time 3": 29,
-              "Time 4": 31,
-              "Time 5": 33,
-              "Time 6": 44,
-              "Time 7": 53,
-              "Time 8": 56,
-              "Time 9": 59,
-              "Value #A": 26,
-              "Value #B": 3,
-              "Value #C": 4,
-              "Value #D": 7,
-              "Value #E": 43,
-              "Value #F": 10,
-              "Value #G": 55,
-              "Value #H": 58,
-              "Value #I": 61,
-              "Value #J": 6,
-              "__name__ 1": 12,
-              "__name__ 2": 34,
-              "container 1": 13,
-              "container 2": 35,
-              "container 3": 45,
-              "created_by_kind": 8,
-              "created_by_name": 14,
-              "endpoint 1": 15,
-              "endpoint 2": 36,
-              "endpoint 3": 46,
-              "host_ip": 16,
-              "host_network": 17,
-              "instance 1": 18,
-              "instance 2": 37,
-              "instance 3": 47,
-              "job 1": 19,
-              "job 2": 38,
-              "job 3": 48,
-              "kubernetes_node 1": 20,
-              "kubernetes_node 2": 39,
-              "kubernetes_node 3": 49,
-              "namespace 1": 21,
-              "namespace 10": 1,
-              "namespace 2": 28,
-              "namespace 3": 30,
-              "namespace 4": 32,
-              "namespace 5": 40,
-              "namespace 6": 50,
-              "namespace 7": 54,
-              "namespace 8": 57,
-              "namespace 9": 60,
-              "node": 9,
-              "phase": 2,
               "pod": 0,
-              "pod_ip": 22,
-              "priority_class": 25,
-              "service 1": 23,
-              "service 2": 41,
-              "service 3": 51,
-              "uid 1": 24,
-              "uid 2": 42,
-              "uid 3": 52
+              "namespace": 1,
+              "CPU Pct": 2,
+              "CPU Req Pct": 3,
+              "Value #B": 4,
+              "Mem Pct": 5,
+              "Mem Req Pct": 6,
+              "Value #C": 7,
+              "Container Health": 8,
+              "Value #J": 9,
+              "Value #D": 10,
+              "created_by_kind": 11,
+              "node": 12,
+              "phase": 13,
+              "Value #F": 14
             },
             "renameByName": {
-              "Container Health": "Containers",
+              "pod": "Pod",
+              "namespace": "Namespace",
+              "CPU Pct": "CPU Bar",
+              "CPU Req Pct": "CPU Req",
               "Value #B": "CPU",
+              "Mem Pct": "Mem Bar",
+              "Mem Req Pct": "Mem Req",
               "Value #C": "Memory",
+              "Container Health": "Containers",
+              "Value #J": "Total",
               "Value #D": "Restarts",
               "Value #F": "Age",
-              "Value #J": "Total",
-              "created_by_kind": "Controlled By",
-              "kubernetes_node 1": "node",
-              "namespace": "Namespace",
               "node": "Node",
-              "phase": "Status",
-              "pod": "Pod"
+              "created_by_kind": "Controlled By",
+              "phase": "Status"
             }
           }
         }
@@ -835,20 +564,13 @@
   "preload": false,
   "refresh": "30s",
   "schemaVersion": 42,
-  "tags": [
-    "kubernetes",
-    "pods",
-    "k8s"
-  ],
+  "tags": ["kubernetes", "pods", "k8s"],
   "templating": {
     "list": [
       {
         "allValue": ".*",
         "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
         "includeAll": true,
         "label": "Namespace",
         "multi": true,
@@ -865,13 +587,10 @@
       }
     ]
   },
-  "time": {
-    "from": "now-5m",
-    "to": "now"
-  },
+  "time": { "from": "now-5m", "to": "now" },
   "timepicker": {},
   "timezone": "",
   "title": "Kubernetes Pod Overview",
   "uid": "k8s-pod-overview",
-  "version": 2
+  "version": 3
 }
