@@ -142,10 +142,6 @@
                     {
                       "color": "#FF4444",
                       "value": 0.85
-                    },
-                    {
-                      "color": "#555555",
-                      "value": 1.005
                     }
                   ]
                 }
@@ -179,19 +175,19 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Mem Bar"
+              "options": "Mem %"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 80
+                "value": 213
               },
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "mode": "basic",
+                  "mode": "gradient",
                   "type": "gauge",
-                  "valueDisplayMode": "hidden"
+                  "valueDisplayMode": "text"
                 }
               },
               {
@@ -208,27 +204,31 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "#3274D9",
+                      "color": "#46434300",
                       "value": 0
                     },
                     {
-                      "color": "#FADE2A",
-                      "value": 0.65
+                      "color": "green",
+                      "value": 0.0001
+                    },
+                    {
+                      "color": "orange",
+                      "value": 0.75
                     },
                     {
                       "color": "#FF4444",
-                      "value": 0.85
+                      "value": 0.9
                     },
                     {
-                      "color": "#555555",
-                      "value": 1.005
+                      "color": "#EAB839",
+                      "value": 10.9
                     }
                   ]
                 }
               },
               {
-                "id": "displayName",
-                "value": "  "
+                "id": "unit",
+                "value": "percentunit"
               }
             ]
           },
@@ -560,6 +560,18 @@
                 "value": 100
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #L"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 297
+              }
+            ]
           }
         ]
       },
@@ -575,8 +587,8 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": false,
-            "displayName": "Pod"
+            "desc": true,
+            "displayName": "Memory"
           }
         ]
       },
@@ -834,6 +846,7 @@
               "Value #G": true,
               "Value #H": true,
               "Value #I": true,
+              "Value #K": true,
               "__name__": true,
               "__name__ 1": true,
               "__name__ 2": true,
@@ -910,7 +923,7 @@
               "Time 9": 61,
               "Value #A": 28,
               "Value #B": 3,
-              "Value #C": 5,
+              "Value #C": 4,
               "Value #D": 8,
               "Value #E": 45,
               "Value #F": 12,
@@ -919,7 +932,7 @@
               "Value #I": 63,
               "Value #J": 7,
               "Value #K": 2,
-              "Value #L": 4,
+              "Value #L": 5,
               "__name__ 1": 14,
               "__name__ 2": 36,
               "container 1": 15,
@@ -973,7 +986,7 @@
               "Value #F": "Age",
               "Value #J": "Total",
               "Value #K": "CPU Bar",
-              "Value #L": "Mem Bar",
+              "Value #L": "Mem %",
               "created_by_kind": "Controlled By",
               "namespace": "Namespace",
               "namespace 12": "Namespace",
@@ -1049,5 +1062,5 @@
   "timezone": "",
   "title": "Kubernetes Pod Overview",
   "uid": "k8s-pod-overview",
-  "version": 6
+  "version": 7
 }
