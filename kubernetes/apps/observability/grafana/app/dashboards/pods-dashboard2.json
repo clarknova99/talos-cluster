@@ -1,24 +1,4 @@
 {
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "10.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -39,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
+  "id": 73,
   "links": [],
   "panels": [
     {
@@ -58,14 +38,20 @@
               "type": "auto"
             },
             "filterable": true,
+            "footer": {
+              "reducers": [
+                "countAll"
+              ]
+            },
             "inspect": false
           },
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -79,7 +65,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 280
+                "value": 366
               },
               {
                 "id": "links",
@@ -177,8 +163,8 @@
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "type": "gauge",
                   "mode": "basic",
+                  "type": "gauge",
                   "valueDisplayMode": "hidden"
                 }
               },
@@ -197,7 +183,7 @@
                   "steps": [
                     {
                       "color": "red",
-                      "value": null
+                      "value": 0
                     },
                     {
                       "color": "orange",
@@ -224,7 +210,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 60
+                "value": 87
               },
               {
                 "id": "custom.cellOptions",
@@ -255,7 +241,7 @@
                   "steps": [
                     {
                       "color": "green",
-                      "value": null
+                      "value": 0
                     },
                     {
                       "color": "yellow",
@@ -466,6 +452,18 @@
                 "value": 100
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "namespace"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 216
+              }
+            ]
           }
         ]
       },
@@ -477,16 +475,8 @@
       },
       "id": 1,
       "options": {
-        "showHeader": true,
         "cellHeight": "sm",
-        "footer": {
-          "countRows": true,
-          "fields": "",
-          "reducer": [
-            "count"
-          ],
-          "show": true
-        },
+        "showHeader": true,
         "sortBy": [
           {
             "desc": false,
@@ -494,7 +484,7 @@
           }
         ]
       },
-      "pluginVersion": "10.4.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -519,11 +509,11 @@
           "exemplar": false,
           "expr": "sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}[5m]))",
           "format": "table",
+          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "B",
-          "hide": false
+          "refId": "B"
         },
         {
           "datasource": {
@@ -534,11 +524,11 @@
           "exemplar": false,
           "expr": "sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"})",
           "format": "table",
+          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "C",
-          "hide": false
+          "refId": "C"
         },
         {
           "datasource": {
@@ -549,11 +539,11 @@
           "exemplar": false,
           "expr": "sum by (pod, namespace) (kube_pod_container_status_restarts_total{namespace=~\"$namespace\"})",
           "format": "table",
+          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "D",
-          "hide": false
+          "refId": "D"
         },
         {
           "datasource": {
@@ -564,11 +554,11 @@
           "exemplar": false,
           "expr": "kube_pod_status_phase{namespace=~\"$namespace\"} == 1",
           "format": "table",
+          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "E",
-          "hide": false
+          "refId": "E"
         },
         {
           "datasource": {
@@ -579,11 +569,11 @@
           "exemplar": false,
           "expr": "time() - kube_pod_created{namespace=~\"$namespace\"}",
           "format": "table",
+          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "F",
-          "hide": false
+          "refId": "F"
         },
         {
           "datasource": {
@@ -594,11 +584,11 @@
           "exemplar": false,
           "expr": "sum by (pod, namespace) (kube_pod_container_status_running{namespace=~\"$namespace\"})",
           "format": "table",
+          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "G",
-          "hide": false
+          "refId": "G"
         },
         {
           "datasource": {
@@ -609,11 +599,11 @@
           "exemplar": false,
           "expr": "sum by (pod, namespace) (kube_pod_container_status_waiting{namespace=~\"$namespace\"})",
           "format": "table",
+          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "H",
-          "hide": false
+          "refId": "H"
         },
         {
           "datasource": {
@@ -624,11 +614,11 @@
           "exemplar": false,
           "expr": "sum by (pod, namespace) (kube_pod_container_status_terminated{namespace=~\"$namespace\"})",
           "format": "table",
+          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "I",
-          "hide": false
+          "refId": "I"
         },
         {
           "datasource": {
@@ -639,11 +629,11 @@
           "exemplar": false,
           "expr": "count by (pod, namespace) (kube_pod_container_info{namespace=~\"$namespace\"})",
           "format": "table",
+          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "J",
-          "hide": false
+          "refId": "J"
         }
       ],
       "title": "Pods",
@@ -658,30 +648,42 @@
         {
           "id": "calculateField",
           "options": {
-            "mode": "binary",
+            "alias": "Container Health",
             "binary": {
-              "left": "Value #G",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #G"
+                }
+              },
               "operator": "/",
-              "right": "Value #J",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #J"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
               "reducer": "sum"
             },
-            "alias": "Container Health",
             "replaceFields": false
           }
         },
         {
           "id": "filterByValue",
           "options": {
-            "type": "include",
-            "match": "any",
             "filters": [
               {
-                "fieldName": "pod",
                 "config": {
                   "id": "isNotNull"
-                }
+                },
+                "fieldName": "pod"
               }
-            ]
+            ],
+            "match": "any",
+            "type": "include"
           }
         },
         {
@@ -690,6 +692,7 @@
             "excludeByName": {
               "Time": true,
               "Time 1": true,
+              "Time 10": true,
               "Time 2": true,
               "Time 3": true,
               "Time 4": true,
@@ -698,7 +701,6 @@
               "Time 7": true,
               "Time 8": true,
               "Time 9": true,
-              "Time 10": true,
               "Value #A": true,
               "Value #E": true,
               "Value #G": true,
@@ -708,29 +710,27 @@
               "__name__ 1": true,
               "__name__ 2": true,
               "container": true,
+              "container_id": true,
+              "created_by_name": true,
               "endpoint": true,
               "host_ip": true,
               "host_network": true,
+              "image": true,
+              "image_id": true,
+              "image_spec": true,
               "instance": true,
               "instance 1": true,
+              "internal_ip": true,
+              "ip": true,
               "job": true,
               "job 1": true,
               "job 2": true,
+              "kubernetes_node 1": true,
+              "kubernetes_node 2": true,
+              "kubernetes_node 3": true,
               "metrics_path": true,
-              "priority_class": true,
-              "service": true,
-              "uid": true,
-              "uid 1": true,
-              "uid 2": true,
-              "created_by_name": true,
-              "ip": true,
-              "image_id": true,
-              "image_spec": true,
-              "image": true,
-              "container_id": true,
-              "pod_ip": true,
-              "internal_ip": true,
               "namespace 1": true,
+              "namespace 10": false,
               "namespace 2": true,
               "namespace 3": true,
               "namespace 4": true,
@@ -738,33 +738,93 @@
               "namespace 6": true,
               "namespace 7": true,
               "namespace 8": true,
-              "namespace 9": true
+              "namespace 9": true,
+              "pod_ip": true,
+              "priority_class": true,
+              "service": true,
+              "uid": true,
+              "uid 1": true,
+              "uid 2": true
             },
+            "includeByName": {},
             "indexByName": {
+              "Container Health": 5,
+              "Time 1": 11,
+              "Time 10": 62,
+              "Time 2": 27,
+              "Time 3": 29,
+              "Time 4": 31,
+              "Time 5": 33,
+              "Time 6": 44,
+              "Time 7": 53,
+              "Time 8": 56,
+              "Time 9": 59,
+              "Value #A": 26,
+              "Value #B": 3,
+              "Value #C": 4,
+              "Value #D": 7,
+              "Value #E": 43,
+              "Value #F": 10,
+              "Value #G": 55,
+              "Value #H": 58,
+              "Value #I": 61,
+              "Value #J": 6,
+              "__name__ 1": 12,
+              "__name__ 2": 34,
+              "container 1": 13,
+              "container 2": 35,
+              "container 3": 45,
+              "created_by_kind": 8,
+              "created_by_name": 14,
+              "endpoint 1": 15,
+              "endpoint 2": 36,
+              "endpoint 3": 46,
+              "host_ip": 16,
+              "host_network": 17,
+              "instance 1": 18,
+              "instance 2": 37,
+              "instance 3": 47,
+              "job 1": 19,
+              "job 2": 38,
+              "job 3": 48,
+              "kubernetes_node 1": 20,
+              "kubernetes_node 2": 39,
+              "kubernetes_node 3": 49,
+              "namespace 1": 21,
+              "namespace 10": 1,
+              "namespace 2": 28,
+              "namespace 3": 30,
+              "namespace 4": 32,
+              "namespace 5": 40,
+              "namespace 6": 50,
+              "namespace 7": 54,
+              "namespace 8": 57,
+              "namespace 9": 60,
+              "node": 9,
+              "phase": 2,
               "pod": 0,
-              "namespace": 1,
-              "Value #B": 2,
-              "Value #C": 3,
-              "Container Health": 4,
-              "Value #J": 5,
-              "Value #D": 6,
-              "created_by_kind": 7,
-              "node": 8,
-              "phase": 9,
-              "Value #F": 10
+              "pod_ip": 22,
+              "priority_class": 25,
+              "service 1": 23,
+              "service 2": 41,
+              "service 3": 51,
+              "uid 1": 24,
+              "uid 2": 42,
+              "uid 3": 52
             },
             "renameByName": {
-              "pod": "Pod",
-              "namespace": "Namespace",
+              "Container Health": "Containers",
               "Value #B": "CPU",
               "Value #C": "Memory",
-              "Container Health": "Containers",
-              "Value #J": "Total",
               "Value #D": "Restarts",
               "Value #F": "Age",
-              "node": "Node",
+              "Value #J": "Total",
               "created_by_kind": "Controlled By",
-              "phase": "Status"
+              "kubernetes_node 1": "node",
+              "namespace": "Namespace",
+              "node": "Node",
+              "phase": "Status",
+              "pod": "Pod"
             }
           }
         }
@@ -772,8 +832,9 @@
       "type": "table"
     }
   ],
+  "preload": false,
   "refresh": "30s",
-  "schemaVersion": 39,
+  "schemaVersion": 42,
   "tags": [
     "kubernetes",
     "pods",
@@ -782,8 +843,12 @@
   "templating": {
     "list": [
       {
+        "allValue": ".*",
         "current": {},
-        "hide": 0,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
         "includeAll": true,
         "label": "Namespace",
         "multi": true,
@@ -795,14 +860,8 @@
         },
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
-        "type": "query",
-        "datasource": {
-          "type": "prometheus",
-          "uid": "prometheus"
-        },
-        "allValue": ".*"
+        "type": "query"
       }
     ]
   },
@@ -814,5 +873,5 @@
   "timezone": "",
   "title": "Kubernetes Pod Overview",
   "uid": "k8s-pod-overview",
-  "version": 1
+  "version": 2
 }
