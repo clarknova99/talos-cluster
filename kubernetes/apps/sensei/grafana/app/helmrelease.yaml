@@ -108,6 +108,10 @@ spec:
             url:  http://loki-headless.observability.svc.cluster.local:3100
             jsonData:
               maxLines: 250
+          - name: VictoriaLogs
+            type: victoriametrics-logs-datasource
+            access: proxy
+            url: http://victoria-logs-server.observability.svc.cluster.local:9428
           - name: Postgres
             type: postgres
             #url: 192.168.3.42:5432
@@ -165,6 +169,7 @@ spec:
       - pr0ps-trackmap-panel
       - vonage-status-panel
       - grafana-github-datasource
+      - victoriametrics-logs-datasource
     serviceMonitor:
       enabled: true
     route:
