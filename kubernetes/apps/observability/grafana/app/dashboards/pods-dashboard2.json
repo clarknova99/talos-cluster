@@ -208,20 +208,16 @@
                       "value": 0
                     },
                     {
-                      "color": "green",
+                      "color": "blue",
                       "value": 0.0001
                     },
                     {
                       "color": "orange",
-                      "value": 0.75
+                      "value": 0.8
                     },
                     {
                       "color": "#FF4444",
                       "value": 0.9
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": 10.9
                     }
                   ]
                 }
@@ -229,6 +225,20 @@
               {
                 "id": "unit",
                 "value": "percentunit"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "index": 0,
+                        "text": "N/A"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
               }
             ]
           },
@@ -750,7 +760,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "clamp_max(sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}[5m])) / sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"cpu\", namespace=~\"$namespace\"}), 1) or ((sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}[5m])) * 0 + 1.01) unless sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"cpu\", namespace=~\"$namespace\"}))",
+          "expr": "clamp_max(sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}[5m])) / sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"cpu\", namespace=~\"$namespace\"}), 1) or ((sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}[5m])) * 0) unless sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"cpu\", namespace=~\"$namespace\"}))",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -765,7 +775,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "clamp_max(sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}) / sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"memory\", namespace=~\"$namespace\"}), 1) or ((sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}) * 0 + 1.01) unless sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"memory\", namespace=~\"$namespace\"}))",
+          "expr": "clamp_max(sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}) / sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"memory\", namespace=~\"$namespace\"}), 1) or ((sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}) * 0) unless sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"memory\", namespace=~\"$namespace\"}))",
           "format": "table",
           "hide": false,
           "instant": true,
