@@ -153,6 +153,10 @@ spec:
             url: http://influxdb.database.svc.cluster.local:8086
             jsonData:
               dbName: brad
+          - name: VictoriaLogs
+            type: victoriametrics-logs-datasource
+            access: proxy
+            url: http://victoria-logs-server.observability.svc.cluster.local:9428
           - name: Loki
             type: loki
             uid: loki
@@ -337,6 +341,7 @@ spec:
       - natel-discrete-panel
       - pr0ps-trackmap-panel
       - vonage-status-panel
+      - victoriametrics-logs-datasource
     serviceMonitor:
       enabled: true
     route:
