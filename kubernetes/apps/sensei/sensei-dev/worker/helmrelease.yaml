@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.6.0
+      version: 4.6.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -72,6 +72,7 @@ spec:
               PADDLE_TEST_WEBHOOK_SECRET: ${SECRET_SENSEI_PADDLE_TEST_WEBHOOK_SECRET}
               CLOUDFLARE_TURNSTILE_SECRET_KEY: ${SECRET_SENSEI_CLOUDFLARE_TURNSTILE_SECRET_KEY}
               HF_TOKEN: ${SECRET_SENSEI_HUGGINGFACE_TOKEN}
+              LOG_FORMAT: json
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
