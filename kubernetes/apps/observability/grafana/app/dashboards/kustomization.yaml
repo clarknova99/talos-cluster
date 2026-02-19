@@ -12,6 +12,9 @@ configMapGenerator:
   - name: pods-dashboard
     files:
       - pods-dashboard.json
+  - name: pods-dashboard2
+    files:
+      - pods-dashboard2.json
   - name: ingress-logs
     files:
       - ingress-logs.json

@@ -1,0 +1,490 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "Prometheus datasource for Kubernetes metrics",
+      "type": "datasource",
+      "pluginId": "prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Kubernetes Pod Overview - Lens-style pod listing with status, resources, containers, and ownership info",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": {
+            "align": "left",
+            "cellOptions": { "type": "auto" },
+            "filterable": true,
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Pod" },
+            "properties": [
+              { "id": "custom.width", "value": 280 },
+              { "id": "links", "value": [] },
+              { "id": "custom.cellOptions", "value": { "type": "auto" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Namespace" },
+            "properties": [
+              { "id": "custom.width", "value": 140 },
+              { "id": "color", "value": { "fixedColor": "super-light-blue", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "CPU" },
+            "properties": [
+              { "id": "unit", "value": "short" },
+              { "id": "decimals", "value": 3 },
+              { "id": "custom.width", "value": 90 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Memory" },
+            "properties": [
+              { "id": "unit", "value": "decbytes" },
+              { "id": "decimals", "value": 1 },
+              { "id": "custom.width", "value": 110 },
+              { "id": "custom.cellOptions", "value": { "type": "auto" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Containers" },
+            "properties": [
+              { "id": "custom.width", "value": 130 },
+              { "id": "custom.cellOptions", "value": {
+                "type": "gauge",
+                "mode": "basic",
+                "valueDisplayMode": "hidden"
+              }},
+              { "id": "min", "value": 0 },
+              { "id": "max", "value": 1 },
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "orange", "value": 0.5 },
+                  { "color": "#73BF69", "value": 1 }
+                ]
+              }},
+              { "id": "noValue", "value": "N/A" }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Total" },
+            "properties": [
+              { "id": "custom.width", "value": 60 },
+              { "id": "custom.cellOptions", "value": { "type": "auto" } },
+              { "id": "decimals", "value": 0 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Restarts" },
+            "properties": [
+              { "id": "custom.width", "value": 90 },
+              { "id": "thresholds", "value": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 5 },
+                  { "color": "orange", "value": 10 },
+                  { "color": "red", "value": 25 }
+                ]
+              }},
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Controlled By" },
+            "properties": [
+              { "id": "custom.width", "value": 130 },
+              { "id": "mappings", "value": [
+                { "options": { "DaemonSet": { "color": "blue", "index": 0, "text": "DaemonSet" } }, "type": "value" },
+                { "options": { "ReplicaSet": { "color": "purple", "index": 1, "text": "ReplicaSet" } }, "type": "value" },
+                { "options": { "StatefulSet": { "color": "orange", "index": 2, "text": "StatefulSet" } }, "type": "value" },
+                { "options": { "Job": { "color": "yellow", "index": 3, "text": "Job" } }, "type": "value" },
+                { "options": { "Node": { "color": "green", "index": 4, "text": "Node" } }, "type": "value" }
+              ]},
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Node" },
+            "properties": [
+              { "id": "custom.width", "value": 110 },
+              { "id": "color", "value": { "fixedColor": "super-light-blue", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Status" },
+            "properties": [
+              { "id": "custom.width", "value": 110 },
+              { "id": "mappings", "value": [
+                { "options": { "Running": { "color": "green", "index": 0, "text": "Running" } }, "type": "value" },
+                { "options": { "Succeeded": { "color": "blue", "index": 1, "text": "Succeeded" } }, "type": "value" },
+                { "options": { "Pending": { "color": "orange", "index": 2, "text": "Pending" } }, "type": "value" },
+                { "options": { "Failed": { "color": "red", "index": 3, "text": "Failed" } }, "type": "value" },
+                { "options": { "Unknown": { "color": "red", "index": 4, "text": "Unknown" } }, "type": "value" }
+              ]},
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Age" },
+            "properties": [
+              { "id": "unit", "value": "dtdurations" },
+              { "id": "custom.width", "value": 100 }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 30, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": true,
+          "fields": "",
+          "reducer": ["count"],
+          "show": true
+        },
+        "sortBy": [
+          { "desc": false, "displayName": "Pod" }
+        ]
+      },
+      "pluginVersion": "10.4.0",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "kube_pod_info{namespace=~\"$namespace\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}[5m]))",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B",
+          "hide": false
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"})",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "C",
+          "hide": false
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_status_restarts_total{namespace=~\"$namespace\"})",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "D",
+          "hide": false
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "kube_pod_status_phase{namespace=~\"$namespace\"} == 1",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "E",
+          "hide": false
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "time() - kube_pod_created{namespace=~\"$namespace\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "F",
+          "hide": false
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_status_running{namespace=~\"$namespace\"})",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "G",
+          "hide": false
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_status_waiting{namespace=~\"$namespace\"})",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "H",
+          "hide": false
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_status_terminated{namespace=~\"$namespace\"})",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "I",
+          "hide": false
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count by (pod, namespace) (kube_pod_container_info{namespace=~\"$namespace\"})",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "J",
+          "hide": false
+        }
+      ],
+      "title": "Pods",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "pod",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "binary",
+            "binary": {
+              "left": "Value #G",
+              "operator": "/",
+              "right": "Value #J",
+              "reducer": "sum"
+            },
+            "alias": "Container Health",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "type": "include",
+            "match": "any",
+            "filters": [
+              {
+                "fieldName": "pod",
+                "config": {
+                  "id": "isNotNull"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Time 7": true,
+              "Time 8": true,
+              "Time 9": true,
+              "Time 10": true,
+              "Value #A": true,
+              "Value #E": true,
+              "Value #G": true,
+              "Value #H": true,
+              "Value #I": true,
+              "__name__": true,
+              "__name__ 1": true,
+              "__name__ 2": true,
+              "container": true,
+              "endpoint": true,
+              "host_ip": true,
+              "host_network": true,
+              "instance": true,
+              "instance 1": true,
+              "job": true,
+              "job 1": true,
+              "job 2": true,
+              "metrics_path": true,
+              "priority_class": true,
+              "service": true,
+              "uid": true,
+              "uid 1": true,
+              "uid 2": true,
+              "created_by_name": true,
+              "ip": true,
+              "image_id": true,
+              "image_spec": true,
+              "image": true,
+              "container_id": true,
+              "pod_ip": true,
+              "internal_ip": true,
+              "namespace 1": true,
+              "namespace 2": true,
+              "namespace 3": true,
+              "namespace 4": true,
+              "namespace 5": true,
+              "namespace 6": true,
+              "namespace 7": true,
+              "namespace 8": true,
+              "namespace 9": true
+            },
+            "indexByName": {
+              "pod": 0,
+              "namespace": 1,
+              "Value #B": 2,
+              "Value #C": 3,
+              "Container Health": 4,
+              "Value #J": 5,
+              "Value #D": 6,
+              "created_by_kind": 7,
+              "node": 8,
+              "phase": 9,
+              "Value #F": 10
+            },
+            "renameByName": {
+              "pod": "Pod",
+              "namespace": "Namespace",
+              "Value #B": "CPU",
+              "Value #C": "Memory",
+              "Container Health": "Containers",
+              "Value #J": "Total",
+              "Value #D": "Restarts",
+              "Value #F": "Age",
+              "node": "Node",
+              "created_by_kind": "Controlled By",
+              "phase": "Status"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": ["kubernetes", "pods", "k8s"],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": true,
+        "label": "Namespace",
+        "multi": true,
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "query": "label_values(kube_pod_info, namespace)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query",
+        "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+        "allValue": ".*"
+      }
+    ]
+  },
+  "time": { "from": "now-5m", "to": "now" },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Kubernetes Pod Overview",
+  "uid": "k8s-pod-overview",
+  "version": 1
+}
