@@ -6,6 +6,7 @@ metadata:
   name: flux-operator
   annotations:
     gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: Infra
     gethomepage.dev/icon: flux-cd
 spec:
   hostnames:
