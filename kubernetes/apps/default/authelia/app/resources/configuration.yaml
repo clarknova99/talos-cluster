@@ -167,6 +167,7 @@ identity_providers:
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris: ['https://litellm.{{ env "SECRET_DOMAIN_TWO" }}/sso/callback']
         userinfo_signed_response_alg: none
+        access_token_signed_response_alg: 'RS256'
       - client_id: litellm-dev
         client_name: litellm-dev
         client_secret: '{{ env "SECRET_OAUTH_CLIENT_SECRET"}}'
