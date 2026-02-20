@@ -23,6 +23,47 @@
   "panels": [
     {
       "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "PD775F2863313E6C7"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 14,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "showControls": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "PD775F2863313E6C7"
+          },
+          "editorMode": "code",
+          "expr": "app:=\"sensei-dev-api\" | fields module, function, level",
+          "queryType": "instant",
+          "refId": "A"
+        }
+      ],
+      "title": "New panel",
+      "type": "logs"
+    },
+    {
+      "datasource": {
         "type": "loki",
         "uid": "loki"
       },
@@ -117,7 +158,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 3,
       "options": {
@@ -133,7 +174,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -175,21 +216,25 @@
         "h": 10,
         "w": 19,
         "x": 0,
-        "y": 8
+        "y": 16
       },
       "id": 1,
       "options": {
         "dedupStrategy": "none",
+        "detailsMode": "sidebar",
         "enableInfiniteScrolling": false,
         "enableLogDetails": true,
+        "fontSize": "small",
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
-        "showTime": false,
+        "showTime": true,
         "sortOrder": "Descending",
+        "syntaxHighlighting": true,
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -198,7 +243,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{app=\"sensei-prod-api\"} ",
+          "expr": "{app=\"sensei-prod-api\"} \n| json \n| label_format original_line=\"{{__line__}}\"\n| line_format \"{{.level | ToUpper}} [{{.module}}:{{.function}}] {{if .path}}path={{.path}}{{end}} {{if .sensei_user_id}}user={{.sensei_user_id}}{{end}} {{if .status_code}}status={{.status_code}}{{end}} {{if .duration_ms}}duration={{.duration_ms}}ms{{end}} msg={{.msg}}\" ",
           "queryType": "range",
           "refId": "A"
         }
@@ -219,21 +264,25 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "id": 2,
       "options": {
         "dedupStrategy": "none",
+        "detailsMode": "sidebar",
         "enableInfiniteScrolling": false,
         "enableLogDetails": true,
+        "fontSize": "small",
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
-        "showTime": false,
+        "showTime": true,
         "sortOrder": "Descending",
+        "syntaxHighlighting": true,
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -241,8 +290,8 @@
             "uid": "loki"
           },
           "direction": "backward",
-          "editorMode": "builder",
-          "expr": "{app=\"sensei-prod-app\"} |= `` | logfmt",
+          "editorMode": "code",
+          "expr": "{app=\"sensei-prod-app\"} \n| json \n| label_format original_line=\"{{__line__}}\"\n| line_format \"{{.level | ToUpper}} [{{.module}}:{{.function}}] {{if .path}}path={{.path}}{{end}} {{if .sensei_user_id}}user={{.sensei_user_id}}{{end}} {{if .status_code}}status={{.status_code}}{{end}} {{if .duration_ms}}duration={{.duration_ms}}ms{{end}} msg={{.msg}}\" ",
           "queryType": "range",
           "refId": "A"
         }
@@ -260,10 +309,56 @@
         "overrides": []
       },
       "gridPos": {
+        "h": 9,
+        "w": 19,
+        "x": 0,
+        "y": 35
+      },
+      "id": 4,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "fontSize": "small",
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showControls": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{app=\"sensei-prod-worker\"} \n| json \n| label_format original_line=\"{{__line__}}\"\n| line_format \"{{.level | ToUpper}} [{{.module}}:{{.function}}] {{if .path}}path={{.path}}{{end}} {{if .sensei_user_id}}user={{.sensei_user_id}}{{end}} {{if .status_code}}status={{.status_code}}{{end}} {{if .duration_ms}}duration={{.duration_ms}}ms{{end}} msg={{.msg}}\" ",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Worker Logs",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
         "h": 10,
         "w": 19,
         "x": 0,
-        "y": 27
+        "y": 44
       },
       "id": 10,
       "options": {
@@ -272,12 +367,13 @@
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -307,7 +403,7 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 37
+        "y": 54
       },
       "id": 13,
       "options": {
@@ -316,12 +412,13 @@
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -351,7 +448,7 @@
         "h": 10,
         "w": 19,
         "x": 0,
-        "y": 46
+        "y": 63
       },
       "id": 11,
       "options": {
@@ -360,12 +457,13 @@
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -395,7 +493,7 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 56
+        "y": 73
       },
       "id": 12,
       "options": {
@@ -404,12 +502,13 @@
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -439,51 +538,7 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 65
-      },
-      "id": 4,
-      "options": {
-        "dedupStrategy": "none",
-        "enableInfiniteScrolling": false,
-        "enableLogDetails": true,
-        "prettifyLogMessage": false,
-        "showCommonLabels": false,
-        "showLabels": false,
-        "showTime": false,
-        "sortOrder": "Descending",
-        "wrapLogMessage": false
-      },
-      "pluginVersion": "12.2.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "loki"
-          },
-          "direction": "backward",
-          "editorMode": "code",
-          "expr": "{app=\"sensei-prod-worker\"}",
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "Worker Logs",
-      "type": "logs"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "loki"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 19,
-        "x": 0,
-        "y": 74
+        "y": 82
       },
       "id": 9,
       "options": {
@@ -492,12 +547,13 @@
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -527,7 +583,7 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 83
+        "y": 91
       },
       "id": 7,
       "options": {
@@ -536,12 +592,13 @@
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -571,7 +628,7 @@
         "h": 9,
         "w": 19,
         "x": 0,
-        "y": 92
+        "y": 100
       },
       "id": 8,
       "options": {
@@ -580,12 +637,13 @@
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
+        "showControls": false,
         "showLabels": false,
         "showTime": false,
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -615,7 +673,7 @@
         "h": 10,
         "w": 19,
         "x": 0,
-        "y": 101
+        "y": 109
       },
       "id": 5,
       "options": {
@@ -686,7 +744,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 111
+        "y": 119
       },
       "id": 6,
       "interval": "24h",
