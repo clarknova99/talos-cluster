@@ -50,6 +50,7 @@ spec:
               GENERIC_USER_PROVIDER_ATTRIBUTE: authelia
               PROXY_ADMIN_ID: ${SECRET_MQTT_USERNAME}
               PROXY_LOGOUT_URL: https://auth.${SECRET_DOMAIN}/api/logout
+              MAX_STRING_LENGTH_PROMPT_IN_DB: "10000000"
             envFrom: &envFrom
               - secretRef:
                   name: litellm-secrets
