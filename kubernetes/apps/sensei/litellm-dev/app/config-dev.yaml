@@ -53,7 +53,7 @@ model_list:
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
   - model_name: openrouter-google-gemini-3-flash-preview
     litellm_params:
-      model: google/gemini-3-flash-preview
+      model: openrouter/google/gemini-3-flash-preview
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
   - model_name: databricks-llama-4-maverick
     litellm_params:
