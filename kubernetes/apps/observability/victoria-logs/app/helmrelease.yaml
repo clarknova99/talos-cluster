@@ -18,6 +18,9 @@ spec:
         size: 20Gi
       retentionPeriod: 14d
       route:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Observability
         enabled: true
         hostnames:
           - victoria-logs.${SECRET_DOMAIN}
