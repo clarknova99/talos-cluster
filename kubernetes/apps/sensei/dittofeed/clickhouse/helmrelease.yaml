@@ -83,6 +83,8 @@ spec:
                 containerPort: 7171
 
     defaultPodOptions:
+      nodeSelector:
+        kubernetes.io/hostname: jupiter
       securityContext:
         runAsNonRoot: true
         runAsUser: 101
