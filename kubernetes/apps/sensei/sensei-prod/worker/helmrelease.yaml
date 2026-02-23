@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: main-1.0.0@sha256:08c386cdea1c95001db8ab657749ca3f476893d46f30eb4fd27fb611f925c107
+              tag: main-1.0.0@sha256:e1e56ac0adbb6ff2c23ca65976c8efe56dcae239101f8e598a3b48887fb57313
               pullPolicy: Always
             command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
             env:
