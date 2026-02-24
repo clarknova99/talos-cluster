@@ -63,7 +63,7 @@ spec:
               CLICKHOUSE_HOST: "127.0.0.1"  # Use IPv4 explicitly
               CLICKHOUSE_PORT: "9000"
 
-              WATCH_INTERVAL: "4h"  # Create backup every 24 hours
+              WATCH_INTERVAL: "2h"  # Create backup every 24 hours
               FULL_INTERVAL: "24h"  # Full backup every day
 
 
