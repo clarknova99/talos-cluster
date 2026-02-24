@@ -6,4 +6,5 @@ namespace: sensei
 resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
+  - ./volsync.yaml
 
