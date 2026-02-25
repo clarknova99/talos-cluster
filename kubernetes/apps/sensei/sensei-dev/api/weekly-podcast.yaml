@@ -1,11 +1,13 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: sensei-dev-daily-refresh
+  name: sensei-dev-weekly-podcast
   namespace: sensei
 spec:
-  schedule: "0 1 * * *" # 1AM every day
+  schedule: "0 7 * * 1" # 2:00 AM EST every Monday (7:00 AM UTC)
   concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       template:
@@ -13,10 +15,10 @@ spec:
           imagePullSecrets:
             - name: sensei-secret
           containers:
-            - name: dev-daily-user-refresh
+            - name: dev-weekly-podcast
               image: ghcr.io/clarknova99/project-sensei/backend:dev-latest@sha256:89d7bf98857a7498df608c7977f5e2c624916d5bc773201d940f48e652115b41
               imagePullPolicy: Always
-              command: ["/bin/sh", "-c", "python3 /app/workers/daily_refresh.py"]
+              command: ["/bin/sh", "-c", "python3 /app/workers/weekly_podcast.py"]
               env:
                 - name: SENSEI_API_KEY
                   value: ${SECRET_SENSEI_API_KEY}
@@ -25,7 +27,7 @@ spec:
                 - name: SENSEI_OPENAI_API_KEY
                   value: ${SECRET_SENSEI_OPENAI_KEY}
                 - name: ENVIRONMENT
-                  value: prod
+                  value: dev
                 - name: PG_URI
                   value: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-dev
                 - name: DISCORD_WEBHOOK
@@ -51,7 +53,7 @@ spec:
                 - name: GOOGLE_TTS_API_KEY
                   value: ${SECRET_SENSEI_GEMINI_KEY}
                 - name: FRONTEND_BASE_URL
-                  value: https://dev.${SECRET_DOMAIN_TWO}
+                  value: https://www.${SECRET_DOMAIN_TWO}
                 - name: EMAIL_VERIFICATION_TOKEN_EXPIRES_HOURS
                   value: "24"
                 - name: SENDER_EMAIL
@@ -65,13 +67,13 @@ spec:
                 - name: MAILJET_API_SECRET
                   value: ${SECRET_MAIL_PASSWORD}
                 - name: AWS_ACCESS_KEY_ID
-                  value: ${SECRET_AWS_ACCESS_KEY_ID}
+                  value: ${SECRET_SENSEI_AWS_ACCESS_KEY_ID}
                 - name: AWS_SECRET_ACCESS_KEY
-                  value: ${SECRET_AWS_SECRET_ACCESS_KEY}
+                  value: ${SECRET_SENSEI_AWS_SECRET_ACCESS_KEY}
                 - name: AWS_S3_BUCKET_NAME
-                  value: ${SECRET_AWS_S3_BUCKET_NAME}
+                  value: ${SECRET_SENSEI_AWS_S3_BUCKET_NAME}
                 - name: AWS_REGION_NAME
-                  value: ${SECRET_AWS_REGION_NAME}
+                  value: ${SECRET_SENSEI_AWS_REGION_NAME}
                 - name: AWS_S3_REGION
                   value: ${SECRET_SENSEI_AWS_S3_REGION}
                 - name: STRIPE_PUBLISHABLE_KEY
