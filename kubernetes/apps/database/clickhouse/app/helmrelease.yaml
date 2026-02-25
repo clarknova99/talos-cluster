@@ -40,6 +40,7 @@ spec:
             env:
               CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
               CLICKHOUSE_SKIP_USER_SETUP: 1
+              CLICKHOUSE_DO_NOT_CHOWN: "1"
           clickhouse-backup:
             image:
               repository: altinity/clickhouse-backup
