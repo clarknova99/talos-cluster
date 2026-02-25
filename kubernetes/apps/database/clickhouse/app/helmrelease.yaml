@@ -84,16 +84,13 @@ spec:
 
 
 
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 101
-    #     runAsGroup: 101
-    #     fsGroup: 101
-    #     fsGroupChangePolicy: OnRootMismatch
-    #     supplementalGroups: [44, 100, 101, 1025]
-    #     seccompProfile: { type: RuntimeDefault }
     defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: Always
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -117,10 +114,7 @@ spec:
 
     persistence:
       data:
-        enabled: true
-        type: nfs
-        server: 192.168.1.3
-        path: /volume1/network-storage/cluster/clickhouse
+        existingClaim: clickhouse
         globalMounts:
           - path: /var/lib/clickhouse
       logs:

@@ -6,6 +6,9 @@ metadata:
   name: clickhouse
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: volsync
+      namespace: flux-system
   path: ./kubernetes/apps/database/clickhouse/app
   prune: true
   sourceRef:
