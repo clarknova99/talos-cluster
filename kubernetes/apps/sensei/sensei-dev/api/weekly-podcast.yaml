@@ -18,7 +18,7 @@ spec:
             - name: dev-weekly-podcast
               image: ghcr.io/clarknova99/project-sensei/backend:dev-latest@sha256:89d7bf98857a7498df608c7977f5e2c624916d5bc773201d940f48e652115b41
               imagePullPolicy: Always
-              command: ["/bin/sh", "-c", "python3 /app/workers/weekly_podcast.py"]
+              command: ["/bin/sh", "-c", "cd /app && python3 -m workers.weekly_podcast"]
               env:
                 - name: SENSEI_API_KEY
                   value: ${SECRET_SENSEI_API_KEY}
