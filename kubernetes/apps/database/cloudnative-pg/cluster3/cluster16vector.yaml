@@ -42,6 +42,15 @@ spec:
       cpu: 250m
     limits:
       memory: 8Gi
+  probes:
+    liveness:
+      timeoutSeconds: 15
+      periodSeconds: 15
+      failureThreshold: 5
+    readiness:
+      timeoutSeconds: 15
+      periodSeconds: 15
+      failureThreshold: 5
   monitoring:
     enablePodMonitor: true
     # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501

@@ -98,7 +98,7 @@ spec:
                     port: 3001
                   initialDelaySeconds: 45
                   periodSeconds: 45
-                  timeoutSeconds: 10
+                  timeoutSeconds: 20
                   failureThreshold: 3
                   successThreshold: 1
               readiness:
@@ -110,8 +110,8 @@ spec:
                     port: 3001
                   initialDelaySeconds: 5
                   periodSeconds: 45
-                  timeoutSeconds: 10
-                  failureThreshold: 2
+                  timeoutSeconds: 20
+                  failureThreshold: 3
                   successThreshold: 1
         pod:
           # imagePullPolicy: Always
