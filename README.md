@@ -53,6 +53,10 @@ This repository manages a bare-metal Kubernetes cluster running [Talos Linux](ht
 | earth | Beelink EQ13  | 32GB | 192.168.3.214 | Control Plane | /dev/sdb |
 | mars | Intel NUC8i5BEH  | 32GB | 192.168.3.102 | Worker | /dev/sdb |
 | jupiter | Intel NUC11PAHi7   | 64GB |192.168.3.219 | Worker | /dev/sdb |
+|  | Firewalla Gold   |  |192.168.3.219 | Router |   |
+|  | Zyxel GS1900-24E |  |192.168.3.219 | Network Switch |   |
+|  | APC SMT1500C     |  |192.168.3.219 | UPS |   |
+
 
 All control plane nodes share VIP `192.168.3.20` for the Kubernetes API server.
 
