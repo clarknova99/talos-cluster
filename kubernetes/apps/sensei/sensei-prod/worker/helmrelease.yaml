@@ -33,7 +33,7 @@ spec:
               repository: ghcr.io/clarknova99/project-sensei/backend
               tag: main-1.0.0@sha256:4c18118e4eddd7b2ecb5155bc2b0a7b667ca690815490afb80fa2970776bb697
               pullPolicy: Always
-            command: ["/bin/sh", "-c", "python3 /app/workers/game_worker.py"]
+            command: ["/bin/sh", "-c", "python3 /app/worker_game_processing.py"]
 #            command: ["/bin/sh", "-c", "cd /app && python3 -m workers.game_worker"]
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
