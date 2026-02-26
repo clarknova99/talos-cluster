@@ -74,8 +74,8 @@ spec:
                     port: 8000
                   initialDelaySeconds: 5
                   periodSeconds: 60
-                  timeoutSeconds: 10
-                  failureThreshold: 2
+                  timeoutSeconds: 20
+                  failureThreshold: 3
                   successThreshold: 1
         pod:
           # imagePullPolicy: Always

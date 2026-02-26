@@ -109,9 +109,9 @@ spec:
                     path: /health
                     port: 3001
                   initialDelaySeconds: 5
-                  periodSeconds: 45
+                  periodSeconds: 60
                   timeoutSeconds: 20
-                  failureThreshold: 3
+                  failureThreshold: 5
                   successThreshold: 1
         pod:
           # imagePullPolicy: Always
