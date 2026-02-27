@@ -599,6 +599,63 @@ Envoy Gateway exposes metrics via PodMonitor (proxy metrics) and ServiceMonitor 
    kubectl logs -n network -l app.kubernetes.io/name=envoy-gateway --tail=50
    ```
 
+### Useful kubectl Plugins & CLI Tools
+
+Several kubectl plugins and CLI tools are available for troubleshooting specific components:
+
+**Rook-Ceph** — Check Ceph cluster health and status:
+```bash
+kubectl rook-ceph ceph status
+```
+
+**CloudNative-PG** — Check PostgreSQL cluster status:
+```bash
+kubectl cnpg -n database status postgres16vector
+```
+
+**Browse PVC** — Interactively browse PersistentVolumeClaim contents:
+```bash
+kubectl browse-pvc <pvc-name> -n <namespace>
+```
+
+**Cilium** — Check CNI and network policy status:
+```bash
+cilium status
+```
+
+**flux-local** — Validate and inspect your Flux GitOps repo locally without a live cluster ([docs](https://allenporter.github.io/flux-local/)):
+
+List all Kustomizations managed by Flux:
+```bash
+flux-local get ks --path ./kubernetes/flux/cluster
+```
+
+List all HelmReleases (all namespaces or filtered):
+```bash
+flux-local get hr -A --path ./kubernetes/flux/cluster
+flux-local get hr -n media --path ./kubernetes/flux/cluster
+```
+
+Build and render all Kustomization manifests (what Flux would apply):
+```bash
+flux-local build ks --path ./kubernetes/flux/cluster
+```
+
+Validate that all Kustomizations build without errors:
+```bash
+flux-local test --path ./kubernetes/flux/cluster -v
+```
+
+Also validate HelmRelease rendering via `helm template`:
+```bash
+flux-local test --path ./kubernetes/flux/cluster --enable-helm -v
+```
+
+Diff local changes against the last commit before pushing:
+```bash
+flux-local diff ks --path ./kubernetes/flux/cluster -A
+```
+
 ## Quick Reference Commands
 
 ```bash
