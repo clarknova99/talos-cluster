@@ -49,6 +49,11 @@ spec:
           - path: /var/lib/influxdb
     route:
       main:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            group: database
+            conditions: ["[STATUS] == 204"]
+            path: /ping
         parentRefs:
           - name: envoy-external
             namespace: network
