@@ -18,11 +18,18 @@ alerting:
       send-on-resolved: true
       failure-threshold: 3
       success-threshold: 5
-connectivity:
-  checker:
-    target: 1.1.1.1:443
-    interval: 1m
 endpoints:
+  - name: cloudflare
+    group: connectivity
+    url: "https://1.1.1.1"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: discord
+        description: "external connectivity lost"
+        send-on-resolved: true
+
   - name: sensei backend
     group: sensei
     url: "tcp://sensei-prod-api.sensei.svc.cluster.local:3001"
