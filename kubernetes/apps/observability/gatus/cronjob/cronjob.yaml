@@ -16,7 +16,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: check
-              image: curlimages/curl:8.12.1
+              image: curlimages/curl:8.18.0
               env:
                 - name: CLICKHOUSE_PASSWORD
                   valueFrom:
