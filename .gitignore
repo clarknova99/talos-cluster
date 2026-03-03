@@ -28,3 +28,4 @@ wiki
 .vscode
 settings.json
 CLAUDE.md
+scripts/foundry/

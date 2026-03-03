@@ -15,6 +15,12 @@ configMapGenerator:
     options:
       annotations:
         grafana_folder: "sensei"
+  - name: sensei-victoria-logs
+    files:
+      - sensei-victoria-logs.json
+    options:
+      annotations:
+        grafana_folder: "sensei"
   - name: sensei-kubernetes-aws
     files:
       - kubernetes.json

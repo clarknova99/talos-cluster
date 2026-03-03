@@ -4,6 +4,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Backup
 metadata:
   name: postgres16vector
+  namespace: database
 spec:
   cluster:
     name: postgres16vector
