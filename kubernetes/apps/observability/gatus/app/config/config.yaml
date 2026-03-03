@@ -51,15 +51,31 @@ endpoints:
         description: "healthcheck failed"
         send-on-resolved: true
 
-external-endpoints:
   - name: dittofeed-compute-properties
     group: sensei
-    token: $${GATUS_DITTOFEED_CHECK_TOKEN}
+    url: "http://dittofeed-clickhouse.sensei.svc.cluster.local:8123/?user=dittofeed&password=${SECRET_CLICKHOUSE_PASSWORD}"
+    method: POST
+    body: |
+      SELECT
+        (SELECT if(max(processed_at) > now() - INTERVAL 60 MINUTE, 'ok', 'stale')
+         FROM dittofeed.processed_computed_properties_v2) AS status,
+        (SELECT toString(max(processed_at))
+         FROM dittofeed.processed_computed_properties_v2) AS last_processed,
+        (SELECT count()
+         FROM dittofeed.computed_property_assignments_v2
+         WHERE assigned_at > now() - INTERVAL 5 MINUTE) AS processed_last_5_min FORMAT JSON
+    interval: 2m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].data.0.status == ok"
+      - "[BODY].data.0.last_processed == pat(*)"
+      - "[BODY].data.0.processed_last_5_min >= 0"
     alerts:
       - type: discord
-        description: "dittofeed compute properties stale (>5 min)"
+        description: "dittofeed compute properties stale (>60 min)"
         send-on-resolved: true
         failure-threshold: 1
         success-threshold: 1
-    conditions:
-      - "[CONNECTED] == true"
