@@ -20,7 +20,7 @@ alerting:
       success-threshold: 5
 connectivity:
   checker:
-    target: 8.8.8.8:53
+    target: 1.1.1.1:443
     interval: 1m
 endpoints:
   - name: sensei backend
