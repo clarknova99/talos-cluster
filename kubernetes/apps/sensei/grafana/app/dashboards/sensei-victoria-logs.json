@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 13,
+  "id": 14,
   "links": [],
   "panels": [
     {
@@ -776,9 +776,11 @@
           "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Log Count",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "bars",
             "fillOpacity": 80,
             "gradientMode": "none",
@@ -787,12 +789,15 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -808,7 +813,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -890,9 +895,11 @@
             "sum"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
@@ -904,7 +911,9 @@
             "type": "victoriametrics-logs-datasource",
             "uid": "PD775F2863313E6C7"
           },
+          "editorMode": "code",
           "expr": "app:\"sensei-${env}-app\" | stats by (level) count() as count",
+          "queryType": "statsRange",
           "refId": "A"
         }
       ],
@@ -924,9 +933,11 @@
           "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Log Count",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "bars",
             "fillOpacity": 80,
             "gradientMode": "none",
@@ -935,12 +946,15 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -956,7 +970,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -1038,9 +1052,11 @@
             "sum"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
@@ -1052,7 +1068,9 @@
             "type": "victoriametrics-logs-datasource",
             "uid": "PD775F2863313E6C7"
           },
+          "editorMode": "code",
           "expr": "app:\"sensei-${env}-api\" | stats by (level) count() as count",
+          "queryType": "statsRange",
           "refId": "A"
         }
       ],
@@ -1072,9 +1090,11 @@
           "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Log Count",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "bars",
             "fillOpacity": 80,
             "gradientMode": "none",
@@ -1083,12 +1103,15 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1104,7 +1127,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -1186,9 +1209,11 @@
             "sum"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
@@ -1200,7 +1225,9 @@
             "type": "victoriametrics-logs-datasource",
             "uid": "PD775F2863313E6C7"
           },
+          "editorMode": "code",
           "expr": "app:\"sensei-${env}-worker\" | stats by (level) count() as count",
+          "queryType": "statsRange",
           "refId": "A"
         }
       ],
@@ -1305,5 +1332,5 @@
   "timezone": "",
   "title": "Sensei Logs",
   "uid": "03157282-35a4-4d0e-8ac2-07af0742c637",
-  "version": 1
+  "version": 2
 }
