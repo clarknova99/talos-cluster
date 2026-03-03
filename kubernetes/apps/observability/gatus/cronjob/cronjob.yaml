@@ -1,0 +1,47 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gatus-dittofeed-compute-check
+spec:
+  schedule: "*/2 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 60
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: check
+              image: curlimages/curl:8.12.1
+              env:
+                - name: CLICKHOUSE_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: gatus-dittofeed-check-secrets
+                      key: CLICKHOUSE_PASSWORD
+                - name: GATUS_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: gatus-dittofeed-check-secrets
+                      key: GATUS_TOKEN
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  RESULT=$(curl -sf \
+                    "http://dittofeed-clickhouse.sensei.svc.cluster.local:8123/?user=dittofeed&password=${CLICKHOUSE_PASSWORD}" \
+                    --data-binary "SELECT if(max(processed_at) > now() - INTERVAL 5 MINUTE, 'ok', 'stale') FROM dittofeed.processed_computed_properties_v2")
+
+                  if [ "$RESULT" = "ok" ]; then
+                    SUCCESS=true
+                  else
+                    SUCCESS=false
+                  fi
+
+                  curl -sf -X POST \
+                    -H "Authorization: Bearer ${GATUS_TOKEN}" \
+                    "http://gatus.observability.svc.cluster.local/api/v1/endpoints/sensei_dittofeed-compute-properties/external?success=${SUCCESS}"

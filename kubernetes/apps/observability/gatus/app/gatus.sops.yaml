@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: gatus-secrets
+    namespace: observability
+## sops --encrypt --in-place ./kubernetes/apps/observability/gatus/app/gatus.sops.yaml
+## sops --decrypt ./kubernetes/apps/observability/gatus/app/gatus.sops.yaml | kubectl apply -f -
+stringData:
+    #ENC[AES256_GCM,data:wuVzfvYoY/Wm+7RcbOA=,iv:5QUUsMFAvJAUxHV9lPRd/P3EbI2kgv+3qbL9ptNwtiI=,tag:Idca+HvLtGG8UqTvVDh//Q==,type:comment]
+    INIT_POSTGRES_DBNAME: ENC[AES256_GCM,data:GZ06afU=,iv:HVGENlalmnvL3cxKmu2XZDv2KQ0QRZigIfdQK7zXHLQ=,tag:ZwA1ZgfIYEkpm/PCzsNlaw==,type:str]
+    INIT_POSTGRES_HOST: ENC[AES256_GCM,data:PxQX1KWdLujsohnEpJaGPzF3HJxv95NV1jDGOp0wEh+84ykf6HXyJg==,iv:KjEZso4r64GDZKmd3BR9izU79aUKPdCAfFQgMg3hZ9Y=,tag:Fcg6WzyFpHiI7JU0LX+rUQ==,type:str]
+    INIT_POSTGRES_USER: ENC[AES256_GCM,data:QjWFLZR7eaw=,iv:hvzf9oadFHGVhYycDK/bLVhWGkwBxV0exnLuJuHEiVI=,tag:+dFy+ApYLjQcP6zCHG3w1g==,type:str]
+    INIT_POSTGRES_PASS: ENC[AES256_GCM,data:c+I6J70j/MI+,iv:UmX3W3swSUqehnst3K/fgBwRIIa8bYRk/DKaBFUdhmw=,tag:xFYU/SLs1c61bWX3dveVyA==,type:str]
+    INIT_POSTGRES_SUPER_PASS: ENC[AES256_GCM,data:UCYuajqq+5Wz,iv:iAFNBnA6HBVy0I3noRDg3BvbJrcxp24EwelZro15vrk=,tag:H8E3doxST32h7mOjhYGqMw==,type:str]
+    #ENC[AES256_GCM,data:Shp0zVvwwo7WkAn+7sO74/vqakRgM9CGcQrKuZWM,iv:d+6woA9hCVxOEciSqSPXczUS270owgjLoW/nuJIGrSk=,tag:Fwv1dg4BKVz5q4CgWkahRg==,type:comment]
+    GATUS_DITTOFEED_CHECK_TOKEN: ENC[AES256_GCM,data:PW9WfQ6mn064V0axu4851GUDxd3RJBiR1OSEcVe4JalRMhZkQ27BQb6isJRQoDJPJ3M//jbMqjIkqZsG3HKlCA==,iv:vMvMnOWYXvZ4/a67+QzLWcQPtDIYeb/Z01IcRBb4cQc=,tag:A7IOlqOa2LkxRG/0hgB9cQ==,type:str]
+sops:
+    age:
+        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBYeTRabEY2RjB4Y1lYNnBT
+            VGtPbzFtOUJMdVU3eGpVb29ueEl3SStCdzNNCmJicjlYQ1dSUWpxVURnZ3hMWmty
+            a1FaQ3JMTW9Jb3VhSTFITVpnd214MGMKLS0tIFhyZjhWN1JuVVpqNWlDL2RzQ01X
+            L1FuZDlSTTB5NXFybXVwZzZMeVFUUGMK50AswiDF/56V3YZsuy3e+mPRumhCxyJg
+            GK/Rpo8+3eNNlTRjimOGDjfZDlWvh4G6sjQgDew0f2tS1OZNJ44xsQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-03-03T17:09:52Z"
+    mac: ENC[AES256_GCM,data:oiU2GyWIf1HuwWQgh6leDpZC9WEFctEfEg/UObixTFqCzeG5nMkltRtua4M9XB55A/32q7fPTcHWBCVRQbLI/NEW6tH8Zkyg8oUhjNrMJ3YFpdSHaTxdnnADAGsUi4NYpjseI+vh2DPlx4osMdsRXMem639gflarZJxCyo4a3Jo=,iv:hM2BI8/IXJnMfaYcGm6lC4K91lObcSlelVjNhtItc0k=,tag:Sf7T+UhckF20jvK6Vv7yrw==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.12.1

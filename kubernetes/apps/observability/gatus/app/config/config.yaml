@@ -1,0 +1,65 @@
+---
+web:
+  port: 80
+storage:
+  type: postgres
+  path: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/gatus?sslmode=disable
+  caching: true
+metrics: true
+ui:
+  title: sensei chess service status
+  header: sensei chess service status
+  logo: "https://senseichess.com/static/images/hero.png"
+alerting:
+  discord:
+    webhook-url: ${SECRET_SENSEI_DISCORD_WEBHOOK}
+    default-alert:
+      description: healthcheck failed
+      send-on-resolved: true
+      failure-threshold: 3
+      success-threshold: 5
+connectivity:
+  checker:
+    target: 8.8.8.8:53
+    interval: 1m
+endpoints:
+  - name: sensei backend
+    group: sensei
+    url: "tcp://sensei-prod-api.sensei.svc.cluster.local:3001"
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: discord
+        description: "healthcheck failed"
+        send-on-resolved: true
+
+  - name: postgresql
+    group: infrastructure
+    url: "tcp://192.168.3.42:5432"
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: discord
+        description: "healthcheck failed"
+        send-on-resolved: true
+
+external-endpoints:
+  - name: dittofeed-compute-properties
+    group: sensei
+    token: ${GATUS_DITTOFEED_CHECK_TOKEN}
+    alerts:
+      - type: discord
+        description: "dittofeed compute properties stale (>5 min)"
+        send-on-resolved: true
+        failure-threshold: 1
+        success-threshold: 1
+    conditions:
+      - "[CONNECTED] == true"

@@ -155,6 +155,110 @@ Expected output should show `totalProcessed` > 0 and the workflow processing wor
    kubectl logs -n sensei $APP_POD | grep "Creating worker"
    ```
 
+#### Issue 4: Compute Properties Stopped After PostgreSQL Failover
+
+**Symptoms:**
+- Properties haven't been processed in days, but ClickHouse and Temporal appear healthy *now*
+- Restarting pods and running `start-compute-properties-global` does NOT fix the issue
+- `get-queue-state` either times out with `DEADLINE_EXCEEDED: query timed out before a worker could process it` or shows `queueSize: 0`, `inFlightCount: 0` with a low `totalProcessed` count
+- Temporal logs may show repeated `"Not enough hosts to serve the request"` matching errors
+- Dittofeed app pod shows high CPU usage (e.g. 1500m+) from processing `userJourneyWorkflow` tasks
+- App logs are flooded with `userJourneyWorkflow` / `WaitForNode` entries and no compute-related logs
+
+**Root cause:** A PostgreSQL failover (or restart) on the `postgres16vector` CNPG cluster interrupts the compute properties workflow mid-execution. The sequence is:
+
+1. CNPG detects an unhealthy primary and initiates a failover
+2. PostgreSQL shuts down, causing `"the database system is shutting down"` errors in the dittofeed app
+3. Connections to PG become `EPERM` (`connect EPERM <service-ip>:5432`) during the failover window
+4. The dittofeed worker's compute properties activity retries repeatedly but the Temporal workflow eventually fails or gets stuck
+5. After PG recovers, the compute properties workflow does NOT auto-recover — it remains stopped
+6. Over time, journey workflows accumulate and overwhelm the Temporal worker (single worker handles both journeys and compute), causing high CPU and making recovery harder
+
+**First incident:** 2026-02-25. CNPG initiated a failover on `postgres16vector` at 17:24 UTC. Compute properties stopped at 17:22 UTC and never recovered. By the time the issue was noticed days later, the worker was saturated with journey workflows.
+
+**Diagnosis:**
+
+1. **Check for PostgreSQL failover events (requires Victoria Logs):**
+   ```bash
+   # Query Victoria Logs for recent CNPG failover events
+   curl -s 'https://victoria-logs.bigwang.org/select/logsql/query' \
+     --data-urlencode 'query=k_namespace_name:database AND k_pod_name:~"cloudnative-pg" AND (switchover OR failover OR "initiating a failover")' \
+     --data-urlencode 'start=<start-date>T00:00:00Z' \
+     --data-urlencode 'end=<end-date>T00:00:00Z' \
+     --data-urlencode 'limit=10'
+   ```
+
+2. **Check for PG connection errors in dittofeed app logs (requires Victoria Logs):**
+   ```bash
+   curl -s 'https://victoria-logs.bigwang.org/select/logsql/query' \
+     --data-urlencode 'query=k_namespace_name:sensei AND app:dittofeed AND NOT app:~"dev" AND (EPERM OR "shutting down" OR "connection refused")' \
+     --data-urlencode 'start=<start-date>T00:00:00Z' \
+     --data-urlencode 'end=<end-date>T00:00:00Z' \
+     --data-urlencode 'limit=10'
+   ```
+
+3. **Check dittofeed pod CPU usage:**
+   ```bash
+   APP_POD=$(kubectl get pod -n sensei -l app.kubernetes.io/name=dittofeed -o jsonpath='{.items[0].metadata.name}')
+   kubectl top pod -n sensei $APP_POD
+   ```
+   If CPU is above ~1000m, the worker is likely overwhelmed with journey workflows.
+
+4. **Check Temporal for matching errors:**
+   ```bash
+   TEMPORAL_POD=$(kubectl get pod -n sensei -l app.kubernetes.io/name=dittofeed-temporal -o jsonpath='{.items[0].metadata.name}')
+   kubectl logs -n sensei $TEMPORAL_POD -c temporal --tail=100 | grep -i "Not enough hosts"
+   ```
+
+**Solution:**
+
+1. **Stop the global compute properties workflow:**
+   ```bash
+   ADMIN_POD=$(kubectl get pod -n sensei -l app.kubernetes.io/name=dittofeed-admin-cli -o jsonpath='{.items[0].metadata.name}')
+   kubectl exec -n sensei $ADMIN_POD -- /service/admin.sh stop-compute-properties-global
+   ```
+
+2. **Reset compute properties workflow state:**
+   ```bash
+   kubectl exec -n sensei $ADMIN_POD -- /service/admin.sh reset-compute-properties
+   ```
+
+3. **Terminate the workspace compute properties workflow:**
+   ```bash
+   kubectl exec -n sensei $ADMIN_POD -- /service/admin.sh terminate-compute-properties --workspace-id e8042480-4946-4de0-b552-2e702d941696
+   ```
+
+4. **Restart the dittofeed deployment (this is the key step — clears the overwhelmed worker state):**
+   ```bash
+   kubectl rollout restart deployment -n sensei dittofeed
+   kubectl rollout status deployment -n sensei dittofeed
+   ```
+
+5. **Wait ~20 seconds for the worker to initialize, then start compute properties:**
+   ```bash
+   sleep 20
+   kubectl exec -n sensei $ADMIN_POD -- /service/admin.sh start-compute-properties-global
+   ```
+
+6. **Wait ~60 seconds, then verify computations are happening:**
+   ```bash
+   sleep 60
+   CH_POD=$(kubectl get pod -n sensei -l app.kubernetes.io/name=dittofeed-clickhouse -o jsonpath='{.items[0].metadata.name}')
+   kubectl exec -n sensei $CH_POD -c app -- clickhouse-client --query "SELECT max(processed_at) as last_processed FROM dittofeed.processed_computed_properties_v2"
+   kubectl exec -n sensei $CH_POD -c app -- clickhouse-client --query "SELECT max(assigned_at) as last_assignment FROM dittofeed.computed_property_assignments_v2"
+   kubectl exec -n sensei $CH_POD -c app -- clickhouse-client --query "SELECT count() FROM dittofeed.computed_property_assignments_v2 WHERE assigned_at > now() - INTERVAL 5 MINUTE"
+   ```
+   `last_processed` and `last_assignment` should be recent, and the 5-minute count should be > 0.
+
+7. **Verify CPU has dropped:**
+   ```bash
+   APP_POD=$(kubectl get pod -n sensei -l app.kubernetes.io/name=dittofeed -o jsonpath='{.items[0].metadata.name}')
+   kubectl top pod -n sensei $APP_POD
+   ```
+   CPU should be well below 1000m after a healthy restart.
+
+**Why simply restarting pods or re-running `start-compute-properties-global` doesn't work:** The compute properties workflow gets stuck in a failed state after PG recovers. Meanwhile, journey workflows continue accumulating and consuming all worker slots (`workflowThreadPoolSize: 1`, `maxCachedWorkflows: 50`). Simply starting the global workflow again doesn't clear the backlog. A full deployment restart is needed to clear the worker's in-memory state and allow it to pick up compute work again.
+
 ### Monitoring Health
 
 Create a monitoring script to check system health:
