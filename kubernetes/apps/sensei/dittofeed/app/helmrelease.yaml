@@ -61,6 +61,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: "Sensei Services"
           gethomepage.dev/icon: https://cdn.prod.website-files.com/664393f5bd2b0c6d4fdf5437/6644bdae62ceb2dabadadb5b_Group%2022.svg
+          gatus.home-operations.com/endpoint: |
+            group: sensei
         parentRefs:
           - name: envoy-external
             namespace: network

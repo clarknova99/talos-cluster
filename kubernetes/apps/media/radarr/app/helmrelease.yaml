@@ -97,6 +97,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media
           gethomepage.dev/icon: radarr.svg
+          gatus.home-operations.com/endpoint: |
+            group: media
         parentRefs:
           - name: envoy-internal
             namespace: network

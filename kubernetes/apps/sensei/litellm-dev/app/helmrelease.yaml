@@ -83,6 +83,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: "Sensei Services"
           gethomepage.dev/icon: https://opensource.muenchen.de/logo/litellm.png
+          gatus.home-operations.com/endpoint: |
+            group: sensei
         parentRefs:
           - name: envoy-external
             namespace: network

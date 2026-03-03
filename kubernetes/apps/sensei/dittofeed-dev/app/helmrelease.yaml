@@ -61,6 +61,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: "Sensei Services"
           gethomepage.dev/icon: https://cdn.prod.website-files.com/664393f5bd2b0c6d4fdf5437/6644bdae62ceb2dabadadb5b_Group%2022.svg
+          gatus.home-operations.com/endpoint: |
+            group: sensei
         parentRefs:
           - name: envoy-external
             namespace: network
@@ -70,24 +72,4 @@ spec:
         rules:
           - backendRefs:
               - name: *app
-                port: *port    # ingress:
-    #   app:
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-    #       nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
-    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
-    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: mdi:water-flow
-    #     className: external
-    #     hosts:
-    #       - host: dittofeed-dev.${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             pathType: Prefix
-    #             service:
-    #               identifier: app
-    #               port: 3000
-    #     tls:
-    #       - hosts:
-    #           - dittofeed-dev.${SECRET_DOMAIN}
+                port: *port

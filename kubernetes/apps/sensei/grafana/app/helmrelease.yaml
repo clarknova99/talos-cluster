@@ -183,6 +183,8 @@ spec:
           gethomepage.dev/icon: grafana.png
           gethomepage.dev/name: grafana
           gethomepage.dev/group: "Sensei Services"
+          gatus.home-operations.com/endpoint: |
+            group: sensei
         parentRefs:
           - name: envoy-external
             namespace: network
@@ -191,17 +193,6 @@ spec:
           - backendRefs:
               - name: *app
                 port: 80
-    # ingress:
-    #   enabled: true
-    #   annotations:
-    #     external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-    #     # nginx.ingress.kubernetes.io/auth-method: GET
-    #     # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local/api/verify
-    #     # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN}?rm=$request_method
-    #     # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-    #     # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
-    #   ingressClassName: external
-    #   hosts: ["grafana.${SECRET_DOMAIN_TWO}"]
     persistence:
       enabled: false
     testFramework:

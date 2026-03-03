@@ -71,6 +71,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: "Sensei Admin"
           gethomepage.dev/icon: https://senseichess.com/static/images/knight2.svg
+          gatus.home-operations.com/endpoint: |
+            group: sensei
         parentRefs:
           - name: envoy-external
             namespace: network
@@ -81,24 +83,3 @@ spec:
           - backendRefs:
               - name: sensei-dev-admin
                 port: *port
-    # ingress:
-    #   app:
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-    #       nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
-    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
-    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: mdi:math-compass
-    #     className: external
-    #     hosts:
-    #       - host: admin-dev.${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             pathType: Prefix
-    #             service:
-    #               identifier: app
-    #               port: 3002
-    #     tls:
-    #       - hosts:
-    #           - admin-dev.${SECRET_DOMAIN_TWO}

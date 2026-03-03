@@ -112,6 +112,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: "Sensei App"
           gethomepage.dev/icon: mdi-chess-knight-#7C4DFF
+          gatus.home-operations.com/endpoint: |
+            group: sensei
         parentRefs:
           - name: envoy-external
             namespace: network
