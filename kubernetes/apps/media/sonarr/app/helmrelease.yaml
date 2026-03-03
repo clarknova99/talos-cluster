@@ -109,13 +109,6 @@ spec:
       config:
         enabled: true
         existingClaim: sonarr
-      # config:
-      #   enabled: true
-      #   type: nfs
-      #   server: 192.168.1.2
-      #   path: /volume1/network-storage/sonarr
-      #   globalMounts:
-      #     - path: /config
       downloads:
         enabled: true
         type: nfs
@@ -130,16 +123,6 @@ spec:
         path: /volume1/network-storage/Video
         globalMounts:
           - path: /video
-      # tv:
-      #   enabled: true
-      #   type: nfs
-      #   server: 192.168.1.2
-      #   path: /volume1/Video/TV
-      #   globalMounts:
-      #     - path: /tv
-      # incomplete:
-      #   enabled: true
-      #   type: emptyDir
       add-ons:
         type: emptyDir
       tmp:
