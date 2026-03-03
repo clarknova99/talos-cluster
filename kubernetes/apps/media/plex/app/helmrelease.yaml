@@ -118,7 +118,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media
           gethomepage.dev/icon: plex.svg
-          gatus.home-operations.com/endpoint: |-
+          gatus.home-operations.com/endpoint: |
+            group: media
             conditions: ["[STATUS] == 401"]
         parentRefs:
           - name: envoy-external
