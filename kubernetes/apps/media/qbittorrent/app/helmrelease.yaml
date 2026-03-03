@@ -133,10 +133,11 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media
           gethomepage.dev/icon: qbittorrent.svg
-          gatus.home-operations.com/enabled: "false"
-          gatus.home-operations.com/endpoint: |-
-            name: qbittorrent
+          gatus.home-operations.com/endpoint: |
             group: media
+            conditions:
+              - "[STATUS] == 200"
+            interval: 5m
         parentRefs:
           - name: envoy-internal
             namespace: network
