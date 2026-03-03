@@ -133,7 +133,9 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media
           gethomepage.dev/icon: qbittorrent.svg
-          gatus.home-operations.com/endpoint: |
+          gatus.home-operations.com/enabled: "false"
+          gatus.home-operations.com/endpoint: |-
+            name: qbittorrent
             group: media
         parentRefs:
           - name: envoy-internal
@@ -145,24 +147,6 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
-
-    # ingress:
-    #   app:
-    #     annotations:
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: material-symbols:cloud-download
-    #     enabled: true
-    #     className: internal
-    #     hosts:
-    #       - host: &host qb.${SECRET_DOMAIN}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: *port
-    #     tls:
-    #       - hosts:
-    #           - *host
     persistence:
       config:
         enabled: true
