@@ -54,7 +54,7 @@ endpoints:
 external-endpoints:
   - name: dittofeed-compute-properties
     group: sensei
-    token: ${GATUS_DITTOFEED_CHECK_TOKEN}
+    token: $${GATUS_DITTOFEED_CHECK_TOKEN}
     alerts:
       - type: discord
         description: "dittofeed compute properties stale (>5 min)"
