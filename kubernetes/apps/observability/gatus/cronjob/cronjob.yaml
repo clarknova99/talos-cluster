@@ -33,7 +33,7 @@ spec:
                 - -c
                 - |
                   RESULT=$(curl -sf \
-                    "http://dittofeed-clickhouse.sensei.svc.cluster.local:8123/?user=dittofeed&password=${CLICKHOUSE_PASSWORD}" \
+                    "http://dittofeed-clickhouse.sensei.svc.cluster.local:8123/?user=dittofeed&password=$${CLICKHOUSE_PASSWORD}" \
                     --data-binary "SELECT if(max(processed_at) > now() - INTERVAL 5 MINUTE, 'ok', 'stale') FROM dittofeed.processed_computed_properties_v2")
 
                   if [ "$RESULT" = "ok" ]; then
@@ -43,5 +43,5 @@ spec:
                   fi
 
                   curl -sf -X POST \
-                    -H "Authorization: Bearer ${GATUS_TOKEN}" \
-                    "http://gatus.observability.svc.cluster.local/api/v1/endpoints/sensei_dittofeed-compute-properties/external?success=${SUCCESS}"
+                    -H "Authorization: Bearer $${GATUS_TOKEN}" \
+                    "http://gatus.observability.svc.cluster.local/api/v1/endpoints/sensei_dittofeed-compute-properties/external?success=$${SUCCESS}"
