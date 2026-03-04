@@ -47,7 +47,7 @@ spec:
             target:
               kind: Deployment
               name: (kustomize-controller|helm-controller|source-controller)
-          - # Increase the memory limits
+          - # Set memory limits for controllers
             patch: |
               apiVersion: apps/v1
               kind: Deployment
@@ -60,7 +60,7 @@ spec:
                       - name: manager
                         resources:
                           limits:
-                            memory: 2Gi
+                            memory: 512Mi
             target:
               kind: Deployment
               name: (kustomize-controller|helm-controller|source-controller)

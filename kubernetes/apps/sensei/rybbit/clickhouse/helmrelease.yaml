@@ -39,9 +39,9 @@ spec:
             resources:
               requests:
                 cpu: 200m
-                memory: 1Gi
+                memory: 512Mi
               limits:
-                memory: 4Gi
+                memory: 1Gi
           clickhouse-backup:
             image:
               repository: altinity/clickhouse-backup

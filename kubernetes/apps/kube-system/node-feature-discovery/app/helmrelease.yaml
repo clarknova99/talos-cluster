@@ -35,6 +35,26 @@ spec:
             deviceLabelFields: ["class", "vendor", "device"]
           pci:
             deviceClassWhitelist: ["02", "0200", "0207", "0300", "0302"]
-            deviceLabelFields: ["vendor"]          
+            deviceLabelFields: ["vendor"]
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          memory: 128Mi
+    master:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 256Mi
+    gc:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          memory: 128Mi
     prometheus:
       enable: true
