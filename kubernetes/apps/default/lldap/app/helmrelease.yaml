@@ -97,6 +97,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Infra
           gethomepage.dev/icon: lldap.svg
+          gatus.home-operations.com/endpoint: |
+            group: infrastructure
         parentRefs:
           - name: envoy-internal
             namespace: network

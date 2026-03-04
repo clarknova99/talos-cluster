@@ -88,30 +88,14 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Infra
           gethomepage.dev/icon: kubernetes-dashboard.svg
+          gatus.home-operations.com/endpoint: |
+            group: observability
         parentRefs:
           - name: envoy-internal
             namespace: network
             sectionName: https
         hostnames:
           - kite.${SECRET_DOMAIN}
-    # ingress:
-    #   app:
-    #     enabled: true
-    #     className: internal
-    #     annotations:
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: "account-group"
-    #     hosts:
-    #       - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: 8080
-    #     tls:
-    #       - hosts:
-    #           - *host
-
     persistence:
       config:
         enabled: true

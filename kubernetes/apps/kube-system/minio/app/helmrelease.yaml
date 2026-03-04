@@ -120,6 +120,8 @@ spec:
           gethomepage.dev/group: Storage
           gethomepage.dev/app: minio
           gethomepage.dev/pod-selector: app.kubernetes.io/name=minio
+          gatus.home-operations.com/endpoint: |
+            group: storage
         enabled: true
         parentRefs:
           - name: envoy-internal
@@ -134,6 +136,8 @@ spec:
       s3:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          gatus.home-operations.com/endpoint: |
+            group: storage
         enabled: true
         parentRefs:
           - name: envoy-internal
@@ -150,12 +154,3 @@ spec:
         existingClaim: minio-nfs-pvc
         globalMounts:
           - path: /data
-
-    # persistence:
-    #   config:
-    #     enabled: true
-    #     type: nfs
-    #     server: 192.168.1.3
-    #     path: /volume1/network-storage/network-storage/minio
-    #     globalMounts:
-    #       - path: /data
