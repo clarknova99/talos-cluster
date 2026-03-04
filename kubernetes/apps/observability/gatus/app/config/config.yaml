@@ -84,8 +84,6 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
-
-
   - name: dittofeed-compute-properties
     group: sensei
     url: "http://dittofeed-clickhouse.sensei.svc.cluster.local:8123/?user=dittofeed&password=${SECRET_CLICKHOUSE_PASSWORD}"

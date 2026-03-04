@@ -138,6 +138,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gatus.home-operations.com/endpoint: |
             group: storage
+            conditions: ["[STATUS] == 403"]
         enabled: true
         parentRefs:
           - name: envoy-internal
