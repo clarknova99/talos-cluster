@@ -46,6 +46,13 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
+  - name: clickhouse-dittofeed-dev
+    group: database
+    url: "tcp://dittofeed-dev-clickhouse.sensei.svc.cluster.local:8123"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+
   - name: dragonfly
     group: database
     url: "tcp://dragonfly.database.svc.cluster.local:6379"
