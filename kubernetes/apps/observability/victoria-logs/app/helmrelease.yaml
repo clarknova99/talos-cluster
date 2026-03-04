@@ -21,6 +21,8 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Observability
+          gatus.home-operations.com/endpoint: |
+            group: observability
         enabled: true
         hostnames:
           - victoria-logs.${SECRET_DOMAIN}
