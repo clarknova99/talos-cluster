@@ -27,24 +27,6 @@ spec:
       kopia:
         annotations:
           reloader.stakater.com/auto: "true"
-        # initContainers:
-        #   fix-perms:
-        #     image:
-        #       repository: ghcr.io/home-operations/busybox
-        #       tag: 1.37.0@sha256:026ed7273270ec08f6902b4ae8334c23b473e5394bec3bbbdbfe580c710d50bc
-        #     command: ["/bin/sh", "-c"]
-        #     args:
-        #       - |
-        #         find /repository -not -user 1025 -exec chown 1025:1025 {} + 2>/dev/null
-        #         find /repository -type d -not -perm -g=rwx -exec chmod g+rwx {} + 2>/dev/null
-        #         find /repository -type f -not -perm -g=rw -exec chmod g+rw {} + 2>/dev/null
-        #         echo "Permissions fixed"
-        #     securityContext:
-        #       runAsUser: 0
-        #       runAsNonRoot: false
-        #       allowPrivilegeEscalation: false
-        #       readOnlyRootFilesystem: true
-        #       capabilities: { drop: ["ALL"], add: ["CHOWN", "FOWNER", "DAC_OVERRIDE"] }
         containers:
           app:
             image:
@@ -72,10 +54,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities: { drop: ["ALL"], add: ["DAC_OVERRIDE"] }
             resources:
               requests:
                 cpu: 10m
@@ -98,6 +76,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Storage
           gethomepage.dev/icon: kopia.svg
+          gatus.home-operations.com/endpoint: |
+            group: storage
         parentRefs:
           - name: envoy-internal
             namespace: network

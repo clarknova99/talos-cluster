@@ -116,6 +116,8 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Infra
           gethomepage.dev/icon: authelia.svg
+          gatus.home-operations.com/endpoint: |
+            group: infrastructure
         hostnames:
           - auth.${SECRET_DOMAIN}
           - auth.${SECRET_DOMAIN_TWO}
@@ -123,42 +125,6 @@ spec:
           - name: envoy-external
             namespace: network
             sectionName: https
-        # rules:
-        #   - backendRefs:
-        #       - identifier: *app
-        #         port: *port
-    # ingress:
-    #   app:
-    #     className: external
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-    #       hajimari.io/icon: mdi:shield-account
-    #       nginx.ingress.kubernetes.io/add-header-Cache-Control: "no-store"
-    #       nginx.ingress.kubernetes.io/add-header-Pragma: "no-cache"
-    #       nginx.ingress.kubernetes.io/add-header-X-Frame-Options: "SAMEORIGIN"
-    #       nginx.ingress.kubernetes.io/add-header-X-XSS-Protection: "1; mode=block"
-    #       # nginx.ingress.kubernetes.io/configuration-snippet: |
-    #       #   add_header Cache-Control "no-store";
-    #       #   add_header Pragma "no-cache";
-    #       #   add_header X-Frame-Options "SAMEORIGIN";
-    #       #   add_header X-XSS-Protection "1; mode=block";
-    #     hosts:
-    #       - host: auth.${SECRET_DOMAIN}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: 80
-    #       - host: auth.${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: 80
-    #     tls:
-    #       - hosts:
-    #           - auth.${SECRET_DOMAIN}
-    #           - auth.${SECRET_DOMAIN_TWO}
     persistence:
       config:
         enabled: true
