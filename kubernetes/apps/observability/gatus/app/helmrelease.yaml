@@ -97,7 +97,7 @@ spec:
           gethomepage.dev/icon: gatus.svg
           gatus.home-operations.com/enabled: "false"
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: network
             sectionName: https
         hostnames:
