@@ -135,6 +135,7 @@ spec:
           gethomepage.dev/icon: qbittorrent.svg
           gatus.home-operations.com/endpoint: |
             group: media
+            url: "tcp://qbittorrent.media.svc.cluster.local:80/api/v2/app/version
             conditions:
               - "[STATUS] == 200"
             interval: 5m
