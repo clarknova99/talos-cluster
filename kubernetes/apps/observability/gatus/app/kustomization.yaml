@@ -5,6 +5,7 @@ namespace: observability
 resources:
   - gatus.sops.yaml
   - helmrelease.yaml
+  - pvc.yaml
 configMapGenerator:
   - name: gatus-configmap
     files:

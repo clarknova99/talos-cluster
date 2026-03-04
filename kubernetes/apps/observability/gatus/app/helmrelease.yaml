@@ -147,7 +147,7 @@ spec:
       gatus: {}
     persistence:
       config:
-        type: emptyDir
+        existingClaim: gatus
       config-file:
         type: configMap
         name: gatus-configmap
