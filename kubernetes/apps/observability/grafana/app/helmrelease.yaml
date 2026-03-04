@@ -354,6 +354,8 @@ spec:
           gethomepage.dev/name: Grafana
           gethomepage.dev/group: Observability
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gatus.home-operations.com/endpoint: |
+            group: observability
         parentRefs:
           - name: envoy-external
             namespace: network
