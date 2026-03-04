@@ -34,6 +34,8 @@ servers:
       - name: forward
         parameters: ${SECRET_DOMAIN} 192.168.3.22
       - name: forward
+        parameters: ${SECRET_DOMAIN_TWO} 192.168.3.22
+      - name: forward
         parameters: . /etc/resolv.conf
       - name: cache
         configBlock: |-
