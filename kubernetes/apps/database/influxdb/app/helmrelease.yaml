@@ -52,8 +52,8 @@ spec:
         annotations:
           gatus.home-operations.com/endpoint: |
             group: database
+            url: http://influxdb-brad.${SECRET_DOMAIN}/ping
             conditions: ["[STATUS] == 204"]
-            path: /ping
         parentRefs:
           - name: envoy-external
             namespace: network
