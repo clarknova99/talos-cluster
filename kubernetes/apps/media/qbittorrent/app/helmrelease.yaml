@@ -135,10 +135,10 @@ spec:
           gethomepage.dev/icon: qbittorrent.svg
           gatus.home-operations.com/endpoint: |
             group: media
-            url: "tcp://qbittorrent.media.svc.cluster.local:80/api/v2/app/version
+            url: http://qbittorrent.media.svc.cluster.local:80
             conditions:
               - "[STATUS] == 200"
-            interval: 5m
+            interval: 1m
         parentRefs:
           - name: envoy-internal
             namespace: network
