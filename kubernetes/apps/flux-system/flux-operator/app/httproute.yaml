@@ -8,6 +8,8 @@ metadata:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/group: Infra
     gethomepage.dev/icon: flux-cd
+    gatus.home-operations.com/endpoint: |
+      group: infrastructure
 spec:
   hostnames:
     - "flux-operator.${SECRET_DOMAIN}"

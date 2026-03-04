@@ -26,6 +26,27 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
 
+  - name: clickhouse
+    group: database
+    url: "tcp://clickhouse.database.svc.cluster.local:8123"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: clickhouse-rybbit
+    group: database
+    url: "tcp://rybbit-clickhouse.sensei.svc.cluster.local:8123"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+
+  - name: clickhouse-dittofeed
+    group: database
+    url: "tcp://dittofeed-clickhouse.sensei.svc.cluster.local:8123"
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+
   - name: dragonfly
     group: database
     url: "tcp://dragonfly.database.svc.cluster.local:6379"
