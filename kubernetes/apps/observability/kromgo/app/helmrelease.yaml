@@ -82,6 +82,7 @@ spec:
           gatus.home-operations.com/endpoint: |
             group: observability
             url: https://kromgo.${SECRET_DOMAIN}/readyz
+            conditions: ["[STATUS] == 404"]
         parentRefs:
           - name: envoy-internal
             namespace: network
