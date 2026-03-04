@@ -80,7 +80,7 @@ spec:
       main:
         annotations:
           gatus.home-operations.com/endpoint: |
-            group: database
+            group: observability
             url: https://kromgo.${SECRET_DOMAIN}/readyz
         parentRefs:
           - name: envoy-internal
