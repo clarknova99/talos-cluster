@@ -65,6 +65,16 @@ spec:
           rename k_labels_app app
           rename k_labels_k8s-app app
 
+        [FILTER]
+          name grep
+          match kubernetes.*
+          exclude log kube-probe
+
+        [FILTER]
+          name grep
+          match kubernetes.*
+          exclude log Gatus
+
       customParsers: |-
         [PARSER]
           name containerd
