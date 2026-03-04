@@ -25,10 +25,16 @@ endpoints:
     interval: 1m
     conditions:
       - "[STATUS] == 200"
-    alerts:
-      - type: discord
-        description: "external connectivity lost"
-        send-on-resolved: true
+
+  - name: dragonfly
+    group: database
+    url: "tcp://dragonfly.database.svc.cluster.local:6379"
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    conditions:
+      - "[CONNECTED] == true"
 
   - name: sensei backend
     group: sensei
@@ -44,6 +50,16 @@ endpoints:
         description: "healthcheck failed"
         send-on-resolved: true
 
+  - name: postgresql16
+    group: database
+    url: "tcp://postgres16-rw.database.svc.cluster.local:5432"
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    conditions:
+      - "[CONNECTED] == true"
+
   - name: postgresql16vector
     group: database
     url: "tcp://postgres16vector-rw.database.svc.cluster.local:5432"
@@ -57,6 +73,18 @@ endpoints:
     #   - type: discord
     #     description: "healthcheck failed"
     #     send-on-resolved: true
+
+  - name: redis
+    group: database
+    url: "tcp://redis.database.svc.cluster.local:6379"
+    interval: 1m
+    ui:
+      hide-hostname: true
+      hide-url: true
+    conditions:
+      - "[CONNECTED] == true"
+
+
 
   - name: dittofeed-compute-properties
     group: sensei
