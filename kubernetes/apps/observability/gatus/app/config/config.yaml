@@ -44,19 +44,19 @@ endpoints:
         description: "healthcheck failed"
         send-on-resolved: true
 
-  - name: postgresql
-    group: infrastructure
-    url: "tcp://192.168.3.42:5432"
+  - name: postgresql16vector
+    group: database
+    url: "tcp://postgres16vector-rw.database.svc.cluster.local:5432"
     interval: 1m
     ui:
       hide-hostname: true
       hide-url: true
     conditions:
       - "[CONNECTED] == true"
-    alerts:
-      - type: discord
-        description: "healthcheck failed"
-        send-on-resolved: true
+    # alerts:
+    #   - type: discord
+    #     description: "healthcheck failed"
+    #     send-on-resolved: true
 
   - name: dittofeed-compute-properties
     group: sensei
