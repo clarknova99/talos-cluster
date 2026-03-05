@@ -1,3 +1,0 @@
----
-providerRegex: ^(mercury|venus|earth|mars|jupiter)$
-bypassDnsResolution: true
