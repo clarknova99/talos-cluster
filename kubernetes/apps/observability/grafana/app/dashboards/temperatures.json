@@ -191,7 +191,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.241:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp0\"}",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.241:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp1\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
