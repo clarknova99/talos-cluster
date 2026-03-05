@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 56,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -39,6 +40,7 @@
             "axisLabel": "temperature",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 20,
             "gradientMode": "none",
@@ -55,13 +57,14 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "off"
+              "mode": "line"
             }
           },
           "links": [],
@@ -72,7 +75,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -125,7 +128,7 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 6,
+        "w": 7,
         "x": 0,
         "y": 0
       },
@@ -143,12 +146,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.2.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -156,11 +160,11 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.241:9100\"}",
+          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.241:9100\", chip=\"platform_coretemp_0\", sensor=\"temp1\"}[$__interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} temp",
+          "legendFormat": "CPU",
           "range": true,
           "refId": "A",
           "step": 240
@@ -171,12 +175,12 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_alarm_celsius{instance=\"192.168.3.241:9100\"}",
+          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.241:9100\", chip=\"nvme_nvme0\", sensor=\"temp1\"}[$__interval])",
           "format": "time_series",
-          "hide": true,
+          "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical Alarm",
+          "legendFormat": "NVME",
           "range": true,
           "refId": "B",
           "step": 240
@@ -187,45 +191,13 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_celsius{instance=\"192.168.3.241:9100\"}",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.241:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp0\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical",
+          "legendFormat": "SYSTEM",
           "range": true,
           "refId": "C",
-          "step": 240
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_hyst_celsius{instance=\"192.168.3.241:9100\"}",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical Historical",
-          "range": true,
-          "refId": "D",
-          "step": 240
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "node_hwmon_temp_max_celsius{instance=\"192.168.3.241:9100\"}",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Max",
-          "range": true,
-          "refId": "E",
           "step": 240
         }
       ],
@@ -250,6 +222,7 @@
             "axisLabel": "temperature",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 20,
             "gradientMode": "none",
@@ -266,13 +239,14 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "off"
+              "mode": "line"
             }
           },
           "links": [],
@@ -283,7 +257,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -336,8 +310,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 6,
-        "x": 6,
+        "w": 7,
+        "x": 7,
         "y": 0
       },
       "id": 13,
@@ -354,12 +328,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.2.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -369,14 +344,14 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.101:9100\"}[$__interval])",
+          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.101:9100\", chip=\"platform_coretemp_0\", sensor=\"temp1\"}[$__interval])  ",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }}  {{ sensor }}",
+          "legendFormat": "CPU",
           "range": true,
           "refId": "A",
           "step": 240,
@@ -388,12 +363,12 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_alarm_celsius{instance=\"192.168.3.101:9100\"}",
+          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.101:9100\", chip=\"nvme_nvme0\", sensor=\"temp1\"}[$__interval])",
           "format": "time_series",
-          "hide": true,
+          "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical Alarm",
+          "legendFormat": "NVME",
           "range": true,
           "refId": "B",
           "step": 240
@@ -405,46 +380,14 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(node_hwmon_temp_crit_celsius{instance=\"192.168.3.101:9100\"} [$__interval])",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.101:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp0\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical",
+          "legendFormat": "SYSTEM",
           "range": true,
           "refId": "C",
-          "step": 240
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_hyst_celsius{instance=\"192.168.3.101:9100\"}",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical Historical",
-          "range": true,
-          "refId": "D",
-          "step": 240
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "node_hwmon_temp_max_celsius{instance=\"192.168.3.101:9100\"}",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Max",
-          "range": true,
-          "refId": "E",
           "step": 240
         }
       ],
@@ -469,6 +412,7 @@
             "axisLabel": "temperature",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 20,
             "gradientMode": "none",
@@ -485,13 +429,14 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "off"
+              "mode": "line"
             }
           },
           "links": [],
@@ -502,7 +447,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -555,8 +500,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 6,
-        "x": 12,
+        "w": 7,
+        "x": 14,
         "y": 0
       },
       "id": 14,
@@ -573,12 +518,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.2.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -588,14 +534,14 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.214:9100\"}[$__interval])",
+          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.214:9100\", chip=\"platform_coretemp_0\", sensor=\"temp1\"}[$__interval])",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }}  {{ sensor }}",
+          "legendFormat": "CPU",
           "range": true,
           "refId": "A",
           "step": 240,
@@ -607,12 +553,12 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_alarm_celsius{instance=\"192.168.3.214:9100\"}",
+          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.214:9100\", chip=\"nvme_nvme0\", sensor=\"temp1\"}[$__interval])",
           "format": "time_series",
-          "hide": true,
+          "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical Alarm",
+          "legendFormat": "NVME",
           "range": true,
           "refId": "B",
           "step": 240
@@ -624,46 +570,14 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(node_hwmon_temp_crit_celsius{instance=\"192.168.3.214:9100\"} [$__interval])",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.214:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp0\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical",
+          "legendFormat": "SYSTEM",
           "range": true,
           "refId": "C",
-          "step": 240
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_hyst_celsius{instance=\"192.168.3.214:9100\"}",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical Historical",
-          "range": true,
-          "refId": "D",
-          "step": 240
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "node_hwmon_temp_max_celsius{instance=\"192.168.3.214:9100\"}",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Max",
-          "range": true,
-          "refId": "E",
           "step": 240
         }
       ],
@@ -688,6 +602,7 @@
             "axisLabel": "temperature",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 20,
             "gradientMode": "none",
@@ -704,13 +619,14 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "off"
+              "mode": "line"
             }
           },
           "links": [],
@@ -721,7 +637,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -774,9 +690,9 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 6,
-        "x": 18,
-        "y": 0
+        "w": 7,
+        "x": 0,
+        "y": 12
       },
       "id": 15,
       "options": {
@@ -792,12 +708,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.2.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -807,16 +724,16 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.102:9100\"}[$__interval])",
+          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.102:9100\", chip=\"platform_coretemp_0\", sensor=\"temp1\"}[$__interval])",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }}  {{ sensor }}",
+          "legendFormat": "CPU",
           "range": true,
-          "refId": "A",
+          "refId": "A1",
           "step": 240,
           "useBackend": false
         },
@@ -826,14 +743,14 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_alarm_celsius{instance=\"192.168.3.102:9100\"}",
+          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.102:9100\", chip=\"nvme_nvme0\", sensor=\"temp1\"}[$__interval])",
           "format": "time_series",
-          "hide": true,
+          "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical Alarm",
+          "legendFormat": "NVME",
           "range": true,
-          "refId": "B",
+          "refId": "A2",
           "step": 240
         },
         {
@@ -843,46 +760,14 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(node_hwmon_temp_crit_celsius{instance=\"192.168.3.102:9100\"} [$__interval])",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.102:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp2\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical",
+          "legendFormat": "SYSTEM",
           "range": true,
-          "refId": "C",
-          "step": 240
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_hyst_celsius{instance=\"192.168.3.102:9100\"}",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical Historical",
-          "range": true,
-          "refId": "D",
-          "step": 240
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "node_hwmon_temp_max_celsius{instance=\"192.168.3.102:9100\"}",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Max",
-          "range": true,
-          "refId": "E",
+          "refId": "A3",
           "step": 240
         }
       ],
@@ -907,6 +792,7 @@
             "axisLabel": "temperature",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 20,
             "gradientMode": "none",
@@ -923,13 +809,14 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "off"
+              "mode": "line"
             }
           },
           "links": [],
@@ -940,7 +827,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -993,8 +880,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 6,
-        "x": 18,
+        "w": 7,
+        "x": 7,
         "y": 12
       },
       "id": 16,
@@ -1011,12 +898,13 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.2.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -1026,14 +914,14 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.219:9100\"}[$__interval])",
+          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.219:9100\", chip=\"platform_coretemp_0\", sensor=\"temp1\"}[$__interval])  ",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }}  {{ sensor }}",
+          "legendFormat": "CPU",
           "range": true,
           "refId": "A",
           "step": 240,
@@ -1045,12 +933,12 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_alarm_celsius{instance=\"192.168.3.219:9100\"}",
+          "expr": "avg_over_time(node_hwmon_temp_celsius{instance=\"192.168.3.219:9100\", chip=\"nvme_nvme0\", sensor=\"temp1\"}[$__interval])   ",
           "format": "time_series",
-          "hide": true,
+          "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical Alarm",
+          "legendFormat": "NVME",
           "range": true,
           "refId": "B",
           "step": 240
@@ -1062,46 +950,14 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg_over_time(node_hwmon_temp_crit_celsius{instance=\"192.168.3.219:9100\"} [$__interval])",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.219:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp2\"}    ",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical",
+          "legendFormat": "SYSTEM",
           "range": true,
           "refId": "C",
-          "step": 240
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "node_hwmon_temp_crit_hyst_celsius{instance=\"192.168.3.219:9100\"}",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Critical Historical",
-          "range": true,
-          "refId": "D",
-          "step": 240
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "expr": "node_hwmon_temp_max_celsius{instance=\"192.168.3.219:9100\"}",
-          "format": "time_series",
-          "hide": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{ chip }} {{ sensor }} Max",
-          "range": true,
-          "refId": "E",
           "step": 240
         }
       ],
@@ -1109,8 +965,9 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": []
@@ -1123,6 +980,5 @@
   "timezone": "",
   "title": "Temperatures",
   "uid": "b607101b-35b5-4d69-ad12-d7770bf06f05",
-  "version": 1,
-  "weekStart": ""
+  "version": 1
 }
