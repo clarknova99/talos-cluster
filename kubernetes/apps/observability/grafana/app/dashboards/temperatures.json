@@ -191,11 +191,11 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.241:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp1\"}",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.241:9100\", chip=\"target1:0:0_1:0:0:0\", sensor=\"temp1\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "SYSTEM",
+          "legendFormat": "SATA",
           "range": true,
           "refId": "C",
           "step": 240
@@ -380,12 +380,12 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.101:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp0\"}",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.101:9100\", chip=\"target1:0:0_1:0:0:0\", sensor=\"temp1\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "SYSTEM",
+          "legendFormat": "SATA",
           "range": true,
           "refId": "C",
           "step": 240
@@ -570,12 +570,12 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.214:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp0\"}",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.214:9100\", chip=\"target1:0:0_1:0:0:0\", sensor=\"temp1\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "SYSTEM",
+          "legendFormat": "SATA",
           "range": true,
           "refId": "C",
           "step": 240
@@ -756,19 +756,15 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "prometheus"
           },
           "editorMode": "code",
-          "exemplar": false,
-          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.102:9100\", chip=\"thermal_thermal_zone0\", sensor=\"temp2\"}",
-          "format": "time_series",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.102:9100\", chip=\"target2:0:0_2:0:0:0\", sensor=\"temp1\"}",
+          "hide": false,
           "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "SYSTEM",
+          "legendFormat": "SATA",
           "range": true,
-          "refId": "A3",
-          "step": 240
+          "refId": "A"
         }
       ],
       "title": "mars",
@@ -959,6 +955,19 @@
           "range": true,
           "refId": "C",
           "step": 240
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "node_hwmon_temp_celsius{instance=\"192.168.3.219:9100\", chip=\"target0:0:0_0:0:0:0\", sensor=\"temp1\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "SATA",
+          "range": true,
+          "refId": "D"
         }
       ],
       "title": "jupiter",
