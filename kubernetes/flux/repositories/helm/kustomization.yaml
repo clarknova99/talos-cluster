@@ -30,5 +30,4 @@ resources:
   - ./rook-ceph.yaml
   - ./runix.yaml
   - ./spegel.yaml
-  - ./stakater.yaml
   - ./stevehipwell.yaml
