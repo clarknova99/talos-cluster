@@ -15,8 +15,8 @@ spec:
       reporting_enabled: "false"
     auth:
         oauth_allow_insecure_email_lookup: "true"
-    auth.anonymous:
-      enabled: "true"
+    # auth.anonymous:
+    #   enabled: "true"
     auth.generic_oauth:
       enabled: "true"
       name: Authelia
