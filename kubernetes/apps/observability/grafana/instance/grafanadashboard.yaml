@@ -15,3 +15,97 @@ spec:
   configMapRef:
     name: grafana-operator-dashboard
     key: grafana-operator.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: machine-temps
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasources:
+    - datasourceName: prometheus
+      inputName: DS_PROMETHEUS
+  configMapRef:
+    name: machine-temps-dashboard
+    key: temperatures.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: iotawatt
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  configMapRef:
+    name: iotawatt-dashboard
+    key: iotawatt.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: pods-dashboard
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  configMapRef:
+    name: pods-dashboard
+    key: pods-dashboard.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: pods-dashboard2
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  configMapRef:
+    name: pods-dashboard2
+    key: pods-dashboard2.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: ingress-logs
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  configMapRef:
+    name: ingress-logs
+    key: ingress-logs.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: kube-dash
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  configMapRef:
+    name: kube-dash
+    key: kube.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: smartctl-health
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  configMapRef:
+    name: smartctl-health
+    key: smartctl-exporter.json

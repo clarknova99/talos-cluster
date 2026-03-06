@@ -1,0 +1,179 @@
+{
+  "title": "Kubernetes Pods – Workload View",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "timezone": "browser",
+  "templating": {
+    "list": [
+      {
+        "name": "namespace",
+        "type": "query",
+        "datasource": "prometheus",
+        "query": "label_values(kube_pod_info, namespace)",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "multi": true
+      },
+      {
+        "name": "status",
+        "type": "custom",
+        "options": [
+          { "text": "Running", "value": "Running" },
+          { "text": "Pending", "value": "Pending" },
+          { "text": "Failed", "value": "Failed" },
+          { "text": "Succeeded", "value": "Succeeded" },
+          { "text": "Unknown", "value": "Unknown" }
+        ],
+        "current": {
+          "text": "Running",
+          "value": "Running"
+        },
+        "multi": true,
+        "includeAll": true
+      }
+    ]
+  },
+  "panels": [
+{
+  "type": "table",
+  "title": "Pods",
+  "datasource": {
+    "type": "prometheus",
+    "uid": "prometheus"
+  },
+  "targets": [
+    {
+      "refId": "INFO",
+      "format": "table",
+      "instant": true,
+      "expr": "label_join(max by (namespace, pod, node, pod_ip) (kube_pod_info{namespace=~\"$namespace\"}), \"pod_key\", \"/\", \"namespace\", \"pod\")"
+    },
+    {
+      "refId": "OWNER",
+      "format": "table",
+      "instant": true,
+      "expr": "label_join(max by (namespace, pod, owner_kind) (kube_pod_owner{namespace=~\"$namespace\"}), \"pod_key\", \"/\", \"namespace\", \"pod\")"
+    },
+    {
+      "refId": "CPU",
+      "format": "table",
+      "instant": true,
+      "expr": "label_join(sum by (namespace, pod) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\",container!=\"\",image!=\"\"}[5m])), \"pod_key\", \"/\", \"namespace\", \"pod\")"
+    },
+    {
+      "refId": "MEM",
+      "format": "table",
+      "instant": true,
+      "expr": "label_join(sum by (namespace, pod) (container_memory_working_set_bytes{namespace=~\"$namespace\",container!=\"\",image!=\"\"}), \"pod_key\", \"/\", \"namespace\", \"pod\")"
+    },
+    {
+      "refId": "RESTARTS",
+      "format": "table",
+      "instant": true,
+      "expr": "label_join(sum by (namespace, pod) (kube_pod_container_status_restarts_total{namespace=~\"$namespace\"}), \"pod_key\", \"/\", \"namespace\", \"pod\")"
+    },
+    {
+      "refId": "PHASE",
+      "format": "table",
+      "instant": true,
+      "expr": "label_join(max by (namespace, pod, phase) (kube_pod_status_phase{namespace=~\"$namespace\",phase=~\"$status\"} == 1), \"pod_key\", \"/\", \"namespace\", \"pod\")"
+    },
+    {
+      "refId": "CBOX",
+      "format": "table",
+      "instant": true,
+      "expr": "(\nlabel_join(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_ready{namespace=~\"$namespace\"}==1, \"cbox\", \"🟩 $1\", \"container\", \"(.*)\")\n  ),\n  \"pod_key\",\"/\",\"namespace\",\"pod\"\n)\n)\nOR\n(\nlabel_join(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_waiting{namespace=~\"$namespace\"}==1, \"cbox\", \"🟧 $1\", \"container\", \"(.*)\")\n  ),\n  \"pod_key\",\"/\",\"namespace\",\"pod\"\n)\n)\nOR\n(\nlabel_join(\n  max by (namespace,pod,cbox) (\n    label_replace(kube_pod_container_status_terminated{namespace=~\"$namespace\"}==1, \"cbox\", \"🟥 $1\", \"container\", \"(.*)\")\n  ),\n  \"pod_key\",\"/\",\"namespace\",\"pod\"\n)\n)"
+    }
+  ],
+  "transformations": [
+    { "id": "labelsToFields", "options": {} },
+    { "id": "joinByField", "options": { "byField": "pod_key", "mode": "outer" } },
+    {
+      "id": "groupBy",
+      "options": {
+        "fields": { "pod_key": true },
+        "aggregations": [
+          { "fieldName": "pod", "reducer": "lastNotNull", "alias": "Name" },
+          { "fieldName": "namespace", "reducer": "lastNotNull", "alias": "Namespace" },
+          { "fieldName": "node", "reducer": "lastNotNull", "alias": "Node" },
+          { "fieldName": "pod_ip", "reducer": "lastNotNull", "alias": "Pod IP" },
+          { "fieldName": "owner_kind", "reducer": "lastNotNull", "alias": "Controlled By" },
+          { "fieldName": "Value #CPU", "reducer": "lastNotNull", "alias": "CPU (cores)" },
+          { "fieldName": "Value #MEM", "reducer": "lastNotNull", "alias": "Memory" },
+          { "fieldName": "Value #RESTARTS", "reducer": "lastNotNull", "alias": "Restarts" },
+          { "fieldName": "phase", "reducer": "lastNotNull", "alias": "Status" },
+          { "fieldName": "cbox", "reducer": "uniqueValues", "alias": "Containers" }
+        ]
+      }
+    },
+    {
+      "id": "organize",
+      "options": {
+        "excludeByName": {
+          "endpoint": true,
+          "host_ip": true,
+          "host_network": true,
+          "instance": true,
+          "job": true,
+          "kubernetes_node": true,
+          "uid": true,
+          "priority_class": true,
+          "pod_key": true,
+          "namespace 1": true,
+          "namespace 2": true,
+          "namespace 3": true,
+          "namespace 4": true,
+          "Memory (bytes)": true,
+          "Memory (MiB)": true,
+          "container": true
+        },
+        "indexByName": {
+          "Name": 0,
+          "Namespace": 1,
+          "Containers": 2,
+          "CPU (cores)": 3,
+          "Memory": 4,
+          "Restarts": 5,
+          "Controlled By": 6,
+          "Node": 7,
+          "Pod IP": 8,
+          "Status": 9
+        }
+      }
+    }
+  ],
+  "fieldConfig": {
+    "defaults": { "custom": { "align": "left" } },
+    "overrides": [
+      {
+        "matcher": { "id": "byName", "options": "CPU (cores)" },
+        "properties": [
+          { "id": "unit", "value": "cores" },
+          { "id": "decimals", "value": 3 }
+        ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Memory" },
+        "properties": [
+          { "id": "unit", "value": "bytes" }
+        ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Restarts" },
+        "properties": [
+          { "id": "decimals", "value": 0 }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "showHeader": true,
+    "cellHeight": "sm"
+  }
+}
+  ]
+}

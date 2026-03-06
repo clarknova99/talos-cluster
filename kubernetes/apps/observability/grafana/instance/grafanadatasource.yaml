@@ -96,3 +96,21 @@ spec:
       connMaxLifetime: 14400
       postgresVersion: 1000
       timescaledb: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: influxdb
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasource:
+    type: influxdb
+    name: influxdb
+    uid: influxdb
+    access: proxy
+    url: http://influxdb.database.svc.cluster.local:8086
+    jsonData:
+      dbName: brad

@@ -1,0 +1,1076 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Kubernetes Pod Overview - Lens-style pod listing with status, resources, containers, and ownership info",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": 73,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": [
+                "countAll"
+              ]
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pod"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 372
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Namespace"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 175
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Bar"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 80
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge",
+                  "valueDisplayMode": "hidden"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 1.01
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "#3274D9",
+                      "value": 0
+                    },
+                    {
+                      "color": "#FADE2A",
+                      "value": 0.65
+                    },
+                    {
+                      "color": "#FF4444",
+                      "value": 0.85
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "displayName",
+                "value": " "
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "custom.width",
+                "value": 80
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mem %"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 213
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge",
+                  "valueDisplayMode": "text"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 1.01
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "#46434300",
+                      "value": 0
+                    },
+                    {
+                      "color": "blue",
+                      "value": 0.0001
+                    },
+                    {
+                      "color": "orange",
+                      "value": 0.8
+                    },
+                    {
+                      "color": "#FF4444",
+                      "value": 0.9
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "index": 0,
+                        "text": "N/A"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Containers"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge",
+                  "valueDisplayMode": "hidden"
+                }
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 0.5
+                    },
+                    {
+                      "color": "#73BF69",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "noValue",
+                "value": "N/A"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 87
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Restarts"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 5
+                    },
+                    {
+                      "color": "orange",
+                      "value": 10
+                    },
+                    {
+                      "color": "red",
+                      "value": 25
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Controlled By"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "DaemonSet": {
+                        "color": "blue",
+                        "index": 0,
+                        "text": "DaemonSet"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "ReplicaSet": {
+                        "color": "purple",
+                        "index": 1,
+                        "text": "ReplicaSet"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "StatefulSet": {
+                        "color": "orange",
+                        "index": 2,
+                        "text": "StatefulSet"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "Job": {
+                        "color": "yellow",
+                        "index": 3,
+                        "text": "Job"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "Node": {
+                        "color": "green",
+                        "index": 4,
+                        "text": "Node"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Node"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "Running": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Running"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "Succeeded": {
+                        "color": "blue",
+                        "index": 1,
+                        "text": "Succeeded"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "Pending": {
+                        "color": "orange",
+                        "index": 2,
+                        "text": "Pending"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "Failed": {
+                        "color": "red",
+                        "index": 3,
+                        "text": "Failed"
+                      }
+                    },
+                    "type": "value"
+                  },
+                  {
+                    "options": {
+                      "Unknown": {
+                        "color": "red",
+                        "index": 4,
+                        "text": "Unknown"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Age"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #L"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 297
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 30,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Memory"
+          }
+        ]
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "kube_pod_info{namespace=~\"$namespace\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}[5m]))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_status_restarts_total{namespace=~\"$namespace\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "kube_pod_status_phase{namespace=~\"$namespace\"} == 1",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "time() - kube_pod_created{namespace=~\"$namespace\"}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_status_running{namespace=~\"$namespace\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "G"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_status_waiting{namespace=~\"$namespace\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "H"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (pod, namespace) (kube_pod_container_status_terminated{namespace=~\"$namespace\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "I"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count by (pod, namespace) (kube_pod_container_info{namespace=~\"$namespace\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "J"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "clamp_max(sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}[5m])) / sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"cpu\", namespace=~\"$namespace\"}), 1) or ((sum by (pod, namespace) (rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}[5m])) * 0) unless sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"cpu\", namespace=~\"$namespace\"}))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "K"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "clamp_max(sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}) / sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"memory\", namespace=~\"$namespace\"}), 1) or ((sum by (pod, namespace) (container_memory_working_set_bytes{namespace=~\"$namespace\", container!=\"\", container!=\"POD\"}) * 0) unless sum by (pod, namespace) (kube_pod_container_resource_limits{resource=\"memory\", namespace=~\"$namespace\"}))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "L"
+        }
+      ],
+      "title": "Pods",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "pod",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Container Health",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #G"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #J"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNotNull"
+                },
+                "fieldName": "pod"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 10": true,
+              "Time 11": true,
+              "Time 12": true,
+              "Time 2": true,
+              "Time 3": true,
+              "Time 4": true,
+              "Time 5": true,
+              "Time 6": true,
+              "Time 7": true,
+              "Time 8": true,
+              "Time 9": true,
+              "Value #A": true,
+              "Value #E": true,
+              "Value #G": true,
+              "Value #H": true,
+              "Value #I": true,
+              "Value #K": true,
+              "__name__": true,
+              "__name__ 1": true,
+              "__name__ 2": true,
+              "container": true,
+              "container 1": true,
+              "container 2": true,
+              "container 3": true,
+              "container 4": true,
+              "container_id": true,
+              "created_by_name": true,
+              "endpoint": true,
+              "endpoint 1": true,
+              "endpoint 2": true,
+              "endpoint 3": true,
+              "host_ip": true,
+              "host_network": true,
+              "image": true,
+              "image_id": true,
+              "image_spec": true,
+              "instance": true,
+              "instance 1": true,
+              "instance 2": true,
+              "instance 3": true,
+              "internal_ip": true,
+              "ip": true,
+              "job": true,
+              "job 1": true,
+              "job 2": true,
+              "job 3": true,
+              "kubernetes_node 1": true,
+              "kubernetes_node 2": true,
+              "kubernetes_node 3": true,
+              "metrics_path": true,
+              "namespace 1": true,
+              "namespace 10": true,
+              "namespace 11": true,
+              "namespace 2": true,
+              "namespace 3": true,
+              "namespace 4": true,
+              "namespace 5": true,
+              "namespace 6": true,
+              "namespace 7": true,
+              "namespace 8": true,
+              "namespace 9": true,
+              "pod_ip": true,
+              "priority_class": true,
+              "resource 1": true,
+              "resource 2": true,
+              "service": true,
+              "service 1": true,
+              "service 2": true,
+              "service 3": true,
+              "uid": true,
+              "uid 1": true,
+              "uid 2": true,
+              "uid 3": true,
+              "unit 1": true,
+              "unit 2": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Container Health": 6,
+              "Time 1": 13,
+              "Time 10": 64,
+              "Time 11": 66,
+              "Time 12": 68,
+              "Time 2": 29,
+              "Time 3": 31,
+              "Time 4": 33,
+              "Time 5": 35,
+              "Time 6": 46,
+              "Time 7": 55,
+              "Time 8": 58,
+              "Time 9": 61,
+              "Value #A": 28,
+              "Value #B": 3,
+              "Value #C": 4,
+              "Value #D": 8,
+              "Value #E": 45,
+              "Value #F": 12,
+              "Value #G": 57,
+              "Value #H": 60,
+              "Value #I": 63,
+              "Value #J": 7,
+              "Value #K": 2,
+              "Value #L": 5,
+              "__name__ 1": 14,
+              "__name__ 2": 36,
+              "container 1": 15,
+              "container 2": 37,
+              "container 3": 47,
+              "created_by_kind": 9,
+              "created_by_name": 16,
+              "endpoint 1": 17,
+              "endpoint 2": 38,
+              "endpoint 3": 48,
+              "host_ip": 18,
+              "host_network": 19,
+              "instance 1": 20,
+              "instance 2": 39,
+              "instance 3": 49,
+              "job 1": 21,
+              "job 2": 40,
+              "job 3": 50,
+              "kubernetes_node 1": 22,
+              "kubernetes_node 2": 41,
+              "kubernetes_node 3": 51,
+              "namespace 1": 23,
+              "namespace 10": 65,
+              "namespace 11": 67,
+              "namespace 12": 1,
+              "namespace 2": 30,
+              "namespace 3": 32,
+              "namespace 4": 34,
+              "namespace 5": 42,
+              "namespace 6": 52,
+              "namespace 7": 56,
+              "namespace 8": 59,
+              "namespace 9": 62,
+              "node": 10,
+              "phase": 11,
+              "pod": 0,
+              "pod_ip": 24,
+              "priority_class": 27,
+              "service 1": 25,
+              "service 2": 43,
+              "service 3": 53,
+              "uid 1": 26,
+              "uid 2": 44,
+              "uid 3": 54
+            },
+            "renameByName": {
+              "Container Health": "Containers",
+              "Value #B": "CPU",
+              "Value #C": "Memory",
+              "Value #D": "Restarts",
+              "Value #F": "Age",
+              "Value #J": "Total",
+              "Value #K": "CPU Bar",
+              "Value #L": "Mem %",
+              "created_by_kind": "Controlled By",
+              "namespace": "Namespace",
+              "namespace 12": "Namespace",
+              "node": "Node",
+              "phase": "Status",
+              "pod": "Pod"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "30s",
+  "schemaVersion": 42,
+  "tags": [
+    "kubernetes",
+    "pods",
+    "k8s"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "includeAll": true,
+        "label": "Namespace",
+        "multi": true,
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "query": "label_values(kube_pod_info, namespace)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "includeAll": true,
+        "label": "Status",
+        "multi": true,
+        "name": "status",
+        "options": [],
+        "query": {
+          "query": "label_values(kube_pod_status_phase, phase)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Kubernetes Pod Overview",
+  "uid": "k8s-pod-overview",
+  "version": 7
+}
