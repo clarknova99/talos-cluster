@@ -30,7 +30,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/zxh326/kite
+              repository: ghcr.io/kite-org/kite
               tag: v0.8.0
             env:
               KITE_USERNAME: ${SECRET_CAM_USERNAME}
