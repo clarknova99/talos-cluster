@@ -1,17 +1,13 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: grafana-admin-secrets
+    name: grafana-admin-password-secret
 ## sops --encrypt --in-place ./kubernetes/apps/observability/grafana/app/grafana.sops.yaml
-## sops --decrypt ./kubernetes/apps/observability/grafana/app/grafana.sops.yaml | kubectl apply -f -    
+## sops --decrypt ./kubernetes/apps/observability/grafana/app/grafana.sops.yaml | kubectl apply -f -
 stringData:
     admin-user: ENC[AES256_GCM,data:R0z+cARCbFi7KaJdbA==,iv:317Ezi21n806Wz3baoSDgDB+SwK2ynnuCJ4O4dTCvQ4=,tag:F80XGnmxIGRdDoGHfy7sDA==,type:str]
-    admin-password: ENC[AES256_GCM,data:LYsWtQ6VhMJ2,iv:EeIRi50DoB3Upj4Y4HnyXHrwzdOp/eIX/Ylpy7TQmt4=,tag:vzZQZ/jc8Vze8pp5ZKta6A==,type:str]
+    GF_SECURITY_ADMIN_PASSWORD: ENC[AES256_GCM,data:wO57EOoSBiG6,iv:ARoN3ejf40195lkbiDPOT5iqUZwpJHyC65kyaPeWPmw=,tag:fvRsgyvjEexCsfS1ODwXxg==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
     age:
         - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
           enc: |
@@ -22,8 +18,7 @@ sops:
             TC84RXRBdzZJQUJFbTF0a3cxeVFvSzAKrIEI7DJKXVaBBG9CkVbRdO4UTlSwroAk
             jiCs6A69UVabrtJvDs4x3zmIYDE0Fnro02FPaLL293aU2+P5HYdnnA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-27T20:55:55Z"
-    mac: ENC[AES256_GCM,data:yx8bX54rSbUWUES5zyWOSZOsEYl3BWKn1UuBg8FoL2oUklbXeRsKzJnmNz/x3xiEFFGLvv8ypzDyr2heTh3p1TSj0aGkCKKvAGNW7P1rcHqI7opptDuQa+dUjfjUH2DwnMs2JuDEzEwo2PADTenvYFwWyVnlEjJ4fH+GkwP2zL8=,iv:540cI/JBmegsc+8PurWJxOW0ucX8KhiQFpA/0UvjUFQ=,tag:EKd2Cnnyzy2nGWMEDJVesA==,type:str]
-    pgp: []
+    lastmodified: "2026-03-06T19:40:44Z"
+    mac: ENC[AES256_GCM,data:VgZCj63DRR/JImbsN2bNdDSGoq06X0FZXAX8r3A66o/2IxxS5tDey8iysKZzGahKmvcKo0IrDEOQyFpT56lbgajS7dmyzEYwar9igQ76IBoMFV7ie+WX+06jo0M+sujIVxQ6Z8nfMFYPuaglCXtkNEK8V/HvxpBdkBV7zPeME+s=,iv:M14ZUdZqcCTlppDhGLd7c+lFzZUQFDCqOV1IAtvZi8o=,tag:irzlcDEe0lNO7WJfBov0Sg==,type:str]
     encrypted_regex: ^(data|stringData)$
-    version: 3.8.1
+    version: 3.12.1

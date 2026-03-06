@@ -3,7 +3,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: Grafana
 metadata:
-  name: grafana-instance
+  name: grafana
   labels:
     dashboards: grafana
 spec:
@@ -29,7 +29,7 @@ spec:
       angular_support_enabled: "true"
     server:
       enable_gzip: "true"
-      root_url: https://grafana-operator.${SECRET_DOMAIN}
+      root_url: https://grafana.${SECRET_DOMAIN}
   deployment:
     spec:
       strategy:
@@ -61,7 +61,7 @@ spec:
   httpRoute:
     spec:
       hostnames:
-        - grafana-operator.${SECRET_DOMAIN}
+        - grafana.${SECRET_DOMAIN}
       parentRefs:
         - name: envoy-internal
           namespace: network
