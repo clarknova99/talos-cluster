@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1beta1.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./grafanadashboard.yaml
+configMapGenerator:
+  - name: sensei-logs
+    files:
+      - sensei.json
+    options:
+      annotations:
+        grafana_folder: "sensei"
+  - name: sensei-metrics
+    files:
+      - sensei-postgres-metrics.json
+    options:
+      annotations:
+        grafana_folder: "sensei"
+  - name: sensei-victoria-logs
+    files:
+      - sensei-victoria-logs.json
+    options:
+      annotations:
+        grafana_folder: "sensei"
+  - name: sensei-kubernetes-aws
+    files:
+      - kubernetes.json
+    options:
+      annotations:
+        grafana_folder: "sensei"
+  - name: sensei-kubernetes
+    files:
+      - kubernetes-namespace.json
+    options:
+      annotations:
+        grafana_folder: "sensei"
+  - name: kubernetes-global
+    files:
+      - kubernetes-global.json
+    options:
+      annotations:
+        grafana_folder: "sensei"
+  - name: sensei-cnpg
+    files:
+      - sensei-cnpg.json
+    options:
+      annotations:
+        grafana_folder: "sensei"
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+  labels:
+    grafana_sensei_dashboard: "true"

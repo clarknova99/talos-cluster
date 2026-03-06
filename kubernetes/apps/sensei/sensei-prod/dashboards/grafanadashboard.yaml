@@ -1,0 +1,104 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: sensei-logs
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  folder: sensei
+  configMapRef:
+    name: sensei-logs
+    key: sensei.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: sensei-metrics
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  folder: sensei
+  configMapRef:
+    name: sensei-metrics
+    key: sensei-postgres-metrics.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: sensei-victoria-logs
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasources:
+    - datasourceName: VictoriaLogs
+      inputName: DS_VICTORIALOGS
+  folder: sensei
+  configMapRef:
+    name: sensei-victoria-logs
+    key: sensei-victoria-logs.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: sensei-kubernetes-aws
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  folder: sensei
+  configMapRef:
+    name: sensei-kubernetes-aws
+    key: kubernetes.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: sensei-kubernetes
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  folder: sensei
+  configMapRef:
+    name: sensei-kubernetes
+    key: kubernetes-namespace.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: kubernetes-global
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  folder: sensei
+  configMapRef:
+    name: kubernetes-global
+    key: kubernetes-global.json
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: sensei-cnpg
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasources:
+    - datasourceName: prometheus
+      inputName: DS_PROMETHEUS
+  folder: sensei
+  configMapRef:
+    name: sensei-cnpg
+    key: sensei-cnpg.json
