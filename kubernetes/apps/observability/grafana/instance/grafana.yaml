@@ -45,6 +45,7 @@ spec:
     server:
       enable_gzip: "true"
       root_url: https://grafana.${SECRET_DOMAIN}
+
   deployment:
     spec:
       strategy:

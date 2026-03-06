@@ -31,3 +31,68 @@ spec:
     jsonData:
       implementation: prometheus
     url: http://alertmanager-operated.observability.svc.cluster.local:9093
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: VictoriaLogs
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  plugins:
+    - name: victoriametrics-logs-datasource
+      version: 0.26.2
+  datasource:
+    type: victoriametrics-logs-datasource
+    name: VictoriaLogs
+    access: proxy
+    jsonData:
+      implementation: prometheus
+    url: http://victoria-logs-server.observability.svc.cluster.local:9428
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: loki
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasource:
+    type: loki
+    name: Loki
+    uid: loki
+    access: proxy
+    url: http://loki-headless.observability.svc.cluster.local:3100
+    jsonData:
+      maxLines: 250
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: postgres
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasource:
+    type: postgres
+    name: Postgres
+    access: proxy
+    url: postgres16vector-ro.database.svc.cluster.local:5432
+    user: ${SECRET_PGADMIN_USER}
+    secureJsonData:
+      password: ${SECRET_PGADMIN_PASSWORD}
+    jsonData:
+      database: sensei-prod
+      sslmode: disable
+      maxOpenConns: 100
+      maxIdleConns: 100
+      maxIdleConnsAuto: true
+      connMaxLifetime: 14400
+      postgresVersion: 1000
+      timescaledb: false
