@@ -11,4 +11,4 @@ machine:
         [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
           discard_unpacked_layers = false
         [plugins."io.containerd.cri.v1.runtime".cdi]
-          spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+          enable_cdi = true
