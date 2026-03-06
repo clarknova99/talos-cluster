@@ -81,7 +81,7 @@ spec:
     matchLabels:
       dashboards: grafana
   datasource:
-    type: postgres
+    type: grafana-postgresql-datasource
     name: Postgres
     uid: postgres
     access: proxy
