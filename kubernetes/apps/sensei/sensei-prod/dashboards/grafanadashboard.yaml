@@ -5,6 +5,7 @@ kind: GrafanaDashboard
 metadata:
   name: sensei-logs
 spec:
+  allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -19,6 +20,7 @@ kind: GrafanaDashboard
 metadata:
   name: sensei-metrics
 spec:
+  allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -33,6 +35,7 @@ kind: GrafanaDashboard
 metadata:
   name: sensei-victoria-logs
 spec:
+  allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -50,6 +53,7 @@ kind: GrafanaDashboard
 metadata:
   name: sensei-kubernetes-aws
 spec:
+  allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -64,6 +68,7 @@ kind: GrafanaDashboard
 metadata:
   name: sensei-kubernetes
 spec:
+  allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -78,6 +83,7 @@ kind: GrafanaDashboard
 metadata:
   name: kubernetes-global
 spec:
+  allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -92,6 +98,7 @@ kind: GrafanaDashboard
 metadata:
   name: sensei-cnpg
 spec:
+  allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       dashboards: grafana
