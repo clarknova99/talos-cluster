@@ -24,7 +24,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "PD775F2863313E6C7"
+        "uid": "victoria-logs"
       },
       "fieldConfig": {
         "defaults": {},
@@ -54,7 +54,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "PD775F2863313E6C7"
+            "uid": "victoria-logs"
           },
           "expr": "app:\"sensei-${env}-app\" ${log_level}",
           "refId": "A"
@@ -66,7 +66,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "PD775F2863313E6C7"
+        "uid": "victoria-logs"
       },
       "description": "Structured table view of frontend logs. Click any cell to inspect its value.",
       "fieldConfig": {
@@ -234,7 +234,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "PD775F2863313E6C7"
+            "uid": "victoria-logs"
           },
           "expr": "app:\"sensei-${env}-app\" ${log_level} | fields _time, level, status_code, module, msg, path",
           "refId": "A"
@@ -290,7 +290,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "PD775F2863313E6C7"
+        "uid": "victoria-logs"
       },
       "description": "Structured table view of API logs. Click any cell to inspect its value.",
       "fieldConfig": {
@@ -458,7 +458,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "PD775F2863313E6C7"
+            "uid": "victoria-logs"
           },
           "expr": "app:\"sensei-${env}-api\" ${log_level} | fields _time, level, status_code, module, msg, path",
           "refId": "A"
@@ -514,7 +514,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "PD775F2863313E6C7"
+        "uid": "victoria-logs"
       },
       "fieldConfig": {
         "defaults": {},
@@ -544,7 +544,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "PD775F2863313E6C7"
+            "uid": "victoria-logs"
           },
           "expr": "app:\"sensei-${env}-worker\" ${log_level}",
           "refId": "A"
@@ -556,7 +556,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "PD775F2863313E6C7"
+        "uid": "victoria-logs"
       },
       "description": "Structured table view of worker logs. Click any cell to inspect its value.",
       "fieldConfig": {
@@ -712,7 +712,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "PD775F2863313E6C7"
+            "uid": "victoria-logs"
           },
           "expr": "app:\"sensei-${env}-worker\" ${log_level} | fields _time, level, job_type, module, msg",
           "refId": "A"
@@ -766,7 +766,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "PD775F2863313E6C7"
+        "uid": "victoria-logs"
       },
       "fieldConfig": {
         "defaults": {
@@ -909,7 +909,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "PD775F2863313E6C7"
+            "uid": "victoria-logs"
           },
           "editorMode": "code",
           "expr": "app:\"sensei-${env}-app\" | stats by (level) count() as count",
@@ -923,7 +923,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "PD775F2863313E6C7"
+        "uid": "victoria-logs"
       },
       "fieldConfig": {
         "defaults": {
@@ -1066,7 +1066,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "PD775F2863313E6C7"
+            "uid": "victoria-logs"
           },
           "editorMode": "code",
           "expr": "app:\"sensei-${env}-api\" | stats by (level) count() as count",
@@ -1080,7 +1080,7 @@
     {
       "datasource": {
         "type": "victoriametrics-logs-datasource",
-        "uid": "PD775F2863313E6C7"
+        "uid": "victoria-logs"
       },
       "fieldConfig": {
         "defaults": {
@@ -1223,7 +1223,7 @@
         {
           "datasource": {
             "type": "victoriametrics-logs-datasource",
-            "uid": "PD775F2863313E6C7"
+            "uid": "victoria-logs"
           },
           "editorMode": "code",
           "expr": "app:\"sensei-${env}-worker\" | stats by (level) count() as count",
@@ -1310,7 +1310,7 @@
       {
         "current": {
           "text": "VictoriaLogs",
-          "value": "PD775F2863313E6C7"
+          "value": "victoria-logs"
         },
         "hide": 2,
         "includeAll": false,

@@ -47,6 +47,7 @@ spec:
   datasource:
     type: victoriametrics-logs-datasource
     name: VictoriaLogs
+    uid: victoria-logs
     access: proxy
     jsonData:
       implementation: prometheus
@@ -82,6 +83,7 @@ spec:
   datasource:
     type: postgres
     name: Postgres
+    uid: postgres
     access: proxy
     url: postgres16vector-ro.database.svc.cluster.local:5432
     user: ${SECRET_PGADMIN_USER}
