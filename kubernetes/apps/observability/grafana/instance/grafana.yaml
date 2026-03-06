@@ -32,8 +32,10 @@ spec:
       token_url: https://auth.${SECRET_DOMAIN}/api/oidc/token
       api_url: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
       client_id: grafana
+      team_ids_attribute_path: groups
+      teams_url: https://auth.${SECRET_DOMAIN}/api/oidc/userinfo
       allow_assign_grafana_admin: "true"
-      role_attribute_path: contains(groups, 'grafana-admin') && 'GrafanaAdmin' || contains(groups, 'sensei-dashboards') && 'Viewer' || contains(groups, 'people') && 'Viewer'
+      role_attribute_path: contains(groups, 'grafana-admin') && 'GrafanaAdmin' || contains(groups, 'sensei-dashboards') && 'Editor' || contains(groups, 'people') && 'Viewer'
     log:
       mode: console
     metrics:
