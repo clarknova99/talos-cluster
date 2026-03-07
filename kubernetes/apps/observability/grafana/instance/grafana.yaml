@@ -79,6 +79,7 @@ spec:
   httpRoute:
     metadata:
       annotations:
+        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN_TWO}
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Observability
         gethomepage.dev/icon: grafana.png
