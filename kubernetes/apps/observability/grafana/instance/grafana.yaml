@@ -77,6 +77,12 @@ spec:
               persistentVolumeClaim:
                 claimName: grafana-pvc
   httpRoute:
+    metadata:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Observability
+        gatus.home-operations.com/endpoint: |
+          group: observability
     spec:
       hostnames:
         - grafana.${SECRET_DOMAIN_TWO}
