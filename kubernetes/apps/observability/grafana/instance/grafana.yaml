@@ -81,13 +81,15 @@ spec:
       annotations:
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: Observability
+        gethomepage.dev/icon: grafana.png
+        gethomepage.dev/name: Grafana
         gatus.home-operations.com/endpoint: |
           group: observability
     spec:
       hostnames:
         - grafana.${SECRET_DOMAIN_TWO}
       parentRefs:
-        - name: envoy-internal
+        - name: envoy-external
           namespace: network
       rules:
         - backendRefs:
