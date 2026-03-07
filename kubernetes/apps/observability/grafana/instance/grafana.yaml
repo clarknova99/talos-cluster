@@ -87,6 +87,8 @@ spec:
         gatus.home-operations.com/endpoint: |
           name: grafana
           group: observability
+          conditions:
+            - "[STATUS] == 302"
     spec:
       hostnames:
         - grafana.${SECRET_DOMAIN_TWO}
