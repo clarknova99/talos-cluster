@@ -5,7 +5,7 @@ resources:
   - ./namespace.yaml
   - ./dittofeed/ks.yaml
   - ./dittofeed-dev/ks.yaml
-  - ./grafana/ks.yaml
+  # - ./grafana/ks.yaml
   - ./langfusev3/ks.yaml
   - ./langfuse-dev/ks.yaml
   - ./litellm/ks.yaml
