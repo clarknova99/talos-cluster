@@ -22,11 +22,23 @@ metadata:
   name: grafana-instance
   namespace: flux-system
 spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: grafana
   dependsOn:
     - name: grafana
     - name: rook-ceph-cluster
   interval: 1h
   path: ./kubernetes/apps/observability/grafana/instance
+  components:
+    - ../../../../components/volsync
+  postBuild:
+    substitute:
+      APP: grafana
+      VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_SCHEDULE: "0 4 * * *"
+      VOLSYNC_UID: "1000"
+      VOLSYNC_GID: "1000"
   prune: true
   sourceRef:
     kind: GitRepository
