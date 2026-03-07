@@ -84,6 +84,7 @@ spec:
         gethomepage.dev/icon: grafana.png
         gethomepage.dev/name: Grafana
         gatus.home-operations.com/endpoint: |
+          name: grafana
           group: observability
     spec:
       hostnames:
