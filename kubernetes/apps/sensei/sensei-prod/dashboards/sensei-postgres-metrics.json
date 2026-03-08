@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 40,
   "links": [],
   "panels": [
     {
@@ -82,7 +82,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -215,7 +215,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -340,7 +340,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -543,7 +543,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -683,7 +683,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "dataset": "sensei-prod",
@@ -766,7 +766,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "dataset": "sensei-prod",
@@ -820,7 +820,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 2,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -828,9 +828,12 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 10,
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 6,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -846,7 +849,6 @@
             }
           },
           "decimals": 0,
-          "displayName": "Subscriptions",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -863,12 +865,15 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "join_date"
+              "options": "terminated"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "YYYY-MM-DD"
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
               }
             ]
           }
@@ -880,22 +885,24 @@
         "x": 10,
         "y": 19
       },
-      "id": 38,
+      "id": 41,
       "interval": "1d",
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -903,9 +910,9 @@
             "uid": "postgres"
           },
           "editorMode": "code",
-          "format": "table",
+          "format": "time_series",
           "rawQuery": true,
-          "rawSql": "WITH daily_counts AS (\n    SELECT \n        DATE_TRUNC('day', created_at) AS created_at,\n        COUNT(*) AS daily_count\n    FROM subscriptions\n    GROUP BY DATE_TRUNC('day', created_at) \n),\nrunning_totals AS (\n    SELECT \n        created_at,\n        daily_count,\n        SUM(daily_count) OVER (ORDER BY created_at) AS running_total\n    FROM daily_counts\n)\nSELECT date(created_at) as created_at, running_total\nFROM running_totals\nWHERE created_at >= NOW() - INTERVAL '21 days'\nORDER BY created_at;",
+          "rawSql": "SELECT\n  date_trunc('day', event_timestamp) AS \"time\",\n  count(*) FILTER (WHERE event_type = 'subscription_created')::bigint AS created,\n  count(*) FILTER (WHERE event_type = 'subscription_canceled')::bigint AS canceled,\n  count(*) FILTER (WHERE event_type = 'subscription_terminated')::bigint AS terminated\nFROM events\nWHERE event_timestamp >= '2025-12-02'\nGROUP BY 1\nORDER BY 1;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -926,7 +933,7 @@
           }
         }
       ],
-      "title": "Subscriptions",
+      "title": "Subscription Events",
       "transparent": true,
       "type": "timeseries"
     },
@@ -1039,7 +1046,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -1172,7 +1179,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -1325,7 +1332,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -1479,7 +1486,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -1638,7 +1645,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -1773,7 +1780,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -2141,7 +2148,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -3887,5 +3894,5 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 1
+  "version": 5
 }
