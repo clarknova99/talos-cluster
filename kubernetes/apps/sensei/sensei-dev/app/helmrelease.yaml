@@ -81,6 +81,7 @@ spec:
           gethomepage.dev/icon: mdi-chess-knight-#7C4DFF
           gatus.home-operations.com/endpoint: |
             group: sensei
+            url: http://dev.${SECRET_DOMAIN_TWO}/health
         parentRefs:
           - name: envoy-external
             namespace: network

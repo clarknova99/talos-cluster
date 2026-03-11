@@ -114,6 +114,7 @@ spec:
           gethomepage.dev/icon: mdi-chess-knight-#7C4DFF
           gatus.home-operations.com/endpoint: |
             group: sensei
+            url: http://www.${SECRET_DOMAIN_TWO}/health
         parentRefs:
           - name: envoy-external
             namespace: network
@@ -131,32 +132,3 @@ spec:
                   set:
                     - name: X-Forwarded-Proto
                       value: https
-    # ingress:
-    #   app:
-    #     annotations:
-    #       external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN_TWO}"
-    #       nginx.ingress.kubernetes.io/proxy-connect-timeout: "240"
-    #       nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
-    #       nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
-    #       hajimari.io/enable: "true"
-    #       hajimari.io/icon: mdi:math-compass
-    #     className: external
-    #     hosts:
-    #       - host: www.${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             pathType: Prefix
-    #             service:
-    #               identifier: app
-    #               port: 8000
-    #       - host: ${SECRET_DOMAIN_TWO}
-    #         paths:
-    #           - path: /
-    #             pathType: Prefix
-    #             service:
-    #               identifier: app
-    #               port: 8000
-    #     tls:
-    #       - hosts:
-    #           - www.${SECRET_DOMAIN_TWO}
-    #           - ${SECRET_DOMAIN_TWO}
