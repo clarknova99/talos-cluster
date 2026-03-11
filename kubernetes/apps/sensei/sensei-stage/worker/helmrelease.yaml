@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.6.0
+      version: 4.6.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -83,13 +83,13 @@ spec:
           # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-secret
-    defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: "In"
-                    values: ["jupiter"]
+    # defaultPodOptions:
+    #   affinity:
+    #     nodeAffinity:
+    #       preferredDuringSchedulingIgnoredDuringExecution:
+    #         - weight: 1
+    #           preference:
+    #             matchExpressions:
+    #               - key: kubernetes.io/hostname
+    #                 operator: "In"
+    #                 values: ["jupiter"]
