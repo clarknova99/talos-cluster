@@ -75,6 +75,11 @@ spec:
           match kubernetes.*
           exclude log Gatus
 
+        [FILTER]
+          name grep
+          match kubernetes.*
+          exclude log "path": "/health"
+
       customParsers: |-
         [PARSER]
           name containerd
