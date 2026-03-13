@@ -876,6 +876,36 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "renewed"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "canceled"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -912,7 +942,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date_trunc('day', event_timestamp) AS \"time\",\n  count(*) FILTER (WHERE event_type = 'subscription_created')::bigint AS created,\n  count(*) FILTER (WHERE event_type = 'subscription_canceled')::bigint AS canceled,\n  count(*) FILTER (WHERE event_type = 'subscription_terminated')::bigint AS terminated\nFROM events\nWHERE event_timestamp >= '2025-12-02'\nGROUP BY 1\nORDER BY 1;",
+          "rawSql": "SELECT\n  date_trunc('day', event_timestamp) AS \"time\",\n  count(*) FILTER (WHERE event_type = 'subscription_created')::bigint AS created,\n  count(*) FILTER (WHERE event_type = 'subscription_renewed')::bigint AS renewed,\n  count(*) FILTER (WHERE event_type = 'subscription_canceled')::bigint AS canceled,\n  count(*) FILTER (WHERE event_type = 'subscription_terminated')::bigint AS terminated\nFROM events\nWHERE event_timestamp >= '2025-12-02'\nGROUP BY 1\nORDER BY 1;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -3894,5 +3924,5 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 5
+  "version": 6
 }
