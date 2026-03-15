@@ -777,7 +777,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select count(distinct sensei_user_id ) \nfrom subscriptions\nwhere status = 'active'",
+          "rawSql": "select count(distinct sensei_user_id ) \nfrom subscriptions\nwhere status in ('active', 'canceled')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -3924,5 +3924,5 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 6
+  "version": 7
 }
