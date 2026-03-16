@@ -70,6 +70,8 @@ spec:
               STRIPE_WEBHOOK_SIGNING_SECRET: ${SECRET_SENSEI_STRIPE_TEST_WEBHOOK_SIGNING_SECRET}
               CLOUDFLARE_TURNSTILE_SECRET_KEY: ${SECRET_SENSEI_CLOUDFLARE_TURNSTILE_SECRET_KEY}
               HF_TOKEN: ${SECRET_SENSEI_HUGGINGFACE_TOKEN}
+              LOG_FORMAT: json
+              ANALYZE_POSITION_URL: ${SECRET_SENSEI_ANALYZE_POSITION_URL}
             resources:
               requests:
                 memory: 500Mi
@@ -83,10 +85,19 @@ spec:
     defaultPodOptions:
       affinity:
         nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              preference:
-                matchExpressions:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
                   - key: kubernetes.io/hostname
-                    operator: "In"
-                    values: ["jupiter"]
+                    operator: NotIn
+                    values: ["mars"]
+    # defaultPodOptions:
+    #   affinity:
+    #     nodeAffinity:
+    #       preferredDuringSchedulingIgnoredDuringExecution:
+    #         - weight: 1
+    #           preference:
+    #             matchExpressions:
+    #               - key: kubernetes.io/hostname
+    #                 operator: "In"
+    #                 values: ["jupiter"]
