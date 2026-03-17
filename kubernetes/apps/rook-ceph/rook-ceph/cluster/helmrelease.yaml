@@ -113,6 +113,16 @@ spec:
             enabled: true
           - name: rook
             enabled: true
+      placement:
+        mon:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: NotIn
+                      values:
+                        - mars
       network:
         provider: host
         connections:
