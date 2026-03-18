@@ -91,6 +91,12 @@ identity_providers:
           - 'name'
           - 'email'
           - 'groups'
+      langfuse:
+        id_token:
+          - 'email'
+          - 'name'
+          - 'preferred_username'
+          - 'groups'
     cors:
       endpoints: ["authorization", "token", "revocation", "introspection"]
       allowed_origins_from_client_redirect_uris: true
@@ -143,6 +149,7 @@ identity_providers:
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris: ['https://langfuse.{{ env "SECRET_DOMAIN_TWO" }}/api/auth/callback/custom']
         userinfo_signed_response_alg: none
+        claims_policy: langfuse
       - client_id: langfuse-dev
         client_name: langfuse-dev
         client_secret: '{{ env "SECRET_OAUTH_CLIENT_SECRET"}}'
@@ -151,6 +158,7 @@ identity_providers:
         scopes: ["openid", "profile", "groups", "email"]
         redirect_uris: ['https://langfuse-dev.{{ env "SECRET_DOMAIN_TWO" }}/api/auth/callback/custom']
         userinfo_signed_response_alg: none
+        claims_policy: langfuse
       - client_id: kite
         client_name: kite
         client_secret: '{{ env "SECRET_OAUTH_CLIENT_SECRET"}}'
