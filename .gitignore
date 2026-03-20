@@ -29,3 +29,4 @@ wiki
 settings.json
 CLAUDE.md
 scripts/foundry/
+.pytest_cache/
