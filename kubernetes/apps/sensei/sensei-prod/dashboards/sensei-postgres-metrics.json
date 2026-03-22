@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 40,
+  "id": 0,
   "links": [],
   "panels": [
     {
@@ -1353,11 +1353,11 @@
                 "value": 1
               },
               {
-                "color": "yellow",
+                "color": "super-light-green",
                 "value": 3
               },
               {
-                "color": "super-light-green",
+                "color": "light-green",
                 "value": 7
               },
               {
@@ -4752,5 +4752,5 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 8
+  "version": 10
 }
