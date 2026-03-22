@@ -694,7 +694,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select count(distinct sensei_user_id ) from subscriptions ",
+          "rawSql": "select count(distinct sensei_user_id ) from subscriptions \nwhere sensei_user_id not in (1,2)",
           "refId": "A",
           "sql": {
             "columns": [
