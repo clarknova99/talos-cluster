@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/frontend
-              tag: main-1.0.0@sha256:d770579629fd4a8910a6c5313d9bc686da9a584afae419c2bfb43bae079e5c08
+              tag: main-1.0.0@sha256:1b921a58d3e8ecc81358a3ea0b6d28ec1528d32b2ea08f4ec6b1369310ea3214
               pullPolicy: Always
             env:
               SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
