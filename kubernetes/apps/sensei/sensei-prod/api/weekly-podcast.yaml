@@ -51,7 +51,7 @@ spec:
                 - name: LITELLM_API_KEY
                   value: ${SECRET_LITELLM_API_KEY}
                 - name: GOOGLE_TTS_API_KEY
-                  value: ${SECRET_SENSEI_GEMINI_KEY}
+                  value: ${SECRET_GOOGLE_TTS_API_KEY}
                 - name: FRONTEND_BASE_URL
                   value: https://www.${SECRET_DOMAIN_TWO}
                 - name: EMAIL_VERIFICATION_TOKEN_EXPIRES_HOURS
