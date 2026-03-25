@@ -84,15 +84,6 @@ spec:
           # imagePullPolicy: Always
           imagePullSecrets:
             - name: sensei-secret
-    defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: NotIn
-                    values: ["mars"]
     # defaultPodOptions:
     #   affinity:
     #     nodeAffinity:

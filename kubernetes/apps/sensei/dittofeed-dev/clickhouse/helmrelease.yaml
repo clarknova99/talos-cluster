@@ -82,15 +82,6 @@ spec:
                 containerPort: 7171
 
     defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: NotIn
-                    values:
-                      - mars
       securityContext:
         runAsNonRoot: true
         runAsUser: 101

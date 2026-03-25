@@ -25,15 +25,6 @@ spec:
     shared_preload_libraries:
       - "pg_stat_statements"
       # - "vectors.so"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: NotIn
-                values:
-                  - mars
   nodeMaintenanceWindow:
     inProgress: false
     reusePVC: true

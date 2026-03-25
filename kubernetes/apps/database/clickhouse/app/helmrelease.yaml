@@ -91,14 +91,6 @@ spec:
         runAsGroup: 101
         fsGroup: 101
         fsGroupChangePolicy: Always
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: NotIn
-                    values: ["mars"]
 
     service:
       app:

@@ -91,15 +91,6 @@ spec:
     #               - key: kubernetes.io/hostname
     #                 operator: "In"
     #                 values: ["jupiter"]
-    defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: NotIn
-                    values: ["mars"]
     service:
       app:
         controller: sensei-prod-app
