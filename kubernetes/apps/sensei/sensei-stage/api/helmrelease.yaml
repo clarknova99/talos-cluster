@@ -79,6 +79,7 @@ spec:
               ENABLE_REASONING_DISPLAY: "true"
               LOG_FORMAT: json
               ANALYZE_POSITION_URL: ${SECRET_SENSEI_ANALYZE_POSITION_URL}
+              ALEMBIC_VERBOSE: "true"
         pod:
           # imagePullPolicy: Always
           imagePullSecrets:
