@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2368,
+  "id": 4693,
   "links": [],
   "panels": [
     {
@@ -1092,7 +1092,7 @@
       "id": 6,
       "options": {
         "cellHeight": "sm",
-        "enablePagination": true,
+        "enablePagination": false,
         "showHeader": true,
         "sortBy": [
           {
@@ -1167,7 +1167,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 12,
         "w": 24,
         "x": 0,
         "y": 41
@@ -1209,10 +1209,57 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 12,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 53
+      },
+      "id": 16,
+      "options": {
+        "dedupStrategy": "none",
+        "detailsMode": "sidebar",
+        "enableInfiniteScrolling": true,
+        "enableLogDetails": true,
+        "fontSize": "small",
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showControls": true,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "syntaxHighlighting": true,
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "12.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "victoria-logs"
+          },
+          "editorMode": "code",
+          "expr": "app:\"sensei-${env}-api\" ${log_level}",
+          "queryType": "instant",
+          "refId": "A"
+        }
+      ],
+      "title": "Api (Backend) Logs",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "victoria-logs"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 65
       },
       "id": 3,
       "options": {
@@ -1268,7 +1315,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 57
+        "y": 78
       },
       "id": 13,
       "options": {
@@ -1331,7 +1378,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 57
+        "y": 78
       },
       "id": 11,
       "options": {
@@ -1395,7 +1442,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 57
+        "y": 78
       },
       "id": 15,
       "options": {
@@ -1458,7 +1505,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 62
+        "y": 83
       },
       "id": 10,
       "options": {
@@ -1521,7 +1568,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 62
+        "y": 83
       },
       "id": 14,
       "options": {
@@ -1585,7 +1632,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 62
+        "y": 83
       },
       "id": 12,
       "options": {
@@ -1712,7 +1759,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
