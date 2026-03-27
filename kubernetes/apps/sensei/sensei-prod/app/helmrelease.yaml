@@ -123,3 +123,9 @@ spec:
                   set:
                     - name: X-Forwarded-Proto
                       value: https
+            sessionPersistence:
+              sessionName: SENSEI_AFFINITY
+              type: Cookie
+              absoluteTimeout: 1800s
+              cookieConfig:
+                lifetimeType: Permanent
