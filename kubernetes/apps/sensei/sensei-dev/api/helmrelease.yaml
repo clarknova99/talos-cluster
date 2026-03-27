@@ -80,6 +80,7 @@ spec:
               chess_game_narrative: "true"
               LOG_FORMAT: json
               ANALYZE_POSITION_URL: ${SECRET_SENSEI_ANALYZE_POSITION_URL}
+              CHAT_AGENT_BACKEND: langgraph
             resources:
               requests:
                 memory: 500Mi
