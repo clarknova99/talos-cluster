@@ -8,4 +8,5 @@ resources:
   - ./helmrelease.yaml
   - ./daily-refresh.yaml
   - ./dailyrefresh.sops.yaml
+  - ./traffic-policy.yaml
   - ./weekly-podcast.yaml

@@ -116,6 +116,10 @@ spec:
       app:
         controller: sensei-prod-api
         type: LoadBalancer
+        sessionAffinity: ClientIP
+        sessionAffinityConfig:
+          clientIP:
+            timeoutSeconds: 1800
         annotations:
           io.cilium/lb-ipam-ips: 192.168.3.47
         ports:

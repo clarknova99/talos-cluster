@@ -1,0 +1,16 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: sensei-prod-app-sticky
+  namespace: sensei
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: sensei-prod-app  # verify with kubectl get httproute -n sensei
+  sessionPersistence:
+    type: Cookie
+    cookie:
+      name: SENSEI_AFFINITY
+      ttl: 1800s  # 30 minutes, matches your context timeout
