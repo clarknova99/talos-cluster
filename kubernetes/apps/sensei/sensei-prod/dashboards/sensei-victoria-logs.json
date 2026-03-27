@@ -1256,10 +1256,57 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 13,
+        "h": 12,
         "w": 24,
         "x": 0,
         "y": 65
+      },
+      "id": 17,
+      "options": {
+        "dedupStrategy": "none",
+        "detailsMode": "sidebar",
+        "enableInfiniteScrolling": true,
+        "enableLogDetails": true,
+        "fontSize": "small",
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showControls": true,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "syntaxHighlighting": true,
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "12.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "victoriametrics-logs-datasource",
+            "uid": "victoria-logs"
+          },
+          "editorMode": "code",
+          "expr": "app:in(\"sensei-prod-api\",\"sensei-prod-app\")\n| delete request_id\n| sensei_user_id:-0\n| fields app, level, module, function, path, msg, sensei_user_id, session_id, status_code",
+          "queryType": "instant",
+          "refId": "A"
+        }
+      ],
+      "title": "Logs",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "victoriametrics-logs-datasource",
+        "uid": "victoria-logs"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 77
       },
       "id": 3,
       "options": {
@@ -1315,7 +1362,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 78
+        "y": 90
       },
       "id": 13,
       "options": {
@@ -1378,7 +1425,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 78
+        "y": 90
       },
       "id": 11,
       "options": {
@@ -1442,7 +1489,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 78
+        "y": 90
       },
       "id": 15,
       "options": {
@@ -1505,7 +1552,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 83
+        "y": 95
       },
       "id": 10,
       "options": {
@@ -1568,7 +1615,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 83
+        "y": 95
       },
       "id": 14,
       "options": {
@@ -1632,7 +1679,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 83
+        "y": 95
       },
       "id": 12,
       "options": {
@@ -1766,5 +1813,5 @@
   "timezone": "",
   "title": "Sensei Logs",
   "uid": "03157282-35a4-4d0e-8ac2-07af0742c637",
-  "version": 1
+  "version": 2
 }
