@@ -1,0 +1,42 @@
+# rclone-migration-pod.yaml (run once, then delete)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rclone-migration
+  namespace: sensei
+spec:
+  restartPolicy: Never
+  containers:
+  - name: rclone
+    image: rclone/rclone:latest
+    command: ["sleep", "infinity"]
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+    env:
+    - name: RCLONE_CONFIG_MINIO_TYPE
+      value: s3
+    - name: RCLONE_CONFIG_MINIO_PROVIDER
+      value: Minio
+    - name: RCLONE_CONFIG_MINIO_ENDPOINT
+      value: http://minio.kube-system.svc.cluster.local:9000
+    - name: RCLONE_CONFIG_MINIO_ACCESS_KEY_ID
+      value: "${SECRET_MINIO_ACCESS_KEY}"
+    - name: RCLONE_CONFIG_MINIO_SECRET_ACCESS_KEY
+      value: "${SECRET_MINIO_SECRET_KEY}"
+    - name: RCLONE_CONFIG_MINIO_FORCE_PATH_STYLE
+      value: "true"
+    - name: RCLONE_CONFIG_AWS_TYPE
+      value: s3
+    - name: RCLONE_CONFIG_AWS_PROVIDER
+      value: AWS
+    - name: RCLONE_CONFIG_AWS_ACCESS_KEY_ID
+      value: "${SECRET_SENSEI_AWS_ACCESS_KEY_ID}"
+    - name: RCLONE_CONFIG_AWS_SECRET_ACCESS_KEY
+      value: "${SECRET_SENSEI_AWS_SECRET_ACCESS_KEY}"
+    - name: RCLONE_CONFIG_AWS_REGION
+      value: "${SECRET_SENSEI_AWS_S3_REGION}"
