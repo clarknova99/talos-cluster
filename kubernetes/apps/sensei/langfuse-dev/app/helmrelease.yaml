@@ -74,6 +74,7 @@ spec:
               # LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
               # LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: true
               # LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
+              LANGFUSE_S3_BATCH_EXPORT_ENABLED: true
               LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse-sensei-backup
               LANGFUSE_S3_EVENT_UPLOAD_PREFIX: langfuse-dev/events/
               LANGFUSE_S3_EVENT_UPLOAD_REGION: ${SECRET_SENSEI_AWS_S3_REGION}
@@ -104,6 +105,7 @@ spec:
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_CLUSTER_ENABLED: false
               REDIS_CONNECTION_STRING: redis://redis.database.svc.cluster.local:6379
+              LANGFUSE_S3_BATCH_EXPORT_ENABLED: true
               LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse-sensei-backup
               LANGFUSE_S3_EVENT_UPLOAD_PREFIX: langfuse-dev/events/
               LANGFUSE_S3_EVENT_UPLOAD_REGION: ${SECRET_SENSEI_AWS_S3_REGION}
