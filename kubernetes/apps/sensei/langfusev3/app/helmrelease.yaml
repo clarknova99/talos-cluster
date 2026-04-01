@@ -41,7 +41,7 @@ spec:
               CLICKHOUSE_USER: ${SECRET_CLICKHOUSE_USER}
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
               CLICKHOUSE_CLUSTER_ENABLED: false
-              REDIS_CONNECTION_STRING: redis://redis.database.svc.cluster.local:6379
+              REDIS_CONNECTION_STRING: redis://redis.database.svc.cluster.local:6379/1
               LANGFUSE_S3_BATCH_EXPORT_ENABLED: true
               LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse-sensei-backup
               LANGFUSE_S3_EVENT_UPLOAD_PREFIX: langfuse-prod/events/
