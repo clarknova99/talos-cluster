@@ -117,7 +117,7 @@ endpoints:
     method: POST
     body: |
       SELECT concat(
-        if((SELECT max(processed_at) FROM dittofeed.processed_computed_properties_v2) > now() - INTERVAL 60 MINUTE, 'ok', 'stale'),
+        if((SELECT max(processed_at) FROM dittofeed.processed_computed_properties_v2) > now() - INTERVAL 90 MINUTE, 'ok', 'stale'),
         ' | last_processed=',
         (SELECT toString(max(processed_at)) FROM dittofeed.processed_computed_properties_v2),
         ' | processed_last_5_min=',
@@ -132,7 +132,7 @@ endpoints:
       - "[BODY] == pat(ok*)"
     alerts:
       - type: discord
-        description: "dittofeed compute properties stale (>60 min)"
+        description: "dittofeed compute properties stale (>90 min)"
         send-on-resolved: true
-        failure-threshold: 1
+        failure-threshold: 3
         success-threshold: 1
