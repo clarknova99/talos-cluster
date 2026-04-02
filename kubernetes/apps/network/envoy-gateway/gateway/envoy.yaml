@@ -66,6 +66,17 @@ spec:
               upstream_transport_failure_reason: "%UPSTREAM_TRANSPORT_FAILURE_REASON%"
               # TLS info
               requested_server_name: "%REQUESTED_SERVER_NAME%"
+              # Cloudflare location headers
+              cf_ipcity: "%REQ(CF-IPCITY)%"
+              cf_ipcountry: "%REQ(CF-IPCOUNTRY)%"
+              cf_ipcontinent: "%REQ(CF-IPCONTINENT)%"
+              cf_iplongitude: "%REQ(CF-IPLONGITUDE)%"
+              cf_iplatitude: "%REQ(CF-IPLATITUDE)%"
+              cf_region: "%REQ(CF-REGION)%"
+              cf_region_code: "%REQ(CF-REGION-CODE)%"
+              cf_metro_code: "%REQ(CF-METRO-CODE)%"
+              cf_postal_code: "%REQ(CF-POSTAL-CODE)%"
+              cf_timezone: "%REQ(CF-TIMEZONE)%"
           sinks:
             - type: File
               file:
