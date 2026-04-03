@@ -55,6 +55,7 @@ spec:
               NEXT_PUBLIC_BACKEND_URL: https://rybbit-backend.${SECRET_DOMAIN_TWO}
               NEXT_PUBLIC_DISABLE_SIGNUP: false
               BETTER_AUTH_SECRET: ${SECRET_RYBBIT_BETTER_AUTH_SECRET}
+              BETTER_AUTH_URL: https://rybbit.${SECRET_DOMAIN_TWO}
     service:
       backend:
         controller: rybbit
