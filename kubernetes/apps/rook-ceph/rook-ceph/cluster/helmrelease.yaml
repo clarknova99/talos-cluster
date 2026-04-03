@@ -77,6 +77,9 @@ spec:
       osd_memory_cache_min = 134217728
       # Disable some features that can cause issues
       osd_use_stale_snap = false
+      # PCIe x1 NVMe tuning (Beelink nodes) - cap in-flight writes to 64MB
+      bluestore_throttle_bytes = 67108864
+      bluestore_throttle_deferred_bytes = 67108864
     cephClusterSpec:
       cephConfig:
         global:
@@ -96,6 +99,9 @@ spec:
           osd_memory_cache_min: "134217728"
           # Disable some features that can cause issues
           osd_use_stale_snap: "false"
+          # PCIe x1 NVMe tuning (Beelink nodes) - cap in-flight writes to 64MB
+          bluestore_throttle_bytes: "67108864"
+          bluestore_throttle_deferred_bytes: "67108864"
       crashCollector:
         disable: false
       dashboard:
