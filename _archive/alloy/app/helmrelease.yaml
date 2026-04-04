@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: alloy
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.6.0
+  url: oci://ghcr.io/home-operations/charts-mirror/alloy
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: alloy
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: alloy
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    fullnameOverride: alloy
+    alloy:
+      configMap:
+        create: false
+        name: &name alloy-configmap
+        key: config.alloy
+      mounts:
+        extra:
+          - name: geoip
+            mountPath: /etc/alloy/geoip
+    controller:
+      podAnnotations:
+        configmap.reloader.stakater.com/reload: *name
+      initContainers:
+        - name: geoip-download
+          image: ghcr.io/maxmind/geoipupdate:v7
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              if [ -f /etc/alloy/geoip/GeoLite2-City.mmdb ]; then
+                echo "GeoIP database already exists, skipping download"
+                exit 0
+              fi
+              exec /usr/bin/geoipupdate
+          env:
+            - name: GEOIPUPDATE_ACCOUNT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: alloy-maxmind-secret
+                  key: GEOIPUPDATE_ACCOUNT_ID
+            - name: GEOIPUPDATE_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: alloy-maxmind-secret
+                  key: GEOIPUPDATE_LICENSE_KEY
+            - name: GEOIPUPDATE_EDITION_IDS
+              value: GeoLite2-City GeoLite2-ASN
+            - name: GEOIPUPDATE_DB_DIR
+              value: /etc/alloy/geoip
+          volumeMounts:
+            - name: geoip
+              mountPath: /etc/alloy/geoip
+      volumes:
+        extra:
+          - name: geoip
+            hostPath:
+              path: /var/lib/alloy/geoip
+              type: DirectoryOrCreate
+    serviceMonitor:
+      enabled: true
