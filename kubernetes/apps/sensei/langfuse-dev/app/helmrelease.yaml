@@ -106,12 +106,16 @@ spec:
         hostnames:
           - langfuse-dev.${SECRET_DOMAIN_TWO}
         rules:
-          - filters:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            filters:
               - type: ResponseHeaderModifier
                 responseHeaderModifier:
                   add:
                     - name: X-Robots-Tag
                       value: "noindex, nofollow"
-          - backendRefs:
+            backendRefs:
               - name: langfuse-dev-web
                 port: *port

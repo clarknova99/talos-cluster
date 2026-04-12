@@ -70,13 +70,17 @@ spec:
         hostnames:
           - dittofeed.${SECRET_DOMAIN_TWO}
         rules:
-          - filters:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            filters:
               - type: ResponseHeaderModifier
                 responseHeaderModifier:
                   add:
                     - name: X-Robots-Tag
                       value: "noindex, nofollow"
-          - backendRefs:
+            backendRefs:
               - name: *app
                 port: *port
     # ingress:
