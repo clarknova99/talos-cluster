@@ -190,6 +190,12 @@ spec:
             namespace: network
             sectionName: https
         rules:
+          - filters:
+              - type: ResponseHeaderModifier
+                responseHeaderModifier:
+                  add:
+                    - name: X-Robots-Tag
+                      value: "noindex, nofollow"
           - backendRefs:
               - name: *app
                 port: 80
