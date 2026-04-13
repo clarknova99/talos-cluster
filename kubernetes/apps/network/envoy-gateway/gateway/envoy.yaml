@@ -34,8 +34,11 @@ spec:
               # Request identification
               request_id: "%REQ(X-REQUEST-ID)%"
               start_time: "%START_TIME%"
-              # Client information (for GeoIP enrichment by Alloy)
-              client_ip: "%REQ(X-FORWARDED-FOR)%"
+              # CF-Connecting-IP is the authoritative single visitor IP set by Cloudflare
+              client_ip: "%REQ(CF-CONNECTING-IP)%"
+              # CF-Pseudo-IPv4 maps IPv6 visitors to a synthetic 198.18.0.0/15 address
+              # Requires Cloudflare Pseudo IPv4 enabled: Zone > Network > Pseudo IPv4: "Add Header"
+              client_ipv4: "%REQ(CF-PSEUDO-IPV4)%"
               downstream_remote_address: "%DOWNSTREAM_REMOTE_ADDRESS%"
               # Request details
               method: "%REQ(:METHOD)%"
