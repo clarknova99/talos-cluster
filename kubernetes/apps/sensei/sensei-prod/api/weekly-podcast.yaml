@@ -84,4 +84,32 @@ spec:
                   value: ${SECRET_SENSEI_STRIPE_TEST_WEBHOOK_SIGNING_SECRET}
                 - name: CLOUDFLARE_TURNSTILE_SECRET_KEY
                   value: ${SECRET_SENSEI_CLOUDFLARE_TURNSTILE_SECRET_KEY}
+                - name: JWT_SECRET_KEY
+                  value: ${SECRET_SENSEI_JWT_SECRET_KEY}
+                - name: PADDLE_PROD_API_KEY
+                  value: ${SECRET_SENSEI_PADDLE_PROD_API_KEY}
+                - name: PADDLE_PROD_WEBHOOK_SECRET
+                  value: ${SECRET_SENSEI_PADDLE_PROD_WEBHOOK_SECRET}
+                - name: HF_TOKEN
+                  value: ${SECRET_SENSEI_HUGGINGFACE_TOKEN}
+                - name: DITTOFEED_AUTH_HEADER
+                  value: ${SECRET_DITTOFEED_AUTH_HEADER}
+                - name: DITTOFEED_PAGE_ENDPOINT
+                  value: http://dittofeed.sensei.svc.cluster.local:3000/api/public/apps/page
+                - name: DITTOFEED_TRACK_ENDPOINT
+                  value: http://dittofeed.sensei.svc.cluster.local:3000/api/public/apps/track
+                - name: DITTOFEED_IDENTIFY_ENDPOINT
+                  value: http://dittofeed.sensei.svc.cluster.local:3000/api/public/apps/identify
+                - name: RYBBIT_API_KEY
+                  value: ${SECRET_SENSEI_RYBBIT_API_KEY}
+                - name: ENABLE_REASONING_DISPLAY
+                  value: "false"
+                - name: CHESS_GAME_NARRATIVE
+                  value: "true"
+                - name: LOG_FORMAT
+                  value: json
+                - name: ANALYZE_POSITION_URL
+                  value: ${SECRET_SENSEI_ANALYZE_POSITION_URL}
+                - name: CHAT_AGENT_BACKEND
+                  value: langgraph
           restartPolicy: OnFailure
