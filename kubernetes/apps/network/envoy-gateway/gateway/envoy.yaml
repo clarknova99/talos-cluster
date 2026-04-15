@@ -218,6 +218,12 @@ spec:
       name: network/envoy-internal/https
       operation:
         op: add
+        path: /filter_chains/0/filters/0/typed_config/max_request_headers_kb
+        value: 96
+    - type: type.googleapis.com/envoy.config.listener.v3.Listener
+      name: network/envoy-internal/https
+      operation:
+        op: add
         path: /filter_chains/0/filters/0/typed_config/http_filters/0
         value:
           name: envoy.filters.http.compressor
@@ -274,8 +280,6 @@ spec:
   timeout:
     http:
       requestReceivedTimeout: 0s
-  headers:
-    maxRequestHeadersKb: 96
   tls:
     minVersion: "1.2"
     alpnProtocols:
@@ -294,6 +298,12 @@ spec:
     name: envoy-external
   type: JSONPatch
   jsonPatches:
+    - type: type.googleapis.com/envoy.config.listener.v3.Listener
+      name: network/envoy-external/https
+      operation:
+        op: add
+        path: /filter_chains/0/filters/0/typed_config/max_request_headers_kb
+        value: 96
     - type: type.googleapis.com/envoy.config.listener.v3.Listener
       name: network/envoy-external/https
       operation:
