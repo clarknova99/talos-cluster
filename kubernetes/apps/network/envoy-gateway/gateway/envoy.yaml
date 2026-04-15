@@ -274,6 +274,8 @@ spec:
   timeout:
     http:
       requestReceivedTimeout: 0s
+  headers:
+    maxRequestHeadersKb: 96
   tls:
     minVersion: "1.2"
     alpnProtocols:
