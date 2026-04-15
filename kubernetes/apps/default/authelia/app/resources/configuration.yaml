@@ -1,6 +1,11 @@
 ---
   # To allow sign in both with username and email, one can use a filter like
   #  users_filter: (&(|({username_attribute}={input})({mail_attribute}={input}))(objectClass=person))
+server:
+  buffers:
+    read: 16384
+    write: 16384
+
 authentication_backend:
   ldap:
     address: ldap://lldap.default.svc.cluster.local:389
