@@ -31,14 +31,10 @@ model_list:
     litellm_params:
       model: openai/ft:gpt-3.5-turbo-0125:personal:sensei-fine-tuned-v1:B0PBp7HZ
       api_key: ${SECRET_FT_SENSEI_OPENAI_KEY}
-  - model_name: gemini-3-pro-preview
+  - model_name: openrouter-google-gemma-4-31b-it-free
     litellm_params:
-      model: gemini/gemini-3-pro-preview
-      api_key: ${SECRET_SENSEI_GEMINI_KEY}
-  - model_name: gemini-2.5-pro
-    litellm_params:
-      model: gemini/gemini-2.5-pro
-      api_key: ${SECRET_SENSEI_GEMINI_KEY2}
+      model: google/gemma-4-31b-it:free
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
   - model_name: openrouter-openai-gpt-oss-120b
     litellm_params:
       model: openrouter/openai/gpt-oss-120b
