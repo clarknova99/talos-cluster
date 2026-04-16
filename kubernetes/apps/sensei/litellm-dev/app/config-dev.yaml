@@ -33,7 +33,7 @@ model_list:
       api_key: ${SECRET_FT_SENSEI_OPENAI_KEY}
   - model_name: openrouter-google-gemma-4-31b-it-free
     litellm_params:
-      model: google/gemma-4-31b-it:free
+      model: openrouter/google/gemma-4-31b-it:free
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
   - model_name: openrouter-openai-gpt-oss-120b
     litellm_params:
