@@ -31,7 +31,7 @@ model_list:
     litellm_params:
       model: openai/ft:gpt-3.5-turbo-0125:personal:sensei-fine-tuned-v1:B0PBp7HZ
       api_key: ${SECRET_FT_SENSEI_OPENAI_KEY}
-  - model_name: openrouter-minimax/minimax-m2.7
+  - model_name: openrouter-minimax-minimax-m2.7
     litellm_params:
       model: openrouter/minimax/minimax-m2.7
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
@@ -43,10 +43,6 @@ model_list:
     litellm_params:
       model: openrouter/elephant-alpha
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
-  - model_name: openrouter-google-gemma-4-31b-it-free
-    litellm_params:
-      model: openrouter/google/gemma-4-31b-it:free
-      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
   - model_name: openrouter-openai-gpt-oss-120b
     litellm_params:
       model: openrouter/openai/gpt-oss-120b
@@ -55,40 +51,38 @@ model_list:
     litellm_params:
       model: openrouter/openai/gpt-oss-20b
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
-  - model_name: openrouter-meta-llama-llama-4-scout
+  - model_name: openrouter-openai-gpt-5.4-nano
     litellm_params:
-      model: openrouter/meta-llama/llama-4-scout
+      model: openrouter/openai/gpt-5.4-nano
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
-  - model_name: openrouter-google-gemini-3-flash-preview
+  - model_name: openrouter-openai-gpt-5.4-mini
     litellm_params:
-      model: openrouter/google/gemini-3-flash-preview
+      model: openrouter/openai/gpt-5.4-mini
       api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
-  - model_name: databricks-llama-4-maverick
+  - model_name: openrouter-openai-gpt-5.4
     litellm_params:
-      model: databricks/databricks-llama-4-maverick
-      api_base: ${SECRET_SENSEI_DATABRICKS_API_BASE}
-      api_key: ${SECRET_SENSEI_DATABRICKS_API_KEY}
-  - model_name: databricks-gpt-5-1
+      model: openrouter/openai/gpt-5.4
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+  - model_name: openrouter-google-gemini-3.1-flash-lite-preview
     litellm_params:
-      model: databricks/databricks-gpt-5-1
-      api_base: ${SECRET_SENSEI_DATABRICKS_API_BASE}
-      api_key: ${SECRET_SENSEI_DATABRICKS_API_KEY}
-  - model_name: databricks-gpt-oss-120b
+      model: openrouter/google/gemini-3.1-flash-lite-preview
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+  - model_name: openrouter-google-gemini-3.1-pro-preview
     litellm_params:
-      model: databricks/databricks-gpt-oss-120b
-      api_base: ${SECRET_SENSEI_DATABRICKS_API_BASE}
-      api_key: ${SECRET_SENSEI_DATABRICKS_API_KEY}
-  - model_name: databricks-claude-sonnet-4-5
+      model: openrouter/google/gemini-3.1-pro-preview
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+  - model_name: openrouter-google-gemma-4-31b-it
     litellm_params:
-      model: databricks/databricks-claude-sonnet-4-5
-      api_base: ${SECRET_SENSEI_DATABRICKS_API_BASE}
-      api_key: ${SECRET_SENSEI_DATABRICKS_API_KEY}
-  - model_name: databricks-gemini-2-5-pro
+      model: openrouter/google/gemma-4-31b-it
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+  - model_name: openrouter-xiaomi-mimo-v2-pro
     litellm_params:
-      model: databricks/databricks-gemini-2-5-pro
-      api_base: ${SECRET_SENSEI_DATABRICKS_API_BASE}
-      api_key: ${SECRET_SENSEI_DATABRICKS_API_KEY}
-
+      model: openrouter/xiaomi/mimo-v2-pro
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
+  - model_name: openrouter-z-ai-glm-5.1
+    litellm_params:
+      model: openrouter/z-ai/glm-5.1
+      api_key: ${SECRET_SENSEI_OPENROUTER_KEY}
 general_settings:
   store_model_in_db: true
   store_prompts_in_spend_logs: true
