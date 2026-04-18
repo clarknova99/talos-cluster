@@ -81,6 +81,7 @@ spec:
               LOG_FORMAT: json
               ANALYZE_POSITION_URL: ${SECRET_SENSEI_ANALYZE_POSITION_URL}
               CHAT_AGENT_BACKEND: langgraph
+              ENABLE_CHESS_CRITIC: true
             resources:
               requests:
                 memory: 500Mi
