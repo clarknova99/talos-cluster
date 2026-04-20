@@ -13,3 +13,5 @@ spec:
     cdi:
       staticPath: /var/run/cdi
       dynamicPath: /var/run/cdi
+    healthMonitoring:
+      enabled: false
