@@ -121,19 +121,19 @@ spec:
         #         lifetimeType: Permanent
         rules:
           # Cacheable game pages — no session affinity so Cloudflare can cache
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /games/
-            backendRefs:
-              - name: sensei-prod-app
-                port: *port
-            filters:
-              - type: RequestHeaderModifier
-                requestHeaderModifier:
-                  set:
-                    - name: X-Forwarded-Proto
-                      value: https
+          # - matches:
+          #     - path:
+          #         type: PathPrefix
+          #         value: /games/
+          #   backendRefs:
+          #     - name: sensei-prod-app
+          #       port: *port
+          #   filters:
+          #     - type: RequestHeaderModifier
+          #       requestHeaderModifier:
+          #         set:
+          #           - name: X-Forwarded-Proto
+          #             value: https
           # Everything else — sticky sessions as before
           - backendRefs:
               - name: sensei-prod-app
