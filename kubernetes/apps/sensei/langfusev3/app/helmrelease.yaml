@@ -31,7 +31,7 @@ spec:
           web:
             image:
               repository: ghcr.io/langfuse/langfuse
-              tag: 3.169.0@sha256:cdfdca609912edffd616503e43427395fcf135423422440d74c89d9d552b74f9
+              tag: 3.170.0@sha256:31bf938d0e678026f39d35151771fad8854b4ec83ba7bff8c6d232760e276296
             env: &sharedEnv
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres-lb-vector.database.svc.cluster.local:5432/langfuse
               SALT: ${SECRET_LANGFUSE_SALT}
