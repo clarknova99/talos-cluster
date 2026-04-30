@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: dev-latest@sha256:9f7d98a71f4a9bb383f3504c543cf5a0eb81c1c365e9609f96789ec91a989801
+              tag: dev-latest@sha256:fe302e0cbab1bcf2aa4c00d6b354df97bec8b18ffaa8617ed5fb0596ec71ae7d
               pullPolicy: Always
             command: ["/bin/sh", "-c", "cd /app && python3 -m workers.game_worker"]
             env:
