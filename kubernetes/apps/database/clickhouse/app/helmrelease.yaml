@@ -117,7 +117,7 @@ spec:
       config:
         enabled: true
         type: configMap
-        name: clickhouse-config
+        name: clickhouse
         globalMounts:
           - path: /etc/clickhouse-server/config.d
           - path: /etc/clickhouse-server/users.d
