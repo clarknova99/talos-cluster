@@ -212,6 +212,7 @@ spec:
                         <max_memory_usage_for_all_queries>8589934592</max_memory_usage_for_all_queries>
                         <background_merges_mutations_concurrency_ratio>1</background_merges_mutations_concurrency_ratio>
                         <allow_experimental_statistics>0</allow_experimental_statistics>
+                        <do_not_merge_across_partitions_select_final>1</do_not_merge_across_partitions_select_final>
                     </default>
                 </profiles>
 
