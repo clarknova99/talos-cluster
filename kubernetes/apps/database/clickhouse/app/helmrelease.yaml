@@ -213,6 +213,11 @@ spec:
                         <background_merges_mutations_concurrency_ratio>1</background_merges_mutations_concurrency_ratio>
                         <allow_experimental_statistics>0</allow_experimental_statistics>
                         <do_not_merge_across_partitions_select_final>1</do_not_merge_across_partitions_select_final>
+                        <!-- Workaround for ClickHouse #102390: SIGSEGV in ColumnMap::takeOrCalculateStatisticsFrom
+                             during MergingSortedAlgorithm when querying ReplacingMergeTree tables with Map columns
+                             via ORDER BY ... LIMIT N BY (e.g. Langfuse traces.all). Recommended by upstream maintainer.
+                             Fix is in PR #103273; remove this setting once a 26.3.x patch with that fix is released. -->
+                        <enable_lazy_columns_replication>0</enable_lazy_columns_replication>
                     </default>
                 </profiles>
 
