@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/project-sensei/backend
-              tag: main-1.0.0@sha256:39ca20530854e17322339244ec6933df6ad445a79d07516e27b499f92d1cf96a
+              tag: main-1.0.0@sha256:68365179d1962f7008d8351ed79787cefea895c85822391fcf7686ad66b0d8f7
               pullPolicy: Always
             env:
               JWT_SECRET_KEY: ${SECRET_SENSEI_JWT_SECRET_KEY}
