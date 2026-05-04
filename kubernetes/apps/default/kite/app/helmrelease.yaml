@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kite-org/kite
-              tag: v0.10.0
+              tag: v0.11.0
             env:
               KITE_USERNAME: ${SECRET_CAM_USERNAME}
               KITE_PASSWORD: ${SECRET_CAM_PASSWORD}
