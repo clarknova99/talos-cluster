@@ -131,6 +131,31 @@ spec:
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
+  name: clickhouse
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  plugins:
+    - name: grafana-clickhouse-datasource
+      version: 4.17.0
+  datasource:
+    type: grafana-clickhouse-datasource
+    name: ClickHouse
+    uid: clickhouse
+    access: proxy
+    jsonData:
+      host: 192.168.3.35
+      port: 9000
+      username: ${SECRET_CLICKHOUSE_USER}
+      protocol: native
+    secureJsonData:
+      password: ${SECRET_CLICKHOUSE_PASSWORD}
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
   name: influxdb
 spec:
   instanceSelector:
