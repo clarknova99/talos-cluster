@@ -5,16 +5,12 @@ metadata:
   name: redis
   namespace: database
 spec:
-  chart:
-    spec:
-      chart: app-template
-      version: 5.0.0
-      reconcileStrategy: ChartVersion
-      sourceRef:
-        kind: HelmRepository
-        namespace: flux-system
-        name: bjw-s
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
   interval: 30m
+
   values:
     controllers:
       redis:
