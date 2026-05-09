@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: clickhouse/clickhouse-server
-              tag: 26.3.9.8-alpine
+              tag: 26.4.2.10-alpine
             env:
               CLICKHOUSE_DB: dittofeed
               CLICKHOUSE_USER: dittofeed
