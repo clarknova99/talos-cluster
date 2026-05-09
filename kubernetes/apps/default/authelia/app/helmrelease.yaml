@@ -8,7 +8,7 @@ metadata:
 spec:
   chartRef:
     kind: OCIRepository
-    name: homepage
+    name: authelia
   interval: 30m
 
   values:
