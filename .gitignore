@@ -31,3 +31,5 @@ CLAUDE.md
 scripts/foundry/
 .pytest_cache/
 .specstory
+.cursor
+.claude
