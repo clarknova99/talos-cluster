@@ -18,6 +18,7 @@ spec:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
+    - --lua_force_undeclared_keys
   serviceSpec:
     type: LoadBalancer
     annotations:
