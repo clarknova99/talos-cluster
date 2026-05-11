@@ -135,7 +135,7 @@ Each app has its own `ks.yaml` (a `Kustomization` in the `flux-system` namespace
 All global secrets live in `kubernetes/components/sops/cluster-secrets.sops.yaml` — a single `Secret` in `flux-system`. Flux substitutes `${SECRET_VAR_NAME}` placeholders across all manifests.
 
 Key variable names (from cluster-secrets):
-- `${SECRET_DOMAIN}` — primary domain (bigwang.org)
+- `${SECRET_DOMAIN}` — primary domain
 - `${SECRET_DOMAIN_TWO}`, `${SECRET_DOMAIN_THREE}` — secondary domains
 - `${SECRET_CLOUDFLARE_API_TOKEN}` — for DNS challenges and external-dns
 - Database, OAuth, API keys, and service credentials follow the `SECRET_*` naming pattern

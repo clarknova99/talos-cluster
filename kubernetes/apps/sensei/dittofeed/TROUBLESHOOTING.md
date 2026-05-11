@@ -181,7 +181,7 @@ Expected output should show `totalProcessed` > 0 and the workflow processing wor
 1. **Check for PostgreSQL failover events (requires Victoria Logs):**
    ```bash
    # Query Victoria Logs for recent CNPG failover events
-   curl -s 'https://victoria-logs.bigwang.org/select/logsql/query' \
+   curl -s 'http://192.168.3.28:9428/select/logsql/query' \
      --data-urlencode 'query=k_namespace_name:database AND k_pod_name:~"cloudnative-pg" AND (switchover OR failover OR "initiating a failover")' \
      --data-urlencode 'start=<start-date>T00:00:00Z' \
      --data-urlencode 'end=<end-date>T00:00:00Z' \
@@ -190,7 +190,7 @@ Expected output should show `totalProcessed` > 0 and the workflow processing wor
 
 2. **Check for PG connection errors in dittofeed app logs (requires Victoria Logs):**
    ```bash
-   curl -s 'https://victoria-logs.bigwang.org/select/logsql/query' \
+   curl -s 'http://192.168.3.28:9428/select/logsql/query' \
      --data-urlencode 'query=k_namespace_name:sensei AND app:dittofeed AND NOT app:~"dev" AND (EPERM OR "shutting down" OR "connection refused")' \
      --data-urlencode 'start=<start-date>T00:00:00Z' \
      --data-urlencode 'end=<end-date>T00:00:00Z' \
