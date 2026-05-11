@@ -14,7 +14,7 @@ spec:
             - name: sensei-secret
           containers:
             - name: prod-daily-user-refresh
-              image: ghcr.io/clarknova99/project-sensei/backend:main-1.0.0@sha256:1cf586584569aa64075d3d3f33b0e55130b26eef1a22eedae9aced1a6a04f564
+              image: ghcr.io/clarknova99/project-sensei/backend:main-1.0.0@sha256:32e0a9b46b29983d44d7c439d54312e1d3f1146c903b987a45cc958ebae620af
               imagePullPolicy: Always
               command: ["/bin/sh", "-c", "cd /app && python3 -m workers.daily_refresh"]
               env:
