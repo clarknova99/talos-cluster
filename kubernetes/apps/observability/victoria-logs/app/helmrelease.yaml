@@ -12,6 +12,9 @@ spec:
   values:
     fullnameOverride: victoria-logs
     server:
+      service:
+        type: LoadBalancer
+        loadBalancerIP: 192.168.3.28
       persistentVolume:
         enabled: true
         storageClassName: ceph-block
