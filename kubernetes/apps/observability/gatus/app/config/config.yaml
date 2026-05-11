@@ -101,15 +101,15 @@ endpoints:
     #     description: "healthcheck failed"
     #     send-on-resolved: true
 
-  - name: redis
-    group: database
-    url: "tcp://redis.database.svc.cluster.local:6379"
-    interval: 1m
-    ui:
-      hide-hostname: true
-      hide-url: true
-    conditions:
-      - "[CONNECTED] == true"
+  # - name: redis
+  #   group: database
+  #   url: "tcp://redis.database.svc.cluster.local:6379"
+  #   interval: 1m
+  #   ui:
+  #     hide-hostname: true
+  #     hide-url: true
+  #   conditions:
+  #     - "[CONNECTED] == true"
 
   - name: dittofeed-compute-properties
     group: sensei
