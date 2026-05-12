@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: docker.io/influxdb
-              tag: 1.8.10-alpine
+              tag: 2.9.1-alpine
     service:
       app:
         controller: influxdb
