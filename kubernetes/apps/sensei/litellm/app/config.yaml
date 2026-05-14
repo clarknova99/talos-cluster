@@ -76,7 +76,14 @@ model_list:
       model: databricks/databricks-gemini-2-5-pro
       api_base: ${SECRET_SENSEI_DATABRICKS_API_BASE}
       api_key: ${SECRET_SENSEI_DATABRICKS_API_KEY}
-
+  - model_name: gemini-gemini-2.5-flash
+    litellm_params:
+      model: gemini/gemini-2.5-flash
+      api_key: ${SECRET_SENSEI_GEMINI_KEY3}
+  - model_name: gemini-gemini-3.1-pro-preview
+    litellm_params:
+      model: gemini/gemini-3.1-pro-preview
+      api_key: ${SECRET_SENSEI_GEMINI_KEY3}
 general_settings:
   store_model_in_db: true
   store_prompts_in_spend_logs: true
