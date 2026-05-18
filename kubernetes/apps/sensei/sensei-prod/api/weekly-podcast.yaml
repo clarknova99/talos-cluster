@@ -16,7 +16,7 @@ spec:
             - name: sensei-secret
           containers:
             - name: prod-weekly-podcast
-              image: ghcr.io/clarknova99/project-sensei/backend:main-1.0.0@sha256:6105778615d267c49e28f59d815c16b24cdd765070cf86d9c7ddc43c5570543a
+              image: ghcr.io/clarknova99/project-sensei/backend:main-1.0.0@sha256:4fdf7cd99ca6f288e627bc14ce7bc020b0f9d6e4f63ee4055b5f63a6f87c7675
               imagePullPolicy: Always
               command: ["/bin/sh", "-c", "cd /app && python3 -m workers.weekly_podcast"]
               env:
