@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 0,
   "links": [],
   "panels": [
     {
@@ -29,7 +29,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 39,
+      "id": 44,
       "panels": [],
       "title": "Users",
       "type": "row"
@@ -37,7 +37,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -82,12 +82,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "builder",
           "format": "table",
@@ -125,7 +125,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -215,12 +215,12 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -258,7 +258,7 @@
         "x": 0,
         "y": 9
       },
-      "id": 28,
+      "id": 39,
       "panels": [],
       "title": "Signups",
       "type": "row"
@@ -266,7 +266,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -340,12 +340,12 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -413,7 +413,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -543,12 +543,12 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -630,7 +630,7 @@
         "x": 0,
         "y": 18
       },
-      "id": 29,
+      "id": 28,
       "panels": [],
       "title": "Subscriptions",
       "type": "row"
@@ -638,7 +638,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -660,7 +660,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 5,
         "x": 0,
         "y": 19
@@ -683,18 +683,18 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "dataset": "sensei-prod",
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select count(*) from subscriptions",
+          "rawSql": "select count(distinct sensei_user_id ) from subscriptions \nwhere sensei_user_id not in (1,2)",
           "refId": "A",
           "sql": {
             "columns": [
@@ -721,7 +721,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -743,7 +743,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 5,
         "x": 5,
         "y": 19
@@ -766,18 +766,18 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "dataset": "sensei-prod",
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select count(*) from subscriptions where status = 'active'",
+          "rawSql": "select count(distinct sensei_user_id ) \nfrom subscriptions\nwhere status in ('active', 'canceled')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -804,7 +804,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -820,7 +820,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 2,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -828,9 +828,12 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 10,
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 6,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -846,7 +849,6 @@
             }
           },
           "decimals": 0,
-          "displayName": "Subscriptions",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -863,49 +865,84 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "join_date"
+              "options": "terminated"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "YYYY-MM-DD"
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "renewed"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "canceled"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 14,
         "x": 10,
         "y": 19
       },
-      "id": 38,
+      "id": 41,
       "interval": "1d",
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
-          "format": "table",
+          "format": "time_series",
           "rawQuery": true,
-          "rawSql": "WITH daily_counts AS (\n    SELECT \n        DATE_TRUNC('day', created_at) AS created_at,\n        COUNT(*) AS daily_count\n    FROM subscriptions\n    GROUP BY DATE_TRUNC('day', created_at) \n),\nrunning_totals AS (\n    SELECT \n        created_at,\n        daily_count,\n        SUM(daily_count) OVER (ORDER BY created_at) AS running_total\n    FROM daily_counts\n)\nSELECT date(created_at) as created_at, running_total\nFROM running_totals\nWHERE created_at >= NOW() - INTERVAL '21 days'\nORDER BY created_at;",
+          "rawSql": "SELECT\n  date_trunc('day', event_timestamp) AS \"time\",\n  count(*) FILTER (WHERE event_type = 'subscription_created')::bigint AS created,\n  count(*) FILTER (WHERE event_type = 'subscription_renewed')::bigint AS renewed,\n  count(*) FILTER (WHERE event_type = 'subscription_canceled')::bigint AS canceled,\n  count(*) FILTER (WHERE event_type = 'subscription_terminated')::bigint AS terminated\nFROM events\nWHERE event_timestamp >= '2025-12-02'\nGROUP BY 1\nORDER BY 1;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -926,7 +963,7 @@
           }
         }
       ],
-      "title": "Subscriptions",
+      "title": "Subscription Events",
       "transparent": true,
       "type": "timeseries"
     },
@@ -936,7 +973,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 29
       },
       "id": 12,
       "panels": [],
@@ -946,7 +983,835 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#6a7484",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 1
+              },
+              {
+                "color": "yellow",
+                "value": 3
+              },
+              {
+                "color": "super-light-green",
+                "value": 7
+              },
+              {
+                "color": "green",
+                "value": 10
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "M*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-greens"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "M0"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 76
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "M1"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 86
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "M2"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 86
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "M3"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cohort"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 129
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Users"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              },
+              {
+                "id": "unit",
+                "value": "locale"
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": ""
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "M4"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "M5"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "M6"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 10,
+        "x": 0,
+        "y": 30
+      },
+      "id": 42,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.3",
+      "targets": [
+        {
+          "dataset": "sensei-prod",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH cohorts AS (\n  SELECT\n    sensei_user_id,\n    date_trunc('month', joined_at) AS cohort_month\n  FROM sensei_users\n  WHERE joined_at IS NOT NULL\n),\nactivity AS (\n  -- Include signup month as guaranteed activity\n  SELECT sensei_user_id, date_trunc('month', joined_at) AS active_month\n  FROM sensei_users\n  WHERE joined_at IS NOT NULL\n  UNION\n  SELECT DISTINCT\n    e.sensei_user_id,\n    date_trunc('month', e.event_timestamp) AS active_month\n  FROM events e\n  WHERE e.sensei_user_id IS NOT NULL\n),\ncohort_activity AS (\n  SELECT\n    c.cohort_month,\n    EXTRACT(MONTH FROM age(a.active_month, c.cohort_month))::int\n      + EXTRACT(YEAR FROM age(a.active_month, c.cohort_month))::int * 12\n      AS months_since_signup,\n    COUNT(DISTINCT c.sensei_user_id) AS active_users\n  FROM cohorts c\n  JOIN activity a USING (sensei_user_id)\n  WHERE a.active_month >= c.cohort_month\n  GROUP BY c.cohort_month, a.active_month\n),\ncohort_sizes AS (\n  SELECT cohort_month, COUNT(*) AS cohort_size\n  FROM cohorts\n  GROUP BY cohort_month\n)\nSELECT\n  to_char(ca.cohort_month, 'YYYY-MM') AS \"Cohort\",\n  cs.cohort_size AS \"Users\",\n  MAX(CASE WHEN months_since_signup = 0 THEN ROUND(100.0 * active_users / cohort_size, 2) END) AS \"M0\",\n  MAX(CASE WHEN months_since_signup = 1 THEN ROUND(100.0 * active_users / cohort_size, 2) END) AS \"M1\",\n  MAX(CASE WHEN months_since_signup = 2 THEN ROUND(100.0 * active_users / cohort_size, 2) END) AS \"M2\",\n  MAX(CASE WHEN months_since_signup = 3 THEN ROUND(100.0 * active_users / cohort_size, 2) END) AS \"M3\",\n  MAX(CASE WHEN months_since_signup = 4 THEN ROUND(100.0 * active_users / cohort_size, 2) END) AS \"M4\",\n  MAX(CASE WHEN months_since_signup = 5 THEN ROUND(100.0 * active_users / cohort_size, 2) END) AS \"M5\",\n  MAX(CASE WHEN months_since_signup = 6 THEN ROUND(100.0 * active_users / cohort_size, 2) END) AS \"M6\"\nFROM cohort_activity ca\nJOIN cohort_sizes cs USING (cohort_month)\nWHERE months_since_signup <= 6\nGROUP BY ca.cohort_month, cs.cohort_size\nORDER BY ca.cohort_month desc;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Monthly Retention",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#6a7484",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 1
+              },
+              {
+                "color": "super-light-green",
+                "value": 3
+              },
+              {
+                "color": "light-green",
+                "value": 7
+              },
+              {
+                "color": "green",
+                "value": 10
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "M*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-greens"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W0"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 76
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W1"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W2"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W3"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cohort"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 129
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Users"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              },
+              {
+                "id": "unit",
+                "value": "locale"
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": ""
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W4"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W5"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W6"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W7"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 85
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W8"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 85
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W9"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W10"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 83
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W11"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "W12"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 14,
+        "x": 10,
+        "y": 30
+      },
+      "id": 43,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.3",
+      "targets": [
+        {
+          "dataset": "sensei-prod",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH cohorts AS (\n  SELECT\n    sensei_user_id,\n    date_trunc('week', joined_at) AS cohort_week\n  FROM sensei_users\n  WHERE joined_at IS NOT NULL\n),\nactivity AS (\n  SELECT sensei_user_id, date_trunc('week', joined_at) AS active_week\n  FROM sensei_users\n  WHERE joined_at IS NOT NULL\n  UNION\n  SELECT DISTINCT\n    e.sensei_user_id,\n    date_trunc('week', e.event_timestamp) AS active_week\n  FROM events e\n  WHERE e.sensei_user_id IS NOT NULL\n),\ncohort_activity AS (\n  SELECT\n    c.cohort_week,\n    (a.active_week::date - c.cohort_week::date) / 7 AS weeks_since_signup,\n    COUNT(DISTINCT c.sensei_user_id) AS active_users\n  FROM cohorts c\n  JOIN activity a USING (sensei_user_id)\n  WHERE a.active_week >= c.cohort_week\n  GROUP BY c.cohort_week, a.active_week\n),\ncohort_sizes AS (\n  SELECT cohort_week, COUNT(*) AS cohort_size\n  FROM cohorts\n  GROUP BY cohort_week\n),\nnow_week AS (\n  SELECT date_trunc('week', now()) AS current_week\n)\nSELECT\n  to_char(ca.cohort_week, 'YYYY-MM-DD') AS \"Cohort\",\n  cs.cohort_size AS \"Users\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 0 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '0 weeks' <= nw.current_week THEN 0 END) AS \"W0\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 1 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '1 week' <= nw.current_week THEN 0 END) AS \"W1\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 2 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '2 weeks' <= nw.current_week THEN 0 END) AS \"W2\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 3 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '3 weeks' <= nw.current_week THEN 0 END) AS \"W3\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 4 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '4 weeks' <= nw.current_week THEN 0 END) AS \"W4\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 5 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '5 weeks' <= nw.current_week THEN 0 END) AS \"W5\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 6 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '6 weeks' <= nw.current_week THEN 0 END) AS \"W6\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 7 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '7 weeks' <= nw.current_week THEN 0 END) AS \"W7\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 8 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '8 weeks' <= nw.current_week THEN 0 END) AS \"W8\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 9 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '9 weeks' <= nw.current_week THEN 0 END) AS \"W9\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 10 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '10 weeks' <= nw.current_week THEN 0 END) AS \"W10\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 11 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '11 weeks' <= nw.current_week THEN 0 END) AS \"W11\",\n  COALESCE(MAX(CASE WHEN weeks_since_signup = 12 THEN 100.0 * active_users / cohort_size END),\n    CASE WHEN ca.cohort_week + interval '12 weeks' <= nw.current_week THEN 0 END) AS \"W12\"\nFROM cohort_activity ca\nJOIN cohort_sizes cs USING (cohort_week)\nCROSS JOIN now_week nw\nWHERE weeks_since_signup <= 12\nGROUP BY ca.cohort_week, cs.cohort_size, nw.current_week\nORDER BY ca.cohort_week desc;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Weekly Retention",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -1022,7 +1887,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 48
       },
       "id": 34,
       "interval": "1d",
@@ -1039,12 +1904,12 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -1077,7 +1942,130 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "join_date"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "YYYY-MM-DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "id": 45,
+      "interval": "1d",
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select date(date_added)::text AS game_date, count(*)\nfrom games\nwhere source = 'sensei'\nand date_added >= NOW() - INTERVAL '25 days'\ngroup by 1\norder by 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Games played against the Sensei Coach",
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -1164,7 +2152,7 @@
         "h": 9,
         "w": 11,
         "x": 0,
-        "y": 36
+        "y": 64
       },
       "id": 27,
       "options": {
@@ -1172,12 +2160,12 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -1235,7 +2223,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -1317,7 +2305,7 @@
         "h": 9,
         "w": 13,
         "x": 11,
-        "y": 36
+        "y": 64
       },
       "id": 13,
       "options": {
@@ -1325,12 +2313,12 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -1383,7 +2371,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -1471,7 +2459,7 @@
         "h": 9,
         "w": 11,
         "x": 0,
-        "y": 45
+        "y": 73
       },
       "id": 30,
       "options": {
@@ -1479,12 +2467,12 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -1542,7 +2530,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -1630,7 +2618,7 @@
         "h": 9,
         "w": 13,
         "x": 11,
-        "y": 45
+        "y": 73
       },
       "id": 31,
       "options": {
@@ -1638,12 +2626,12 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -1701,7 +2689,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -1765,7 +2753,7 @@
         "h": 13,
         "w": 11,
         "x": 0,
-        "y": 54
+        "y": 82
       },
       "id": 32,
       "options": {
@@ -1773,12 +2761,12 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -1810,7 +2798,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -2118,7 +3106,7 @@
         "h": 13,
         "w": 13,
         "x": 11,
-        "y": 54
+        "y": 82
       },
       "id": 33,
       "interval": "1d",
@@ -2141,12 +3129,12 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -2248,7 +3236,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 67
+        "y": 95
       },
       "id": 14,
       "panels": [],
@@ -2258,7 +3246,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -2283,7 +3271,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 68
+        "y": 96
       },
       "id": 15,
       "options": {
@@ -2303,12 +3291,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -2347,7 +3335,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -2372,7 +3360,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 68
+        "y": 96
       },
       "id": 16,
       "options": {
@@ -2392,12 +3380,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -2436,7 +3424,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -2460,7 +3448,7 @@
         "h": 8,
         "w": 5,
         "x": 10,
-        "y": 68
+        "y": 96
       },
       "id": 17,
       "options": {
@@ -2480,12 +3468,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -2524,7 +3512,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -2549,7 +3537,7 @@
         "h": 8,
         "w": 5,
         "x": 15,
-        "y": 68
+        "y": 96
       },
       "id": 18,
       "options": {
@@ -2569,12 +3557,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -2613,7 +3601,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -2638,7 +3626,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 76
+        "y": 104
       },
       "id": 19,
       "options": {
@@ -2658,12 +3646,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -2702,7 +3690,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -2727,7 +3715,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 76
+        "y": 104
       },
       "id": 20,
       "options": {
@@ -2747,12 +3735,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -2791,7 +3779,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -2816,7 +3804,7 @@
         "h": 8,
         "w": 6,
         "x": 10,
-        "y": 76
+        "y": 104
       },
       "id": 21,
       "options": {
@@ -2836,12 +3824,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -2883,7 +3871,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 112
       },
       "id": 5,
       "panels": [],
@@ -2893,7 +3881,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -2928,7 +3916,7 @@
         "h": 18,
         "w": 15,
         "x": 0,
-        "y": 85
+        "y": 113
       },
       "id": 25,
       "options": {
@@ -2973,12 +3961,12 @@
           "zoom": 2.98
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -3010,7 +3998,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -3048,19 +4036,19 @@
         "h": 18,
         "w": 9,
         "x": 15,
-        "y": 85
+        "y": 113
       },
       "id": 26,
       "options": {
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -3095,7 +4083,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 103
+        "y": 131
       },
       "id": 4,
       "panels": [],
@@ -3105,7 +4093,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -3130,7 +4118,7 @@
         "h": 6,
         "w": 5,
         "x": 0,
-        "y": 104
+        "y": 132
       },
       "id": 8,
       "options": {
@@ -3150,12 +4138,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -3203,7 +4191,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -3227,7 +4215,7 @@
         "h": 6,
         "w": 3,
         "x": 5,
-        "y": 104
+        "y": 132
       },
       "id": 9,
       "options": {
@@ -3247,12 +4235,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -3300,7 +4288,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -3325,7 +4313,7 @@
         "h": 6,
         "w": 4,
         "x": 8,
-        "y": 104
+        "y": 132
       },
       "id": 36,
       "options": {
@@ -3345,12 +4333,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -3398,7 +4386,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -3423,7 +4411,7 @@
         "h": 6,
         "w": 5,
         "x": 12,
-        "y": 104
+        "y": 132
       },
       "id": 10,
       "options": {
@@ -3443,12 +4431,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -3496,7 +4484,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -3521,7 +4509,7 @@
         "h": 6,
         "w": 7,
         "x": 17,
-        "y": 104
+        "y": 132
       },
       "id": 35,
       "options": {
@@ -3541,12 +4529,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -3594,7 +4582,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -3633,19 +4621,19 @@
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 110
+        "y": 138
       },
       "id": 3,
       "options": {
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -3693,7 +4681,7 @@
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "P44368ADAD746BC27"
+        "uid": "postgres"
       },
       "fieldConfig": {
         "defaults": {
@@ -3767,7 +4755,7 @@
         "h": 9,
         "w": 17,
         "x": 0,
-        "y": 118
+        "y": 146
       },
       "id": 24,
       "interval": "1hr",
@@ -3784,12 +4772,12 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "P44368ADAD746BC27"
+            "uid": "postgres"
           },
           "editorMode": "code",
           "format": "table",
@@ -3887,5 +4875,5 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 1
+  "version": 15
 }
