@@ -1950,6 +1950,129 @@
             "mode": "thresholds"
           },
           "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "locale"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "join_date"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "YYYY-MM-DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "id": 45,
+      "interval": "1d",
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "postgres"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select date(date_added)::text AS game_date, count(*)\nfrom games\nwhere source = 'sensei'\nand date_added >= NOW() - INTERVAL '25 days'\ngroup by 1\norder by 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Games played against the Sensei Coach",
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
             "align": "auto",
             "cellOptions": {
               "type": "auto"
@@ -2029,7 +2152,7 @@
         "h": 9,
         "w": 11,
         "x": 0,
-        "y": 56
+        "y": 64
       },
       "id": 27,
       "options": {
@@ -2182,7 +2305,7 @@
         "h": 9,
         "w": 13,
         "x": 11,
-        "y": 56
+        "y": 64
       },
       "id": 13,
       "options": {
@@ -2336,7 +2459,7 @@
         "h": 9,
         "w": 11,
         "x": 0,
-        "y": 65
+        "y": 73
       },
       "id": 30,
       "options": {
@@ -2495,7 +2618,7 @@
         "h": 9,
         "w": 13,
         "x": 11,
-        "y": 65
+        "y": 73
       },
       "id": 31,
       "options": {
@@ -2630,7 +2753,7 @@
         "h": 13,
         "w": 11,
         "x": 0,
-        "y": 74
+        "y": 82
       },
       "id": 32,
       "options": {
@@ -2983,7 +3106,7 @@
         "h": 13,
         "w": 13,
         "x": 11,
-        "y": 74
+        "y": 82
       },
       "id": 33,
       "interval": "1d",
@@ -3113,7 +3236,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 87
+        "y": 95
       },
       "id": 14,
       "panels": [],
@@ -3148,7 +3271,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 88
+        "y": 96
       },
       "id": 15,
       "options": {
@@ -3237,7 +3360,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 88
+        "y": 96
       },
       "id": 16,
       "options": {
@@ -3325,7 +3448,7 @@
         "h": 8,
         "w": 5,
         "x": 10,
-        "y": 88
+        "y": 96
       },
       "id": 17,
       "options": {
@@ -3414,7 +3537,7 @@
         "h": 8,
         "w": 5,
         "x": 15,
-        "y": 88
+        "y": 96
       },
       "id": 18,
       "options": {
@@ -3503,7 +3626,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 96
+        "y": 104
       },
       "id": 19,
       "options": {
@@ -3592,7 +3715,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 96
+        "y": 104
       },
       "id": 20,
       "options": {
@@ -3681,7 +3804,7 @@
         "h": 8,
         "w": 6,
         "x": 10,
-        "y": 96
+        "y": 104
       },
       "id": 21,
       "options": {
@@ -3748,7 +3871,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 104
+        "y": 112
       },
       "id": 5,
       "panels": [],
@@ -3793,7 +3916,7 @@
         "h": 18,
         "w": 15,
         "x": 0,
-        "y": 105
+        "y": 113
       },
       "id": 25,
       "options": {
@@ -3913,7 +4036,7 @@
         "h": 18,
         "w": 9,
         "x": 15,
-        "y": 105
+        "y": 113
       },
       "id": 26,
       "options": {
@@ -3960,7 +4083,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 123
+        "y": 131
       },
       "id": 4,
       "panels": [],
@@ -3995,7 +4118,7 @@
         "h": 6,
         "w": 5,
         "x": 0,
-        "y": 124
+        "y": 132
       },
       "id": 8,
       "options": {
@@ -4092,7 +4215,7 @@
         "h": 6,
         "w": 3,
         "x": 5,
-        "y": 124
+        "y": 132
       },
       "id": 9,
       "options": {
@@ -4190,7 +4313,7 @@
         "h": 6,
         "w": 4,
         "x": 8,
-        "y": 124
+        "y": 132
       },
       "id": 36,
       "options": {
@@ -4288,7 +4411,7 @@
         "h": 6,
         "w": 5,
         "x": 12,
-        "y": 124
+        "y": 132
       },
       "id": 10,
       "options": {
@@ -4386,7 +4509,7 @@
         "h": 6,
         "w": 7,
         "x": 17,
-        "y": 124
+        "y": 132
       },
       "id": 35,
       "options": {
@@ -4498,7 +4621,7 @@
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 130
+        "y": 138
       },
       "id": 3,
       "options": {
@@ -4632,7 +4755,7 @@
         "h": 9,
         "w": 17,
         "x": 0,
-        "y": 138
+        "y": 146
       },
       "id": 24,
       "interval": "1hr",
@@ -4752,5 +4875,5 @@
   "timezone": "browser",
   "title": "Sensei Metrics",
   "uid": "de8eqvscq4ruoc",
-  "version": 10
+  "version": 17
 }
