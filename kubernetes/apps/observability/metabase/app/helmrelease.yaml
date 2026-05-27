@@ -54,19 +54,28 @@ spec:
           - name: envoy-internal
             namespace: network
     persistence:
-      data:
-        existingClaim: metabase
-        advancedMounts:
-          metabase:
-            app:
-              - path: /metabase-data
-      nfs:
+      metabase:
         enabled: true
         type: nfs
         server: 192.168.1.3
         path: /volume1/network-storage/cluster/metabase
-        advancedMounts:
-          metabase:
-            app:
-              - path: /data
-                readOnly: true
+        globalMounts:
+          - path: /metabase-data
+
+    # persistence:
+    #   data:
+    #     existingClaim: metabase
+    #     advancedMounts:
+    #       metabase:
+    #         app:
+    #           - path: /metabase-data
+    #   nfs:
+    #     enabled: true
+    #     type: nfs
+    #     server: 192.168.1.3
+    #     path: /volume1/network-storage/cluster/metabase
+    #     advancedMounts:
+    #       metabase:
+    #         app:
+    #           - path: /data
+    #             readOnly: true
