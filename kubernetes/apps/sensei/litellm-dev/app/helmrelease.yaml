@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: ghcr.io/berriai/litellm
-              tag: v1.86.0
+              tag: v1.86.1
             env:
               DATABASE_URL: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/litellm-dev
               STORE_MODEL_IN_DB: "True"
