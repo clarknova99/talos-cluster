@@ -54,6 +54,12 @@ spec:
             port: 3000
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: "Sensei Services"
+          gethomepage.dev/icon: metabase
+          gatus.home-operations.com/endpoint: |
+            group: sensei
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN_TWO}"
         parentRefs:
