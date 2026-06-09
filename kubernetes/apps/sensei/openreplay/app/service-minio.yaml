@@ -1,0 +1,16 @@
+---
+# ExternalName service so HTTPRoute in sensei can reach minio in kube-system
+# without a cross-namespace ReferenceGrant. DNS resolves the CNAME to the
+# kube-system minio ClusterIP; Envoy connects to port 9000 directly.
+apiVersion: v1
+kind: Service
+metadata:
+  name: openreplay-minio
+  namespace: sensei
+spec:
+  type: ExternalName
+  externalName: minio.kube-system.svc.cluster.local
+  ports:
+    - name: s3
+      port: 9000
+      targetPort: 9000

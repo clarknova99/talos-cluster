@@ -1,0 +1,192 @@
+---
+# HTTPRoute replaces the nginx reverse proxy. Rules are evaluated top-to-bottom;
+# more specific prefixes appear before the catch-all frontend rule.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: openreplay
+  namespace: sensei
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: "Sensei Services"
+    gethomepage.dev/icon: openreplay.png
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+spec:
+  parentRefs:
+    - name: envoy-external
+      namespace: network
+      sectionName: https
+  hostnames:
+    - openreplay.${SECRET_DOMAIN_TWO}
+  rules:
+    # ── MinIO bucket assets (path forwarded as-is, no prefix strip) ──────────
+    # Sessions-assets is public; mobs/records/spots use presigned URLs with creds.
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /mobs/
+        - path:
+            type: PathPrefix
+            value: /sessions-assets/
+        - path:
+            type: PathPrefix
+            value: /static/
+        - path:
+            type: PathPrefix
+            value: /sourcemaps/
+        - path:
+            type: PathPrefix
+            value: /ios-images/
+        - path:
+            type: PathPrefix
+            value: /uxtesting-records/
+        - path:
+            type: PathPrefix
+            value: /records/
+        - path:
+            type: PathPrefix
+            value: /spots/
+        - path:
+            type: PathPrefix
+            value: /frontend/
+      backendRefs:
+        - name: openreplay-minio
+          port: 9000
+
+    # ── Go API v2 (/v2/api → /) ──────────────────────────────────────────────
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v2/api/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: openreplay-api
+          port: 8080
+
+    # ── HTTP ingest (/ingest → /) ────────────────────────────────────────────
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /ingest/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - name: Access-Control-Allow-Origin
+                value: "*"
+              - name: Access-Control-Allow-Methods
+                value: POST
+              - name: Access-Control-Allow-Headers
+                value: Content-Type,Authorization,Content-Encoding
+      backendRefs:
+        - name: openreplay-http
+          port: 8080
+
+    # ── Integrations (/integrations → /) ─────────────────────────────────────
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /integrations/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - name: Access-Control-Allow-Origin
+                value: "*"
+              - name: Access-Control-Allow-Methods
+                value: POST,PATCH,OPTIONS,DELETE
+              - name: Access-Control-Allow-Headers
+                value: Content-Type,Authorization,Content-Encoding,X-Openreplay-Batch
+      backendRefs:
+        - name: openreplay-integrations
+          port: 8080
+
+    # ── Legacy Python API (/api → /) ─────────────────────────────────────────
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - name: Cache-Control
+                value: no-store,no-cache
+              - name: Pragma
+                value: no-cache
+      backendRefs:
+        - name: openreplay-chalice
+          port: 8000
+
+    # ── Spot (/spot → /) ─────────────────────────────────────────────────────
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /spot/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - name: Access-Control-Allow-Origin
+                value: "*"
+              - name: Access-Control-Allow-Methods
+                value: POST,PATCH,DELETE,OPTIONS
+              - name: Access-Control-Allow-Headers
+                value: Content-Type,Authorization,Content-Encoding,X-Openreplay-Batch
+      backendRefs:
+        - name: openreplay-spot
+          port: 8080
+
+    # ── Assist WebSocket (/assist → / and /ws-assist → /) ───────────────────
+    # Envoy Gateway handles WebSocket upgrade automatically when the client
+    # sends "Upgrade: websocket".
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /assist/
+        - path:
+            type: PathPrefix
+            value: /ws-assist/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: openreplay-assist
+          port: 9001
+
+    # ── Frontend SPA (catch-all) ─────────────────────────────────────────────
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: openreplay-frontend
+          port: 8080

@@ -1,0 +1,14 @@
+---
+# Shared NFS-style volume mounted at /mnt/efs by all OpenReplay services
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openreplay-shared
+  namespace: sensei
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ceph-filesystem
+  resources:
+    requests:
+      storage: 50Gi

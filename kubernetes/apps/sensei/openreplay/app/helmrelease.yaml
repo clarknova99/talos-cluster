@@ -1,0 +1,413 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app openreplay
+  namespace: sensei
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+  values:
+    # YAML anchor: env vars shared across most OpenReplay services.
+    # The _sharedEnv key is unknown to app-template and is silently ignored;
+    # anchors are resolved by the YAML parser before Helm sees the values.
+    _sharedEnv: &sharedEnv
+      KAFKA_SERVERS: openreplay-kafka.sensei.svc.cluster.local:9092
+      KAFKA_USE_SSL: "false"
+      REDIS_STRING: redis://dragonfly.database.svc.cluster.local:6379
+      # Postgres (lowercase used by Python services)
+      pg_host: postgres16-rw.database.svc.cluster.local
+      pg_port: "5432"
+      pg_dbname: openreplay
+      pg_user: openreplay
+      pg_password: ${SECRET_OPENREPLAY_PG_PASSWORD}
+      POSTGRES_STRING: postgres://openreplay:${SECRET_OPENREPLAY_PG_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay?sslmode=disable
+      # ClickHouse — lowercase for Python, uppercase for Go
+      ch_host: clickhouse.database.svc.cluster.local
+      ch_port: "9000"
+      ch_port_http: "8123"
+      ch_username: ${SECRET_CLICKHOUSE_USER}
+      ch_password: ${SECRET_CLICKHOUSE_PASSWORD}
+      CH_USERNAME: ${SECRET_CLICKHOUSE_USER}
+      CH_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+      CLICKHOUSE_STRING: clickhouse.database.svc.cluster.local:9000/default
+      CLICKHOUSE_HTTP_STRING: clickhouse.database.svc.cluster.local:8123/default
+      # MinIO (internal endpoint for service-to-service reads/writes)
+      AWS_ACCESS_KEY_ID: ${SECRET_OPENREPLAY_S3_KEY}
+      AWS_SECRET_ACCESS_KEY: ${SECRET_OPENREPLAY_S3_SECRET}
+      AWS_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
+      AWS_REGION: us-east-1
+      LICENSE_KEY: ""
+
+    controllers:
+
+      # ── Kafka (KRaft, single-node) ──────────────────────────────────────────
+      kafka:
+        type: statefulset
+        containers:
+          app:
+            image:
+              repository: bitnami/kafka
+              tag: "3.9"
+            env:
+              KAFKA_CFG_NODE_ID: "1"
+              KAFKA_CFG_PROCESS_ROLES: broker,controller
+              KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+              KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://openreplay-kafka.sensei.svc.cluster.local:9092
+              KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@openreplay-kafka.sensei.svc.cluster.local:9093
+              KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+              KAFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+              KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+              KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
+              KAFKA_CFG_NUM_PARTITIONS: "3"
+              KAFKA_CFG_LOG_RETENTION_HOURS: "168"
+              KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+              KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+              KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
+
+      # ── Frontend SPA ───────────────────────────────────────────────────────
+      frontend:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/frontend
+              tag: v1.27.0
+            env:
+              # Point tracker JS directly to OpenReplay CDN — no local /script proxy needed
+              TRACKER_HOST: https://static.openreplay.com
+              HTTP_PORT: "8080"
+
+      # ── API (Go, v2) ───────────────────────────────────────────────────────
+      api:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/api
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              TOKEN_SECRET: ${SECRET_OPENREPLAY_TOKEN_SECRET}
+              ch_db: default
+              BUCKET_NAME: mobs
+              ASSIST_URL: http://openreplay-assist:9001/assist/%s
+              ASSIST_KEY: ${SECRET_OPENREPLAY_ASSIST_KEY}
+              JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
+              ASSIST_JWT_SECRET: ${SECRET_OPENREPLAY_ASSIST_JWT_SECRET}
+
+      # ── Chalice (Python, legacy API) ───────────────────────────────────────
+      chalice:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/chalice
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
+              JWT_REFRESH_SECRET: ${SECRET_OPENREPLAY_JWT_REFRESH_SECRET}
+              JWT_SPOT_SECRET: ${SECRET_OPENREPLAY_JWT_SPOT_SECRET}
+              JWT_SPOT_REFRESH_SECRET: ${SECRET_OPENREPLAY_JWT_SPOT_REFRESH_SECRET}
+              ASSIST_JWT_SECRET: ${SECRET_OPENREPLAY_ASSIST_JWT_SECRET}
+              ASSIST_KEY: ${SECRET_OPENREPLAY_ASSIST_KEY}
+              # S3_HOST is the public URL — browser loads recordings via this base
+              S3_HOST: https://openreplay.${SECRET_DOMAIN_TWO}
+              S3_KEY: ${SECRET_OPENREPLAY_S3_KEY}
+              S3_SECRET: ${SECRET_OPENREPLAY_S3_SECRET}
+              SITE_URL: https://openreplay.${SECRET_DOMAIN_TWO}
+              sessions_region: us-east-1
+              AWS_DEFAULT_REGION: us-east-1
+              sessions_bucket: mobs
+              ASSIST_RECORDS_BUCKET: records
+              IOS_VIDEO_BUCKET: mobs
+              sourcemaps_bucket: sourcemaps
+              js_cache_bucket: sessions-assets
+              sourcemaps_reader: http://openreplay-sourcemapreader:9000/{}/sourcemaps
+              ASSIST_URL: http://openreplay-assist:9001/assist/%s
+              version_number: v1.27.0
+              jwt_algorithm: HS512
+              root_path: /api
+              CLUSTER_URL: svc.cluster.local
+              JWT_EXPIRATION: "86400"
+              LOGLEVEL: INFO
+              PYTHONUNBUFFERED: "0"
+              CH_COMPRESSION: "false"
+              LICENSE_KEY: ""
+              EMAIL_HOST: ""
+              EMAIL_PORT: "587"
+              EMAIL_USER: ""
+              EMAIL_PASSWORD: ""
+              EMAIL_USE_TLS: "true"
+              EMAIL_USE_SSL: "false"
+              EMAIL_FROM: "OpenReplay<do-not-reply@openreplay.com>"
+              announcement_url: ""
+              captcha_key: ""
+              captcha_server: ""
+              iceServers: ""
+              SAML2_MD_URL: ""
+
+      # ── HTTP ingest service ────────────────────────────────────────────────
+      http:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/http
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              BUCKET_NAME: uxtesting-records
+              CACHE_ASSETS: "true"
+              JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
+              JWT_SPOT_SECRET: ${SECRET_OPENREPLAY_JWT_SPOT_SECRET}
+              TOKEN_SECRET: ${SECRET_OPENREPLAY_TOKEN_SECRET}
+
+      # ── Sink (Kafka→processing) ────────────────────────────────────────────
+      sink:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/sink
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
+
+      # ── Storage (Kafka→MinIO) ──────────────────────────────────────────────
+      storage:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/storage
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              BUCKET_NAME: mobs
+              FS_CLEAN_HRS: "24"
+
+      # ── Ender (session termination) ────────────────────────────────────────
+      ender:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/ender
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+
+      # ── Heuristics (anomaly detection) ────────────────────────────────────
+      heuristics:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/heuristics
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+
+      # ── DB (metadata persistence) ──────────────────────────────────────────
+      db:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/db
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              ch_db: default
+
+      # ── Canvases (canvas recording) ────────────────────────────────────────
+      canvases:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/canvases
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              BUCKET_NAME: mobs
+              FS_CLEAN_HRS: "24"
+
+      # ── Images (mobile screenshots) ────────────────────────────────────────
+      images:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/images
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              BUCKET_NAME: mobs
+              FS_CLEAN_HRS: "24"
+
+      # ── Assets (JS/CSS asset caching) ──────────────────────────────────────
+      assets:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/assets
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              BUCKET_NAME: sessions-assets
+              ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
+
+      # ── Integrations (webhook receivers) ──────────────────────────────────
+      integrations:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/integrations
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              BUCKET_NAME: mobs
+              JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
+              TOKEN_SECRET: ${SECRET_OPENREPLAY_TOKEN_SECRET}
+
+      # ── Spot (UX testing recordings) ──────────────────────────────────────
+      spot:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/spot
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              BUCKET_NAME: spots
+              CACHE_ASSETS: "true"
+              FS_CLEAN_HRS: "24"
+              JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
+              JWT_SPOT_SECRET: ${SECRET_OPENREPLAY_JWT_SPOT_SECRET}
+              TOKEN_SECRET: ${SECRET_OPENREPLAY_TOKEN_SECRET}
+
+      # ── Sourcemap Reader ───────────────────────────────────────────────────
+      sourcemapreader:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/sourcemapreader
+              tag: v1.27.0
+            env:
+              SMR_HOST: "0.0.0.0"
+              S3_HOST: http://minio.kube-system.svc.cluster.local:9000
+              S3_KEY: ${SECRET_OPENREPLAY_S3_KEY}
+              S3_SECRET: ${SECRET_OPENREPLAY_S3_SECRET}
+              AWS_REGION: us-east-1
+              ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
+              LICENSE_KEY: ""
+
+      # ── Assist (WebSocket co-browsing) ─────────────────────────────────────
+      assist:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/assist
+              tag: v1.27.0
+            env:
+              ASSIST_JWT_SECRET: ${SECRET_OPENREPLAY_ASSIST_JWT_SECRET}
+              ASSIST_KEY: ${SECRET_OPENREPLAY_ASSIST_KEY}
+              AWS_DEFAULT_REGION: us-east-1
+              REDIS_URL: dragonfly.database.svc.cluster.local
+              CLEAR_SOCKET_TIME: "720"
+              debug: "0"
+              redis: "false"
+
+      # ── Alerts (email notifications) ───────────────────────────────────────
+      alerts:
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/p1t3u8a3/alerts
+              tag: v1.27.0
+            env:
+              <<: *sharedEnv
+              SITE_URL: https://openreplay.${SECRET_DOMAIN_TWO}
+              S3_HOST: https://openreplay.${SECRET_DOMAIN_TWO}
+              S3_KEY: ${SECRET_OPENREPLAY_S3_KEY}
+              S3_SECRET: ${SECRET_OPENREPLAY_S3_SECRET}
+              version_number: v1.27.0
+              EMAIL_HOST: ""
+              EMAIL_PORT: "587"
+              EMAIL_USER: ""
+              EMAIL_PASSWORD: ""
+              EMAIL_USE_TLS: "true"
+              EMAIL_USE_SSL: "false"
+              EMAIL_FROM: "OpenReplay<do-not-reply@openreplay.com>"
+              LOGLEVEL: INFO
+              PYTHONUNBUFFERED: "0"
+
+    # ── Services ──────────────────────────────────────────────────────────────
+    service:
+      kafka:
+        controller: kafka
+        ports:
+          broker:
+            port: 9092
+          controller:
+            port: 9093
+      frontend:
+        controller: frontend
+        ports:
+          http:
+            port: 8080
+      api:
+        controller: api
+        ports:
+          http:
+            port: 8080
+      chalice:
+        controller: chalice
+        ports:
+          http:
+            port: 8000
+      http:
+        controller: http
+        ports:
+          http:
+            port: 8080
+      integrations:
+        controller: integrations
+        ports:
+          http:
+            port: 8080
+      spot:
+        controller: spot
+        ports:
+          http:
+            port: 8080
+      assist:
+        controller: assist
+        ports:
+          http:
+            port: 9001
+      sourcemapreader:
+        controller: sourcemapreader
+        ports:
+          http:
+            port: 9000
+
+    # ── Persistence ───────────────────────────────────────────────────────────
+    persistence:
+      shared-storage:
+        existingClaim: openreplay-shared
+        globalMounts:
+          - path: /mnt/efs
+
+      kafka-data:
+        type: persistentVolumeClaim
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        size: 20Gi
+        advancedMounts:
+          kafka:
+            app:
+              - path: /bitnami/kafka
