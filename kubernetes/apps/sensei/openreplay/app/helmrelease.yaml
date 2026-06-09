@@ -110,7 +110,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/chalice
-              tag: v1.27.0
+              tag: v1.27.10
             env:
               <<: *sharedEnv
               JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
