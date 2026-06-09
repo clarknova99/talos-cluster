@@ -47,11 +47,11 @@ spec:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           gethomepage.dev/description: YouTube Downloader
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: media
+          gethomepage.dev/group: Media
           gethomepage.dev/icon: youtube-dl.svg
           gethomepage.dev/name: MeTube
           gatus.home-operations.com/endpoint: |
-            group: media
+            group: Media
         parentRefs:
           - name: envoy-internal
             namespace: network
