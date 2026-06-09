@@ -254,7 +254,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/assets
-              tag: v1.27.0
+              tag: v1.120.0
             env:
               <<: *sharedEnv
               BUCKET_NAME: sessions-assets
