@@ -311,7 +311,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/assist
-              tag: v1.27.0
+              tag: v1.120.0
             env:
               ASSIST_JWT_SECRET: ${SECRET_OPENREPLAY_ASSIST_JWT_SECRET}
               ASSIST_KEY: ${SECRET_OPENREPLAY_ASSIST_KEY}
