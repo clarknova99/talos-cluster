@@ -81,7 +81,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/frontend
-              tag: v1.27.8
+              tag: v1.27.9
             env:
               # Point tracker JS directly to OpenReplay CDN — no local /script proxy needed
               TRACKER_HOST: https://static.openreplay.com
