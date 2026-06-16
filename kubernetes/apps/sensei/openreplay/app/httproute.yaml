@@ -79,9 +79,9 @@ spec:
               - name: Access-Control-Allow-Origin
                 value: "*"
               - name: Access-Control-Allow-Methods
-                value: POST
+                value: POST,GET,OPTIONS
               - name: Access-Control-Allow-Headers
-                value: Content-Type,Authorization,Content-Encoding
+                value: Content-Type,Authorization,Content-Encoding,datatype
       backendRefs:
         - name: openreplay-http
           port: 8080
