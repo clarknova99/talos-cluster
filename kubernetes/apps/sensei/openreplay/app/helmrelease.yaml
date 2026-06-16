@@ -325,6 +325,7 @@ spec:
               BUCKET_NAME: sessions-assets
               S3_BUCKET_ASSETS: sessions-assets
               ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
+              TOPIC_RAW_ASSETS: raw-assets
 
       # ── Integrations (webhook receivers) ──────────────────────────────────
       integrations:
