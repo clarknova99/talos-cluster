@@ -349,6 +349,7 @@ spec:
               BUCKET_NAME: spots
               CACHE_ASSETS: "true"
               FS_CLEAN_HRS: "24"
+              AWS_ENDPOINT: https://openreplay.${SECRET_DOMAIN_TWO}
 
       # ── Sourcemap Reader ───────────────────────────────────────────────────
       sourcemapreader:
