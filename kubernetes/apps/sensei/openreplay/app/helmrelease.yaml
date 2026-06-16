@@ -93,6 +93,9 @@ spec:
       # ── Kafka (KRaft, single-node) ──────────────────────────────────────────
       kafka:
         type: statefulset
+        pod:
+          securityContext:
+            fsGroup: 1000
         containers:
           app:
             image:
