@@ -62,6 +62,32 @@ spec:
         - name: openreplay-api
           port: 8080
 
+    # ── Canvas image uploads (/ingest/v1/web/images → canvases service) ───────
+    # The http service has no /v1/web/images handler; canvases handles it directly.
+    # Must be before the generic /ingest/ rule (more specific prefix wins).
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /ingest/v1/web/images
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /v1/web/images
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            add:
+              - name: Access-Control-Allow-Origin
+                value: "*"
+              - name: Access-Control-Allow-Methods
+                value: POST,GET,OPTIONS
+              - name: Access-Control-Allow-Headers
+                value: Content-Type,Authorization,Content-Encoding,datatype
+      backendRefs:
+        - name: openreplay-canvases
+          port: 8080
+
     # ── HTTP ingest (/ingest → /) ────────────────────────────────────────────
     - matches:
         - path:

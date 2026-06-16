@@ -440,6 +440,11 @@ spec:
         ports:
           http:
             port: 9000
+      canvases:
+        controller: canvases
+        ports:
+          http:
+            port: 8080
 
     # ── Persistence ───────────────────────────────────────────────────────────
     persistence:
