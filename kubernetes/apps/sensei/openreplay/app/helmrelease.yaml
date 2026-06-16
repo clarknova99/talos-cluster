@@ -239,6 +239,7 @@ spec:
             env:
               <<: *sharedEnv
               ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
+              S3_BUCKET_ASSETS: sessions-assets
 
       # ── Storage (Kafka→MinIO) ──────────────────────────────────────────────
       storage:
