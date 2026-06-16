@@ -108,7 +108,7 @@ spec:
           app:
             image:
               repository: apache/kafka
-              tag: "3.9.0"
+              tag: "3.9.2"
             env:
               KAFKA_NODE_ID: "1"
               KAFKA_PROCESS_ROLES: broker,controller
