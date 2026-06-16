@@ -96,6 +96,14 @@ spec:
         pod:
           securityContext:
             fsGroup: 1000
+        initContainers:
+          fix-perms:
+            image:
+              repository: busybox
+              tag: latest
+            command: ["sh", "-c", "chown -R 1000:1000 /var/lib/kafka/data && chmod 755 /var/lib/kafka/data"]
+            securityContext:
+              runAsUser: 0
         containers:
           app:
             image:
@@ -159,6 +167,11 @@ spec:
               tag: v1.27.10
             env:
               <<: *fullEnv
+              # Override HTTP string with embedded credentials — clickhouse_connect uses this as DSN
+              CLICKHOUSE_HTTP_STRING: "http://${SECRET_CLICKHOUSE_USER}:${SECRET_CLICKHOUSE_PASSWORD}@clickhouse.database.svc.cluster.local:8123"
+              CLICKHOUSE_USER: ${SECRET_CLICKHOUSE_USER}
+              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+              ch_db: openreplay
               # S3_HOST is the public URL — browser loads recordings via this base
               S3_HOST: https://openreplay.${SECRET_DOMAIN_TWO}
               S3_KEY: ${SECRET_MINIO_ACCESS_KEY}
