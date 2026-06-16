@@ -18,14 +18,14 @@ spec:
     _sharedEnv: &sharedEnv
       KAFKA_SERVERS: openreplay-kafka.sensei.svc.cluster.local:9092
       KAFKA_USE_SSL: "false"
-      REDIS_STRING: redis://dragonfly.database.svc.cluster.local:6379
+      REDIS_STRING: redis://dragonfly.database.svc.cluster.local:6379/10
       # Postgres (lowercase used by Python services)
       pg_host: postgres16-rw.database.svc.cluster.local
       pg_port: "5432"
       pg_dbname: openreplay
-      pg_user: openreplay
-      pg_password: ${SECRET_OPENREPLAY_PG_PASSWORD}
-      POSTGRES_STRING: postgres://openreplay:${SECRET_OPENREPLAY_PG_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay?sslmode=disable
+      pg_user: ${SECRET_PGADMIN_USER}
+      pg_password: ${SECRET_PGADMIN_PASSWORD}
+      POSTGRES_STRING: postgres://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/openreplay?sslmode=disable
       # ClickHouse — lowercase for Python, uppercase for Go
       ch_host: clickhouse.database.svc.cluster.local
       ch_port: "9000"
@@ -34,14 +34,55 @@ spec:
       ch_password: ${SECRET_CLICKHOUSE_PASSWORD}
       CH_USERNAME: ${SECRET_CLICKHOUSE_USER}
       CH_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-      CLICKHOUSE_STRING: clickhouse.database.svc.cluster.local:9000/default
-      CLICKHOUSE_HTTP_STRING: clickhouse.database.svc.cluster.local:8123/default
+      CLICKHOUSE_STRING: clickhouse.database.svc.cluster.local:9000/openreplay
+      CLICKHOUSE_HTTP_STRING: clickhouse.database.svc.cluster.local:8123/openreplay
       # MinIO (internal endpoint for service-to-service reads/writes)
-      AWS_ACCESS_KEY_ID: ${SECRET_OPENREPLAY_S3_KEY}
-      AWS_SECRET_ACCESS_KEY: ${SECRET_OPENREPLAY_S3_SECRET}
+      AWS_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
       AWS_ENDPOINT: http://minio.kube-system.svc.cluster.local:9000
       AWS_REGION: us-east-1
       LICENSE_KEY: ""
+
+    # Extends sharedEnv with per-app secrets from the openreplay-secrets Secret.
+    # Services needing secrets use <<: *fullEnv; others use <<: *sharedEnv.
+    # One merge key per env block avoids the YAML 1.2 duplicate-key restriction.
+    _fullEnv: &fullEnv
+      <<: *sharedEnv
+      JWT_SECRET:
+        valueFrom:
+          secretKeyRef:
+            name: openreplay-secrets
+            key: SECRET_OPENREPLAY_JWT_SECRET
+      JWT_REFRESH_SECRET:
+        valueFrom:
+          secretKeyRef:
+            name: openreplay-secrets
+            key: SECRET_OPENREPLAY_JWT_REFRESH_SECRET
+      JWT_SPOT_SECRET:
+        valueFrom:
+          secretKeyRef:
+            name: openreplay-secrets
+            key: SECRET_OPENREPLAY_JWT_SPOT_SECRET
+      JWT_SPOT_REFRESH_SECRET:
+        valueFrom:
+          secretKeyRef:
+            name: openreplay-secrets
+            key: SECRET_OPENREPLAY_JWT_SPOT_REFRESH_SECRET
+      ASSIST_JWT_SECRET:
+        valueFrom:
+          secretKeyRef:
+            name: openreplay-secrets
+            key: SECRET_OPENREPLAY_ASSIST_JWT_SECRET
+      ASSIST_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: openreplay-secrets
+            key: SECRET_OPENREPLAY_ASSIST_KEY
+      TOKEN_SECRET:
+        valueFrom:
+          secretKeyRef:
+            name: openreplay-secrets
+            key: SECRET_OPENREPLAY_TOKEN_SECRET
 
     controllers:
 
@@ -95,14 +136,10 @@ spec:
               repository: public.ecr.aws/p1t3u8a3/api
               tag: v1.27.4
             env:
-              <<: *sharedEnv
-              TOKEN_SECRET: ${SECRET_OPENREPLAY_TOKEN_SECRET}
-              ch_db: default
+              <<: *fullEnv
+              ch_db: openreplay
               BUCKET_NAME: mobs
               ASSIST_URL: http://openreplay-assist:9001/assist/%s
-              ASSIST_KEY: ${SECRET_OPENREPLAY_ASSIST_KEY}
-              JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
-              ASSIST_JWT_SECRET: ${SECRET_OPENREPLAY_ASSIST_JWT_SECRET}
 
       # ── Chalice (Python, legacy API) ───────────────────────────────────────
       chalice:
@@ -112,17 +149,11 @@ spec:
               repository: public.ecr.aws/p1t3u8a3/chalice
               tag: v1.27.10
             env:
-              <<: *sharedEnv
-              JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
-              JWT_REFRESH_SECRET: ${SECRET_OPENREPLAY_JWT_REFRESH_SECRET}
-              JWT_SPOT_SECRET: ${SECRET_OPENREPLAY_JWT_SPOT_SECRET}
-              JWT_SPOT_REFRESH_SECRET: ${SECRET_OPENREPLAY_JWT_SPOT_REFRESH_SECRET}
-              ASSIST_JWT_SECRET: ${SECRET_OPENREPLAY_ASSIST_JWT_SECRET}
-              ASSIST_KEY: ${SECRET_OPENREPLAY_ASSIST_KEY}
+              <<: *fullEnv
               # S3_HOST is the public URL — browser loads recordings via this base
               S3_HOST: https://openreplay.${SECRET_DOMAIN_TWO}
-              S3_KEY: ${SECRET_OPENREPLAY_S3_KEY}
-              S3_SECRET: ${SECRET_OPENREPLAY_S3_SECRET}
+              S3_KEY: ${SECRET_MINIO_ACCESS_KEY}
+              S3_SECRET: ${SECRET_MINIO_SECRET_KEY}
               SITE_URL: https://openreplay.${SECRET_DOMAIN_TWO}
               sessions_region: us-east-1
               AWS_DEFAULT_REGION: us-east-1
@@ -163,12 +194,9 @@ spec:
               repository: public.ecr.aws/p1t3u8a3/http
               tag: v1.27.1
             env:
-              <<: *sharedEnv
+              <<: *fullEnv
               BUCKET_NAME: uxtesting-records
               CACHE_ASSETS: "true"
-              JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
-              JWT_SPOT_SECRET: ${SECRET_OPENREPLAY_JWT_SPOT_SECRET}
-              TOKEN_SECRET: ${SECRET_OPENREPLAY_TOKEN_SECRET}
 
       # ── Sink (Kafka→processing) ────────────────────────────────────────────
       sink:
@@ -222,7 +250,7 @@ spec:
               tag: v1.120.0
             env:
               <<: *sharedEnv
-              ch_db: default
+              ch_db: openreplay
 
       # ── Canvases (canvas recording) ────────────────────────────────────────
       canvases:
@@ -268,10 +296,8 @@ spec:
               repository: public.ecr.aws/p1t3u8a3/integrations
               tag: v1.27.0
             env:
-              <<: *sharedEnv
+              <<: *fullEnv
               BUCKET_NAME: mobs
-              JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
-              TOKEN_SECRET: ${SECRET_OPENREPLAY_TOKEN_SECRET}
 
       # ── Spot (UX testing recordings) ──────────────────────────────────────
       spot:
@@ -281,13 +307,10 @@ spec:
               repository: public.ecr.aws/p1t3u8a3/spot
               tag: v1.27.0
             env:
-              <<: *sharedEnv
+              <<: *fullEnv
               BUCKET_NAME: spots
               CACHE_ASSETS: "true"
               FS_CLEAN_HRS: "24"
-              JWT_SECRET: ${SECRET_OPENREPLAY_JWT_SECRET}
-              JWT_SPOT_SECRET: ${SECRET_OPENREPLAY_JWT_SPOT_SECRET}
-              TOKEN_SECRET: ${SECRET_OPENREPLAY_TOKEN_SECRET}
 
       # ── Sourcemap Reader ───────────────────────────────────────────────────
       sourcemapreader:
@@ -299,8 +322,8 @@ spec:
             env:
               SMR_HOST: "0.0.0.0"
               S3_HOST: http://minio.kube-system.svc.cluster.local:9000
-              S3_KEY: ${SECRET_OPENREPLAY_S3_KEY}
-              S3_SECRET: ${SECRET_OPENREPLAY_S3_SECRET}
+              S3_KEY: ${SECRET_MINIO_ACCESS_KEY}
+              S3_SECRET: ${SECRET_MINIO_SECRET_KEY}
               AWS_REGION: us-east-1
               ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
               LICENSE_KEY: ""
@@ -313,8 +336,7 @@ spec:
               repository: public.ecr.aws/p1t3u8a3/assist
               tag: v1.120.0
             env:
-              ASSIST_JWT_SECRET: ${SECRET_OPENREPLAY_ASSIST_JWT_SECRET}
-              ASSIST_KEY: ${SECRET_OPENREPLAY_ASSIST_KEY}
+              <<: *fullEnv
               AWS_DEFAULT_REGION: us-east-1
               REDIS_URL: dragonfly.database.svc.cluster.local
               CLEAR_SOCKET_TIME: "720"
@@ -332,8 +354,8 @@ spec:
               <<: *sharedEnv
               SITE_URL: https://openreplay.${SECRET_DOMAIN_TWO}
               S3_HOST: https://openreplay.${SECRET_DOMAIN_TWO}
-              S3_KEY: ${SECRET_OPENREPLAY_S3_KEY}
-              S3_SECRET: ${SECRET_OPENREPLAY_S3_SECRET}
+              S3_KEY: ${SECRET_MINIO_ACCESS_KEY}
+              S3_SECRET: ${SECRET_MINIO_SECRET_KEY}
               version_number: v1.27.0
               EMAIL_HOST: ""
               EMAIL_PORT: "587"

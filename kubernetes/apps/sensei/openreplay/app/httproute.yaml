@@ -30,9 +30,6 @@ spec:
             value: /sessions-assets/
         - path:
             type: PathPrefix
-            value: /static/
-        - path:
-            type: PathPrefix
             value: /sourcemaps/
         - path:
             type: PathPrefix
@@ -46,9 +43,6 @@ spec:
         - path:
             type: PathPrefix
             value: /spots/
-        - path:
-            type: PathPrefix
-            value: /frontend/
       backendRefs:
         - name: openreplay-minio
           port: 9000

@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: openreplay-secrets
+## sops --encrypt --in-place ./kubernetes/apps/observability/grafana/app/grafana.sops.yaml
+## sops --decrypt ./kubernetes/apps/observability/grafana/app/grafana.sops.yaml | kubectl apply -f -
+stringData:
+    SECRET_OPENREPLAY_JWT_SECRET: ENC[AES256_GCM,data:eVhAoif1D1e2udR2w/vhpFLpOW14zLg7gmV971iAnI0fVemBj/sh6MserJSPmWcNm9jNgFEFkn4AiHvorDYFrw==,iv:FeIcPnFvgwTsD5EEPVasD3lEPang2avtLuc3LAJnf50=,tag:EISQkolqS9j02EHuBG9oUw==,type:str]
+    SECRET_OPENREPLAY_JWT_REFRESH_SECRET: ENC[AES256_GCM,data:5tqiYgPYDGPR0UImdQnReRrALATN4H2vSHfsFR4R0LcYh3SiL82Jv+c4y5grFLN75gAOLAUIRqx/6Plj5mKF9g==,iv:WxOpsk3uzFb5gNfDYH1nbCO+jQIVg7CfYvHCgen6b6s=,tag:pdeMiEyH8GzOzijYmSrq+Q==,type:str]
+    SECRET_OPENREPLAY_JWT_SPOT_SECRET: ENC[AES256_GCM,data:8Jl/coifmPxEnHOMAvScVLHiigpf/lxxlcTFb/tAed/KlLXmrVEW3WA4pUPVRxbdjkAafXmEglp28uxHiYLp1w==,iv:TnqCKGy3oPHNRh1DB5Po1GokXaDFLIehlRf2QU2yIYk=,tag:X6zwtGNga/tvhyHPVzGW2g==,type:str]
+    SECRET_OPENREPLAY_JWT_SPOT_REFRESH_SECRET: ENC[AES256_GCM,data:XeW4lm/4UB9pr3R13wWIr+ZsbKM3KnAwi509i9bTvotza9jK2JCTtzRHJGxM/NVga9wtBcnHQl3bnEyG2RQZGg==,iv:XQoK+kU5boMEsyKd16P5WdmlAu35SBI4ssoXPrNxPn0=,tag:wKg+0JPjG6178BxksVol3A==,type:str]
+    SECRET_OPENREPLAY_ASSIST_JWT_SECRET: ENC[AES256_GCM,data:bVF+gknU0lrC9MViojne2ZRAd7JS+zLkLLr+u3jjq5CXqKr8qci/caC3VxwuMO9bVVGu7Wmcafzxp3jQNlmZOA==,iv:eZ7U+h35SSvhiLDMPnX8ivy4tO2QJX8QzMYncsmkaGs=,tag:UmgQulbqiJdpBPnlGUBTfQ==,type:str]
+    SECRET_OPENREPLAY_ASSIST_KEY: ENC[AES256_GCM,data:NvdkyYwY/dv/mvhSOOq3HikyBpKY9XSaCdXgF9HnrCk=,iv:DetXbjzdukSe28N56Jy4Lnmgy6NEmOeiSaBUSGcW/vw=,tag:/Wx4vVUNMlyLOpN0Pf1deg==,type:str]
+    SECRET_OPENREPLAY_TOKEN_SECRET: ENC[AES256_GCM,data:4EQYIot/Y5WPGQZgvvJ7MqJoofFu4YJrgP0PcS7sSTw3prm7wALGCN/hPfl3ANHQ2R55PT5Q7i0A+m05SvJyEA==,iv:WKqS1410OqyxayYZNJWS7Guk8AV1lA5iOuumDJxvZv0=,tag:vmqTq4shEA0ptXMA9Pi7Uw==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB2QUpIaWNPaFZWczhHTG9D
+            T2VPbHRwUEdQY1BzQTRDVUZHSzM5UENuYTA0CncrSnZyZm9KdGdoZ01MUDJ5bndZ
+            WGtwcmlLWnJ3anNSN3RqajQ0NkxRR3MKLS0tIDZJZkJGdVZMajVicVlrQnRIUkNB
+            TC84RXRBdzZJQUJFbTF0a3cxeVFvSzAKrIEI7DJKXVaBBG9CkVbRdO4UTlSwroAk
+            jiCs6A69UVabrtJvDs4x3zmIYDE0Fnro02FPaLL293aU2+P5HYdnnA==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-06-16T15:03:26Z"
+    mac: ENC[AES256_GCM,data:FMCLp09GVTbnNDWiNicQYMVY9kibjpiB6HZ0YEdRwLlzOJTxWXlmQuf4jc9BDaR92+ld2q7YilTqY9jfTT15HiJsDU8p/1rjA0lUwIQ7PGmPP5Fblz0UTkw1Fp4QUFa4A0BdjPS/nRb+pcDQuF6EKushsX36behzfhWRT9XN9o0=,iv:w0es+tT1wKw8jAFLaiuY5KAoGSATC11EUrL+t5LN2yg=,tag:KGEy9hmelffWz4Dfr7mRnA==,type:str]
+    version: 3.13.1
