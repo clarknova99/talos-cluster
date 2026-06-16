@@ -7,3 +7,4 @@ resources:
   - ./minio.sops.yaml
   - ./pvc.yaml
   - ./helmrelease.yaml
+  - ./referencegrant.yaml

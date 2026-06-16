@@ -1,0 +1,18 @@
+---
+# Allow HTTPRoutes in the sensei namespace to use the minio Service as a backend.
+# Required because Envoy Gateway does not support ExternalName services as backendRefs;
+# cross-namespace references need an explicit grant in the target namespace.
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-sensei-httproute-to-minio
+  namespace: kube-system
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: sensei
+  to:
+    - group: ""
+      kind: Service
+      name: minio

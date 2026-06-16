@@ -21,6 +21,8 @@ spec:
   rules:
     # ── MinIO bucket assets (path forwarded as-is, no prefix strip) ──────────
     # Sessions-assets is public; mobs/records/spots use presigned URLs with creds.
+    # Cross-namespace backendRef requires ReferenceGrant in kube-system
+    # (kubernetes/apps/kube-system/minio/app/referencegrant.yaml).
     - matches:
         - path:
             type: PathPrefix
@@ -44,7 +46,8 @@ spec:
             type: PathPrefix
             value: /spots/
       backendRefs:
-        - name: openreplay-minio
+        - name: minio
+          namespace: kube-system
           port: 9000
 
     # ── Go API v2 (/v2/api → /) ──────────────────────────────────────────────
