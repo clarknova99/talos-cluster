@@ -101,7 +101,7 @@ spec:
             image:
               repository: busybox
               tag: latest
-            command: ["sh", "-c", "chown -R 1000:1000 /var/lib/kafka/data && chmod 755 /var/lib/kafka/data"]
+            command: ["sh", "-c", "rm -rf /var/lib/kafka/data/lost+found && chown -R 1000:1000 /var/lib/kafka/data && chmod 755 /var/lib/kafka/data"]
             securityContext:
               runAsUser: 0
         containers:
