@@ -34,8 +34,8 @@ spec:
       ch_password: ${SECRET_CLICKHOUSE_PASSWORD}
       CH_USERNAME: ${SECRET_CLICKHOUSE_USER}
       CH_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
-      CLICKHOUSE_STRING: clickhouse.database.svc.cluster.local:9000/openreplay
-      CLICKHOUSE_HTTP_STRING: clickhouse.database.svc.cluster.local:8123/openreplay
+      CLICKHOUSE_STRING: clickhouse.database.svc.cluster.local:9000
+      CLICKHOUSE_HTTP_STRING: clickhouse.database.svc.cluster.local:8123
       # MinIO (internal endpoint for service-to-service reads/writes)
       AWS_ACCESS_KEY_ID: ${SECRET_MINIO_ACCESS_KEY}
       AWS_SECRET_ACCESS_KEY: ${SECRET_MINIO_SECRET_KEY}
@@ -260,7 +260,7 @@ spec:
               repository: public.ecr.aws/p1t3u8a3/canvases
               tag: v1.27.0
             env:
-              <<: *sharedEnv
+              <<: *fullEnv
               BUCKET_NAME: mobs
               FS_CLEAN_HRS: "24"
 
@@ -272,7 +272,7 @@ spec:
               repository: public.ecr.aws/p1t3u8a3/images
               tag: v1.27.0
             env:
-              <<: *sharedEnv
+              <<: *fullEnv
               BUCKET_NAME: mobs
               FS_CLEAN_HRS: "24"
 
@@ -286,6 +286,7 @@ spec:
             env:
               <<: *sharedEnv
               BUCKET_NAME: sessions-assets
+              S3_BUCKET_ASSETS: sessions-assets
               ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
 
       # ── Integrations (webhook receivers) ──────────────────────────────────
