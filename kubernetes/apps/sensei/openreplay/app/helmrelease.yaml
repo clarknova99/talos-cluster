@@ -277,6 +277,9 @@ spec:
 
       # ── Canvases (canvas recording) ────────────────────────────────────────
       canvases:
+        pod:
+          securityContext:
+            fsGroup: 1000
         containers:
           app:
             image:
