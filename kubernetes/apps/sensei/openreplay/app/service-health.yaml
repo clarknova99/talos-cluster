@@ -1,0 +1,146 @@
+---
+# Headless services with the naming convention chalice's health check expects:
+# http://{service}-openreplay.{POD_NAMESPACE}.svc.cluster.local:8888/{path}
+# Port 8888 is the Prometheus metrics / health port exposed by each Go service.
+apiVersion: v1
+kind: Service
+metadata:
+  name: sink-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: sink
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: storage
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ender-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: ender
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: heuristics-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: heuristics
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: db
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: http
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: integrations-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: integrations
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: assets-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: assets
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sourcemapreader-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: sourcemapreader
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: assist-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: assist
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alerts-openreplay
+  namespace: sensei
+spec:
+  selector:
+    app.kubernetes.io/controller: alerts
+    app.kubernetes.io/instance: openreplay
+  ports:
+    - port: 8888
+      targetPort: 8888

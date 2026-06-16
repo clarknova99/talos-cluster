@@ -167,6 +167,7 @@ spec:
               tag: v1.27.10
             env:
               <<: *fullEnv
+              POD_NAMESPACE: sensei
               # Override HTTP string with embedded credentials — clickhouse_connect uses this as DSN
               CLICKHOUSE_HTTP_STRING: "http://${SECRET_CLICKHOUSE_USER}:${SECRET_CLICKHOUSE_PASSWORD}@clickhouse.database.svc.cluster.local:8123"
               CLICKHOUSE_USER: ${SECRET_CLICKHOUSE_USER}
