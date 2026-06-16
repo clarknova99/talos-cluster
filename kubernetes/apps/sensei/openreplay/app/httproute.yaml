@@ -157,12 +157,21 @@ spec:
           port: 8080
 
     # ── Assist WebSocket (/assist → / and /ws-assist → /) ───────────────────
-    # Envoy Gateway handles WebSocket upgrade automatically when the client
-    # sends "Upgrade: websocket".
+    # ReplacePrefixMatch requires exactly one PathPrefix match per rule.
     - matches:
         - path:
             type: PathPrefix
             value: /assist/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: openreplay-assist
+          port: 9001
+    - matches:
         - path:
             type: PathPrefix
             value: /ws-assist/
