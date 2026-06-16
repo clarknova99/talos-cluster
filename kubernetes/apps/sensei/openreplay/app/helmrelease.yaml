@@ -157,6 +157,11 @@ spec:
               ch_db: openreplay
               BUCKET_NAME: mobs
               ASSIST_URL: http://openreplay-assist:9001/assist/%s
+              # Override internal MinIO endpoint so presigned URLs use the public
+              # hostname — the browser cannot resolve the cluster-internal FQDN.
+              # /mobs/, /spots/, etc. are routed to MinIO by the HTTPRoute.
+              # AWS Sig V4 validates the Host header, which matches on both sides.
+              AWS_ENDPOINT: https://openreplay.${SECRET_DOMAIN_TWO}
 
       # ── Chalice (Python, legacy API) ───────────────────────────────────────
       chalice:
