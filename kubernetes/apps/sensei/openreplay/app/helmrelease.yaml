@@ -92,8 +92,8 @@ spec:
         containers:
           app:
             image:
-              repository: bitnamicharts/kafka
-              tag: "32.4.3"
+              repository: bitnami/kafka
+              tag: "3.9.0"
             env:
               KAFKA_CFG_NODE_ID: "1"
               KAFKA_CFG_PROCESS_ROLES: broker,controller
