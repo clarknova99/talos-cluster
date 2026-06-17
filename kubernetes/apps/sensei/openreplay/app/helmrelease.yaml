@@ -225,12 +225,6 @@ spec:
               <<: *fullEnv
               BUCKET_NAME: uxtesting-records
               CACHE_ASSETS: "true"
-              # Route asset batches into the same 'raw' stream that the sink reads.
-              # Asset batches have batch version 0 which the assets service (v1.120.0)
-              # rejects, but the sink processes all batch types from 'raw' successfully.
-              # The sink extracts CSS/JS URLs from asset batches and publishes them
-              # to the 'cache' stream that the assets service then uses for S3 upload.
-              TOPIC_RAW_ASSETS: raw
 
       # ── Sink (Kafka→processing) ────────────────────────────────────────────
       sink:
