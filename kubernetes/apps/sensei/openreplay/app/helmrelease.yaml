@@ -328,6 +328,11 @@ spec:
               S3_BUCKET_ASSETS: sessions-assets
               ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
               TOPIC_RAW_ASSETS: raw-assets
+              # Direct the assets service to consume raw-assets stream instead of
+              # the cache stream that the sink never publishes to (asset URLs are
+              # in raw-assets, not embedded in player batches in raw stream).
+              TOPIC_CACHE: raw-assets
+              GROUP_CACHE: assets-consumer
 
       # ── Integrations (webhook receivers) ──────────────────────────────────
       integrations:
