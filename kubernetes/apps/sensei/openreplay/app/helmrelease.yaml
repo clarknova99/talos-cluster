@@ -179,6 +179,10 @@ spec:
             env:
               <<: *fullEnv
               BUCKET_NAME: uxtesting-records
+              RECORD_CANVAS: true
+              CANVAS_QUALITY: low   # low | medium | high
+              CANVAS_FPS: 1
+
 
       # ── Sink (Kafka→processing) ────────────────────────────────────────────
       sink:
