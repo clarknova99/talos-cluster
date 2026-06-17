@@ -179,7 +179,7 @@ spec:
             env:
               <<: *fullEnv
               BUCKET_NAME: uxtesting-records
-              CACHE_ASSETS: "true"
+              CACHE_ASSETS: "false"
 
       # ── Sink (Kafka→processing) ────────────────────────────────────────────
       sink:
