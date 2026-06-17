@@ -225,6 +225,12 @@ spec:
               <<: *fullEnv
               BUCKET_NAME: uxtesting-records
               CACHE_ASSETS: "true"
+              # Route asset batches into the same 'raw' stream that the sink reads.
+              # Asset batches have batch version 0 which the assets service (v1.120.0)
+              # rejects, but the sink processes all batch types from 'raw' successfully.
+              # The sink extracts CSS/JS URLs from asset batches and publishes them
+              # to the 'cache' stream that the assets service then uses for S3 upload.
+              TOPIC_RAW_ASSETS: raw
 
       # ── Sink (Kafka→processing) ────────────────────────────────────────────
       sink:
@@ -328,11 +334,6 @@ spec:
               S3_BUCKET_ASSETS: sessions-assets
               ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
               TOPIC_RAW_ASSETS: raw-assets
-              # Direct the assets service to consume raw-assets stream instead of
-              # the cache stream that the sink never publishes to (asset URLs are
-              # in raw-assets, not embedded in player batches in raw stream).
-              TOPIC_CACHE: raw-assets
-              GROUP_CACHE: assets-consumer
 
       # ── Integrations (webhook receivers) ──────────────────────────────────
       integrations:
