@@ -308,6 +308,11 @@ spec:
 
       # ── Spot (UX testing recordings) ──────────────────────────────────────
       spot:
+        pod:
+          securityContext:
+            # Spot transcoder writes to the shared /mnt/efs (gid 1000, setgid).
+            # Without this it can't mkdir /mnt/efs/spots → "permission denied".
+            fsGroup: 1000
         containers:
           app:
             image:
