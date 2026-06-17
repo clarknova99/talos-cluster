@@ -179,7 +179,6 @@ spec:
             env:
               <<: *fullEnv
               BUCKET_NAME: uxtesting-records
-              CACHE_ASSETS: "false"
 
       # ── Sink (Kafka→processing) ────────────────────────────────────────────
       sink:
@@ -276,13 +275,21 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/assets
-              tag: v1.120.0
+              # v1.120.0 was a stale/mismatched build that only consumed the
+              # `cache` Redis stream and ignored `raw-assets`, so cross-origin
+              # stylesheets (<link href>) were never fetched into sessions-assets
+              # and rendered unstyled in playback. v1.27.x reads both streams.
+              tag: v1.27.1
             env:
               <<: *sharedEnv
               BUCKET_NAME: sessions-assets
               S3_BUCKET_ASSETS: sessions-assets
               ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
+              # Redis stream name (not Kafka) — required by the assets config or
+              # the service won't start. This is the stream it must consume.
               TOPIC_RAW_ASSETS: raw-assets
+              # Verbose logging while validating the asset pipeline fix.
+              DEBUG: "true"
 
       # ── Integrations (webhook receivers) ──────────────────────────────────
       integrations:
