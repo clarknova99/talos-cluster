@@ -107,7 +107,8 @@ spec:
                 chmod 644 /geodata/GeoLite2-City.mmdb
                 ls -lh /geodata/GeoLite2-City.mmdb
             env:
-              MAXMIND_LICENSE_KEY: ${SECRET_MAXMIND_LICENSE_KEY}
+              MAXMIND_LICENSE_KEY: ${SECRET_MAXMIND_TEMPS_LICENSE_KEY}
+              MAXMIND_ACCOUNT_ID: ${SECRET_MAXMIND_ACCOUNT_ID}
         containers:
           app:
             image:
@@ -142,7 +143,8 @@ spec:
               TEMPS_TELEMETRY: "0"
 
               # Used by the geo plugin for GeoLite2 updates.
-              MAXMIND_LICENSE_KEY: ${SECRET_MAXMIND_LICENSE_KEY}
+              MAXMIND_LICENSE_KEY: ${SECRET_MAXMIND_TEMPS_LICENSE_KEY}
+              MAXMIND_ACCOUNT_ID: ${SECRET_MAXMIND_ACCOUNT_ID}
 
               # Public URL — used in emails, links, redirects.
               TEMPS_PUBLIC_URL: https://temps.${SECRET_DOMAIN_TWO}
