@@ -82,6 +82,32 @@ spec:
         strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          # The temps binary loads /app/GeoLite2-City.mmdb at startup and
+          # fails fatally if the file is absent. We download a fresh copy
+          # into an emptyDir volume each time the pod starts; the file
+          # is then surfaced to the app container via a subPath mount.
+          maxmind-download:
+            image:
+              repository: alpine
+              tag: "3.20"
+            command:
+              - sh
+              - -c
+              - |
+                set -eu
+                apk add --no-cache curl tar >/dev/null
+                tmp="$(mktemp -d)"
+                cd "$tmp"
+                curl -fsSL \
+                  "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=${MAXMIND_LICENSE_KEY}&suffix=tar.gz" \
+                  -o gl.tgz
+                tar -xzf gl.tgz
+                cp GeoLite2-City_*/GeoLite2-City.mmdb /geodata/GeoLite2-City.mmdb
+                chmod 644 /geodata/GeoLite2-City.mmdb
+                ls -lh /geodata/GeoLite2-City.mmdb
+            env:
+              MAXMIND_LICENSE_KEY: ${SECRET_MAXMIND_LICENSE_KEY}
         containers:
           app:
             image:
@@ -215,3 +241,15 @@ spec:
           temps:
             app:
               - path: /app/data
+      # In-memory volume populated by the maxmind-download initContainer
+      # and surfaced to the app via subPath at /app/GeoLite2-City.mmdb.
+      geodata:
+        type: emptyDir
+        advancedMounts:
+          temps:
+            maxmind-download:
+              - path: /geodata
+            app:
+              - path: /app/GeoLite2-City.mmdb
+                subPath: GeoLite2-City.mmdb
+                readOnly: true
