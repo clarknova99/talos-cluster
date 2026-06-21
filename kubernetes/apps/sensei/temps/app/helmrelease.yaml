@@ -83,6 +83,69 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          # Docker-in-Docker sidecar. Declared as a Kubernetes native
+          # sidecar (init container with restartPolicy: Always, k8s
+          # 1.28+), so:
+          #   1. dockerd starts during the pod init phase, BEFORE the
+          #      maxmind-download init container and the temps app.
+          #   2. The startup probe (docker info) gates subsequent init
+          #      containers and the main app on dockerd being ready —
+          #      ensuring the temps Console API's one-shot Docker check
+          #      at startup succeeds.
+          #   3. The sidecar stays running for the lifetime of the pod.
+          #
+          # Privileged is required: dockerd needs to manage cgroups,
+          # mount overlay filesystems, and create network namespaces.
+          #
+          # Storage for /var/lib/docker is on emptyDir — preview
+          # containers and their images are ephemeral and rebuilt on
+          # pod restart. Swap to a PVC if persistence is needed.
+          dind:
+            image:
+              repository: docker
+              tag: 27-dind
+            args:
+              - --host=unix:///dind-socket/docker.sock
+            env:
+              DOCKER_TLS_CERTDIR: ""
+            restartPolicy: Always
+            securityContext:
+              privileged: true
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - docker
+                      - -H
+                      - unix:///dind-socket/docker.sock
+                      - info
+                  initialDelaySeconds: 5
+                  periodSeconds: 3
+                  timeoutSeconds: 5
+                  failureThreshold: 30
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - docker
+                      - -H
+                      - unix:///dind-socket/docker.sock
+                      - info
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
           # The temps binary loads /app/GeoLite2-City.mmdb at startup and
           # fails fatally if the file is absent. We download a fresh copy
           # into an emptyDir volume each time the pod starts; the file
@@ -156,6 +219,11 @@ spec:
 
               # Public URL — used in emails, links, redirects.
               TEMPS_PUBLIC_URL: https://temps.${SECRET_DOMAIN_TWO}
+
+              # Points temps at the dind sidecar's docker socket. The
+              # socket is on a shared emptyDir mounted at /dind-socket
+              # in both this container and the dind sidecar.
+              DOCKER_HOST: unix:///dind-socket/docker.sock
             probes:
               # temps' proxy on :3000 has no built-in /health endpoint
               # (it forwards /health to the Console API on :9000, which
@@ -265,3 +333,23 @@ spec:
               - path: /app/GeoLite2-City.mmdb
                 subPath: GeoLite2-City.mmdb
                 readOnly: true
+      # Shared between the dind sidecar (where dockerd creates the
+      # socket) and the temps app container (which connects to it via
+      # DOCKER_HOST=unix:///dind-socket/docker.sock).
+      dind-socket:
+        type: emptyDir
+        advancedMounts:
+          temps:
+            dind:
+              - path: /dind-socket
+            app:
+              - path: /dind-socket
+      # dockerd's graph storage (images, layers, container rootfs,
+      # volumes). Ephemeral — preview environments are rebuilt on each
+      # pod restart.
+      dind-storage:
+        type: emptyDir
+        advancedMounts:
+          temps:
+            dind:
+              - path: /var/lib/docker
