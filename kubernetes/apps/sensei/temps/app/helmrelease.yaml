@@ -100,7 +100,7 @@ spec:
                 tmp="$(mktemp -d)"
                 cd "$tmp"
                 curl -fsSL \
-                  "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=${MAXMIND_LICENSE_KEY}&suffix=tar.gz" \
+                  "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=$${MAXMIND_LICENSE_KEY}&suffix=tar.gz" \
                   -o gl.tgz
                 tar -xzf gl.tgz
                 cp GeoLite2-City_*/GeoLite2-City.mmdb /geodata/GeoLite2-City.mmdb
