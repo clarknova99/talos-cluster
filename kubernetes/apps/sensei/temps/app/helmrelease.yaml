@@ -89,6 +89,10 @@ spec:
               # the tag when a new release is built.
               repository: ghcr.io/clarknova99/temps
               tag: 0.1.0-beta.34
+            # The temps binary is a multi-subcommand CLI; `serve` starts
+            # the HTTP API + UI. Without args the binary exits non-zero
+            # with "requires a subcommand" and CrashLoops.
+            args: ["serve"]
             env:
               # Database — points at the in-pod TimescaleDB above. The
               # service name is templated as <release>-<service-key>, so
