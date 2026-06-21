@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sensei-prod-session-replay-sweeper
+  namespace: sensei
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+  values:
+    controllers:
+      sensei-prod-session-replay-sweeper:
+        # Cheap idempotent janitor -- a single replica is sufficient.
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: ghcr.io/clarknova99/project-sensei/backend
+              tag: main-2026-06-01-02-31-39-21e5e39@sha256:e2a8994dc96ffefd8627988d96856faf70a800177bf1c15dfa35d87009609acf
+              pullPolicy: Always
+            command: ["/bin/sh", "-c", "cd /app && python3 -m workers.session_replay_sweeper"]
+            env:
+              SENSEI_API_KEY: ${SECRET_SENSEI_API_KEY}
+              ENVIRONMENT: prod
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-prod
+              # S3 (AWS) -- used by chunk compaction at finalize. No S3_ENDPOINT
+              # for AWS S3 (virtual-hosted addressing); set it only for MinIO.
+              AWS_ACCESS_KEY_ID: ${SECRET_SENSEI_AWS_ACCESS_KEY_ID}
+              AWS_SECRET_ACCESS_KEY: ${SECRET_SENSEI_AWS_SECRET_ACCESS_KEY}
+              AWS_S3_REGION: ${SECRET_SENSEI_AWS_S3_REGION}
+              SESSION_REPLAY_BUCKET: sensei-session-replays
+              LOG_FORMAT: json
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 10m
+              limits:
+                memory: 256Mi
+        pod:
+          imagePullSecrets:
+            - name: sensei-secret

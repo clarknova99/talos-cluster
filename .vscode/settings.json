@@ -51,5 +51,8 @@
         "./kubeconfig",
         "/Users/mfeldbly/code/talos-cluster/kubeconfig"
       ]
+    },
+    "chat.tools.terminal.autoApprove": {
+      "flux-local": true
     }
 }

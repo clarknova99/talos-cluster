@@ -1,0 +1,213 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app temps
+  namespace: sensei
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+
+  values:
+    controllers:
+      # In-pod TimescaleDB. temps requires the TimescaleDB extension (it
+      # creates hypertables for analytics), so the cluster's plain CNPG
+      # postgres can't be reused. WAL-G archiving is intentionally NOT
+      # configured here — backups are handled by the cluster's storage
+      # snapshot strategy / VolSync.
+      temps-postgres:
+        type: statefulset
+        replicas: 1
+        strategy: RollingUpdate
+        statefulset:
+          podManagementPolicy: OrderedReady
+        pod:
+          terminationGracePeriodSeconds: 60
+        containers:
+          app:
+            image:
+              repository: gotempsh/timescaledb-walg
+              tag: pg18
+            env:
+              POSTGRES_DB: temps
+              POSTGRES_USER: temps
+              POSTGRES_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
+              TIMESCALEDB_TELEMETRY: "off"
+              POSTGRES_HOST_AUTH_METHOD: md5
+              PGDATA: /var/lib/postgresql/data/pgdata
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["pg_isready", "-U", "temps"]
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["pg_isready", "-U", "temps"]
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: ["pg_isready", "-U", "temps"]
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 30
+            resources:
+              requests:
+                cpu: 50m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+
+      temps:
+        replicas: 1
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              # Built and pushed by ./build-image.sh in this folder. Bump
+              # the tag when a new release is built.
+              repository: ghcr.io/clarknova99/temps
+              tag: 0.1.0-beta.34
+            env:
+              # Database — points at the in-pod TimescaleDB above. The
+              # service name is templated as <release>-<service-key>, so
+              # the postgres service ends up as temps-postgres.
+              TEMPS_DATABASE_URL: postgresql://temps:${SECRET_PGADMIN_PASSWORD}@temps-postgres.sensei.svc.cluster.local:5432/temps
+
+              # Cluster-wide Dragonfly (Redis-compatible). DB index 15 is
+              # reserved for temps.
+              REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379/15
+
+              # Server bindings (matches docker-compose defaults).
+              TEMPS_ADDRESS: 0.0.0.0:3000
+              TEMPS_TLS_ADDRESS: 0.0.0.0:3443
+              TEMPS_CONSOLE_ADDRESS: 0.0.0.0:9000
+
+              TEMPS_DATA_DIR: /app/data
+              TEMPS_LOG_LEVEL: info
+
+              # Anonymous telemetry off — this is a private, self-hosted
+              # deployment.
+              TEMPS_TELEMETRY: "0"
+
+              # Used by the geo plugin for GeoLite2 updates.
+              MAXMIND_LICENSE_KEY: ${SECRET_MAXMIND_LICENSE_KEY}
+
+              # Public URL — used in emails, links, redirects.
+              TEMPS_PUBLIC_URL: https://temps.${SECRET_DOMAIN_TWO}
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3000
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3000
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3000
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 30
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+      imagePullSecrets:
+        - name: sensei-secret
+
+    service:
+      app:
+        controller: temps
+        ports:
+          http:
+            port: 3000
+          console:
+            port: 9000
+      postgres:
+        controller: temps-postgres
+        ports:
+          postgres:
+            port: 5432
+
+    route:
+      main:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: "Sensei Services"
+          gethomepage.dev/icon: https://temps.sh/favicon.ico
+          gatus.home-operations.com/endpoint: |
+            group: sensei
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - temps.${SECRET_DOMAIN_TWO}
+        rules:
+          - backendRefs:
+              - kind: Service
+                name: temps-app
+                port: 3000
+
+    persistence:
+      postgres-data:
+        existingClaim: temps-postgres-data
+        advancedMounts:
+          temps-postgres:
+            app:
+              - path: /var/lib/postgresql/data
+      app-data:
+        existingClaim: temps-data
+        advancedMounts:
+          temps:
+            app:
+              - path: /app/data

@@ -1,0 +1,28 @@
+---
+# TimescaleDB data volume for the in-pod Postgres used by temps.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: temps-postgres-data
+  namespace: sensei
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ceph-block
+  resources:
+    requests:
+      storage: 20Gi
+---
+# Persistent /app/data for the temps binary (logs, GeoLite2, etc.)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: temps-data
+  namespace: sensei
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ceph-block
+  resources:
+    requests:
+      storage: 10Gi
