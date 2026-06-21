@@ -271,6 +271,13 @@ spec:
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
+        # GID 2375 is the `docker` group inside the docker:27-dind image
+        # \u2014 the dind sidecar creates /dind-socket/docker.sock with
+        # ownership root:2375 and mode 0660. Adding it as a supplemental
+        # group lets the temps container (uid 1001) talk to dockerd
+        # without running as root.
+        supplementalGroups:
+          - 2375
       imagePullSecrets:
         - name: sensei-secret
 
