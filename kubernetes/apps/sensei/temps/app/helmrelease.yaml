@@ -157,12 +157,16 @@ spec:
               # Public URL — used in emails, links, redirects.
               TEMPS_PUBLIC_URL: https://temps.${SECRET_DOMAIN_TWO}
             probes:
+              # temps' proxy on :3000 has no built-in /health endpoint
+              # (it forwards /health to the Console API on :9000, which
+              # is intentionally disabled here because Docker is not
+              # available in-cluster). Use TCP socket probes against the
+              # proxy port instead.
               liveness:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /health
+                  tcpSocket:
                     port: 3000
                   initialDelaySeconds: 30
                   periodSeconds: 30
@@ -172,8 +176,7 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /health
+                  tcpSocket:
                     port: 3000
                   initialDelaySeconds: 10
                   periodSeconds: 10
@@ -183,8 +186,7 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /health
+                  tcpSocket:
                     port: 3000
                   initialDelaySeconds: 10
                   periodSeconds: 10
