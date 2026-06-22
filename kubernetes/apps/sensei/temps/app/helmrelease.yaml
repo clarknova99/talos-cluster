@@ -103,7 +103,7 @@ spec:
           dind:
             image:
               repository: docker
-              tag: 27-dind
+              tag: 29-dind
             args:
               - --host=unix:///dind-socket/docker.sock
             env:
