@@ -106,7 +106,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/api
-              tag: v1.27.4
+              tag: v1.27.6
             env:
               <<: *fullEnv
               ch_db: openreplay
