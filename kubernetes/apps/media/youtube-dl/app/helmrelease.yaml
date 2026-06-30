@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/alexta69/metube
-              tag: 2026.06.18@sha256:9bb4b82e76b45dc6f19b14f55b12c77333a02448b2f3791eb1f163ae451733bf
+              tag: 2026.06.28@sha256:4659722cfddbcf2012b8f5172d7b85c00303f590f26282d9070b4d5562fa3216
             env:
               PORT: 80
               YTDL_OPTIONS: '{"format": "best", "exec": "ffmpeg -i %(filepath)q -c:v libx264 -c:a aac %(filepath)q.h264.mp4"}'
