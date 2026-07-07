@@ -35,7 +35,7 @@ spec:
   values:
     fullnameOverride: k8s-gateway
     watchedResources: ["Ingress", "Service","HTTPRoute"]
-    domain: "${SECRET_DOMAIN} ${SECRET_DOMAIN_TWO}"
+    domain: "${SECRET_DOMAIN} ${SECRET_DOMAIN_TWO} ${SECRET_DOMAIN_THREE}"
     ttl: 1
     service:
       type: LoadBalancer

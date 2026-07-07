@@ -21,6 +21,14 @@ ingress:
     service: https://envoy-external.network.svc.cluster.local:443
     originRequest:
       originServerName: "external.${SECRET_DOMAIN_TWO}"
+  - hostname: "${SECRET_DOMAIN_THREE}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "external.${SECRET_DOMAIN_THREE}"
+  - hostname: "*.${SECRET_DOMAIN_THREE}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      originServerName: "external.${SECRET_DOMAIN_THREE}"
 
   # Catch-all rule - MUST be last
   - service: http_status:404
