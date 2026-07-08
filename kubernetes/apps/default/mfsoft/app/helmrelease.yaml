@@ -31,7 +31,10 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 256Mi
-
+        pod:
+          # imagePullPolicy: Always
+          imagePullSecrets:
+            - name: mfsoft-secret
     service:
       app:
         ports:
