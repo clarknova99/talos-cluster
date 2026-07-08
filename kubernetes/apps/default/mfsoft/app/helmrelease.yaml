@@ -44,7 +44,7 @@ spec:
     route:
       main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN_THREE}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Infra
           gethomepage.dev/icon: kubernetes-dashboard.svg
