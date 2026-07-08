@@ -24,7 +24,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/clarknova99/mfsoft
+              repository: ghcr.io/clarknova99/mfsoft-web
+              tag: main-e2759e370f21d7c2a0705bff38e414727820e213
             resources:
               requests:
                 cpu: 5m
