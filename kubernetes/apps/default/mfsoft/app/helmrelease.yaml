@@ -58,10 +58,10 @@ spec:
           - ${SECRET_DOMAIN_THREE}
           - www.${SECRET_DOMAIN_THREE}
     persistence:
-      config:
+      data:
         enabled: true
         type: nfs
         server: 192.168.1.3
         path: /volume1/network-storage/cluster/mfsoft
         globalMounts:
-          - path: /config
+          - path: /app/data
