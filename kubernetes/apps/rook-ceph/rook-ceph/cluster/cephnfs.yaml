@@ -1,4 +1,24 @@
 ---
+# Test NFS server for developing/testing an NFS client.
+# Reachable on the LAN at nfs://192.168.3.36 (see LoadBalancer Service below).
+#
+# The CephNFS server is GitOps-managed here, but the EXPORTS (shares) are
+# created imperatively via the Rook toolbox and stored in Ceph/RADOS, NOT git.
+# They persist across pod restarts but are not recreated if the NFS cluster is
+# wiped. To (re)create the three test shares:
+#
+#   for i in 1 2 3; do
+#     kubectl -n rook-ceph exec deploy/rook-ceph-tools -- \
+#       ceph fs subvolume create ceph-filesystem share$i --namespace-isolated
+#     path=$(kubectl -n rook-ceph exec deploy/rook-ceph-tools -- \
+#       ceph fs subvolume getpath ceph-filesystem share$i)
+#     kubectl -n rook-ceph exec deploy/rook-ceph-tools -- \
+#       ceph nfs export create cephfs nfs-test /share$i ceph-filesystem --path="$path"
+#   done
+#
+# List exports:  kubectl -n rook-ceph exec deploy/rook-ceph-tools -- ceph nfs export ls nfs-test
+# Client mount:  mount -t nfs -o vers=4.1 192.168.3.36:/share1 /mnt/share1
+#
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/ceph.rook.io/cephnfs_v1.json
 apiVersion: ceph.rook.io/v1
 kind: CephNFS
