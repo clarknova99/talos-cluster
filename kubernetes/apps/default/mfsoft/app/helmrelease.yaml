@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clarknova99/mfsoft-web
-              tag: main-e2759e370f21d7c2a0705bff38e414727820e213
+              tag: main-baf00a2dead1f8c0a5d909a5311e5af01e13ba7f
             resources:
               requests:
                 cpu: 5m
