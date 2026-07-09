@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app nfs-server
+  namespace: default
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+
+  values:
+    controllers:
+      nfs-server:
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: erichough/nfs-server
+              tag: latest
+            env:
+              NFS_EXPORT_0: "/exports/share1 *(rw,fsid=1,sync,no_subtree_check,no_root_squash,insecure)"
+              NFS_EXPORT_1: "/exports/share2 *(rw,fsid=2,sync,no_subtree_check,no_root_squash,insecure)"
+              NFS_EXPORT_2: "/exports/share3 *(rw,fsid=3,sync,no_subtree_check,no_root_squash,insecure)"
+              NFS_LOG_LEVEL: DEBUG
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+    service:
+      app:
+        controller: nfs-server
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.36
+        ports:
+          nfs:
+            port: 2049
+            protocol: TCP
+          nfs-udp:
+            port: 2049
+            protocol: UDP
+          mountd:
+            port: 20048
+            protocol: TCP
+          mountd-udp:
+            port: 20048
+            protocol: UDP
+          rpcbind:
+            port: 111
+            protocol: TCP
+          rpcbind-udp:
+            port: 111
+            protocol: UDP
+    persistence:
+      share1:
+        enabled: true
+        existingClaim: nfs-server-share1
+        globalMounts:
+          - path: /exports/share1
+      share2:
+        enabled: true
+        existingClaim: nfs-server-share2
+        globalMounts:
+          - path: /exports/share2
+      share3:
+        enabled: true
+        existingClaim: nfs-server-share3
+        globalMounts:
+          - path: /exports/share3
