@@ -10,7 +10,7 @@ resources:
   - ./kite/ks.yaml
   - ./mfsoft/ks.yaml
   - ./lldap/ks.yaml
-  - ./nfs-server/ks.yaml
+  # - ./nfs-server/ks.yaml
   - ./synology/ks.yaml
   - ./website/ks.yaml
   - ./whoami/ks.yaml
