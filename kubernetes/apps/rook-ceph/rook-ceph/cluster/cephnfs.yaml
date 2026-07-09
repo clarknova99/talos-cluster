@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/ceph.rook.io/cephnfs_v1.json
+apiVersion: ceph.rook.io/v1
+kind: CephNFS
+metadata:
+  name: nfs-test
+  namespace: rook-ceph
+spec:
+  # Number of active Ganesha servers. 1 is fine for a test server.
+  server:
+    active: 1
+    logLevel: NIV_INFO
+# ---
+# Rook creates a ClusterIP Service (rook-ceph-nfs-nfs-test-a) for the Ganesha
+# server. We add our own LoadBalancer Service so the NFS client can reach it
+# from the LAN at a stable IP. The selector targets Rook's Ganesha pod labels.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nfs-test-lb
+  namespace: rook-ceph
+  annotations:
+    io.cilium/lb-ipam-ips: 192.168.3.36
+spec:
+  type: LoadBalancer
+  selector:
+    app: rook-ceph-nfs
+    ceph_nfs: nfs-test
+  ports:
+    - name: nfs
+      port: 2049
+      targetPort: 2049
+      protocol: TCP
