@@ -109,7 +109,7 @@ spec:
         controller: nfs-server-share2
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.3.37
+          io.cilium/lb-ipam-ips: 192.168.3.45
         ports:
           nfs:
             port: 2049
@@ -133,7 +133,7 @@ spec:
         controller: nfs-server-share3
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.3.38
+          io.cilium/lb-ipam-ips: 192.168.3.46
         ports:
           nfs:
             port: 2049
