@@ -14,18 +14,64 @@ spec:
 
   values:
     controllers:
-      nfs-server:
+      nfs-server-share1:
         replicas: 1
         containers:
           app:
             image:
-              repository: erichough/nfs-server
-              tag: latest
+              repository: izdock/nfs-ganesha
+              tag: 4.0.12-3
             env:
-              NFS_EXPORT_0: "/exports/share1 *(rw,fsid=1,sync,no_subtree_check,no_root_squash,insecure)"
-              NFS_EXPORT_1: "/exports/share2 *(rw,fsid=2,sync,no_subtree_check,no_root_squash,insecure)"
-              NFS_EXPORT_2: "/exports/share3 *(rw,fsid=3,sync,no_subtree_check,no_root_squash,insecure)"
-              NFS_LOG_LEVEL: DEBUG
+              EXPORT_PATH: /exports/share1
+              PSEUDO_PATH: /share1
+              CLIENT_LIST: 0.0.0.0/0
+              SQUASH_MODE: No_Root_Squash
+              ACCESS_TYPE: RW
+              LOG_LEVEL: INFO
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+      nfs-server-share2:
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: izdock/nfs-ganesha
+              tag: 4.0.12-3
+            env:
+              EXPORT_PATH: /exports/share2
+              PSEUDO_PATH: /share2
+              CLIENT_LIST: 0.0.0.0/0
+              SQUASH_MODE: No_Root_Squash
+              ACCESS_TYPE: RW
+              LOG_LEVEL: INFO
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+      nfs-server-share3:
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: izdock/nfs-ganesha
+              tag: 4.0.12-3
+            env:
+              EXPORT_PATH: /exports/share3
+              PSEUDO_PATH: /share3
+              CLIENT_LIST: 0.0.0.0/0
+              SQUASH_MODE: No_Root_Squash
+              ACCESS_TYPE: RW
+              LOG_LEVEL: INFO
             securityContext:
               privileged: true
             resources:
@@ -35,11 +81,59 @@ spec:
               limits:
                 memory: 256Mi
     service:
-      app:
-        controller: nfs-server
+      share1:
+        controller: nfs-server-share1
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 192.168.3.36
+        ports:
+          nfs:
+            port: 2049
+            protocol: TCP
+          nfs-udp:
+            port: 2049
+            protocol: UDP
+          mountd:
+            port: 20048
+            protocol: TCP
+          mountd-udp:
+            port: 20048
+            protocol: UDP
+          rpcbind:
+            port: 111
+            protocol: TCP
+          rpcbind-udp:
+            port: 111
+            protocol: UDP
+      share2:
+        controller: nfs-server-share2
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.37
+        ports:
+          nfs:
+            port: 2049
+            protocol: TCP
+          nfs-udp:
+            port: 2049
+            protocol: UDP
+          mountd:
+            port: 20048
+            protocol: TCP
+          mountd-udp:
+            port: 20048
+            protocol: UDP
+          rpcbind:
+            port: 111
+            protocol: TCP
+          rpcbind-udp:
+            port: 111
+            protocol: UDP
+      share3:
+        controller: nfs-server-share3
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.38
         ports:
           nfs:
             port: 2049
@@ -63,15 +157,21 @@ spec:
       share1:
         enabled: true
         existingClaim: nfs-server-share1
-        globalMounts:
-          - path: /exports/share1
+        advancedMounts:
+          nfs-server-share1:
+            app:
+              - path: /exports/share1
       share2:
         enabled: true
         existingClaim: nfs-server-share2
-        globalMounts:
-          - path: /exports/share2
+        advancedMounts:
+          nfs-server-share2:
+            app:
+              - path: /exports/share2
       share3:
         enabled: true
         existingClaim: nfs-server-share3
-        globalMounts:
-          - path: /exports/share3
+        advancedMounts:
+          nfs-server-share3:
+            app:
+              - path: /exports/share3
