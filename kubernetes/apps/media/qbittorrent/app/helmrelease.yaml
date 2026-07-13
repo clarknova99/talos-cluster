@@ -58,6 +58,8 @@ spec:
               TZ: America/New_York
               QBT_WEBUI_PORT: &port 80
               QBT_TORRENTING_PORT: &torrentPort 50413
+              QBT_BitTorrent__Session__DefaultSavePath: /downloads
+              QBT_BitTorrent__Session__TempPathEnabled: false
               QBT_Preferences__WebUI__AlternativeUIEnabled: true
               QBT_Preferences__WebUI__RootFolder: /add-ons/VueTorrent
               QBT_Preferences__WebUI__LocalHostAuth: false
