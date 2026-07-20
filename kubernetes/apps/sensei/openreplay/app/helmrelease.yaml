@@ -209,7 +209,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/storage
-              tag: v1.27.0
+              tag: v1.27.1
             env:
               <<: *sharedEnv
               BUCKET_NAME: mobs
