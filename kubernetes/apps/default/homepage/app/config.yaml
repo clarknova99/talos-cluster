@@ -107,14 +107,14 @@ data:
   services.yaml: |
     ---
     - Internal:
-        - Adguard:
-            icon: adguard-home.svg
-            href: https://adguard.${SECRET_DOMAIN_THREE}
-            widget:
-              type: adguard
-              url: https://adguard.${SECRET_DOMAIN_THREE}
-              username: ${SECRET_MQTT_USERNAME}
-              password: ${SECRET_MQTT_PASSWORD}
+        # - Adguard:
+        #     icon: adguard-home.svg
+        #     href: https://adguard.${SECRET_DOMAIN_THREE}
+        #     widget:
+        #       type: adguard
+        #       url: https://adguard.${SECRET_DOMAIN_THREE}
+        #       username: ${SECRET_MQTT_USERNAME}
+        #       password: ${SECRET_MQTT_PASSWORD}
         - DS1513+:
             icon: synology-dsm.svg
             href: https://192.168.1.2:5001
