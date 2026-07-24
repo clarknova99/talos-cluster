@@ -1,0 +1,90 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname mfsoft-dittofeed-clickhouse
+  namespace: flux-system
+spec:
+  targetNamespace: mfsoft
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  dependsOn:
+    - name: volsync
+      namespace: flux-system
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/apps/mfsoft/mfsoft-dittofeed/clickhouse"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname mfsoft-dittofeed-temporal
+  namespace: flux-system
+spec:
+  targetNamespace: mfsoft
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/apps/mfsoft/mfsoft-dittofeed/temporal"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname mfsoft-dittofeed
+  namespace: flux-system
+spec:
+  targetNamespace: mfsoft
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  dependsOn:
+    - name: mfsoft-dittofeed-clickhouse
+    - name: mfsoft-dittofeed-temporal
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/apps/mfsoft/mfsoft-dittofeed/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname mfsoft-dittofeedadmin-cli
+  namespace: flux-system
+spec:
+  targetNamespace: mfsoft
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  dependsOn:
+    - name: mfsoft-dittofeed-clickhouse
+    - name: mfsoft-dittofeed-temporal
+    - name: mfsoft-dittofeed
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/apps/mfsoft/mfsoft-dittofeed/cli"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false

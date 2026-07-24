@@ -1,0 +1,167 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mfsoft-dittofeed-clickhouse
+  namespace: mfsoft
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 30m
+
+  values:
+    controllers:
+      mfsoft-dittofeed-clickhouse:
+        containers:
+          app:
+            image:
+              repository: clickhouse/clickhouse-server
+              tag: 26.4.2.10-alpine
+            env:
+              CLICKHOUSE_DB: dittofeed
+              CLICKHOUSE_USER: dittofeed
+              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                memory: 3Gi
+          clickhouse-backup:
+            image:
+              repository: altinity/clickhouse-backup
+              tag: 2.7.1
+            # - server for API triggered backups, - watch for scheduled backups
+            command:
+              - /bin/clickhouse-backup
+              - watch
+
+            env:
+              LOG_LEVEL: "info"
+              ALLOW_EMPTY_BACKUPS: "true"
+              API_LISTEN: "0.0.0.0:7171"
+              BACKUPS_TO_KEEP_LOCAL: "0"
+              BACKUPS_TO_KEEP_REMOTE: "30"
+              CLICKHOUSE_SKIP_TABLES: "system.*,INFORMATION_SCHEMA.*"
+              CLICKHOUSE_USERNAME: dittofeed
+              CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
+              CLICKHOUSE_HOST: "127.0.0.1"  # Use IPv4 explicitly
+              CLICKHOUSE_PORT: "9000"
+
+              WATCH_INTERVAL: "4h"  # Create backup every 24 hours
+              FULL_INTERVAL: "24h"  # Full backup every day
+
+
+              # AWS S3 Configuration
+              REMOTE_STORAGE: s3
+              S3_BUCKET: "mfsoft-dittofeed"  # Your S3 bucket name
+              S3_ACCESS_KEY: "${SECRET_MFSOFT_AWS_ACCESS_KEY_ID}"  # AWS Access Key ID
+              S3_SECRET_KEY: "${SECRET_MFSOFT_AWS_SECRET_ACCESS_KEY}"  # AWS Secret Access Key
+              S3_REGION: "${SECRET_MFSOFT_AWS_REGION_NAME}"  # AWS region (e.g., us-east-1)
+              S3_ENDPOINT: ""  # Leave empty for AWS S3 (uses default AWS endpoints)
+              S3_PATH: "mfsoft-dittofeed/clickhouse/"  # Optional: prefix path in bucket
+              S3_DISABLE_SSL: "false"  # Use HTTPS for AWS S3
+              S3_FORCE_PATH_STYLE: "false"  # Use virtual-hosted-style for AWS S3
+
+            ports:
+              - name: backup-api
+                containerPort: 7171
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: Always
+
+    service:
+      app:
+        controller: mfsoft-dittofeed-clickhouse
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 192.168.3.31
+        ports:
+          http:
+            port: 8123
+          tcp:
+            port: 9000
+
+    persistence:
+      data:
+        existingClaim: mfsoft-dittofeed-clickhouse
+        globalMounts:
+          - path: /var/lib/clickhouse
+      config:
+        enabled: true
+        type: configMap
+        name: mfsoft-dittofeed-clickhouse
+        globalMounts:
+          - path: /etc/clickhouse-server/config.d
+
+
+    configMaps:
+      config:
+        enabled: true
+        data:
+          config.xml: |
+            <clickhouse>
+                <logger>
+                    <level>warning</level>
+                    <console>true</console>
+                </logger>
+
+                <!-- Skip check for incorrect settings to avoid configuration errors -->
+                <skip_check_for_incorrect_settings>1</skip_check_for_incorrect_settings>
+
+                <!-- Explicitly set listen hosts to avoid conflicts -->
+                <listen_host>0.0.0.0</listen_host>
+
+                <!-- Configure ports explicitly to avoid conflicts -->
+                <tcp_port>9000</tcp_port>
+                <http_port>8123</http_port>
+
+                <!-- Disable system tables to reduce overhead and prevent corruption issues on NFS -->
+                <!-- Only query_log is kept with minimal retention for basic debugging -->
+                <query_log>
+                    <database>system</database>
+                    <table>query_log</table>
+                    <partition_by>toYYYYMM(event_date)</partition_by>
+                    <flush_interval_milliseconds>60000</flush_interval_milliseconds>
+                    <ttl>event_date + INTERVAL 1 HOUR DELETE</ttl>
+                </query_log>
+
+                <!-- Disable unnecessary system tables that caused high CPU and corruption -->
+                <query_thread_log remove="remove"/>
+                <metric_log remove="remove"/>
+                <asynchronous_metric_log remove="remove"/>
+                <trace_log remove="remove"/>
+                <text_log remove="remove"/>
+                <part_log remove="remove"/>
+                <session_log remove="remove"/>
+
+                <!-- Set background pool sizes to prevent configuration conflicts -->
+                <background_pool_size>25</background_pool_size>
+                <background_schedule_pool_size>25</background_schedule_pool_size>
+
+                <!-- Configure merge behavior to be more conservative on NFS -->
+                <merge_tree>
+                    <max_bytes_to_merge_at_max_space_in_pool>161061273600</max_bytes_to_merge_at_max_space_in_pool>
+                    <max_suspicious_broken_parts>0</max_suspicious_broken_parts>
+                    <max_suspicious_broken_parts_bytes>0</max_suspicious_broken_parts_bytes>
+                </merge_tree>
+
+                <!-- Disable background operations for system tables -->
+                <merge_max_block_size>8192</merge_max_block_size>
+                <max_bytes_to_merge_at_min_space_in_pool>1048576</max_bytes_to_merge_at_min_space_in_pool>
+
+                <!-- Disable additional ports that are causing conflicts -->
+                <interserver_http_port remove="remove"/>
+                <mysql_port remove="remove"/>
+                <postgresql_port remove="remove"/>
+                <prometheus_port remove="remove"/>
+                <port remove="remove"/>
+            </clickhouse>
