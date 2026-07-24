@@ -33,7 +33,7 @@ spec:
               DATABASE_HOST: postgres16-rw.database.svc.cluster.local
               DATABASE_USER: ${SECRET_PGADMIN_USER}
               DATABASE_PASSWORD: ${SECRET_PGADMIN_PASSWORD}
-              DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/mfsoft-dittofeed
+              DATABASE_URL: postgresql://${SECRET_PGADMIN_USER}:${SECRET_PGADMIN_PASSWORD}@postgres16-rw.database.svc.cluster.local:5432/mfsoft_dittofeed
               CLICKHOUSE_HOST: http://mfsoft-dittofeed-clickhouse.mfsoft.svc.cluster.local:8123
               CLICKHOUSE_USER: dittofeed
               CLICKHOUSE_PASSWORD: ${SECRET_CLICKHOUSE_PASSWORD}
