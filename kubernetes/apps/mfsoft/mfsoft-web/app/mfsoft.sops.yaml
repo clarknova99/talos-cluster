@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: mfsoft-secret
-    namespace: default
+    namespace: mfsoft
 type: kubernetes.io/dockerconfigjson
 ## sops --encrypt --in-place ./kubernetes/apps/default/sensei/app/sensei.sops.yaml
 ## sops --decrypt ./kubernetes/apps/default/sensei/app/sensei.sops.yaml | kubectl apply -f -
@@ -20,6 +20,6 @@ sops:
             -----END AGE ENCRYPTED FILE-----
           recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
     encrypted_regex: ^(data|stringData)$
-    lastmodified: "2026-07-08T23:39:53Z"
-    mac: ENC[AES256_GCM,data:ZmD+8degxz24YzFUFwHVkJVPuBkdiCbH8K7q4MaFfcTOKHbDtEuh8ZEni4VsLqCL4yFKn/94KKAJXYzHI/xiZWc4RX5Q6L+l5zH9qPo1i3ucfJdduuL5gouZxC1WpvesnEmXpfAIWcI0ILiBXPkOhHjn66Pnb4rXD06C6IR6rmM=,iv:AZuenojk0uKsy7qWzd7dPm3EfACT7Caf+Qw4ENSFBPQ=,tag:JCgJJtmJkDUksygJembzLA==,type:str]
-    version: 3.13.2
+    lastmodified: "2026-07-25T16:24:27Z"
+    mac: ENC[AES256_GCM,data:EpiLaSa05Q6qb9fu/l6uzRpndCd5eUaPWNL9lyDA2FJY5a/eXXEqFXZUtiOFepIOkE4iG1xB2jSGxKhIJr7uf0SxF5Sx9bCLekeRIu6lfh3yxDK4jcgExz27YJDSlVPpxiMZAEaNMkOpoI4HFSB7SXXx6QNUgTMl1xuCFNbLpLc=,iv:KDjGyfkWwaKgBojh3iLLCF+9zpwHUCDqdU3ARvF0xEY=,tag:E9E1RoQb6+TTfM+n4VaAaQ==,type:str]
+    version: 3.13.3

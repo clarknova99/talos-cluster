@@ -3,10 +3,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: mfsoft
+  name: mfsoft-web
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/default/mfsoft/app
+  path: ./kubernetes/apps/mfsoft/mfsoft-web/app
   prune: true
   sourceRef:
     kind: GitRepository

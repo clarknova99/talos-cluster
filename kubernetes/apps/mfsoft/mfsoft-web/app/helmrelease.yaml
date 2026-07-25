@@ -3,8 +3,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: mfsoft
-  namespace: default
+  name: mfsoft-web
+  namespace: mfsoft
 spec:
   chartRef:
     kind: OCIRepository
@@ -14,7 +14,7 @@ spec:
 
   values:
     controllers:
-      mfsoft:
+      mfsoft-web:
         replicas: 1
         strategy: RollingUpdate
 
@@ -49,7 +49,7 @@ spec:
           gethomepage.dev/group: Infra
           gethomepage.dev/icon: kubernetes-dashboard.svg
           gatus.home-operations.com/endpoint: |
-            group: observability
+            group: mfsoft
         parentRefs:
           - name: envoy-external
             namespace: network
