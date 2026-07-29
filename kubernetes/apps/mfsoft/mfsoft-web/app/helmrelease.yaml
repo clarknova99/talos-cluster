@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mfsoft-dev/mfsoft-web
-              tag: main-f67f03a54bfdab577d7d4f1e5baad9a101009e41@sha256:2792b7d546a31a4e4c44becc5ccc20906d90682c9444b5c4642c0465ae2ebd1d
+              tag: main-894b61e92280ae2ef0f98bdabcf81af9a6456097@sha256:379e2e2e62e2b0553c8db3522a4f03b25971f4ba40d459e9e908bd669a33ce15
             resources:
               requests:
                 cpu: 5m
