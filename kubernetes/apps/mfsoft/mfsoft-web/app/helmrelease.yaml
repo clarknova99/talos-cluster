@@ -26,6 +26,9 @@ spec:
             image:
               repository: ghcr.io/mfsoft-dev/mfsoft-web
               tag: main-894b61e92280ae2ef0f98bdabcf81af9a6456097@sha256:379e2e2e62e2b0553c8db3522a4f03b25971f4ba40d459e9e908bd669a33ce15
+            env:
+              POLAR_PRO_CHECKOUT_URL: ${SECRET_MFSOFT_POLAR_PRO_CHECKOUT_URL}
+              POLAR_INFRA_CHECKOUT_URL: ${SECRET_MFSOFT_POLAR_INFRA_CHECKOUT_URL}
             resources:
               requests:
                 cpu: 5m
