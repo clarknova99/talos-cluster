@@ -29,6 +29,7 @@ spec:
             env:
               POLAR_PRO_CHECKOUT_URL: ${SECRET_MFSOFT_POLAR_PRO_CHECKOUT_URL}
               POLAR_INFRA_CHECKOUT_URL: ${SECRET_MFSOFT_POLAR_INFRA_CHECKOUT_URL}
+              DOWNLOAD_URL: ${SECRET_MFSOSFT_DOWNLOAD_URL}
             resources:
               requests:
                 cpu: 5m
