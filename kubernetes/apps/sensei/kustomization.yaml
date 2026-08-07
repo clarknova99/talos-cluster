@@ -15,4 +15,4 @@ resources:
   - ./sensei-stage/ks.yaml
   - ./sensei-dev/ks.yaml
   - ./openreplay/ks.yaml
-  - ./temps/ks.yaml
+  # - ./temps/ks.yaml
