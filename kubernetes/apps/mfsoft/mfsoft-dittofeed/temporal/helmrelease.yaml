@@ -47,7 +47,7 @@ spec:
         controller: mfsoft-dittofeed-temporal
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.3.41
+          io.cilium/lb-ipam-ips: 192.168.3.51
         ports:
           http:
             port: &port 8080

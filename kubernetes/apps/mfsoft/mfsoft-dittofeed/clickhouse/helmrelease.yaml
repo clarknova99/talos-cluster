@@ -83,7 +83,7 @@ spec:
         controller: mfsoft-dittofeed-clickhouse
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: 192.168.3.31
+          io.cilium/lb-ipam-ips: 192.168.3.52
         ports:
           http:
             port: 8123
