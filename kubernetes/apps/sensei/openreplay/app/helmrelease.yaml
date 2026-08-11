@@ -193,7 +193,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/sink
-              tag: v1.27.0
+              tag: v1.27.2
             env:
               <<: *sharedEnv
               ASSETS_ORIGIN: https://openreplay.${SECRET_DOMAIN_TWO}/sessions-assets
