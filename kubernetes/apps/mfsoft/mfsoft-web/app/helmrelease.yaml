@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mfsoft-dev/mfsoft-web
-              tag: main-8616db2b52c2d3ffaad8e47a658faf6e94329510@sha256:d082fac6cb0fc34c225a7c31811752c0c82fc84afa2a2e70705731256c90aa0b
+              tag: main-91add2f607ba0b02530ac6f1db5170d8f7bb1d63@sha256:2c72cc98fb798ca71468c7b1fda08ea7c0aa4f4013e9743eb229c6e817cc0e07
             env:
               POLAR_PRO_CHECKOUT_URL: ${SECRET_MFSOFT_POLAR_PRO_CHECKOUT_URL}
               POLAR_INFRA_CHECKOUT_URL: ${SECRET_MFSOFT_POLAR_INFRA_CHECKOUT_URL}
