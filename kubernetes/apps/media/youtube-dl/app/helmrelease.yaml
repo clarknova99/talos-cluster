@@ -39,7 +39,7 @@ spec:
                   "verbose": true,
                   "writesubtitles": true,
                   "subtitleslangs": [
-                    "en",
+                    "en"
                   ],
                   "clean_infojson":true,
                   "writethumbnail":true,
