@@ -331,7 +331,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/sourcemapreader
-              tag: v1.27.0
+              tag: v1.28.0
             env:
               SMR_HOST: "0.0.0.0"
               S3_HOST: http://minio.kube-system.svc.cluster.local:9000
