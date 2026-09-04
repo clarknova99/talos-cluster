@@ -255,7 +255,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/canvases
-              tag: v1.27.0
+              tag: v1.28.0
             env:
               <<: *fullEnv
               BUCKET_NAME: mobs
