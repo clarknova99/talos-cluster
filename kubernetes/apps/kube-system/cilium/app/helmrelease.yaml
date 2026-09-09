@@ -31,6 +31,11 @@ spec:
           enabled: true
     hubble:
       enabled: true
+      tls:
+        auto:
+          enabled: true
+          method: cronJob
+          schedule: "0 0 1 */4 *"
       metrics:
         enabled:
           - dns:query
