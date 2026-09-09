@@ -1,0 +1,44 @@
+---
+
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: radar
+  namespace: default
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: radar
+  interval: 30m
+
+  values:
+    fullnameOverride: radar
+
+    rbac:
+      podExec: true
+      traffic: true
+      metrics: true
+      podLogs: true
+      # portForward: true
+      additionalCrdGroups:
+        - dragonflydb.io
+        - policy
+        - policy.networking.k8s.io
+        - volsync.backube
+    service:
+      port: 9280
+    traffic:
+      prometheusUrl: http://prometheus-operated.observability.svc.cluster.local:9090
+
+    httpRoute:
+      enabled: true
+      # noinspection KubernetesUnknownValues
+      hostnames: [ 'radar.${SECRET_DOMAIN}' ]
+      parentRefs:
+        - name: envoy-internal
+          namespace: network
+          sectionName: https
+      rules:
+        - backendRefs:
+            - name: radar
+              port: 9280
