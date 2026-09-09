@@ -1,0 +1,9 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: radar
+  namespace: default
+spec:
+  interval: 15m
+  url: https://skyhook-io.github.io/helm-charts
