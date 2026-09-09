@@ -22,7 +22,7 @@ spec:
       create: true
       helm: true
       secrets: true
-      viewRBAC: false
+      viewRBAC: true
       podExec: true
       traffic: true
       metrics: true
@@ -30,7 +30,7 @@ spec:
       viewWebhooks: true
       viewNodeRuntime: true
       crdGroups:
-        all: false
+        all: true
       additionalCrdGroups:
         - dragonflydb.io
         - policy
