@@ -19,11 +19,18 @@ spec:
     fullnameOverride: radar
 
     rbac:
+      create: true
+      helm: true
+      secrets: true
+      viewRBAC: false
       podExec: true
       traffic: true
       metrics: true
       podLogs: true
-      # portForward: true
+      viewWebhooks: true
+      viewNodeRuntime: true
+      crdGroups:
+        all: false
       additionalCrdGroups:
         - dragonflydb.io
         - policy
