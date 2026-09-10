@@ -27,7 +27,8 @@ spec:
       namespace: observability
   values:
     fullnameOverride: *app
-    create: false
+    rbac:
+      create: false
     config:
       devices:
         - /dev/sda
