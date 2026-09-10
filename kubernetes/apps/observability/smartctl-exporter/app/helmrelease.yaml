@@ -27,6 +27,7 @@ spec:
       namespace: observability
   values:
     fullnameOverride: *app
+    create: false
     config:
       devices:
         - /dev/sda
@@ -41,6 +42,6 @@ spec:
           replacement: $1
           sourceLabels:
             - __meta_kubernetes_endpoint_node_name
-          targetLabel: instance      
+          targetLabel: instance
     prometheusRules:
       enabled: false
