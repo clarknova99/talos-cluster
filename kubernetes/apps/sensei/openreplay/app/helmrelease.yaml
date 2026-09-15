@@ -283,7 +283,7 @@ spec:
               # `cache` Redis stream and ignored `raw-assets`, so cross-origin
               # stylesheets (<link href>) were never fetched into sessions-assets
               # and rendered unstyled in playback. v1.27.x reads both streams.
-              tag: v1.27.1
+              tag: v1.120.0
             env:
               <<: *sharedEnv
               BUCKET_NAME: sessions-assets
