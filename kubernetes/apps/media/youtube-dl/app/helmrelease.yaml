@@ -30,25 +30,65 @@ spec:
               PORT: 80
               # YTDL_OPTIONS: '{"format": "best", "exec": "ffmpeg -i %(filepath)q -c:v libx264 -c:a aac %(filepath)q.h264.mp4"}'
               # OUTPUT_TEMPLATE: "%(playlist_title&Playlist |)S%(playlist_title|)S%(playlist_uploader& by |)S%(playlist_uploader|)S%(playlist_autonumber& - |)S%(playlist_autonumber|)S%(playlist_count& of |)S%(playlist_count|)S%(playlist_autonumber& - |)S%(uploader,creator|UNKNOWN_AUTHOR)S - %(title|UNKNOWN_TITLE)S - %(release_date>%Y-%m-%d,upload_date>%Y-%m-%d|UNKNOWN_DATE)S.%(ext)s"
+              # OUTPUT_TEMPLATE_PLAYLIST: "%(playlist_title)s - %(playlist_index)03d - %(title)s.%(ext)s"
+              OUTPUT_TEMPLATE_PLAYLIST: "%(playlist_title)s/%(playlist_index)03d - %(title)s.%(ext)s"
               YTDL_NIGHTLY_UPDATE_TIME: "04:00"
+              # YTDL_OPTIONS: |
+              #   {
+              #     "format": "bestvideo[height<=1080][vcodec!*=av01]+bestaudio/best",
+              #     "merge_output_format": "mkv",
+              #     "restrictfilenames": true,
+              #     "verbose": true,
+              #     "writesubtitles": true,
+              #     "subtitleslangs": [
+              #       "en"
+              #     ],
+              #     "clean_infojson":true,
+              #     "writethumbnail":true,
+              #     "postprocessors": [
+              #           {"key":"SponsorBlock"},
+              #           {"key":"EmbedThumbnail"},
+              #           {"key":"FFmpegEmbedSubtitle"},
+              #           {"key":"FFmpegSubtitlesConvertor","format":"srt","when":"before_dl"},
+              #           {"key":"FFmpegMetadata","add_metadata":"True","add_infojson":"True","add_chapters":"True"}
+              #     ]
+              #   }
               YTDL_OPTIONS: |
                 {
-                  "format": "bestvideo[height<=1080][vcodec!*=av01]+bestaudio/best",
-                  "merge_output_format": "mkv",
+                  "format": "bestvideo[ext=mp4][vcodec^=avc1][height<=1080]+bestaudio[ext=m4a][acodec^=mp4a]/best[ext=mp4][vcodec^=avc1][acodec^=mp4a][height<=1080]",
+                  "merge_output_format": "mp4",
                   "restrictfilenames": true,
                   "verbose": true,
                   "writesubtitles": true,
-                  "subtitleslangs": [
-                    "en"
-                  ],
-                  "clean_infojson":true,
-                  "writethumbnail":true,
+                  "subtitleslangs": ["en"],
+                  "clean_infojson": true,
+                  "writethumbnail": true,
                   "postprocessors": [
-                        {"key":"SponsorBlock"},
-                        {"key":"EmbedThumbnail"},
-                        {"key":"FFmpegEmbedSubtitle"},
-                        {"key":"FFmpegSubtitlesConvertor","format":"srt","when":"before_dl"},
-                        {"key":"FFmpegMetadata","add_metadata":"True","add_infojson":"True","add_chapters":"True"}
+                    {"key": "SponsorBlock"},
+                    {
+                      "key": "FFmpegSubtitlesConvertor",
+                      "format": "srt",
+                      "when": "before_dl"
+                    },
+                    {
+                      "key": "FFmpegThumbnailsConvertor",
+                      "format": "jpg",
+                      "when": "before_dl"
+                    },
+                    {
+                      "key": "FFmpegEmbedSubtitle",
+                      "already_have_subtitle": true
+                    },
+                    {
+                      "key": "FFmpegMetadata",
+                      "add_metadata": true,
+                      "add_infojson": false,
+                      "add_chapters": true
+                    },
+                    {
+                      "key": "EmbedThumbnail",
+                      "already_have_thumbnail": true
+                    }
                   ]
                 }
             resources:
