@@ -31,7 +31,8 @@ spec:
               # YTDL_OPTIONS: '{"format": "best", "exec": "ffmpeg -i %(filepath)q -c:v libx264 -c:a aac %(filepath)q.h264.mp4"}'
               # OUTPUT_TEMPLATE: "%(playlist_title&Playlist |)S%(playlist_title|)S%(playlist_uploader& by |)S%(playlist_uploader|)S%(playlist_autonumber& - |)S%(playlist_autonumber|)S%(playlist_count& of |)S%(playlist_count|)S%(playlist_autonumber& - |)S%(uploader,creator|UNKNOWN_AUTHOR)S - %(title|UNKNOWN_TITLE)S - %(release_date>%Y-%m-%d,upload_date>%Y-%m-%d|UNKNOWN_DATE)S.%(ext)s"
               # OUTPUT_TEMPLATE_PLAYLIST: "%(playlist_title)s - %(playlist_index)03d - %(title)s.%(ext)s"
-              OUTPUT_TEMPLATE_PLAYLIST: "%(playlist_title)s/%(playlist_index)03d - %(title)s.%(ext)s"
+             # OUTPUT_TEMPLATE_PLAYLIST: "%(playlist_title)s/%(playlist_index)03d - %(title)s.%(ext)s"
+              OUTPUT_TEMPLATE_PLAYLIST: "%(playlist_title)#S/%(playlist_index)03d - %(title)s.%(ext)s"
               YTDL_NIGHTLY_UPDATE_TIME: "04:00"
               # YTDL_OPTIONS: |
               #   {
