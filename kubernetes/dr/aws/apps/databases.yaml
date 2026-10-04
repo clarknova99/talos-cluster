@@ -70,6 +70,12 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 4h
+  # Only the Cluster gates the apps (a pending Job must never block them).
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: postgres16vector
+      namespace: database
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
