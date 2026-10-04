@@ -1,0 +1,15 @@
+[Unit]
+Description=sensei DR bootstrap (k3s + Flux)
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=!/var/lib/sensei-dr-bootstrapped
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sensei-dr/bootstrap.sh
+Restart=on-failure
+RestartSec=30
+TimeoutStartSec=1800
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,29 @@
+---
+# Same name as home (LoadBalancer there); langfuse, dittofeed, temporal and rybbit connect to it.
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-lb-vector
+spec:
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+  selector:
+    cnpg.io/cluster: postgres16vector
+    cnpg.io/instanceRole: primary
+---
+# litellm's home database lives on postgres16 (backed up only to in-cluster MinIO). In DR it gets a
+# fresh "litellm" database on postgres16vector behind the same service name.
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres16-rw
+spec:
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+  selector:
+    cnpg.io/cluster: postgres16vector
+    cnpg.io/instanceRole: primary

@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://kochhaus-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+# DR copy of home postgres16vector (kubernetes/apps/database/cloudnative-pg/cluster3/cluster16vector.yaml).
+# Recovers from the home WAL archive (${DR_SOURCE_SERVER}) and archives to its own serverName
+# (${DR_TARGET_SERVER}); the instance role can only write under postgres16vector-dr-*.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres16vector
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.3-7
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 150Gi
+    storageClass: openebs-hostpath
+  superuserSecret:
+    name: cloudnative-pg-secrets
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      max_connections: "600"
+      shared_buffers: 2GB
+      effective_cache_size: 6GB
+      work_mem: 128MB
+      maintenance_work_mem: 512MB
+    shared_preload_libraries:
+      - pg_stat_statements
+  resources:
+    requests:
+      cpu: 250m
+    limits:
+      memory: 8Gi
+  probes:
+    liveness:
+      timeoutSeconds: 15
+      periodSeconds: 15
+      failureThreshold: 5
+    readiness:
+      timeoutSeconds: 15
+      periodSeconds: 15
+      failureThreshold: 5
+
+  backup:
+    retentionPolicy: 7d
+    barmanObjectStore:
+      destinationPath: s3://sensei-cnpg/
+      endpointURL: https://s3.us-east-1.amazonaws.com
+      serverName: ${DR_TARGET_SERVER}
+      s3Credentials:
+        inheritFromIAMRole: true
+      data:
+        compression: snappy
+        jobs: 4
+      wal:
+        compression: snappy
+        maxParallel: 8
+
+  bootstrap:
+    recovery:
+      source: home
+
+  externalClusters:
+    - name: home
+      barmanObjectStore:
+        destinationPath: s3://sensei-cnpg/
+        endpointURL: https://s3.us-east-1.amazonaws.com
+        serverName: ${DR_SOURCE_SERVER}
+        s3Credentials:
+          inheritFromIAMRole: true
+        wal:
+          compression: bzip2
+          maxParallel: 8

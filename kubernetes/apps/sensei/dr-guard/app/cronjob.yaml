@@ -1,0 +1,43 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: dr-guard
+  namespace: sensei
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 55
+      ttlSecondsAfterFinished: 600
+      template:
+        spec:
+          serviceAccountName: dr-guard
+          restartPolicy: Never
+          containers:
+            - name: guard
+              image: alpine/k8s:1.36.5
+              command: ["/bin/sh", "/scripts/dr-guard.sh"]
+              env:
+                - name: AWS_DEFAULT_REGION
+                  value: us-east-1
+              envFrom:
+                - secretRef:
+                    name: dr-guard-aws
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+                limits:
+                  memory: 256Mi
+              volumeMounts:
+                - name: script
+                  mountPath: /scripts
+          volumes:
+            - name: script
+              configMap:
+                name: dr-guard-script

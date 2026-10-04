@@ -1,0 +1,16 @@
+{
+  "app": "npx ts-node --prefer-ts-exts bin/sensei-dr.ts",
+  "context": {
+    "account": "676206913924",
+    "region": "us-east-1",
+    "domain": "senseichess.com",
+    "alertEmail": "michael@senseichess.com",
+    "instanceTypes": ["m7i.2xlarge", "m6i.2xlarge", "m5.2xlarge"],
+    "dataVolumeGiB": 400,
+    "failoverHosts": ["@", "www", "admin", "dittofeed", "langfuse", "rybbit", "litellm"],
+    "drillHost": "dr-drill",
+    "gitUrl": "https://github.com/clarknova99/talos-cluster.git",
+    "fluxVersion": "2.7.5",
+    "@aws-cdk/aws-iam:minimizePolicies": true
+  }
+}

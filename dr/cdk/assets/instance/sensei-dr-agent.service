@@ -1,0 +1,8 @@
+[Unit]
+Description=sensei DR agent (mode + readiness)
+After=k3s.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sensei-dr/dr-agent.sh
+TimeoutStartSec=120

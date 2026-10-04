@@ -1,0 +1,26 @@
+---
+# DR tunnel connector; serves traffic only once Cloudflare DNS points at the DR tunnel
+# (or dr-drill.<domain> during drills).
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dr-cloudflared
+  namespace: flux-system
+spec:
+  targetNamespace: network
+  path: ./kubernetes/dr/aws/cloudflared
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m

@@ -1,0 +1,338 @@
+---
+# CNPG operator (home chart + version). The home HelmRelease depends on openebs, which DR does not run.
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cloudnative-pg
+  namespace: flux-system
+spec:
+  targetNamespace: database
+  path: ./kubernetes/apps/database/cloudnative-pg/app
+  dependsOn:
+    - name: dr-repos-helm
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: HelmRelease
+        name: cloudnative-pg
+      patch: |
+        - op: remove
+          path: /spec/dependsOn
+---
+# Restores postgres16vector from the home WAL archive; the Cluster health check holds the apps back
+# until the restore has finished (a ~21 GB base backup plus WAL replay takes 30-60 min).
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dr-postgres
+  namespace: flux-system
+spec:
+  targetNamespace: database
+  path: ./kubernetes/dr/aws/postgres
+  dependsOn:
+    - name: cloudnative-pg
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 4h
+  # Only the Cluster gates the apps (a pending Job must never block them).
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: postgres16vector
+      namespace: database
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dragonfly
+  namespace: flux-system
+spec:
+  targetNamespace: database
+  path: ./kubernetes/apps/database/dragonfly/app
+  dependsOn:
+    - name: dr-repos-oci
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dragonfly-cluster
+  namespace: flux-system
+spec:
+  targetNamespace: database
+  path: ./kubernetes/apps/database/dragonfly/cluster
+  dependsOn:
+    - name: dragonfly
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: Dragonfly
+        name: dragonfly
+      patch: |
+        - op: replace
+          path: /spec/replicas
+          value: 1
+        - op: replace
+          path: /spec/serviceSpec
+          value:
+            type: ClusterIP
+---
+# Langfuse ClickHouse. The backup sidecar runs `server` instead of `watch` so DR never creates or
+# prunes the home backups; restore-* Jobs (dr-clickhouse-restore) pull the latest backup through it.
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: clickhouse
+  namespace: flux-system
+spec:
+  targetNamespace: database
+  path: ./kubernetes/apps/database/clickhouse/app
+  dependsOn:
+    - name: dr-repos-oci
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: ReplicationSource
+      patch: |
+        $patch: delete
+        apiVersion: volsync.backube/v1alpha1
+        kind: ReplicationSource
+        metadata:
+          name: _
+    - target:
+        kind: Secret
+        name: .*volsync.*
+      patch: |
+        $patch: delete
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: _
+    - target:
+        kind: HelmRelease
+        name: clickhouse
+      patch: |
+        - op: replace
+          path: /spec/values/controllers/clickhouse/containers/clickhouse-backup/command
+          value:
+          - /bin/clickhouse-backup
+          - server
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dittofeed-clickhouse
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/dittofeed/clickhouse
+  dependsOn:
+    - name: dr-repos-oci
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: ReplicationSource
+      patch: |
+        $patch: delete
+        apiVersion: volsync.backube/v1alpha1
+        kind: ReplicationSource
+        metadata:
+          name: _
+    - target:
+        kind: Secret
+        name: .*volsync.*
+      patch: |
+        $patch: delete
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: _
+    - target:
+        kind: HelmRelease
+        name: dittofeed-clickhouse
+      patch: |
+        - op: replace
+          path: /spec/values/controllers/dittofeed-clickhouse/containers/clickhouse-backup/command
+          value:
+          - /bin/clickhouse-backup
+          - server
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: rybbit-clickhouse
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/rybbit/clickhouse
+  dependsOn:
+    - name: dr-repos-oci
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: HelmRelease
+        name: rybbit-clickhouse
+      patch: |
+        - op: replace
+          path: /spec/values/controllers/rybbit-clickhouse/containers/clickhouse-backup/command
+          value:
+          - /bin/clickhouse-backup
+          - server
+---
+# No substitution: the restore script uses shell variables.
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dr-clickhouse-restore
+  namespace: flux-system
+spec:
+  path: ./kubernetes/dr/aws/clickhouse-restore
+  dependsOn:
+    - name: clickhouse
+    - name: dittofeed-clickhouse
+    - name: rybbit-clickhouse
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
