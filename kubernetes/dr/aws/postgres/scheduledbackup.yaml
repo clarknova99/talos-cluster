@@ -1,0 +1,13 @@
+---
+# Daily base backup of the DR cluster to its own serverName. Failback takes an extra on-demand
+# backup (dr-agent, mode=maintenance) right before switching back.
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: postgres16vector-dr
+spec:
+  schedule: "0 0 3 * * *"
+  immediate: false
+  backupOwnerReference: self
+  cluster:
+    name: postgres16vector

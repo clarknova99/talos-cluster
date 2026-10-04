@@ -1,0 +1,36 @@
+---
+# Home Helm/OCI sources. kubernetes/flux/repositories/git is deliberately excluded: it pins the
+# flux-system GitRepository to main, while the DR bootstrap chooses the branch.
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dr-repos-helm
+  namespace: flux-system
+spec:
+  path: ./kubernetes/flux/repositories/helm
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dr-repos-oci
+  namespace: flux-system
+spec:
+  path: ./kubernetes/flux/repositories/oci
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m

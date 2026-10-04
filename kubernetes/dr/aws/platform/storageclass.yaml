@@ -1,0 +1,10 @@
+---
+# Home PVCs request openebs-hostpath; in DR the same name is served by the k3s local-path provisioner
+# so the reused PVC manifests apply unchanged.
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: openebs-hostpath
+provisioner: rancher.io/local-path
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer

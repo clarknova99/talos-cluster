@@ -15,22 +15,26 @@ stringData:
     SENSEI_AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:iQP5NXXiM/Xjq+sUFkMMTaWDi4o=,iv:eenlsafxwuGPGe3UX9+OoyHC8oroYfvnkuP79nlT2Jw=,tag:E5OveI9Kjc3dDrDWCzpXuQ==,type:str]
     SENSEI_AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:PkRVblLHZ1hQXbdn6qYybOdAI9g+CKYFNcUzADsf+txd88lMS49wnQ==,iv:LAbhMuduoW7yEOU2bU9v3Cy762Nu90udAu3YyUC6PJg=,tag:66w9L9WtixqYQzyjmxWXZw==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
     age:
-        - recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
-          enc: |
+        - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBZcVlSVkpkdnk3cklqOWVt
-            VmpXVlh6aXQrVEhPbTcwRGJZMVRnWmdOT1RFCnlXaHFaSzRVVUVhUHJaeDRJdXha
-            V0IwRlJ6Y2lYaWNJRFJlU2RjeGNVT0kKLS0tIDFCL3NuZ1ZzK0hFbmxUeWRVOVds
-            cWNKaEdURnVWd3RFYjVPQjhJbzRUaDgKHFXUg6tCGu5FsCQSgPYBj+Vi3BaYJ5qG
-            PilpmVCj0PSD+t1eoiXB7NQb9NXxsEkViom1LHdegAwKlsu2ZEz5aw==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB2VTF5elEzdXFXVnU3SmlQ
+            NVhQUEJtc3haK2hnazkvYlBpTFhvaVN0bWgwCk5VbzJVRCtUSjdMaFVlYzF1czRv
+            OVVNUm13V2xmd0NBUi9nTHduNnZYYnMKLS0tIGx2eGlpdFZaV1NwV092TWtLcTNy
+            RkZOejdGTC9BOWQyYUpCRTBubXFjMU0Kj7gopi7c/GmqAGGxa/pZ9qfHf8fI/V61
+            11LIdG7OS1WtvRjRTumgE5WgFcL1W2G6y3I0oOsue9WoDBykot89zw==
             -----END AGE ENCRYPTED FILE-----
+          recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA0RUUzL3U4QU4xOTF6RWJi
+            S1l4YkQrVTQ2Q3l5VVpjV0NLTTFuWEprcWpZCittV2Y4NFBLN1M3MGlmNHZiZmJM
+            ekM1b0V1UW5BNEFnNW9ZdUFiUjVKdGsKLS0tIERwNm1sQnh1Wk96M0xPZmt6WE9a
+            WmhIcFVXclNxL1ExRFRtd25CNEt4RTgKZnXSFTMk+kcUtjRlZCCxubc3VpOauKZ2
+            wRJDy28WVt6hvdLyt7UpHZfXvMjWgLen73RRLnaZ2m89+v5uj1/lwQ==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age16jmddnd8zaat26u8v3eg2xq6efcmt5e44tkr2tlgqwygfls97glsnvt4me
+    encrypted_regex: ^(data|stringData)$
     lastmodified: "2025-01-31T17:08:38Z"
     mac: ENC[AES256_GCM,data:ND2ICLKdncn8Fo7kVYaakXn254y4k4rl6WkPizCPqLd/J+PTmOYGvyd52DKwHNuAvhckoGQ8Mpa2XChuHwLBQFUKl5hMxUt5qgqQ7CRdEddsPn3DXYx77LNHqZYzROvNabdzNEc4N13dJM9lzqxtA1tTZncXmb88/KmF3sm/E/o=,iv:n5TY/w6pVGkWMgOgFShi3tSj+KCZFNWcN7Nd+0Y+ysw=,tag:12A5qg+bUyJRph0CpeFVyA==,type:str]
-    pgp: []
-    encrypted_regex: ^(data|stringData)$
     version: 3.8.1

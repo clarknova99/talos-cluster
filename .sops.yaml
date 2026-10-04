@@ -5,6 +5,13 @@ creation_rules:
     key_groups:
       - age:
           - "age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr"
+  - # sensei AWS DR: files the DR cluster must decrypt (home key + DR key). See dr/PLAN.md.
+    path_regex: kubernetes/(dr/|apps/sensei/sensei-prod/(api|app|admin)/|apps/sensei/litellm/app/|apps/database/cloudnative-pg/app/).*\.sops\.ya?ml
+    encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - "age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr"
+          - "age16jmddnd8zaat26u8v3eg2xq6efcmt5e44tkr2tlgqwygfls97glsnvt4me"
   - path_regex: kubernetes/.*\.sops\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     key_groups:

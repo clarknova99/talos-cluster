@@ -1,0 +1,40 @@
+---
+# Creates the litellm database once the restored cluster accepts connections.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dr-litellm-db
+spec:
+  backoffLimit: 20
+  activeDeadlineSeconds: 21600
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: psql
+          image: ghcr.io/cloudnative-pg/postgresql:16.3-7
+          env:
+            - name: PGHOST
+              value: postgres16vector-rw.database.svc.cluster.local
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres16vector-superuser
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres16vector-superuser
+                  key: password
+            - name: OWNER
+              value: ${SECRET_PGADMIN_USER}
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -euo pipefail
+              until pg_isready -q; do echo "waiting for postgres"; sleep 15; done
+              if [ "$(psql -tAc "select 1 from pg_database where datname='litellm'")" != "1" ]; then
+                psql -v ON_ERROR_STOP=1 -c "create database litellm owner \"$${OWNER}\""
+              fi
+              echo "litellm database ready"

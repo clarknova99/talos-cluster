@@ -1,0 +1,29 @@
+---
+# DR tunnel "sensei-dr" (dr/bin/cloudflare-setup.sh). Services are addressed directly — there is no
+# Envoy gateway in DR. The tunnel token comes from Secret network/cloudflared-dr-token, created by the
+# instance bootstrap from Secrets Manager.
+originRequest:
+  connectTimeout: 10s
+  http2Origin: false
+
+ingress:
+  - hostname: "${SECRET_DOMAIN_TWO}"
+    service: http://sensei-prod-app.sensei.svc.cluster.local:8000
+  - hostname: "www.${SECRET_DOMAIN_TWO}"
+    service: http://sensei-prod-app.sensei.svc.cluster.local:8000
+  - hostname: "dr-drill.${SECRET_DOMAIN_TWO}"
+    service: http://sensei-prod-app.sensei.svc.cluster.local:8000
+  - hostname: "admin.${SECRET_DOMAIN_TWO}"
+    service: http://sensei-prod-admin.sensei.svc.cluster.local:3002
+  - hostname: "dittofeed.${SECRET_DOMAIN_TWO}"
+    service: http://dittofeed.sensei.svc.cluster.local:3000
+  - hostname: "langfuse.${SECRET_DOMAIN_TWO}"
+    service: http://langfuse-v3-web.sensei.svc.cluster.local:3000
+  - hostname: "rybbit.${SECRET_DOMAIN_TWO}"
+    path: ^/api(/.*)?$
+    service: http://rybbit-backend.sensei.svc.cluster.local:3001
+  - hostname: "rybbit.${SECRET_DOMAIN_TWO}"
+    service: http://rybbit-client.sensei.svc.cluster.local:3002
+  - hostname: "litellm.${SECRET_DOMAIN_TWO}"
+    service: http://litellm.sensei.svc.cluster.local:4000
+  - service: http_status:404

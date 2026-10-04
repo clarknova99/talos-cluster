@@ -1,0 +1,354 @@
+---
+# sensei-prod, reusing the home manifests. Replica counts and CronJob suspension come from the
+# dr-vars ConfigMap, which dr-agent sets per mode (drill / failover / maintenance).
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: sensei-prod-api
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/sensei-prod/api
+  dependsOn:
+    - name: dr-postgres
+    - name: dr-repos-oci
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: HelmRelease
+        name: sensei-prod-api
+      patch: |
+        - op: add
+          path: /spec/values/controllers/sensei-prod-api/replicas
+          value: ${DR_API_REPLICAS}
+    - target:
+        kind: CronJob
+      patch: |
+        - op: add
+          path: /spec/suspend
+          value: ${DR_CRON_SUSPEND}
+---
+# One replica: the home route uses cookie session affinity, which cloudflared cannot provide.
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: sensei-prod-app
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/sensei-prod/app
+  dependsOn:
+    - name: sensei-prod-api
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: HelmRelease
+        name: sensei-prod-app
+      patch: |
+        - op: add
+          path: /spec/values/controllers/sensei-prod-app/replicas
+          value: ${DR_APP_REPLICAS}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: sensei-prod-worker
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/sensei-prod/worker
+  dependsOn:
+    - name: dr-postgres
+    - name: dr-repos-oci
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: HelmRelease
+        name: sensei-prod-worker
+      patch: |
+        - op: add
+          path: /spec/values/controllers/sensei-prod-worker/replicas
+          value: ${DR_WORKER_REPLICAS}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: sensei-prod-admin
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/sensei-prod/admin
+  dependsOn:
+    - name: dr-postgres
+    - name: dr-repos-oci
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: HelmRelease
+        name: sensei-prod-admin
+      patch: |
+        - op: add
+          path: /spec/values/controllers/sensei-prod-admin/replicas
+          value: ${DR_ADMIN_REPLICAS}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: litellm
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/litellm/app
+  dependsOn:
+    - name: dr-postgres
+    - name: dr-repos-oci
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: langfuse-v3
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/langfusev3/app
+  dependsOn:
+    - name: dr-postgres
+    - name: dragonfly-cluster
+    - name: clickhouse
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+---
+# Dittofeed + Temporal are off in drills (journeys would message real users).
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dittofeed-temporal
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/dittofeed/temporal
+  dependsOn:
+    - name: dr-postgres
+    - name: dittofeed-clickhouse
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: HelmRelease
+        name: dittofeed-temporal
+      patch: |
+        - op: add
+          path: /spec/values/controllers/dittofeed-temporal/replicas
+          value: ${DR_DITTOFEED_REPLICAS}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dittofeed
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/dittofeed/app
+  dependsOn:
+    - name: dittofeed-temporal
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m
+  patches:
+    - target:
+        kind: HelmRelease
+        name: dittofeed
+      patch: |
+        - op: add
+          path: /spec/values/controllers/dittofeed/replicas
+          value: ${DR_DITTOFEED_REPLICAS}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: rybbit
+  namespace: flux-system
+spec:
+  targetNamespace: sensei
+  path: ./kubernetes/apps/sensei/rybbit/app
+  dependsOn:
+    - name: dr-postgres
+    - name: rybbit-clickhouse
+  components:
+    - ../../../../dr/aws/components/helm-defaults
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
+      - kind: ConfigMap
+        name: dr-vars
+  prune: true
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 10m

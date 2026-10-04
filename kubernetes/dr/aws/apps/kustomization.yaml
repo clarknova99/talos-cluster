@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+# Flux Kustomizations for the AWS DR cluster. Applied by the dr-apps root Kustomization (created by
+# the instance bootstrap) with postBuild substitution from the dr-vars ConfigMap.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./repositories.yaml
+  - ./databases.yaml
+  - ./sensei.yaml
+  - ./cloudflared.yaml
