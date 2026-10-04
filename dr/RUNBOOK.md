@@ -20,7 +20,7 @@ readiness, DR serverName, and current DNS targets.
    `https://senseichess.com/health`, the orchestrator moves `STANDBY → FAILOVER`, scales the
    `sensei-dr` ASG to 1 and emails michael@senseichess.com.
 3. The instance installs k3s + Flux, restores Postgres from S3, restores ClickHouse, starts the apps
-   and the DR cloudflared tunnel, then reports ready.
+   and the DR cloudflared tunnel, then reports ready (≈70 min; most of it is the Postgres restore).
 4. Orchestrator snapshots the Cloudflare records, points them at the DR tunnel, takes external-dns
    ownership, sets `ACTIVE`, emails you.
 5. When home reconnects, its `dr-guard` CronJob sees `ACTIVE` and fences home sensei-prod. The site
@@ -47,13 +47,14 @@ Run a drill (§2) after any large change to sensei manifests, and at least quart
 
 ```bash
 dr/bin/drctl drill start     # ASG → 1, mode=drill, creates dr-drill.senseichess.com → DR tunnel
-dr/bin/drctl status          # repeat until instance.ready=true (≈45–60 min)
+dr/bin/drctl status          # repeat until instance.ready=true (≈70 min, Postgres restore dominates)
 curl -sf https://dr-drill.senseichess.com/health
 dr/bin/drctl shell           # SSM session on the instance (kubectl available as root)
 dr/bin/drctl drill stop      # ASG → 0, removes dr-drill record, state → STANDBY
 ```
 
-Drill mode: worker=0, sensei CronJobs suspended, dittofeed+temporal=0. Postgres WAL/base backups go
+Drill mode: worker=0, sensei CronJobs suspended, dittofeed+temporal=0. A drill that is already
+ready can be promoted with `drctl failover`: production DNS switches within ~1–2 min. Postgres WAL/base backups go
 to the run's own `postgres16vector-dr-<run>` prefix (safe to delete afterwards:
 `aws s3 rm --recursive s3://sensei-cnpg/postgres16vector-dr-<run>/`).
 
@@ -153,7 +154,43 @@ replica counts from git) and un-suspends CronJobs. Verify `https://senseichess.c
 | Orchestrator by hand | `aws lambda invoke --function-name sensei-dr-orchestrator /dev/stdout` |
 | Instance boot log | `dr/bin/drctl shell` → `sudo journalctl -u sensei-dr-bootstrap -u sensei-dr-agent` |
 
-## 7. Maintenance
+### Testing the home guard without arming
+`dr/bin/test-dr-guard.sh` runs the dr-guard fence/unfence cycle against any cluster with the
+sensei-prod app names (e.g. the drill instance) with DynamoDB stubbed:
+```bash
+G=$(base64 < kubernetes/apps/sensei/dr-guard/app/dr-guard.sh | tr -d '\n'); T=$(base64 < dr/bin/test-dr-guard.sh | tr -d '\n')
+dr/bin/drctl exec "echo $G | base64 -d >/tmp/g.sh; echo $T | base64 -d >/tmp/t.sh; sh /tmp/t.sh /tmp/g.sh"
+```
+Never send a manual heartbeat while home is offline: it arms automatic failover.
+
+## 7. Rebuilding the DR stack from scratch
+
+Everything except two secrets is code. Order:
+
+```bash
+# 1. DR age key (skip if sensei-dr/age-key already exists in Secrets Manager)
+age-keygen -o /tmp/dr-age.key        # put the public key in .sops.yaml (DR rule), then:
+for f in $(git ls-files 'kubernetes/dr/*.sops.yaml' 'kubernetes/apps/sensei/sensei-prod/*/*.sops.yaml' \
+           'kubernetes/apps/sensei/litellm/app/*.sops.yaml' 'kubernetes/apps/database/cloudnative-pg/app/*.sops.yaml'); do
+  SOPS_AGE_KEY_FILE=age.key sops updatekeys -y "$f"; done
+# 2. Cloudflare tunnel (the external-dns API token cannot create tunnels)
+cloudflared tunnel login                 # pick the senseichess.com zone
+cloudflared tunnel create sensei-dr
+# 3. Secrets Manager: Cloudflare token + tunnel run token (+ age key)
+AWS_PROFILE=mike-sensei dr/bin/setup-secrets.sh --age-key /tmp/dr-age.key && rm /tmp/dr-age.key
+# 4. AWS stack
+cd dr/cdk && npm ci && AWS_PROFILE=mike-sensei npx cdk deploy
+# 5. Home credentials for dr-guard (after a stack rebuild the access key changes)
+aws secretsmanager get-secret-value --secret-id sensei-dr/home-credentials --query SecretString --output text \
+  | jq '{apiVersion:"v1",kind:"Secret",metadata:{name:"dr-guard-aws",namespace:"sensei"},type:"Opaque",stringData:.}' \
+  | yq -P > kubernetes/apps/sensei/dr-guard/app/secret.sops.yaml
+SOPS_AGE_KEY_FILE=age.key sops --encrypt --in-place kubernetes/apps/sensei/dr-guard/app/secret.sops.yaml
+```
+
+Validate DR manifests offline before committing changes to `kubernetes/dr` or to DR-reused apps:
+`dr/bin/validate-dr-tree.py --mode drill|failover|maintenance` and `cd dr/cdk && npm test`.
+
+## 8. Maintenance
 
 | When | Do |
 |---|---|

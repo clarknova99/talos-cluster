@@ -1,6 +1,7 @@
 # senseichess.com — AWS Disaster Recovery Plan
 
-Status: implemented on branch `feat/sensei-aws-dr` (see [RUNBOOK.md](RUNBOOK.md) for operations).
+Status: deployed 2026-10-04 (AWS account 676206913924, us-east-1); drill passed the same day.
+Operations: [RUNBOOK.md](RUNBOOK.md).
 
 ## 1. Goal
 
@@ -11,7 +12,7 @@ deliberately fails back. Nothing in AWS should cost meaningful money while home 
 | Target | Value |
 |---|---|
 | Detection | ~8 min (5 min heartbeat timeout + 3 failed public probes) |
-| RTO (site serving from AWS) | ~45–60 min (instance boot + k3s + Flux + Postgres restore of ~21 GB base backup + WAL replay) |
+| RTO (site serving from AWS) | ~70 min measured (4 min bootstrap, 59 min Postgres restore + WAL replay, 3 min apps); see §6 to shorten |
 | RPO (Postgres) | Last archived WAL segment before the outage (continuous archiving, typically < 5 min) |
 | RPO (ClickHouse) | Last clickhouse-backup increment (2 h dittofeed, 4 h langfuse/rybbit) |
 | Idle cost | ≈ $1–2/month (Lambda every minute, DynamoDB on-demand, Secrets Manager) — no EC2/EBS while idle |
@@ -138,8 +139,16 @@ DR therefore tracks home automatically when images/configs change on `main`.
 
 ## 6. Known limitations / follow-ups
 
-- RTO is dominated by restoring a bzip2 base backup; more frequent base backups or a warm CNPG
-  replica cluster would cut it to minutes (≈ $30–60/month).
+- **Measured in the 2026-10-04 drill:** instance boot → k3s → Flux → apps applied in ~4 min;
+  ClickHouse restores 3–10 min (rybbit 11 GB, dittofeed 40 GB, langfuse 53 GB); Postgres is the
+  long pole: the 21 GB **bzip2** base backup extracts single-threaded at ~20 MB/s (~45 min for 59 GB)
+  before WAL replay starts (up to 24 h of WAL, ~20 GB on 2026-10-03). Recommended follow-ups, in
+  order of effort:
+  1. Home `cluster16vector.yaml`: `data.compression: snappy` (+ `jobs: 4`) and
+     `wal.compression: snappy` — 5–10× faster restore for a modest S3 size increase.
+  2. Two base backups a day (`awsbackup.yaml` schedule) to halve WAL replay.
+  3. Warm standby: a small always-on instance running a CNPG replica cluster from the S3 archive
+     (≈ $30–60/month) → RTO of minutes.
 - Failback of Postgres is a full physical restore of home `postgres16vector` from the DR serverName
   (CNPG serverName bump, the procedure already used in this repo). Writes made at home to *other*
   databases on that cluster during the DR window are lost; take a logical dump first (runbook).
