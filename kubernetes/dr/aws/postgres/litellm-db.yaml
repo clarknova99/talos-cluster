@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: dr-litellm-db
+  name: dr-create-litellm-db
 spec:
   backoffLimit: 20
   activeDeadlineSeconds: 21600
@@ -19,12 +19,12 @@ spec:
             - name: PGUSER
               valueFrom:
                 secretKeyRef:
-                  name: postgres16vector-superuser
+                  name: cloudnative-pg-secrets
                   key: username
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres16vector-superuser
+                  name: cloudnative-pg-secrets
                   key: password
             - name: OWNER
               value: ${SECRET_PGADMIN_USER}
