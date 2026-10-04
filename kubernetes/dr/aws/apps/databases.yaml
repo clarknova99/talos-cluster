@@ -39,8 +39,8 @@ spec:
         - op: remove
           path: /spec/dependsOn
 ---
-# Restores postgres16vector from the home WAL archive; wait=true holds the apps back until the
-# restore has finished (a ~21 GB base backup plus WAL replay takes 30-60 min).
+# Restores postgres16vector from the home WAL archive; the Cluster health check holds the apps back
+# until the restore has finished (a ~21 GB base backup plus WAL replay takes 30-60 min).
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -66,7 +66,7 @@ spec:
       - kind: ConfigMap
         name: dr-vars
   prune: true
-  wait: true
+  wait: false
   interval: 30m
   retryInterval: 1m
   timeout: 4h
