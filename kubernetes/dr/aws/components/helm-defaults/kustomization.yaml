@@ -2,6 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 # HelmRelease defaults for the DR cluster (the home cluster injects equivalents from cluster-apps).
 # A fresh DR cluster installs everything at once, so installs retry indefinitely instead of stalling.
+# Helm's --wait is disabled: it waits for LoadBalancer Services to get an address, which never
+# happens in DR (k3s servicelb is off), and the timeout would trigger uninstall remediation.
+# dr-agent checks real readiness instead.
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 patches:
@@ -16,11 +19,13 @@ patches:
       spec:
         install:
           crds: CreateReplace
+          disableWait: true
           remediation:
             retries: -1
         upgrade:
           cleanupOnFail: true
           crds: CreateReplace
+          disableWait: true
           remediation:
             retries: 3
             remediateLastFailure: true
