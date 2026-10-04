@@ -33,7 +33,7 @@ export interface SenseiDrProps extends StackProps {
  * Lambda; the ASG (0..1) is scaled by the orchestrator. See ../../PLAN.md.
  *
  * Secrets `sensei-dr/age-key` and `sensei-dr/cloudflare` are created out of band
- * (dr/bin/cloudflare-setup.sh) so their values never appear in CloudFormation.
+ * (dr/bin/setup-secrets.sh) so their values never appear in CloudFormation.
  */
 export class SenseiDrStack extends Stack {
   constructor(scope: Construct, id: string, props: SenseiDrProps) {

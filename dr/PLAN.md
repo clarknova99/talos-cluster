@@ -113,7 +113,8 @@ never cause a failover.
 | `kubernetes/apps/sensei/dr-guard/` | Home heartbeat + fencing CronJob |
 | `dr/bin/drctl` | Operator CLI (status, drill, failover, failback, arm/disarm) |
 | `dr/bin/build-dr-secrets.sh` | Regenerates the DR secret subset |
-| `dr/bin/cloudflare-setup.sh` | Creates the DR tunnel and stores tokens in Secrets Manager |
+| `dr/bin/setup-secrets.sh` | Stores the Cloudflare token + DR tunnel token and the DR age key in Secrets Manager |
+| `dr/bin/validate-dr-tree.py` | Offline build/validation of `kubernetes/dr/aws` for every mode |
 
 DR Flux reuses the *home* app directories (sensei-prod, langfuse, dittofeed, rybbit, litellm,
 cloudnative-pg operator, dragonfly, clickhouse) through its own Flux Kustomizations, with small

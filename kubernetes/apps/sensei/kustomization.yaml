@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./dittofeed/ks.yaml
+  - ./dr-guard/ks.yaml
   - ./dittofeed-dev/ks.yaml
   - ./langfusev3/ks.yaml
   - ./langfuse-dev/ks.yaml
