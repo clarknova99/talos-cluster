@@ -85,7 +85,7 @@ spec:
   # Failback from AWS DR (2026-10-05): follow the DR WAL archive as a read-only replica cluster
   # while AWS still serves; promote by setting enabled: false (dr/FAILBACK-CHECKLIST.md).
   replica:
-    enabled: true
+    enabled: false
     source: *previousCluster
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
