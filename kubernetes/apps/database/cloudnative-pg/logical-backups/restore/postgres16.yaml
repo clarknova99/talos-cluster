@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres16-logical-restore
+  namespace: database
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: ceph-block
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: postgres16-logical-restore
+  namespace: database
+spec:
+  paused: true
+  trigger:
+    manual: restore-standby
+  kopia:
+    copyMethod: Direct
+    destinationPVC: postgres16-logical-restore
+    repository: cnpg-logical-backups-kopia
+    sourceIdentity:
+      sourceName: postgres16-logical-backup
+      sourceNamespace: database
+      sourcePVCName: postgres16-logical-backup
+    storageClassName: ceph-block
+    cleanupCachePVC: true
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000

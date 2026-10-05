@@ -1,0 +1,115 @@
+---
+apiVersion: coordination.k8s.io/v1
+kind: Lease
+metadata:
+  name: postgres16-logical-backup
+  annotations:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec: {}
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: postgres16-logical-backup
+  annotations:
+    kustomize.toolkit.fluxcd.io/ssa: IfNotPresent
+spec:
+  sourcePVC: postgres16-logical-backup
+  paused: true
+  trigger:
+    manual: standby
+  kopia:
+    copyMethod: Direct
+    compression: zstd-fastest
+    parallelism: 2
+    repository: cnpg-logical-backups-kopia
+    retain:
+      daily: 7
+      weekly: 4
+      monthly: 3
+    storageClassName: openebs-hostpath
+    accessModes: [ReadWriteOnce]
+    moverSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres16-logical-backup
+spec:
+  schedule: "15 4 * * *"
+  timeZone: Etc/UTC
+  suspend: true
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 21600
+      ttlSecondsAfterFinished: 604800
+      template:
+        spec:
+          serviceAccountName: cnpg-logical-backup
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: orchestrator
+              image: alpine/k8s:1.35.0
+              command: [/bin/bash, /scripts/orchestrate.sh]
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: [ALL]
+              env:
+                - name: CLUSTER_NAME
+                  value: postgres16
+                - name: SOURCE_NAME
+                  value: postgres16-logical-backup
+                - name: STAGING_CAPACITY
+                  value: 20Gi
+                - name: NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                - name: POD_UID
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.uid
+                - name: POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: HOME
+                  value: /tmp
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+                limits:
+                  cpu: "1"
+                  memory: 256Mi
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                  readOnly: true
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: scripts
+              configMap:
+                name: cnpg-logical-backup-scripts
+            - name: tmp
+              emptyDir:
+                sizeLimit: 64Mi

@@ -12,15 +12,15 @@ This file gives AI agents the context needed to work in this repo without requir
 task flux:commit -- "<commit message>"
 ```
 
-This single command: pulls latest, stages all changes, commits, pushes, and triggers a Flux reconcile. Example:
+This single command pulls latest, stages all changes, commits, pushes, and requests a Flux reconcile. Only commit when asked, and review the working tree first because the task stages **all** changes. Example:
 
 ```bash
 task flux:commit -- "add homepage to default namespace"
 ```
 
-You can also invoke this as the `/flux-commit` slash command, which will auto-generate a commit message from the diff if none is provided.
+The repository-supported interface is the task command above; a `/flux-commit` slash command is not defined in this repository.
 
-> **Why**: A bare `git push` without the reconcile step leaves the cluster out of sync until the next 1h interval. The task ensures changes are applied immediately.
+> **Why**: The task explicitly reconciles the `flux-system` entry point with its source after pushing. Git polling and source-revision events also trigger reconciliation; a push does not inherently wait for the 1-hour Kustomization interval. Check Flux status afterward rather than assuming all apps became healthy.
 
 ---
 
@@ -35,7 +35,7 @@ This is a **GitOps-managed home Kubernetes cluster** using:
 
 **GitHub remote**: `https://github.com/clarknova99/talos-cluster.git` (branch: `main`)
 
-Any change merged to `main` will be automatically applied to the cluster by Flux within the reconciliation interval (default 30m for apps, 1h for the root).
+Changes pushed to `main` are discovered by the Git source (currently a 1-minute poll interval) and trigger reconciliation. App reconciliation intervals are commonly 30m, while the `cluster-apps` and `cluster-repositories` intervals are 1h; these periodic intervals are not a mandatory delay for new source revisions.
 
 ---
 
@@ -49,8 +49,9 @@ Any change merged to `main` will be automatically applied to the cluster by Flux
 | mars | Intel NUC8i5BEH | 32GB | Worker | 192.168.3.102 |
 | jupiter | Intel NUC11PAHi7 | 64GB | Worker | 192.168.3.219 |
 
-- Kubernetes version: v1.35.0 — Cluster name: `home-kubernetes`
-- Talos version: v1.12.3
+- Kubernetes version: v1.36.0 — Cluster name: `home-kubernetes`
+- Talos version: v1.13.0
+- Versions verified 2026-09-29; desired versions are in [talconfig.yaml](kubernetes/bootstrap/talos/talconfig.yaml). Recheck live nodes before version-specific operations.
 - Control plane VIP / API endpoint: `192.168.3.20` (`https://192.168.3.20:6443`)
 - Network: Firewalla Gold router, Zyxel GS1900-24E switch, APC SMT1500C UPS
 
@@ -84,7 +85,7 @@ talos-cluster/
 │       │   ├── oci/
 │       │   └── git/
 │       └── vars/           # Flux variable substitution sources
-├── bootstrap/              # talhelper bootstrap files
+├── bootstrap/              # Bootstrap templates and setup scripts
 ├── config.yaml             # Master bootstrap config (domains, IPs, tunnel IDs)
 └── .sops.yaml              # SOPS encryption rules
 ```
@@ -97,34 +98,39 @@ talos-cluster/
 |-----------|------|
 | `flux-system` | flux-operator, flux-instance |
 | `cert-manager` | cert-manager |
-| `kube-system` | cilium, coredns, metrics-server, minio, node-feature-discovery, spegel, reloader, csi-driver-nfs, intel-gpu-resource-driver, openebs |
+| `kube-system` | cilium, coredns, metrics-server, minio, node-feature-discovery, spegel, reloader, csi-driver-nfs, intel-gpu-resource-driver |
 | `network` | cloudflared, envoy-gateway, external-dns, k8s-gateway, echo-server |
 | `database` | cloudnative-pg, dragonfly, influxdb, clickhouse |
-| `default` | authelia, homepage, it-tools, kite, lldap, synology, website, whoami |
-| `media` | plex, sonarr, radarr, bazarr, prowlarr, qbittorrent, sabnzbd, flaresolverr, invidious |
-| `observability` | kube-prometheus-stack, grafana, victoria-logs, fluent-bit, alloy, gatus, smartctl-exporter, kromgo |
-| `rook-ceph` | rook-ceph (distributed block/object storage) |
+| `default` | authelia, homepage, it-tools, kite, lldap, synology, radar, website, whoami |
+| `media` | plex, sonarr, radarr, bazarr, prowlarr, qbittorrent, sabnzbd, flaresolverr, invidious, youtube-dl |
+| `mfsoft` | mfsoft-web, mfsoft-dittofeed |
+| `observability` | kube-prometheus-stack, grafana, victoria-logs, fluent-bit, gatus, metabase, smartctl-exporter, kromgo |
+| `rook-ceph` | rook-ceph (distributed block and filesystem storage, Ceph NFS) |
 | `openebs-system` | openebs (local PV storage) |
 | `volsync-system` | volsync, kopia, snapshot-controller |
-| `system-upgrade` | system-upgrade-controller |
-| `actions-runner-system` | actions-runner-controller |
-| `sensei` | sensei-{dev,stage,prod}, langfuse, litellm, n8n, dittofeed, rybbit |
+| `system-upgrade` | tuppr |
+| `actions-runner-system` | actions-runner-controller, home-ops-runner and sensei-runner scale sets |
+| `sensei` | sensei-{dev,stage,prod}, langfusev3, langfuse-dev, litellm, litellm-dev, n8n, dittofeed, dittofeed-dev, rybbit, openreplay |
+
+This inventory follows the active namespace Kustomizations as of 2026-09-29. Files in `_archive/` and commented-out registrations are not deployed applications. Grafana is operator-managed separately from kube-prometheus-stack; Loki and Alloy are archived.
 
 ---
 
 ## How Flux Works in This Repo
 
-Two root Kustomizations drive everything (`kubernetes/flux/cluster/ks.yaml`):
+The Flux instance generates the `flux-system` GitRepository and entry-point Kustomization targeting `kubernetes/flux/cluster`. Live intervals verified 2026-09-29 are 1m for the Git source and 10m for that entry point. It applies two root Kustomizations from [ks.yaml](kubernetes/flux/cluster/ks.yaml):
 
 1. **`cluster-repositories`** — reconciles all HelmRepository, OCIRepository, GitRepository objects from `kubernetes/flux/repositories/`. Interval: 1h.
-2. **`cluster-apps`** — reconciles all application Kustomizations from `kubernetes/apps/`. Interval: 1h. SOPS decryption enabled. Variable substitution from `cluster-secrets` Secret.
+2. **`cluster-apps`** — reconciles all application Kustomizations from `kubernetes/apps/`. Interval: 1h. SOPS decryption enabled. Its patches configure child Kustomizations to substitute variables from the `cluster-secrets` Secret.
 
 Each app has its own `ks.yaml` (a `Kustomization` in the `flux-system` namespace) that points to the app's `app/` directory. Flux evaluates these and applies whatever Kubernetes resources are defined there.
 
-**Global patches** applied automatically to all HelmReleases by Flux:
+**Global patches** applied to child Kustomizations and their HelmReleases by [the root configuration](kubernetes/flux/cluster/ks.yaml):
+- Child Kustomizations: SOPS decryption, `deletionPolicy: WaitForTermination`, and variable substitution from `cluster-secrets`
 - CRD handling: `CreateReplace` on install and upgrade
-- Install failure: `remediation.retries: 3`, cleanup on failure
-- Upgrade failure: `remediation.strategy: rollback`, `remediation.retries: 3`
+- Install strategy: `RetryOnFailure`
+- Upgrade strategy: `RemediateOnFailure`, `cleanupOnFail: true`, `remediateLastFailure: true`, and `remediation.retries: 2`
+- Rollback: `cleanupOnFail: true` and `recreate: true`
 
 ---
 
@@ -133,6 +139,8 @@ Each app has its own `ks.yaml` (a `Kustomization` in the `flux-system` namespace
 **SOPS + Age** is used for all secrets. The Age public key is in `.sops.yaml`. Secret files follow the pattern `*.sops.yaml`.
 
 All global secrets live in `kubernetes/components/sops/cluster-secrets.sops.yaml` — a single `Secret` in `flux-system`. Flux substitutes `${SECRET_VAR_NAME}` placeholders across all manifests.
+
+App-local encrypted secrets also live alongside their workloads. Do not assume every credential is in `cluster-secrets`, and do not print decrypted secrets or secret values into chat or logs.
 
 Key variable names (from cluster-secrets):
 - `${SECRET_DOMAIN}` — primary domain
@@ -225,13 +233,19 @@ spec:
             port: {port}
 ```
 
-For apps with their own Helm chart, use `HelmRepository` instead:
+For charts sourced from a `HelmRepository`, use `spec.chart.spec.sourceRef`, not `chartRef`. The chart name and version must match the repository:
 ```yaml
-  chartRef:
-    kind: HelmRepository
-    name: {repo-name}      # must exist in kubernetes/flux/repositories/helm/
-    namespace: flux-system
+  chart:
+    spec:
+      chart: my-chart
+      version: "1.2.3"
+      sourceRef:
+        kind: HelmRepository
+        name: my-repo
+        namespace: flux-system
 ```
+
+For this repo's OCI charts, keep `chartRef.kind: OCIRepository`; a `HelmRepository` belongs under `chart.spec.sourceRef`, not `chartRef`.
 
 ### 5. Register in the namespace kustomization
 
@@ -359,7 +373,7 @@ rules:
 - Use `envoy-external` only for services that need internet access
 - Default to `envoy-internal` for everything else
 - Never expose admin panels externally unless protected by Authelia
-- TLS is automatic — no per-service cert config needed, wildcard certs cover `*.${SECRET_DOMAIN}` and `*.${SECRET_DOMAIN_TWO}`
+- HTTPS listeners provide certificates for one-level subdomains of `${SECRET_DOMAIN}`, `${SECRET_DOMAIN_TWO}`, and `${SECRET_DOMAIN_THREE}` without per-service TLS configuration
 
 ### 7. Add VolSync persistence (optional)
 
@@ -370,11 +384,14 @@ spec:
     - ../../../../components/volsync
   postBuild:
     substitute:
+      APP: "{app-name}"
       VOLSYNC_CAPACITY: 10Gi
       VOLSYNC_SCHEDULE: "0 3 * * *"
       VOLSYNC_UID: "568"
       VOLSYNC_GID: "568"
 ```
+
+    `APP` is required by the component and names its PVC and replication resources. Mount that PVC in the workload's persistence configuration. Current defaults are `ceph-block`, `csi-ceph-blockpool`, hourly Kopia backups, and retention of 24 hourly and 7 daily snapshots; app substitutions can override these defaults.
 
 ---
 
@@ -384,7 +401,7 @@ spec:
 2. Delete the `kubernetes/apps/{namespace}/{app-name}/` directory
 3. Commit and push — Flux will prune the resources from the cluster because `prune: true` is set on the Kustomization
 
-> **Note**: For storage-backed apps, manually delete PVCs after removal if not handled by VolSync cleanup.
+> **Storage warning**: Review PVC ownership, Kustomization pruning, and PV reclaim policies before removal. Pruning a declared PVC can delete its backing volume when the reclaim policy is `Delete`. Verify backups and get explicit approval before deleting any remaining PVCs; VolSync is not a guarantee that application data survives removal.
 
 ---
 
@@ -406,10 +423,10 @@ spec:
 ### CNI: Cilium
 
 - Installed in `kube-system` namespace via HelmRelease
-- L2 announcements configured via a separate Kustomization (`cilium-l2-config`)
+- L2 announcements configured via the `cilium-config` Kustomization
 - L2 announcements advertise LoadBalancer IPs on the LAN
 - Network policies enabled
-- **Known bug**: Intermittent LB service failures from stale BPF map entries — see `memory/project_cilium_l2_bug.md` for the fix procedure
+- **Previously observed issue**: Intermittent LB failures from stale BPF map entries. See the [historical recovery notes below](#cilium-l2-bpf-stale-entry-bug-intermittent-lb-failures); verify the symptoms and current Cilium version before disruptive recovery.
 
 ### Traffic Flow (External)
 
@@ -421,11 +438,15 @@ Internet → Cloudflare (DNS + proxy) → cloudflared tunnel → envoy-external 
 - External-DNS watches HTTPRoutes and creates DNS records in Cloudflare automatically
 - TLS is terminated at Envoy using certs from cert-manager (Let's Encrypt via DNS-01)
 
-Cloudflared tunnel routes all traffic for `*.${SECRET_DOMAIN}` and `*.${SECRET_DOMAIN_TWO}` to `envoy-external.network.svc.cluster.local:443`. Unmatched hostnames return HTTP 404 at the tunnel level.
+Cloudflared routes the apex and wildcard hostnames of `${SECRET_DOMAIN}`, `${SECRET_DOMAIN_TWO}`, and `${SECRET_DOMAIN_THREE}` to `envoy-external.network.svc.cluster.local:443`. Unmatched hostnames return HTTP 404 at the tunnel level.
+
+Each ingress rule sets `originRequest.originServerName` to `external.<matching-domain>` so upstream TLS uses a hostname covered by Envoy's certificates, rather than the internal Kubernetes service name.
 
 DNS endpoints managed by External-DNS:
 - `external.${SECRET_DOMAIN}` → Cloudflare tunnel
 - `external.${SECRET_DOMAIN_TWO}` → Cloudflare tunnel
+- `external.${SECRET_DOMAIN_THREE}` → Cloudflare tunnel
+- `external-gateway.${SECRET_DOMAIN}` → Cloudflare tunnel
 - App subdomains CNAME to `external.${SECRET_DOMAIN}` (proxied through Cloudflare)
 
 ### Traffic Flow (Internal / LAN)
@@ -434,7 +455,7 @@ DNS endpoints managed by External-DNS:
 LAN client → k8s-gateway (192.168.3.22, port 53) → resolves to envoy-internal IP → Envoy → Pod
 ```
 
-- k8s-gateway returns Envoy's internal LB IP for in-cluster DNS queries
+- k8s-gateway serves LAN DNS for all three configured domains, deriving addresses from watched routes and services; internal routes resolve to the internal gateway. CoreDNS handles Kubernetes service discovery inside the cluster.
 - HTTPRoutes with `parentRefs: name: envoy-internal` are LAN-only
 
 ### Gateways
@@ -444,7 +465,7 @@ LAN client → k8s-gateway (192.168.3.22, port 53) → resolves to envoy-interna
 | `envoy-external` | `network` | 80, 443 | 192.168.3.26 |
 | `envoy-internal` | `network` | 80, 443 | 192.168.3.27 |
 
-Wildcard TLS certs are provisioned for `*.${SECRET_DOMAIN}` and `*.${SECRET_DOMAIN_TWO}`.
+TLS certificates cover the apex and one-level wildcard subdomains of `${SECRET_DOMAIN}`, `${SECRET_DOMAIN_TWO}`, and `${SECRET_DOMAIN_THREE}`.
 
 ### DNS
 
@@ -458,29 +479,35 @@ Wildcard TLS certs are provisioned for `*.${SECRET_DOMAIN}` and `*.${SECRET_DOMA
 
 | Class | Provider | Use case |
 |-------|----------|----------|
-| Rook-Ceph | `rook-ceph` namespace | Distributed block/object, replicated across nodes |
+| Rook-Ceph | `rook-ceph` namespace | Replicated block storage, CephFS, and Ceph NFS; no Ceph object stores currently configured |
 | OpenEBS | `openebs-system` namespace | Local PVs, node-pinned workloads |
 | NFS | `csi-driver-nfs` in `kube-system` | NAS-backed volumes |
-| MinIO | `kube-system` namespace | S3-compatible in-cluster object storage |
+| MinIO | `kube-system` namespace | S3-compatible object storage backed by the NAS |
 
-**VolSync** (`volsync-system`) provides PVC backup and replication. Apps opt in via the `components/volsync` component in their Kustomization.
+**VolSync** (`volsync-system`) provides PVC backup and replication using Kopia and volume snapshots. Apps opt in via the `components/volsync` component in their Kustomization. Verify actual backup completion and restore coverage before maintenance.
 
 ---
 
 ## Databases
 
-All in the `database` namespace:
+Shared database services in the `database` namespace:
 
 | App | Type | Notes |
 |-----|------|-------|
-| `cloudnative-pg` | PostgreSQL operator | Manages HA Postgres clusters (cluster, cluster2, cluster3) |
-| `dragonfly` | Redis-compatible | Used by authelia and others |
+| `cloudnative-pg` | PostgreSQL operator | Active clusters: `postgres16` (2 instances) and `postgres16vector` (3 instances); `cluster2` registration is commented out |
+| `dragonfly` | Redis-compatible | Used by authelia and others; no configured persistent snapshots, so all-replica shutdown can lose in-memory data |
 | `influxdb` | Time-series | Metrics storage |
 | `clickhouse` | Columnar analytics | ClickHouse cluster |
+
+Application-specific ClickHouse deployments also run in `sensei` and `mfsoft`. Directory names such as `cluster3` are not PostgreSQL Cluster resource names; use `kubectl get clusters.postgresql.cnpg.io -A` to check the current inventory.
 
 ---
 
 ## Troubleshooting Guide
+
+### Planned full-cluster shutdown
+
+Follow the [README shutdown and restore runbook](README.md#safe-shutdown-for-a-power-outage) and use [scripts/shutdown-cluster.sh](scripts/shutdown-cluster.sh). Start with `--dry-run`; do not execute shutdown or restore as a validation test. Actual execution requires explicit authorization and operator confirmation, and recovery state must be kept outside Git.
 
 ### Check Flux reconciliation status
 
@@ -533,8 +560,8 @@ kubectl describe pod -n {namespace} {pod-name}
 kubectl get svc -n {namespace}
 
 # Check Cilium L2 announcements (if LB IP not reachable)
-kubectl exec -n kube-system ds/cilium -- cilium bpf lb list
-kubectl exec -n kube-system ds/cilium -- cilium service list
+kubectl exec -n kube-system ds/cilium -- cilium-dbg bpf lb list
+kubectl exec -n kube-system ds/cilium -- cilium-dbg service list
 
 # Cilium overall health (CLI tool)
 cilium status
@@ -569,9 +596,9 @@ kubectl logs -n kube-system ds/cilium --tail=50
 
 **Symptom**: Intermittent TCP timeouts to LoadBalancer VIPs (e.g. `curl http://192.168.3.32:3000`). Services work sometimes and fail other times depending on which node ARP resolves to.
 
-**Root cause**: The Cilium L2 announcement reconciler fails to clean up `cilium_l2_responder_v4` BPF map entries when leases change hands. Multiple nodes accumulate the same VIP in their BPF maps, causing ARP conflicts. Reconciler logs show: `"Error(s) while full reconciling l2 responder map" ... "delete X.X.X.X@8: key does not exist"`.
+**Previously observed root cause**: The Cilium L2 announcement reconciler failed to clean up `cilium_l2_responder_v4` BPF map entries when leases changed hands. Multiple nodes accumulated the same VIP in their BPF maps, causing ARP conflicts. Reconciler logs showed: `"Error(s) while full reconciling l2 responder map" ... "delete X.X.X.X@8: key does not exist"`.
 
-**Fix procedure** (run steps in order):
+**Historical recovery procedure** (disruptive; use only after confirming this failure mode and authorizing a network maintenance window). Verify the current map layout and availability of `bpftool` first. The agent selector is `k8s-app=cilium`; do not assume historical interface numbers or map formats match every Cilium release. This is not a routine step after a power outage.
 
 ```bash
 # 1. Delete the policy to trigger cleanup
@@ -581,8 +608,8 @@ kubectl delete ciliuml2announcementpolicy l2-policy
 kubectl get lease -n kube-system -o name | grep l2announce | xargs kubectl delete -n kube-system
 
 # 3. Wipe BPF maps on every Cilium pod
-for pod in $(kubectl -n kube-system get pods -l app.kubernetes.io/name=cilium-agent -o name | sed 's|pod/||'); do
-  kubectl -n kube-system exec $pod -- bash -c '
+for pod in $(kubectl -n kube-system get pods -l k8s-app=cilium -o name | sed 's|pod/||'); do
+  kubectl -n kube-system exec "$pod" -- bash -c '
     bpftool map dump pinned /sys/fs/bpf/tc/globals/cilium_l2_responder_v4 2>/dev/null | \
     grep "^key:" | while read _ k1 k2 k3 k4 k5 k6 k7 k8 _; do
       bpftool map delete pinned /sys/fs/bpf/tc/globals/cilium_l2_responder_v4 key hex $k1 $k2 $k3 $k4 $k5 $k6 $k7 $k8 2>&1
@@ -595,11 +622,13 @@ kubectl apply -f kubernetes/apps/kube-system/cilium/config/cilium-l2.yaml
 # 5. Restart Cilium
 kubectl -n kube-system rollout restart daemonset/cilium
 
-# 6. Verify recovery — lease count should match number of LB services (currently 24)
-kubectl get lease -n kube-system | grep l2announce | wc -l
+# 6. Compare current leases and LoadBalancer services against the L2 policy
+kubectl get ciliuml2announcementpolicy l2-policy -o yaml
+kubectl get lease -n kube-system -o json | jq '[.items[] | select(.metadata.name | startswith("cilium-l2announce-"))] | length'
+kubectl get svc -A -o json | jq '[.items[] | select(.spec.type == "LoadBalancer")] | length'
 ```
 
-**Healthy state**: Total BPF entries across all nodes equals the number of LoadBalancer services (24). Each VIP appears in exactly one node's map. If duplicates remain after restart, manually delete stale entries using `bpftool map delete` on the affected node.
+**Healthy state**: Compare advertised VIP/interface entries with current lease holders and policy-selected services, not a fixed count. Shared VIPs, unallocated services, and multiple interfaces can make raw service and BPF-entry counts differ. Diagnose any remaining duplicate announcements before making targeted map changes.
 
 ### DNS issues
 
@@ -626,8 +655,8 @@ kubectl logs -n cert-manager deploy/cert-manager
 ### SOPS / secret issues
 
 ```bash
-# Verify a secret is decrypted correctly in-cluster
-kubectl get secret cluster-secrets -n flux-system -o yaml
+# Verify the Secret exists and inspect key names without exposing values
+kubectl get secret cluster-secrets -n flux-system -o json | jq '{name: .metadata.name, type, keys: (.data | keys)}'
 
 # Check if Flux can decrypt (look at Kustomization status)
 flux get kustomization cluster-apps -n flux-system
@@ -648,7 +677,7 @@ kubectl get replicationsource -A
 kubectl get replicationdestination -A
 ```
 
-### kubectl plugins and CLI tools (no pod exec required)
+### kubectl plugins and CLI tools
 
 ```bash
 # CloudNative-PG: cluster status (replace postgres16vector with the cluster name)
@@ -682,7 +711,7 @@ flux-local get hr -n media --path ./kubernetes/flux/cluster
 flux-local build ks --path ./kubernetes/flux/cluster
 
 # Validate all Kustomizations build without errors
-flux-local test --path ./kubernetes/flux/cluster -v
+flux-local test --path ./kubernetes/flux/cluster --no-enable-helm -v
 
 # Also validate HelmRelease rendering via helm template
 flux-local test --path ./kubernetes/flux/cluster --enable-helm -v
@@ -806,6 +835,6 @@ curl -G 'http://192.168.3.29:9090/api/v1/query' \
 - **YAML anchors** (`&app`, `*app`) are used extensively to avoid repeating the app name
 - **`postBuild.substituteFrom`** pulls from `cluster-secrets` — use `${SECRET_VAR}` syntax anywhere in manifests
 - **`prune: true`** on Kustomizations means removing a resource from the repo deletes it from the cluster
-- **`wait: false`** is the default for apps; `wait: true` only for system-critical infra (cilium, envoy-gateway)
+- **`wait: false`** is common for apps; `wait: true` is also used for operators and databases such as CloudNativePG. Check the actual `ks.yaml` rather than assuming a universal default.
 - **Dependencies** (`dependsOn`) are declared in `ks.yaml` when one app needs another to be healthy first
 - **Multi-environment apps** (sensei) have separate Kustomizations per env (`sensei-dev`, `sensei-stage`, `sensei-prod`) in the same namespace

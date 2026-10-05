@@ -5,3 +5,6 @@ machine:
     fs.inotify.max_user_instances: "8192"
     net.core.rmem_max: "2500000"
     net.core.wmem_max: "2500000"
+    # Keep kernel/Talos warnings off the synchronous tty0/ttyS0 console; log floods
+    # (e.g. host DNS errors during an internet outage) caused RCU stalls and etcd leader loss
+    kernel.printk: "4 4 1 7"

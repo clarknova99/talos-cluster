@@ -107,7 +107,7 @@ If a drill is already running it is promoted in place (mode drill → failover, 
 
 ---
 
-## 5. Failback (~75 min, ~8 min downtime observed)
+## 5. Failback (~75 min; downtime ~8 min manual, ~1.5–2 min expected with `drctl failback cutover`)
 
 **Use [FAILBACK-CHECKLIST.md](FAILBACK-CHECKLIST.md)**: the scripted `drctl failback` steps rebuild home as a
 replica of AWS while AWS keeps serving (downtime ~5–10 min). The subsections below describe the

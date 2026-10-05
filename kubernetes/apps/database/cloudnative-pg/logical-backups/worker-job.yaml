@@ -1,0 +1,91 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cnpg-logical-backup-worker-template
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 7200
+  template:
+    spec:
+      serviceAccountName: cnpg-logical-backup-worker
+      automountServiceAccountToken: false
+      restartPolicy: Never
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: dump
+          image: ghcr.io/cloudnative-pg/postgresql:16.3-7
+          command: [/bin/bash, /scripts/backup.sh]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          env:
+            - name: CLUSTER_NAME
+              value: replaced-by-orchestrator
+            - name: BACKUP_TOKEN
+              value: replaced-by-orchestrator
+            - name: HOME
+              value: /tmp
+            - name: PGHOST
+              value: replaced-by-orchestrator
+            - name: PGDATABASE
+              value: postgres
+            - name: PGCONNECT_TIMEOUT
+              value: "30"
+            - name: PGSSLMODE
+              value: verify-full
+            - name: PGSSLROOTCERT
+              value: /pg-ca/ca.crt
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: cloudnative-pg-secrets
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cloudnative-pg-secrets
+                  key: password
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "2"
+              memory: 1Gi
+          volumeMounts:
+            - name: staging
+              mountPath: /staging
+            - name: scripts
+              mountPath: /scripts
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+            - name: ca
+              mountPath: /pg-ca
+              readOnly: true
+      volumes:
+        - name: staging
+          persistentVolumeClaim:
+            claimName: replaced-by-orchestrator
+        - name: scripts
+          configMap:
+            name: cnpg-logical-backup-scripts
+        - name: tmp
+          emptyDir:
+            sizeLimit: 1Gi
+        - name: ca
+          secret:
+            secretName: replaced-by-orchestrator
+            items:
+              - key: ca.crt
+                path: ca.crt

@@ -15,6 +15,22 @@ spec:
     controllers:
       sensei-prod-worker:
         replicas: 4
+        # Hold startup until the database is writable. Normally instant; during a failback from AWS
+        # DR the database is a read-only replica, so these pods can start early and wait here
+        # (dr/FAILBACK-CHECKLIST.md). $${PG_URI} is escaped from Flux substitution.
+        initContainers:
+          wait-for-writable-db:
+            image:
+              repository: ghcr.io/cloudnative-pg/postgresql
+              tag: 16.3-7
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                until [ "$(psql "$${PG_URI}" -qAt -c 'select pg_is_in_recovery()' 2>/dev/null)" = "f" ]; do
+                  echo "waiting for a writable database"; sleep 2
+                done
+            env:
+              PG_URI: postgresql://${SECRET_SENSEI_USERNAME}:${SECRET_SENSEI_PASSWORD}@postgres16vector-rw.database.svc.cluster.local:5432/sensei-prod
         containers:
           app:
             image:

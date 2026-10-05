@@ -24,6 +24,7 @@ usage: drctl <command>
   failback freeze                DR -> maintenance: stop sensei-prod, final Postgres backup
   failback unfreeze              undo freeze (serve from DR again)
   failback promote               promote the caught-up home replica (after freeze)
+  failback cutover               freeze + promote + dns + complete + unfence in one step (fast path)
   failback dns                   point DNS back home (state FAILBACK)
   failback complete              state STANDBY, approve home unfence, terminate instance
   failback start-home-apps       restart the apps stopped by stop-home-apps
@@ -112,7 +113,7 @@ case "$cmd" in
       freeze|unfreeze) request "$1" ;;
       dns) request failback-dns ;;
       complete) request complete ;;
-      stop-home-apps|start-home-apps|rebuild-home|lag|promote)
+      stop-home-apps|start-home-apps|rebuild-home|lag|promote|cutover)
         exec "$(dirname "$0")/failback-home.sh" "$1" ;;
       *) usage; exit 2 ;;
     esac ;;

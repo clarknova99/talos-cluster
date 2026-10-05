@@ -16,13 +16,15 @@ Nothing on AWS is deleted until the very last step, and AWS's backups stay in S3
 | 1 | checks | ~2 min | on AWS |
 | 2 | `stop-home-apps` | ~1 min (incl. ~30–60 s connection drain) | on AWS |
 | 3 | `rebuild-home` + restore | **~60 min** total: delete + commit ~1 min, base restore 16 min, standby 2 clone ~18 min, standby 3 clone ~24 min | on AWS |
-| 4a | `freeze` | ~25 s until AWS reports `mode=maintenance` | **down** |
-| 4b | `promote` | 4 min 42 s (catch-up ~1 min, promotion ~3.5 min) | down |
-| 4c | `dns`, `complete`, `start-home-apps` | ~5 s each; dr-guard unfences ~20 s after `complete` | down |
+| 4 | `cutover` (fast path) | expected ~1.5–2 min (not yet measured) | **down** |
+| 4a | manual: `freeze` | ~25 s until AWS reports `mode=maintenance` | **down** |
+| 4b | manual: `promote` | 4 min 42 s (catch-up ~1 min, promotion ~3.5 min) | down |
+| 4c | manual: `dns`, `complete`, `start-home-apps` | ~5 s each; dr-guard unfences ~20 s after `complete` | down |
 | 5 | sensei-prod pods ready, `/health` OK | ~1.5 min after unfence | **up** |
 | 6 | home base backup to new serverName (started by `promote`) | 6 min 54 s with snappy (33 GB); was ~2 h with bzip2 | up |
 
-Start to finish ~75 min; **downtime 7 min 43 s** (freeze 15:21:01 → healthy 15:28:44 UTC).
+Start to finish ~75 min; **downtime 7 min 43 s** with the manual steps (freeze 15:21:01 → healthy
+15:28:44 UTC). `cutover` (added afterwards) targets ~1.5–2 min.
 Plan for 10 min of downtime and 90 min overall; the restore and clone times scale with database size.
 
 ```bash
@@ -172,7 +174,34 @@ the next `postgres16vector-vN` S3 prefix is unused. It then suspends `cloudnativ
 the stale home cluster, commits **only** `cluster16vector.yaml` (new serverName + recovery/replica
 source = the DR serverName) and resumes Flux.
 
-## 4. Cut over (downtime starts; ~8 min on 2026-10-05)
+## 4. Cut over: one command (fast path)
+
+```bash
+dr/bin/drctl failback cutover
+```
+Preconditions it checks: DR ACTIVE and not frozen, home is a replica with 3/3 ready instances,
+lag < 256 MB, dr-guard present, `main` checked out. Then, with timestamps per phase:
+
+1. **Warm start (no downtime yet):** pauses dr-guard and scales home sensei-prod back up. api,
+   worker and admin start and wait in their `wait-for-writable-db` init container.
+2. **Freeze (downtime starts):** marks DR frozen, stops sensei-prod/dittofeed on AWS directly over
+   SSM (no waiting for the agent) and forces a WAL switch.
+3. **Promote:** waits for home to replay the last WAL (polls every 3 s), commits
+   `replica.enabled: false`, waits for the promotion and the one restart it causes
+   (`smartShutdownTimeout: 15`, with home ScheduledBackups suspended so no backup holds it).
+4. **DNS + complete + unfence:** switches Cloudflare back, unfences immediately (does not wait for
+   dr-guard's 1-minute cycle), resumes dr-guard, triggers one dr-guard run to clear the flags.
+5. Waits for `{"status":"healthy"}` on the public site and prints the measured downtime, then
+   restarts the other home apps and starts the base backup.
+
+⏱ Expected (not yet measured): **~1.5–2 min downtime**. On 2026-10-05 the same work took 7 min 43 s
+with the manual steps: ~3 min of it was the restart waiting out the old 180 s smart-shutdown timeout,
+~1.5 min cold-starting pods, ~1 min waiting on the dr-guard cycle and manual checks.
+
+If it fails before the DNS switch, it says so; run `dr/bin/drctl failback unfreeze` to put the site
+back on AWS. dr-guard is always resumed on exit.
+
+## 4 (manual alternative). Cut over step by step (downtime ~8 min on 2026-10-05)
 
 Only start when step 3 shows `Ready instances: 3` / `Cluster in healthy state` and a small lag.
 While standbys clone, the Kubernetes API can be briefly slow (`Unable to connect to the server:

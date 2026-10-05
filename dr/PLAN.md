@@ -139,6 +139,13 @@ DR therefore tracks home automatically when images/configs change on `main`.
 
 ## 6. Known limitations / follow-ups
 
+- **Failback downtime:** 7 min 43 s on 2026-10-05 with the manual steps. Fixed afterwards:
+  `smartShutdownTimeout: 15` on home postgres16vector (the post-promotion restart waited the default
+  180 s on an open backup session), `drctl failback cutover` (one command, stops DR apps directly,
+  unfences without waiting for dr-guard), and a `wait-for-writable-db` init container on sensei-prod
+  api/worker/admin so pods start before promotion. Target ~1.5–2 min; zero downtime is not possible
+  with a single-primary Postgres.
+
 - **Measured in the 2026-10-04 drill:** instance boot → k3s → Flux → apps applied in ~4 min;
   ClickHouse restores 3–10 min (rybbit 11 GB, dittofeed 40 GB, langfuse 53 GB); Postgres is the
   long pole: the 21 GB **bzip2** base backup extracts single-threaded at ~20 MB/s (~45 min for 59 GB)

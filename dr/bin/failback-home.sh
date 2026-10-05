@@ -7,6 +7,8 @@
 #                     AWS DR archive (site keeps serving from AWS meanwhile)
 #   lag               how far the home replica trails AWS
 #   promote           promote the home replica (after `drctl failback freeze`)
+#   cutover           freeze + promote + dns + complete + unfence in one go, with warm-started
+#                     home pods (the fast path; replaces the four manual steps)
 #   start-home-apps   restart the apps stopped by stop-home-apps
 set -euo pipefail
 
@@ -157,20 +159,33 @@ show_lag() {
   psql_home -c "select 'last replayed transaction: ' || coalesce(pg_last_xact_replay_timestamp()::text, 'none yet')"
 }
 
-promote() {
-  local status b
-  status="$(dr_json)"
-  [ "$(jq -r '.dr.desiredMode' <<<"$status")" = maintenance ] || die "freeze DR first: drctl failback freeze"
-  [ "$(jq -r '.instance.appliedMode' <<<"$status")" = maintenance ] || die "DR has not applied maintenance mode yet"
-  [ "$(psql_home -c 'select pg_is_in_recovery()')" = t ] || die "home $CLUSTER is not a replica (already promoted?)"
-  step "waiting for the home replica to replay the last DR WAL"
-  for _ in $(seq 1 40); do
+FENCED_APPS=(sensei-prod-api sensei-prod-app sensei-prod-worker sensei-prod-admin dittofeed dittofeed-temporal)
+GATED_APPS=(sensei-prod-api sensei-prod-app sensei-prod-worker sensei-prod-admin) # start before promotion
+T0=$(date +%s)
+elapsed() { local d=$(( $(date +%s) - T0 )); printf '%dm%02ds' $((d / 60)) $((d % 60)); }
+tstep() { echo "==> [$(date -u +%H:%M:%S)Z +$(elapsed)] $*"; }
+
+wait_caught_up() { # wait_caught_up <poll seconds>
+  local b
+  for _ in $(seq 1 200); do
     b="$(lag)"
-    [ "${b:-1}" -le 0 ] && break
-    echo "  ${b} bytes behind"; sleep 15
+    [ "${b:-1}" -le 0 ] && { echo "caught up"; return; }
+    echo "  ${b} bytes behind"; sleep "$1"
   done
-  [ "${b:-1}" -le 0 ] || die "home did not catch up (still ${b} bytes behind); check WAL archiving on DR"
-  echo "caught up"
+  die "home did not catch up (still ${b} bytes behind); check WAL archiving on DR"
+}
+
+scheduled_backup_suspend() { # scheduled_backup_suspend true|false
+  for sb in $(kubectl -n "$NS" get scheduledbackup -o jsonpath="{range .items[?(@.spec.cluster.name=='$CLUSTER')]}{.metadata.name}{' '}{end}"); do
+    kubectl -n "$NS" patch scheduledbackup "$sb" --type merge -p "{\"spec\":{\"suspend\":$1}}" >/dev/null
+  done
+}
+
+promote_core() { # promote_core <poll seconds>: replica -> primary, then a base backup
+  [ "$(psql_home -c 'select pg_is_in_recovery()')" = t ] || die "home $CLUSTER is not a replica (already promoted?)"
+  # A backup session on the primary would hold the post-promotion restart (smartShutdownTimeout).
+  scheduled_backup_suspend true
+  wait_caught_up "$1"
 
   cd "$ROOT"
   git pull -q --rebase --autostash
@@ -183,16 +198,22 @@ open(p, "w").write(s2)
 PY
   commit_manifest "promote $CLUSTER (failback from AWS DR complete)"
   flux reconcile kustomization "$KS" >/dev/null
-  step "waiting for promotion"
-  for _ in $(seq 1 60); do
-    [ "$(psql_home -c 'select pg_is_in_recovery()' 2>/dev/null)" = f ] && { echo "home $CLUSTER is primary"; break; }
-    sleep 5
+  tstep "promotion requested; waiting until home is writable and healthy"
+  # Promotion changes archive_mode, so CNPG restarts the primary once right after promoting.
+  for _ in $(seq 1 120); do
+    if [ "$(psql_home -c 'select pg_is_in_recovery()' 2>/dev/null)" = f ] \
+       && [ "$(kubectl -n "$NS" get cluster "$CLUSTER" -o jsonpath='{.status.phase}')" = "Cluster in healthy state" ] \
+       && ! kubectl -n "$NS" get cluster "$CLUSTER" -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}' | grep -q False; then
+      break
+    fi
+    sleep "$1"
   done
   [ "$(psql_home -c 'select pg_is_in_recovery()')" = f ] || die "not promoted yet; check: kubectl -n $NS get cluster $CLUSTER"
   kubectl -n "$NS" get cluster "$CLUSTER"
+  scheduled_backup_suspend false
   # The daily ScheduledBackup does not fire for a recreated cluster; without a base backup in the
   # new serverName a future DR failover would have nothing to restore from.
-  step "starting a base backup into the new serverName"
+  tstep "starting a base backup into the new serverName"
   kubectl -n "$NS" apply -f - <<EOF
 apiVersion: postgresql.cnpg.io/v1
 kind: Backup
@@ -203,7 +224,105 @@ spec:
   cluster:
     name: $CLUSTER
 EOF
+}
+
+promote() {
+  local status
+  status="$(dr_json)"
+  [ "$(jq -r '.dr.desiredMode' <<<"$status")" = maintenance ] || die "freeze DR first: drctl failback freeze"
+  [ "$(jq -r '.instance.appliedMode' <<<"$status")" = maintenance ] || die "DR has not applied maintenance mode yet"
+  step "waiting for the home replica to replay the last DR WAL"
+  promote_core 5
   echo "next: drctl failback dns && drctl failback complete && drctl failback start-home-apps"
+}
+
+dr_stop_now() { # stop sensei-prod/dittofeed on DR directly and switch WAL (faster than the agent)
+  "$DRCTL" exec '
+    for d in sensei-prod-api sensei-prod-app sensei-prod-worker sensei-prod-admin dittofeed dittofeed-temporal; do
+      kubectl -n sensei scale deploy "$d" --replicas=0 >/dev/null 2>&1
+    done
+    for i in $(seq 1 60); do
+      n=$(kubectl -n sensei get pods --no-headers 2>/dev/null | grep -cE "^(sensei-prod-(api|app|worker|admin)-[0-9a-f]{8,10}-|dittofeed-temporal-[0-9a-f]{8,10}-|dittofeed-[0-9a-f]{8,10}-)")
+      [ "$n" = 0 ] && break; sleep 1
+    done
+    P=$(kubectl -n database get cluster postgres16vector -o jsonpath={.status.currentPrimary})
+    kubectl -n database exec "$P" -c postgres -- psql -qAt -c "select pg_switch_wal()" >/dev/null
+    echo "DR apps stopped; WAL switched"' | grep -E "stopped|rror" || die "could not stop DR apps"
+}
+
+unfence_now() { # what dr-guard does on unfence, without waiting for its next run
+  local saved
+  for app in "${FENCED_APPS[@]}"; do
+    saved="$(kubectl -n sensei get deploy "$app" -o jsonpath="{.metadata.annotations.sensei-dr/fence-replicas}" 2>/dev/null)" || saved=""
+    if [ -n "$saved" ]; then
+      kubectl -n sensei scale deploy "$app" --replicas="$saved" >/dev/null
+      kubectl -n sensei annotate deploy "$app" "sensei-dr/fence-replicas-" >/dev/null
+    fi
+  done
+  for cj in $(kubectl -n sensei get cronjob -o name | grep '/sensei-prod-'); do
+    kubectl -n sensei patch "$cj" --type merge -p '{"spec":{"suspend":false}}' >/dev/null
+  done
+  for app in "${FENCED_APPS[@]}"; do
+    kubectl -n sensei patch helmrelease "$app" --type merge -p '{"spec":{"suspend":false}}' >/dev/null 2>&1 || true
+    kubectl -n flux-system patch kustomization "$app" --type merge -p '{"spec":{"suspend":false}}' >/dev/null 2>&1 || true
+  done
+}
+
+public_health() {
+  local ip
+  ip="$(curl -s -H 'accept: application/dns-json' 'https://cloudflare-dns.com/dns-query?name=senseichess.com&type=A' | jq -r '.Answer[0].data')"
+  curl -s -m 10 --resolve "senseichess.com:443:$ip" https://senseichess.com/health
+}
+
+cutover() {
+  local status b ready freeze_at
+  status="$(dr_json)"
+  [ "$(jq -r '.dr.state' <<<"$status")" = ACTIVE ] || die "DR must be ACTIVE"
+  [ "$(jq -r '.dr.desiredMode' <<<"$status")" = failover ] || die "DR is already frozen; use the manual steps (promote/dns/complete)"
+  [ "$(psql_home -c 'select pg_is_in_recovery()')" = t ] || die "home $CLUSTER is not a replica; run rebuild-home first"
+  ready="$(kubectl -n "$NS" get cluster "$CLUSTER" -o jsonpath='{.status.readyInstances}')"
+  [ "${ready:-0}" -ge 3 ] || die "home $CLUSTER has ${ready:-0}/3 ready instances; wait for the standbys"
+  b="$(lag)"
+  [ "${b:-999999999}" -le 268435456 ] || die "home trails AWS by ${b} bytes; wait for 'drctl failback lag' to be small"
+  kubectl -n sensei get cronjob dr-guard >/dev/null || die "dr-guard CronJob not found at home"
+  cd "$ROOT"
+  [ "$(git branch --show-current)" = main ] || die "check out main first"
+  git diff --quiet -- "$MANIFEST" || die "$MANIFEST has local changes"
+
+  tstep "warm start: pausing dr-guard and starting home sensei-prod (pods wait for a writable database)"
+  kubectl -n sensei patch cronjob dr-guard --type merge -p '{"spec":{"suspend":true}}' >/dev/null
+  # Never leave dr-guard paused, whatever happens below.
+  trap 'kubectl -n sensei patch cronjob dr-guard --type merge -p "{\"spec\":{\"suspend\":false}}" >/dev/null 2>&1
+        if [ -z "${CUTOVER_DONE:-}" ]; then
+          echo "cutover did not finish. If DNS still points at AWS, put the site back with: dr/bin/drctl failback unfreeze" >&2
+        fi' EXIT
+  for app in "${GATED_APPS[@]}"; do
+    r="$(kubectl -n sensei get deploy "$app" -o jsonpath="{.metadata.annotations.sensei-dr/fence-replicas}")"
+    [ -n "$r" ] && kubectl -n sensei scale deploy "$app" --replicas="$r" >/dev/null
+  done
+
+  freeze_at=$(date +%s)
+  tstep "freeze: DOWNTIME STARTS"
+  "$DRCTL" failback freeze >/dev/null
+  dr_stop_now
+  tstep "promoting home"
+  promote_core 3
+  tstep "switching DNS home and completing"
+  "$DRCTL" failback dns >/dev/null
+  "$DRCTL" failback complete >/dev/null
+  unfence_now
+  kubectl -n sensei patch cronjob dr-guard --type merge -p '{"spec":{"suspend":false}}' >/dev/null
+  kubectl -n sensei create job --from=cronjob/dr-guard "dr-guard-cutover-$(date +%s)" >/dev/null # clears fenced flags
+  tstep "waiting for sensei-prod and the public site"
+  for _ in $(seq 1 90); do
+    [ "$(public_health)" = '{"status":"healthy"}' ] \
+      && [ "$(kubectl -n sensei get deploy sensei-prod-api -o jsonpath='{.status.availableReplicas}')" -ge 1 ] 2>/dev/null && break
+    sleep 2
+  done
+  tstep "site healthy: $(public_health)  downtime $(( ($(date +%s) - freeze_at) / 60 ))m$(( ($(date +%s) - freeze_at) % 60 ))s"
+  CUTOVER_DONE=1
+  start_home_apps
+  "$DRCTL" status | sed -n 1,3p
 }
 
 case "${1:-}" in
@@ -212,5 +331,6 @@ case "${1:-}" in
   rebuild-home) rebuild_home ;;
   lag) show_lag ;;
   promote) promote ;;
-  *) sed -n '2,12p' "$0"; exit 2 ;;
+  cutover) cutover ;;
+  *) sed -n "2,14p" "$0"; exit 2 ;;
 esac

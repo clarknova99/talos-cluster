@@ -8,6 +8,10 @@ spec:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3-7
   primaryUpdateStrategy: unsupervised
+  # Default 180 s: a smart shutdown waits that long for open sessions (e.g. a running backup)
+  # before falling back to a fast shutdown. Promoting a replica cluster (failback from AWS DR)
+  # always restarts the primary, and on 2026-10-05 this wait was 3 of the ~8 minutes of downtime.
+  smartShutdownTimeout: 15
   storage:
     size: 50Gi
     storageClass: openebs-hostpath

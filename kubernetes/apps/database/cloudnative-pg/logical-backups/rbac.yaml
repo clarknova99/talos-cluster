@@ -1,0 +1,55 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cnpg-logical-backup
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cnpg-logical-backup-worker
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cnpg-logical-backup
+rules:
+  - apiGroups: [volsync.backube]
+    resources: [replicationsources]
+    resourceNames: [postgres16-logical-backup, postgres16vector-logical-backup]
+    verbs: [get, list, watch, patch]
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    resourceNames: [postgres16-logical-backup, postgres16vector-logical-backup]
+    verbs: [get, update, patch]
+  - apiGroups: [""]
+    resources: [persistentvolumeclaims]
+    verbs: [create]
+  - apiGroups: [""]
+    resources: [persistentvolumeclaims]
+    resourceNames: [postgres16-logical-backup, postgres16vector-logical-backup]
+    verbs: [get, list, watch, delete]
+  - apiGroups: [batch]
+    resources: [jobs]
+    verbs: [create]
+  - apiGroups: [batch]
+    resources: [jobs]
+    resourceNames: [postgres16-logical-backup-dump, postgres16vector-logical-backup-dump]
+    verbs: [get, list, watch, delete]
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: [get, list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cnpg-logical-backup
+subjects:
+  - kind: ServiceAccount
+    name: cnpg-logical-backup
+    namespace: database
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cnpg-logical-backup
