@@ -190,6 +190,19 @@ PY
   done
   [ "$(psql_home -c 'select pg_is_in_recovery()')" = f ] || die "not promoted yet; check: kubectl -n $NS get cluster $CLUSTER"
   kubectl -n "$NS" get cluster "$CLUSTER"
+  # The daily ScheduledBackup does not fire for a recreated cluster; without a base backup in the
+  # new serverName a future DR failover would have nothing to restore from.
+  step "starting a base backup into the new serverName"
+  kubectl -n "$NS" apply -f - <<EOF
+apiVersion: postgresql.cnpg.io/v1
+kind: Backup
+metadata:
+  name: $CLUSTER-failback-$(date -u +%Y%m%d%H%M)
+spec:
+  method: barmanObjectStore
+  cluster:
+    name: $CLUSTER
+EOF
   echo "next: drctl failback dns && drctl failback complete && drctl failback start-home-apps"
 }
 
