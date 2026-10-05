@@ -88,7 +88,9 @@ If a drill is already running it is promoted in place (mode drill → failover, 
 
 ## 5. Failback (manual, ~1–2 h, short downtime)
 
-Copy-paste version with exact commands: [FAILBACK-CHECKLIST.md](FAILBACK-CHECKLIST.md).
+**Use [FAILBACK-CHECKLIST.md](FAILBACK-CHECKLIST.md)**: the scripted `drctl failback` steps rebuild home as a
+replica of AWS while AWS keeps serving (downtime ~5–10 min). The subsections below describe the
+original manual procedure and remain as background.
 
 Prerequisites: home internet back, `drctl status` shows recent home heartbeat and `home.fenced=true`.
 

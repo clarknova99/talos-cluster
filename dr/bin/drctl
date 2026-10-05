@@ -18,11 +18,15 @@ usage: drctl <command>
   drill stop                     stop the drill and terminate the instance
   failover [reason]              manual failover (promotes a running drill in place)
   abort                          abort FAILOVER/DRILL before the DNS switch
+  failback stop-home-apps        stop other home apps using postgres16vector (site stays on AWS)
+  failback rebuild-home          recreate home postgres16vector as a replica of the DR archive
+  failback lag                   how far the home replica trails AWS
   failback freeze                DR -> maintenance: stop sensei-prod, final Postgres backup
   failback unfreeze              undo freeze (serve from DR again)
-  failback home-manifest         print the cluster16vector.yaml edit for restoring home from DR
+  failback promote               promote the caught-up home replica (after freeze)
   failback dns                   point DNS back home (state FAILBACK)
   failback complete              state STANDBY, approve home unfence, terminate instance
+  failback start-home-apps       restart the apps stopped by stop-home-apps
   branch [name]                  show / set the git branch the DR cluster syncs
   exec '<shell command>'         run a command on the DR instance via SSM (as root)
   logs                           bootstrap + agent journal from the DR instance
@@ -89,6 +93,7 @@ status() {
 cmd="${1:-}"; shift || true
 case "$cmd" in
   status) status "$@" ;;
+  _status-json) invoke '{"status":true}' ;;
   arm|disarm|abort) request "$cmd" ;;
   failover) request failover "${1:-manual}" ;;
   drill)
@@ -107,25 +112,8 @@ case "$cmd" in
       freeze|unfreeze) request "$1" ;;
       dns) request failback-dns ;;
       complete) request complete ;;
-      home-manifest)
-        server="$(invoke '{"status":true}' | jq -r '.instance.serverName // empty')"
-        [ -n "$server" ] || { echo "no DR serverName recorded" >&2; exit 1; }
-        cat <<EOF
-# kubernetes/apps/database/cloudnative-pg/cluster3/cluster16vector.yaml
-  backup:
-    barmanObjectStore:
-      serverName: &currentCluster postgres16vector-v<N+1>   # bump from the current value
-  bootstrap:
-    recovery:
-      source: &previousCluster ${server}
-  externalClusters:
-    - name: *previousCluster
-      barmanObjectStore:
-        <<: *barmanObjectStore
-        serverName: *previousCluster
-# Then: dr/RUNBOOK.md §5.3 (suspend ks, delete cluster, resume ks).
-EOF
-        ;;
+      stop-home-apps|start-home-apps|rebuild-home|lag|promote)
+        exec "$(dirname "$0")/failback-home.sh" "$1" ;;
       *) usage; exit 2 ;;
     esac ;;
   branch)
