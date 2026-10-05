@@ -144,8 +144,9 @@ DR therefore tracks home automatically when images/configs change on `main`.
   long pole: the 21 GB **bzip2** base backup extracts single-threaded at ~20 MB/s (~45 min for 59 GB)
   before WAL replay starts (up to 24 h of WAL, ~20 GB on 2026-10-03). Recommended follow-ups, in
   order of effort:
-  1. Home `cluster16vector.yaml`: `data.compression: snappy` (+ `jobs: 4`) and
-     `wal.compression: snappy` — 5–10× faster restore for a modest S3 size increase.
+  1. ~~Home `cluster16vector.yaml`: snappy compression~~ **done 2026-10-05**: `data.compression:
+     snappy` + `jobs: 4`, `wal.compression: snappy`. A base backup now takes ~7 min (was ~2 h) and
+     the next DR restore should drop from ~45 min to ~15 min for the base backup.
   2. Two base backups a day (`awsbackup.yaml` schedule) to halve WAL replay.
   3. Warm standby: a small always-on instance running a CNPG replica cluster from the S3 archive
      (≈ $30–60/month) → RTO of minutes.

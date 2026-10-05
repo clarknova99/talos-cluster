@@ -42,8 +42,10 @@ state → `STANDBY`.
 | **Total, trigger → site live on AWS** | **67 min 45 s** | plus ~8 min detection when automatic |
 
 The 2026-10-04 drill matched: bootstrap ~4 min, Postgres healthy 59 min after the cluster was created,
-apps ready ~3 min later. Switching the home backups from bzip2 to snappy (PLAN §6) is the biggest
-lever: DR's own snappy backups of the same data finish in ~10 min.
+apps ready ~3 min later. These timings used home's old **bzip2** backups. Home switched to snappy on
+2026-10-05 (base backup 6 min 54 s instead of ~2 h), and the failback restore from a snappy backup
+took 16 min, so expect the Postgres phase of the next failover to be roughly 15–20 min plus WAL replay
+(run a drill to confirm).
 
 ---
 

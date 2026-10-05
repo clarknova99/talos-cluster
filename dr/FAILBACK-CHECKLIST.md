@@ -20,7 +20,7 @@ Nothing on AWS is deleted until the very last step, and AWS's backups stay in S3
 | 4b | `promote` | 4 min 42 s (catch-up ~1 min, promotion ~3.5 min) | down |
 | 4c | `dns`, `complete`, `start-home-apps` | ~5 s each; dr-guard unfences ~20 s after `complete` | down |
 | 5 | sensei-prod pods ready, `/health` OK | ~1.5 min after unfence | **up** |
-| 6 | home base backup to new serverName | not yet measured (bzip2; the old daily backup of the same data took ~2 h) | up |
+| 6 | home base backup to new serverName (started by `promote`) | 6 min 54 s with snappy (33 GB); was ~2 h with bzip2 | up |
 
 Start to finish ~75 min; **downtime 7 min 43 s** (freeze 15:21:01 → healthy 15:28:44 UTC).
 Plan for 10 min of downtime and 90 min overall; the restore and clone times scale with database size.
@@ -281,9 +281,9 @@ sensei-prod-weekly-podcast   0 7 * * 1   <none>     False ...
 
 ## 6. Clean up (after the home base backup completes)
 
-⏱ Not yet measured for the post-promotion backup (started 15:29 UTC). The home cluster's earlier
-daily bzip2 backups of the same data took ~2 h (upload of a 21 GB `data.tar.bz2`), so wait for it
-before deleting anything:
+`promote` starts a base backup into the new serverName. ⏱ Observed: 6 min 54 s for 33 GB with
+snappy + 4 upload jobs (2026-10-05, after switching home to snappy). The old bzip2 setting took
+~2 h for the same data.
 ```bash
 kubectl -n database get backup | grep failback              # STATUS completed
 aws s3 ls s3://sensei-cnpg/postgres16vector-v5/base/         # a base backup exists
