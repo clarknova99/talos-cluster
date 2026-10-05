@@ -12,7 +12,7 @@ deliberately fails back. Nothing in AWS should cost meaningful money while home 
 | Target | Value |
 |---|---|
 | Detection | ~8 min (5 min heartbeat timeout + 3 failed public probes) |
-| RTO (site serving from AWS) | ~70 min measured (4 min bootstrap, 59 min Postgres restore + WAL replay, 3 min apps); see §6 to shorten |
+| RTO (site serving from AWS) | ~20 min measured in a drill with snappy backups (was ~70 min with bzip2) |
 | RPO (Postgres) | Last archived WAL segment before the outage (continuous archiving, typically < 5 min) |
 | RPO (ClickHouse) | Last clickhouse-backup increment (2 h dittofeed, 4 h langfuse/rybbit) |
 | Idle cost | ≈ $1–2/month (Lambda every minute, DynamoDB on-demand, Secrets Manager) — no EC2/EBS while idle |

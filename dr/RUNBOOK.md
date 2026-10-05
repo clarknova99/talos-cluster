@@ -41,11 +41,26 @@ state → `STANDBY`.
 | Apps start → DR ready → DNS switched (`ACTIVE`) | ~3–4 min | ACTIVE at 01:21:38 |
 | **Total, trigger → site live on AWS** | **67 min 45 s** | plus ~8 min detection when automatic |
 
-The 2026-10-04 drill matched: bootstrap ~4 min, Postgres healthy 59 min after the cluster was created,
-apps ready ~3 min later. These timings used home's old **bzip2** backups. Home switched to snappy on
-2026-10-05 (base backup 6 min 54 s instead of ~2 h), and the failback restore from a snappy backup
-took 16 min, so expect the Postgres phase of the next failover to be roughly 15–20 min plus WAL replay
-(run a drill to confirm).
+### Observed drill with snappy backups (2026-10-05 16:03, after home switched to snappy)
+
+| Phase | Observed |
+|---|---|
+| `drctl drill start` → k3s + Flux installed | ~2 min (16:03:00 → 16:04:41) |
+| All 23 Flux Kustomizations applied | 16:08:16 (+5 min) |
+| ClickHouse restores | rybbit 16:10, dittofeed 16:12, langfuse 16:16 |
+| Postgres restored from `postgres16vector-v5` (snappy base + WAL) | healthy 16:19:34 (~12 min) |
+| DR ready (app healthy behind the tunnel) | **16:21:06: 18 min total** |
+| Data freshness | DR newest row 16:17:00 vs home 16:21:07 (~4 min, the WAL archive interval) |
+
+So a failover now takes **~18 min + ~8 min detection** instead of ~68 min. The sensei api/worker/admin
+`wait-for-writable-db` init container held those pods until Postgres was ready (logged "waiting for
+a writable database"); the Flux health check on the CNPG `Cluster` in `dr-postgres` passes too early
+(16 ms after creation) and does not gate the other apps, which simply retry until the database is up.
+
+The 2026-10-04 drill used the old bzip2 backups: bootstrap ~4 min, Postgres healthy 59 min after the
+cluster was created, apps ready ~3 min later. The failover timeline above also used **bzip2** backups. Home switched to snappy on
+2026-10-05 (base backup 6 min 54 s instead of ~2 h); the drill above confirmed the whole failover
+path now takes ~18 min.
 
 ---
 
@@ -65,7 +80,7 @@ Run a drill (§2) after any large change to sensei manifests, and at least quart
 
 ```bash
 dr/bin/drctl drill start     # ASG → 1, mode=drill, creates dr-drill.senseichess.com → DR tunnel
-dr/bin/drctl status          # repeat until instance.ready=true (observed ~66 min; Postgres restore dominates)
+dr/bin/drctl status          # repeat until instance.ready=true (observed 18 min with snappy backups)
 curl -sf https://dr-drill.senseichess.com/health
 dr/bin/drctl shell           # SSM session on the instance (kubectl available as root)
 dr/bin/drctl drill stop      # ASG → 0, removes dr-drill record, state → STANDBY
@@ -87,7 +102,8 @@ Use when you know home will be down (planned move, ISP maintenance) or automatio
 ```bash
 dr/bin/drctl failover        # STANDBY/DRILL → FAILOVER; DNS switches automatically when ready
 ```
-⏱ Observed: 67 min 45 s from this command to the site serving from AWS (see the timeline in §0).
+⏱ Observed: 67 min 45 s with the old bzip2 backups; a drill with snappy backups was ready in 18 min
+(see §0). Expect ~20 min plus the DNS switch.
 
 If a drill is already running it is promoted in place (mode drill → failover, side effects on).
 
