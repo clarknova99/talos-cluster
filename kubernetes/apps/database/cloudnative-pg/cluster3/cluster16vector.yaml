@@ -66,7 +66,7 @@ spec:
       endpointURL: https://s3.us-east-1.amazonaws.com
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres16vector-v4
+      serverName: &currentCluster postgres16vector-v5
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secrets
@@ -80,7 +80,13 @@ spec:
     #   postInitSQL:
     #   - create EXTENSION vector
     recovery:
-      source: &previousCluster postgres16vector-v3
+      source: &previousCluster postgres16vector-dr-202610050013
+
+  # Failback from AWS DR (2026-10-05): follow the DR WAL archive as a read-only replica cluster
+  # while AWS still serves; promote by setting enabled: false (dr/FAILBACK-CHECKLIST.md).
+  replica:
+    enabled: true
+    source: *previousCluster
 
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
