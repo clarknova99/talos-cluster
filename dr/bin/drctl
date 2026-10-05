@@ -27,6 +27,8 @@ usage: drctl <command>
   exec '<shell command>'         run a command on the DR instance via SSM (as root)
   logs                           bootstrap + agent journal from the DR instance
   shell                          SSM session on the DR instance (needs session-manager-plugin)
+  kubeconfig [file]              save the DR k3s kubeconfig (default ~/.kube/sensei-dr.yaml)
+  tunnel [local-port]            forward localhost:<port> (default 6443) to the k3s API via SSM
 EOF
 }
 
@@ -135,6 +137,21 @@ EOF
   exec) remote "$*" ;;
   logs) remote "journalctl -u sensei-dr-bootstrap -u sensei-dr-agent --no-pager -n ${1:-80}" ;;
   shell) aws ssm start-session --target "$(instance_id)" ;;
+  kubeconfig)
+    # Admin credentials of the current DR instance (a new instance has a new CA: fetch again).
+    file="${1:-$HOME/.kube/sensei-dr.yaml}"
+    port="${2:-6443}"
+    mkdir -p "$(dirname "$file")"
+    (umask 077
+     remote 'cat /etc/rancher/k3s/k3s.yaml' | sed -e $'s/\t.*$//' | sed -n '/^apiVersion:/,$p' \
+       | sed -e "s#https://127.0.0.1:6443#https://127.0.0.1:${port}#" -e 's/: default$/: sensei-dr/' >"$file")
+    grep -q 'client-key-data' "$file" || { echo "could not read the kubeconfig (is the instance bootstrapped?)" >&2; exit 1; }
+    echo "wrote $file (context sensei-dr). In another terminal: dr/bin/drctl tunnel $port"
+    echo "then: KUBECONFIG=$file kubectl get nodes" ;;
+  tunnel)
+    command -v session-manager-plugin >/dev/null || { echo "install it first: brew install --cask session-manager-plugin" >&2; exit 1; }
+    aws ssm start-session --target "$(instance_id)" --document-name AWS-StartPortForwardingSession \
+      --parameters "{\"portNumber\":[\"6443\"],\"localPortNumber\":[\"${1:-6443}\"]}" ;;
   ""|-h|--help|help) usage ;;
   *) usage; exit 2 ;;
 esac

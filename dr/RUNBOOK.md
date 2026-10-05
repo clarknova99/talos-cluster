@@ -77,6 +77,10 @@ If a drill is already running it is promoted in place (mode drill → failover, 
 - Site, admin, langfuse API, rybbit, dittofeed and litellm serve from AWS.
 - Langfuse/LiteLLM UI logins (Authelia SSO at home) do not work; APIs do.
 - Inspect: `dr/bin/drctl shell`, then `kubectl get pods -A`, `kubectl -n database get cluster`.
+- kubectl from your Mac (needs `brew install --cask session-manager-plugin`):
+  `dr/bin/drctl kubeconfig` (writes `~/.kube/sensei-dr.yaml`), keep `dr/bin/drctl tunnel` running in
+  another terminal, then `KUBECONFIG=~/.kube/sensei-dr.yaml kubectl get pods -A`. Each new instance
+  has a new k3s CA, so fetch the kubeconfig again after every failover/drill.
 - Logs: `kubectl -n sensei logs deploy/sensei-prod-api`.
 - Cost ≈ $10/day; don't leave it running longer than needed after home is back.
 
