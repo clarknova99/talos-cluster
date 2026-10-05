@@ -84,6 +84,8 @@ If a drill is already running it is promoted in place (mode drill → failover, 
 
 ## 5. Failback (manual, ~1–2 h, short downtime)
 
+Copy-paste version with exact commands: [FAILBACK-CHECKLIST.md](FAILBACK-CHECKLIST.md).
+
 Prerequisites: home internet back, `drctl status` shows recent home heartbeat and `home.fenced=true`.
 
 ### 5.1 Freeze DR and take a final backup
