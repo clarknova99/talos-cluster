@@ -12,7 +12,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: psql
-          image: ghcr.io/cloudnative-pg/postgresql:16.3-7
+          image: ghcr.io/cloudnative-pg/postgresql:17.5-7
           env:
             - name: PGHOST
               value: postgres16vector-rw.database.svc.cluster.local
