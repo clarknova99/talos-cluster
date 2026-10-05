@@ -29,6 +29,22 @@ readiness, DR serverName, and current DNS targets.
 If home comes back while still in `FAILOVER` (before DNS switched), the orchestrator aborts: ASG → 0,
 state → `STANDBY`.
 
+### Observed failover timeline (manual failover 2026-10-05, ~59 GB Postgres)
+
+| Phase | Observed | Notes |
+|---|---|---|
+| Detection (automatic only) | ~8 min (by design, not yet observed) | 5 min heartbeat timeout + 3 failed probes, 1 per minute |
+| `drctl failover` → instance booted, k3s + Flux installed | ~2–3 min | 00:13:53 → restoring at 00:16 UTC |
+| ClickHouse restores (in parallel, not on the critical path) | rybbit 3 min 26 s, dittofeed 4 min 39 s, langfuse 7 min 17 s | done ~00:24 |
+| Postgres base backup extract (21 GB bzip2 → 59 GB) | ~45 min | single-threaded bzip2, ~20 MB/s |
+| Postgres WAL replay (~1 day of WAL, ~20 GB) | ~13 min | ~64 segments/min |
+| Apps start → DR ready → DNS switched (`ACTIVE`) | ~3–4 min | ACTIVE at 01:21:38 |
+| **Total, trigger → site live on AWS** | **67 min 45 s** | plus ~8 min detection when automatic |
+
+The 2026-10-04 drill matched: bootstrap ~4 min, Postgres healthy 59 min after the cluster was created,
+apps ready ~3 min later. Switching the home backups from bzip2 to snappy (PLAN §6) is the biggest
+lever: DR's own snappy backups of the same data finish in ~10 min.
+
 ---
 
 ## 1. Routine checks
@@ -47,14 +63,16 @@ Run a drill (§2) after any large change to sensei manifests, and at least quart
 
 ```bash
 dr/bin/drctl drill start     # ASG → 1, mode=drill, creates dr-drill.senseichess.com → DR tunnel
-dr/bin/drctl status          # repeat until instance.ready=true (≈70 min, Postgres restore dominates)
+dr/bin/drctl status          # repeat until instance.ready=true (observed ~66 min; Postgres restore dominates)
 curl -sf https://dr-drill.senseichess.com/health
 dr/bin/drctl shell           # SSM session on the instance (kubectl available as root)
 dr/bin/drctl drill stop      # ASG → 0, removes dr-drill record, state → STANDBY
 ```
 
 Drill mode: worker=0, sensei CronJobs suspended, dittofeed+temporal=0. A drill that is already
-ready can be promoted with `drctl failover`: production DNS switches within ~1–2 min. Postgres WAL/base backups go
+ready can be promoted with `drctl failover`: production DNS switches within ~1–2 min (the
+orchestrator runs every minute). `drctl drill stop` takes effect immediately; the instance is
+terminated within ~1 min. Postgres WAL/base backups go
 to the run's own `postgres16vector-dr-<run>` prefix (safe to delete afterwards:
 `aws s3 rm --recursive s3://sensei-cnpg/postgres16vector-dr-<run>/`).
 
@@ -67,6 +85,7 @@ Use when you know home will be down (planned move, ISP maintenance) or automatio
 ```bash
 dr/bin/drctl failover        # STANDBY/DRILL → FAILOVER; DNS switches automatically when ready
 ```
+⏱ Observed: 67 min 45 s from this command to the site serving from AWS (see the timeline in §0).
 
 If a drill is already running it is promoted in place (mode drill → failover, side effects on).
 
@@ -86,7 +105,7 @@ If a drill is already running it is promoted in place (mode drill → failover, 
 
 ---
 
-## 5. Failback (manual, ~1–2 h, short downtime)
+## 5. Failback (~75 min, ~8 min downtime observed)
 
 **Use [FAILBACK-CHECKLIST.md](FAILBACK-CHECKLIST.md)**: the scripted `drctl failback` steps rebuild home as a
 replica of AWS while AWS keeps serving (downtime ~5–10 min). The subsections below describe the
