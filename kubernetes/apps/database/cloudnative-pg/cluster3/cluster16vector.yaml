@@ -54,10 +54,14 @@ spec:
   backup:
     retentionPolicy: 30d
     barmanObjectStore: &barmanObjectStore
+      # snappy: ~5-10x faster backup/restore than bzip2 for a modest S3 size increase
+      # (a 59 GB restore went from ~45 min with bzip2 to ~16 min with snappy, dr/RUNBOOK.md).
+      # Restores read each file's own compression, so older bzip2 backups/WAL stay usable.
       data:
-        compression: bzip2
+        compression: snappy
+        jobs: 4
       wal:
-        compression: bzip2
+        compression: snappy
         maxParallel: 8
       # destinationPath: s3://cloudnative-pg/
       # endpointURL: http://minio.kube-system.svc.cluster.local:9000
