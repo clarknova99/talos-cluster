@@ -76,3 +76,7 @@ topologySpreadConstraints:
     labelSelector:
       matchLabels:
         app.kubernetes.io/instance: coredns
+    # Only count pods of the current ReplicaSet; otherwise old pods skew placement during a
+    # rolling update and the result is not one pod per node.
+    matchLabelKeys:
+      - pod-template-hash
