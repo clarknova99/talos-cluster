@@ -362,7 +362,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/p1t3u8a3/alerts
-              tag: v1.27.2
+              tag: v1.28.0
             env:
               <<: *sharedEnv
               SITE_URL: https://openreplay.${SECRET_DOMAIN_TWO}
