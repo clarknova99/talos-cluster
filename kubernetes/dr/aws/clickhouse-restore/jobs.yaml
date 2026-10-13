@@ -12,7 +12,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: restore
-          image: alpine/k8s:1.36.5
+          image: alpine/k8s:1.37.1
           command: ["/bin/sh", "/scripts/restore.sh", "database", "clickhouse", "default.*"]
           volumeMounts:
             - name: script
@@ -35,7 +35,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: restore
-          image: alpine/k8s:1.36.5
+          image: alpine/k8s:1.37.1
           command: ["/bin/sh", "/scripts/restore.sh", "sensei", "dittofeed-clickhouse", "dittofeed.*"]
           volumeMounts:
             - name: script
@@ -58,7 +58,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: restore
-          image: alpine/k8s:1.36.5
+          image: alpine/k8s:1.37.1
           command: ["/bin/sh", "/scripts/restore.sh", "sensei", "rybbit-clickhouse", "analytics.*"]
           volumeMounts:
             - name: script
