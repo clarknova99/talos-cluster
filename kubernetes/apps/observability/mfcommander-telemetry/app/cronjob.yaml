@@ -1,0 +1,142 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/batch/cronjob_v1.json
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mfcommander-telemetry-sync
+spec:
+  schedule: "*/30 * * * *"
+  timeZone: Etc/UTC
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 600
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 900
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: mfcommander-telemetry
+            app.kubernetes.io/component: sync
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          enableServiceLinks: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
+          initContainers:
+            # Dependencies are pinned in full (--no-deps) so every run installs the same
+            # set; they land in an emptyDir because the root filesystem is read-only.
+            - name: deps
+              image: python:3.13.16-slim@sha256:70729b46c69b4f1e97c4822c1af3df53a1476cf5ddc6c087c0c10bc3a5678c2f
+              command:
+                - pip
+                - install
+                - --quiet
+                - --no-cache-dir
+                - --disable-pip-version-check
+                - "--only-binary=:all:"
+                - --no-deps
+                - --target=/deps
+                - boto3==1.43.113
+                - botocore==1.43.113
+                - s3transfer==0.19.2
+                - jmespath==1.1.0
+                - python-dateutil==2.9.0.post0
+                - six==1.17.0
+                - urllib3==2.8.0
+                - psycopg==3.3.6
+                - psycopg-binary==3.3.6
+              env:
+                - name: HOME
+                  value: /tmp
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+                limits:
+                  memory: 256Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              volumeMounts:
+                - name: deps
+                  mountPath: /deps
+                - name: tmp
+                  mountPath: /tmp
+          containers:
+            - name: sync
+              image: python:3.13.16-slim@sha256:70729b46c69b4f1e97c4822c1af3df53a1476cf5ddc6c087c0c10bc3a5678c2f
+              command: ["python", "/app/sync.py"]
+              env:
+                - name: PYTHONPATH
+                  value: /deps
+                - name: PYTHONDONTWRITEBYTECODE
+                  value: "1"
+                - name: PYTHONUNBUFFERED
+                  value: "1"
+                - name: HOME
+                  value: /tmp
+                - name: AWS_DEFAULT_REGION
+                  value: us-east-1
+                - name: PGHOST
+                  value: postgres16-rw.database.svc.cluster.local
+                - name: PGPORT
+                  value: "5432"
+                - name: PGDATABASE
+                  value: mfcommander
+                - name: PGUSER
+                  value: mfcommander_sync
+                - name: PGSSLMODE
+                  value: require
+                - name: PGCONNECT_TIMEOUT
+                  value: "15"
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: mfcommander-telemetry-postgres
+                      key: PGPASSWORD
+              envFrom:
+                # AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY of the IAM user
+                # mfcommander-telemetry-sync (Scan-only, licenses attribute-restricted).
+                - secretRef:
+                    name: mfcommander-telemetry-aws
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+                limits:
+                  memory: 512Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              volumeMounts:
+                - name: script
+                  mountPath: /app
+                  readOnly: true
+                - name: deps
+                  mountPath: /deps
+                  readOnly: true
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: script
+              configMap:
+                name: mfcommander-telemetry-sync
+            - name: deps
+              emptyDir:
+                sizeLimit: 256Mi
+            - name: tmp
+              emptyDir:
+                sizeLimit: 64Mi

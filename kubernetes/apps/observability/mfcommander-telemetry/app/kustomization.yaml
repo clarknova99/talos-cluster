@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# test_sync.py stays beside sync.py for local runs but is deliberately not shipped.
+resources:
+  - ./aws.sops.yaml
+  - ./postgres.sops.yaml
+  - ./grafana-datasource.sops.yaml
+  - ./cronjob.yaml
+  - ./grafana.yaml
+configMapGenerator:
+  - name: mfcommander-telemetry-sync
+    files:
+      - ./sync.py
+  - name: mfcommander-telemetry-dashboard
+    files:
+      - ./dashboards/mfcommander.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    # Python and dashboard SQL must reach the cluster verbatim.
+    kustomize.toolkit.fluxcd.io/substitute: disabled

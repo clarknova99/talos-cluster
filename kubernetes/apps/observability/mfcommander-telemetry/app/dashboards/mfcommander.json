@@ -1,0 +1,972 @@
+{
+  "uid": "mfcommander-telemetry",
+  "title": "MFCommander telemetry & licenses",
+  "description": "Mirror of the MFCommander DynamoDB telemetry and license tables (postgres16/mfcommander), refreshed every 30 minutes by the mfcommander-telemetry-sync CronJob.",
+  "tags": [
+    "mfcommander",
+    "telemetry",
+    "licenses"
+  ],
+  "timezone": "utc",
+  "editable": false,
+  "graphTooltip": 1,
+  "refresh": "",
+  "schemaVersion": 39,
+  "version": 1,
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": []
+  },
+  "links": [],
+  "panels": [
+    {
+      "id": 1,
+      "type": "row",
+      "title": "Telemetry",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Minutes since last sync",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 1,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT round(EXTRACT(EPOCH FROM now() - max(finished_at)) / 60) AS \"Minutes since last sync\"\nFROM sync_runs"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "m",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 45
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "description": "Age of the newest sync_runs row. The CronJob runs every 30 minutes; above 90 means the mirror is stale."
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Rows read from DynamoDB (last sync)",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 6,
+        "y": 1,
+        "w": 12,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT telemetry_reports AS \"Telemetry reports\",\n       telemetry_aggregates AS \"Aggregate rows\",\n       licenses AS \"Licenses\",\n       skipped_rows AS \"Skipped bookkeeping rows\"\nFROM sync_runs\nORDER BY finished_at DESC\nLIMIT 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "description": "Rows mirrored by the most recent run. Skipped rows are recover-throttle# bookkeeping entries in the licenses table."
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Reporting installs (time range)",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 18,
+        "y": 1,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT count(DISTINCT install_id) AS \"Reporting installs\"\nFROM telemetry_reports\nWHERE $__timeFilter(day)"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "textMode": "value_and_name",
+        "wideLayout": true
+      }
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Reporting installs per day by tier",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'UTC') AS time,\n       coalesce(tier, 'unknown') AS metric,\n       count(DISTINCT install_id) AS value\nFROM telemetry_reports\nWHERE $__timeFilter(day)\nGROUP BY 1, 2\nORDER BY 1, 2"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            },
+            "barAlignment": 0
+          },
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "description": "Distinct installs that sent a report on each UTC day."
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "App version adoption (installs per day)",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 5,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'UTC') AS time,\n       coalesce(app_version, 'unknown') AS metric,\n       count(DISTINCT install_id) AS value\nFROM telemetry_reports\nWHERE $__timeFilter(day)\nGROUP BY 1, 2\nORDER BY 1, 2"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            },
+            "barAlignment": 0
+          },
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "piechart",
+      "title": "macOS major version",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 14,
+        "w": 6,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT coalesce('macOS ' || os_major, 'unknown') AS \"macOS\",\n       count(DISTINCT install_id) AS \"Installs\"\nFROM telemetry_reports\nWHERE $__timeFilter(day)\nGROUP BY 1\nORDER BY 2 DESC"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Installs$|^Licenses$/",
+          "values": true
+        },
+        "pieType": "donut",
+        "displayLabels": [
+          "name",
+          "value"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "description": "Distinct installs in the time range."
+    },
+    {
+      "id": 8,
+      "type": "piechart",
+      "title": "Architecture",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 6,
+        "y": 14,
+        "w": 6,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT coalesce(arch, 'unknown') AS \"Architecture\",\n       count(DISTINCT install_id) AS \"Installs\"\nFROM telemetry_reports\nWHERE $__timeFilter(day)\nGROUP BY 1\nORDER BY 2 DESC"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Installs$|^Licenses$/",
+          "values": true
+        },
+        "pieType": "donut",
+        "displayLabels": [
+          "name",
+          "value"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "description": "Distinct installs in the time range."
+    },
+    {
+      "id": 9,
+      "type": "table",
+      "title": "Trial funnel (distinct installs per step)",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 14,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT f.step AS \"Step\",\n       f.installs AS \"Installs\",\n       round(100.0 * f.installs / NULLIF(first_value(f.installs) OVER (ORDER BY f.ord), 0), 1) AS \"% of trial starts\"\nFROM (\n  SELECT s.ord, s.step, count(DISTINCT r.install_id) AS installs\n  FROM (VALUES (1, 'trial.started'), (2, 'paywall.hit'), (3, 'buy.clicked'), (4, 'license.activated')) AS s(ord, step)\n  LEFT JOIN telemetry_reports r\n    ON $__timeFilter(r.day)\n   AND (r.counters ->> s.step)::numeric > 0\n  GROUP BY s.ord, s.step\n) AS f\nORDER BY f.ord"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Installs"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% of trial starts"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "basic"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "max",
+                "value": 100
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "description": "Distinct installs whose counter for each step was above zero in the time range. Steps are counted independently, not as a strict per-install sequence."
+    },
+    {
+      "id": 10,
+      "type": "table",
+      "title": "Feature reach per counter (schema v1 + v2)",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 22,
+        "w": 12,
+        "h": 11
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH reporting AS (\n  SELECT count(DISTINCT install_id) AS installs\n  FROM telemetry_reports\n  WHERE $__timeFilter(day)\n)\nSELECT c.key AS \"Counter\",\n       count(DISTINCT r.install_id) AS \"Installs using it\",\n       round(100.0 * count(DISTINCT r.install_id) / NULLIF((SELECT installs FROM reporting), 0), 1) AS \"% of reporting installs\"\nFROM telemetry_reports r\nCROSS JOIN LATERAL jsonb_each_text(r.counters) AS c(key, value)\nWHERE $__timeFilter(r.day)\n  AND c.value::numeric > 0\nGROUP BY c.key\nORDER BY 2 DESC, 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% of reporting installs"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "basic"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "max",
+                "value": 100
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "description": "Distinct installs whose counter was above zero in the time range. Valid for both schema versions: a v1 range ordinal of 0 and a v2 count of 0 both mean unused."
+    },
+    {
+      "id": 11,
+      "type": "table",
+      "title": "Usage volume per counter (schema v2 exact counts only)",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 22,
+        "w": 12,
+        "h": 11
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT c.key AS \"Counter\",\n       sum(c.value::numeric)::bigint AS \"Total reported uses\",\n       count(DISTINCT r.install_id) FILTER (WHERE c.value::numeric > 0) AS \"v2 installs using it\",\n       round(avg(c.value::numeric) FILTER (WHERE c.value::numeric > 0), 1) AS \"Mean per non-zero report\"\nFROM telemetry_reports r\nCROSS JOIN LATERAL jsonb_each_text(r.counters) AS c(key, value)\nWHERE r.schema_version = 2\n  AND $__timeFilter(r.day)\nGROUP BY c.key\nORDER BY 2 DESC, 1"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total reported uses"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "basic"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "description": "Sums exact counts from schema_version 2 reports only. Schema v1 reports carry range ordinals (0..5) that cannot be summed and are excluded."
+    },
+    {
+      "id": 12,
+      "type": "row",
+      "title": "Licenses",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 33,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 13,
+      "type": "timeseries",
+      "title": "Active licenses by tier",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 34,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT d AS time,\n       l.tier AS metric,\n       count(l.license_id) AS value\nFROM generate_series(date_trunc('day', $__timeFrom()::timestamptz),\n                     $__timeTo()::timestamptz,\n                     interval '1 day') AS d\nJOIN licenses l\n  ON l.issued_at < d + interval '1 day'\n AND (l.status = 'active' OR l.revoked_at >= d + interval '1 day')\nGROUP BY 1, 2\nORDER BY 1, 2"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "stepAfter",
+            "fillOpacity": 20,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          },
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "description": "Per day: licenses issued (issued_at) by then and either still active or revoked/refunded only later (revoked_at)."
+    },
+    {
+      "id": 14,
+      "type": "stat",
+      "title": "Licenses",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 34,
+        "w": 6,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT count(*) FILTER (WHERE status = 'active') AS \"Active now\",\n       count(*) FILTER (WHERE $__timeFilter(issued_at)) AS \"Issued in range\",\n       count(*) FILTER (WHERE $__timeFilter(revoked_at)) AS \"Revoked in range\"\nFROM licenses"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "description": "Active now ignores the time range; issued and revoked use issued_at / revoked_at within it."
+    },
+    {
+      "id": 15,
+      "type": "piechart",
+      "title": "License status",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 18,
+        "y": 34,
+        "w": 6,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT coalesce(status, 'unknown') AS \"Status\",\n       count(*) AS \"Licenses\"\nFROM licenses\nGROUP BY 1\nORDER BY 2 DESC"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^Installs$|^Licenses$/",
+          "values": true
+        },
+        "pieType": "donut",
+        "displayLabels": [
+          "name",
+          "value"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "description": "Current status of every license (ignores the time range)."
+    },
+    {
+      "id": 16,
+      "type": "table",
+      "title": "Recently validated licenses",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 43,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT last_validated_at AS \"Last validated\",\n       license_id AS \"License\",\n       tier AS \"Tier\",\n       status AS \"Status\",\n       customer_name AS \"Customer\"\nFROM licenses\nWHERE $__timeFilter(last_validated_at)\nORDER BY last_validated_at DESC\nLIMIT 100"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "description": "Licenses whose last validation falls in the time range, newest first."
+    },
+    {
+      "id": 17,
+      "type": "table",
+      "title": "Licensed-install feature usage",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 43,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT l.tier AS \"License tier\",\n       c.key AS \"Counter\",\n       count(DISTINCT r.install_id) AS \"Licensed installs\",\n       count(DISTINCT l.license_id) AS \"Licenses\",\n       sum(c.value::numeric)::bigint AS \"Total reported uses\"\nFROM telemetry_reports r\nJOIN licenses l ON l.license_id = r.license_id\nCROSS JOIN LATERAL jsonb_each_text(r.counters) AS c(key, value)\nWHERE $__timeFilter(r.day)\n  AND c.value::numeric > 0\nGROUP BY 1, 2\nORDER BY 3 DESC, 1, 2"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "description": "Telemetry reports joined to licenses on license_id (schema v2 licensed installs only), counters above zero in the time range."
+    },
+    {
+      "id": 18,
+      "type": "table",
+      "title": "License roster (personal data, admin only)",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 52,
+        "w": 24,
+        "h": 12
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT issued_at AS \"Issued\",\n       license_id AS \"License\",\n       email AS \"Email\",\n       customer_name AS \"Customer\",\n       tier AS \"Tier\",\n       status AS \"Status\",\n       updates_until AS \"Updates until\",\n       last_validated_at AS \"Last validated\",\n       revoked_at AS \"Revoked\",\n       polar_order_id AS \"Polar order\"\nFROM licenses\nORDER BY issued_at DESC NULLS LAST"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": true,
+          "reducer": [
+            "count"
+          ],
+          "countRows": true,
+          "fields": ""
+        }
+      },
+      "description": "Every license with licensee email and name, regardless of the time range. Mirrors mfcommander-licenses without signed_key."
+    }
+  ]
+}

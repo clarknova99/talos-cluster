@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: mfcommander-grafana-datasource
+type: Opaque
+stringData:
+    MFCOMMANDER_GRAFANA_PASSWORD: ENC[AES256_GCM,data:rntgvqJS8MFq+WV4Dbjsi9uSkrJjNme604tyJzTyO2y+RIS+pMkrtUow7+zjh/snH1e6xbfK/RirWLfT90Q+Pw==,iv:C58pwK2ddhWTf7Rysu44/BBkj7Mc0FyElGxmqVhG4wk=,tag:vIhnIa7CoJlk2bU/Tw6KBQ==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBwRmUwZ0NMSTloTTdnNGJI
+            bWR2YnJOT0ZsUXJWNkRmSE9iR1hPYndyS3dvCjF0UU9JUkdQRHJvL3A2VURpMWRB
+            MlVzNGx4YVZWS0hvSlk2cjZCU2xBRXMKLS0tIFVqeFo5VERDdmRZaWgrd0pheGlr
+            dk9YMlZuL0dFSmtUc1NWcDk1UHp0eDQKfCdHhMXHmNdoi/Qd5Zvh+MqDCtxKbEPa
+            c25emOSWMlBRkv/rTvPq9VbuSrXU6UUa/3YC4CM+5Wdkkdg5Pzageg==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-10-14T15:53:36Z"
+    mac: ENC[AES256_GCM,data:A+IGrcDGIq7pTDLlrOTOcPeCDYle8DjLHEdcNIBW7fwKup2APXRD68u8dubwFBvkNyu3ZD95CjGr4rNrDRsk1CY1HGxt01/BYBfRGSoRzaDAK2hqweCuLMumD5NFJZt4AF5sPgI9InX2M5XiirKlZTwOuTpnj1cyF8pWmEQSrmI=,iv:Or/3CjJWoxZtagA0eK9D01DC7B8XCTEQQU3/YIaP60E=,tag:LC8OEwOz7zKw6mAbYSAt0g==,type:str]
+    version: 3.13.3

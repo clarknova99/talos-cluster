@@ -1,0 +1,70 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: mfcommander
+  annotations:
+    # ${MFCOMMANDER_GRAFANA_PASSWORD} is filled in by the grafana-operator from
+    # valuesFrom, not by Flux; Flux substitution would blank it.
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  valuesFrom:
+    - targetPath: secureJsonData.password
+      valueFrom:
+        secretKeyRef:
+          name: mfcommander-grafana-datasource
+          key: MFCOMMANDER_GRAFANA_PASSWORD
+  datasource:
+    type: grafana-postgresql-datasource
+    name: MFCommander
+    uid: mfcommander
+    access: proxy
+    url: postgres16-ro.database.svc.cluster.local:5432
+    user: mfcommander_grafana
+    secureJsonData:
+      password: ${MFCOMMANDER_GRAFANA_PASSWORD}
+    jsonData:
+      database: mfcommander
+      # CNPG always serves TLS; license emails and names cross this connection.
+      sslmode: require
+      maxOpenConns: 5
+      maxIdleConns: 2
+      maxIdleConnsAuto: true
+      connMaxLifetime: 14400
+      postgresVersion: 1500
+      timescaledb: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanafolder_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaFolder
+metadata:
+  name: mfcommander
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  title: MFCommander
+  uid: mfcommander
+  # Replaces the folder ACL: only the org Admin role (permission 4 = Admin) keeps
+  # access; the default Editor/Viewer entries are dropped. The data includes licensee
+  # email addresses and names.
+  permissions: |
+    {"items": [{"role": "Admin", "permission": 4}]}
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: mfcommander-telemetry
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  folderRef: mfcommander
+  configMapRef:
+    name: mfcommander-telemetry-dashboard
+    key: mfcommander.json

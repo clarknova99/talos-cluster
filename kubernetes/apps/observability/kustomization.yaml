@@ -9,5 +9,6 @@ resources:
   - ./kromgo/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./metabase/ks.yaml
+  - ./mfcommander-telemetry/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./victoria-logs/ks.yaml

@@ -14,6 +14,27 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secrets
   enableSuperuserAccess: true
+  # Declarative roles for the MFCommander telemetry mirror
+  # (kubernetes/apps/observability/mfcommander-telemetry). Passwords live in the
+  # SOPS-encrypted basic-auth secrets next to this file.
+  managed:
+    roles:
+      - name: mfcommander_sync
+        ensure: present
+        comment: MFCommander telemetry sync; owns the mfcommander database
+        login: true
+        inherit: true
+        connectionLimit: 4
+        passwordSecret:
+          name: mfcommander-sync-role
+      - name: mfcommander_grafana
+        ensure: present
+        comment: Grafana read-only access to the mfcommander database
+        login: true
+        inherit: true
+        connectionLimit: 10
+        passwordSecret:
+          name: mfcommander-grafana-role
   postgresql:
     parameters:
       max_connections: "400"

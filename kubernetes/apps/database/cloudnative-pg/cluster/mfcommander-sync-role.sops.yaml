@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: mfcommander-sync-role
+    labels:
+        cnpg.io/reload: "true"
+type: kubernetes.io/basic-auth
+stringData:
+    username: ENC[AES256_GCM,data:YR6opQZ682zMXt52iXqD2A==,iv:JmTho5cCo84LLFTdowa4px4c9+3kkaNha2Gj4kwKJdI=,tag:DjG16zsDO5glOEcV4IJWVg==,type:str]
+    password: ENC[AES256_GCM,data:h23lktRsjvJQxRUdw7Ran1xYRSfglnkqHCbpCcqrjlD597/nIpWnqZOLCaBX41eJJa+zizsIekdXpttPn0xUUw==,iv:Kdqw2+CwUE+D7zYGity7SqYmWSCUZqWAu0YekJYn3l8=,tag:voXNEGb/VJAmYQYpLItinQ==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBudDRIY3lGSDhHZ25VWG83
+            YWhFQ0FiRmtWUDhuam83cG04dnl5ZFBvWWtNCjA3R0JvTjh3Q1ptbGtUMG85SUto
+            VVZyakI4dlN4d3VuOHo2YXByWDVIWk0KLS0tIHpaai9PYzlQY0l5dm96YmpRSE5Z
+            SW9hQnAyWjNGOXdmdmtieFI4bkVQYXcK44UfI2MxDoAeKh7QvOVAGFMagOn/6cyF
+            6oFxHZr0PcA/OrCskOn2m2ATRqTzUGiXuAhzg++sGOwtwczdbFaydQ==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-10-14T15:53:36Z"
+    mac: ENC[AES256_GCM,data:EGePhX3H+zUFQetIMX1kepZI6VCxPd4YFyo6Sp0C95Os4nXG15v11H9kAmaZQz5guk2eVfsMObYQE7gcLkaBqJXUzx+4gvVJrsjrToAkwmS/TViY+Q1G3qjwIHMvT0lpC5wRPs1E1HRXciL896/cNrUe4Hnpv6tmRCgkhjT5OaY=,iv:xcs6IPxmBe63V5fNUpYAcnAvugMzEvJVbuzKD4CVqrI=,tag:PhKERQA0CwZZ1C97msDFdw==,type:str]
+    version: 3.13.3

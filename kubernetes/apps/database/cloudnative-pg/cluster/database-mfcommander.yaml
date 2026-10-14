@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kochhaus-schemas.pages.dev/postgresql.cnpg.io/database_v1.json
+# The mfcommander database already exists (owned by postgres). CNPG adopts it and runs
+# ALTER DATABASE ... OWNER TO mfcommander_sync, so the sync job can create its tables in
+# `public` (owned by pg_database_owner). `retain` keeps the data if this CR is removed.
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: postgres16-mfcommander
+spec:
+  cluster:
+    name: postgres16
+  name: mfcommander
+  owner: mfcommander_sync
+  ensure: present
+  databaseReclaimPolicy: retain

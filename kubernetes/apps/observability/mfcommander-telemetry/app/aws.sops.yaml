@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: mfcommander-telemetry-aws
+type: Opaque
+stringData:
+    AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:z2WZEvK/dl6tmsqO2/6Eg4G6oik=,iv:ePMepRKiH6Z5ir4h5Ife8PDpiQaX1VdfLnDKks/ic9c=,tag:zVGR+4euPscMUPWZybvDRw==,type:str]
+    AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:ih7UPCTOs1WVnviKsFLd5JHb4AOYabq0DEy/rO6rYkLhyaKzDzFA3w==,iv:NHXJbqxXYpDg6Y8V6E210q2SY4ozzq6TNZr/c/ZCC1k=,tag:g4n2LKwuG1bLn3y82v0+eQ==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBZQ3pUNnBJVVpieEtRY0hH
+            R3lYQ0d4ZzgyWGRYWVdNenNBdEd6bUJTbVR3Cmw3bGlITGQyR3VSd05aMkVFN0ZU
+            TEFTcExIN3BxWEEzUCtRS2hpZ0haTzQKLS0tIFFYbUtmdnpJblFOZG01Z1VNOFZX
+            d3VZK0F1aFRvUFUxM1U2aTZrMnpFdEUKIf3KxPXmnOWpxcVfMabP7rABZdYO9oo4
+            T+H8DDy2vHtDmKELEfNWkHvgv/wZiEUGtecHe2GBd4rLPMRWQntfCg==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-10-14T17:02:23Z"
+    mac: ENC[AES256_GCM,data:CxMFOy3NXJ/mQfJzyOCzstrF9ZQ34SNvDzn4gjHyfEteyBS+Tzip6iXoftRMGv3RPLBKPmYl2cFo1had2HaC13qnAkg0ztDh6myZljl/Qd0uGGJ+IAmDHHyMLx/Jf03bHlwbLLkw9Y1fTFl+8rWxnuqvhmVKraRnhNtxf6xncqU=,iv:FwMfF3I3BXGfF+qGhsFDUhIGsY7R55j6q+VddcuOIkE=,tag:avwsYO0wJwOepu4b79YoNQ==,type:str]
+    version: 3.13.3

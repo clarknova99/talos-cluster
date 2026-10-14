@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# Mirrors MFCommander's DynamoDB telemetry/license tables into postgres16/mfcommander
+# every 30 minutes and provisions the admin-only Grafana dashboard over it. See README.md.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app mfcommander-telemetry
+  namespace: flux-system
+spec:
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cloudnative-pg-cluster
+    - name: grafana-instance
+  path: ./kubernetes/apps/observability/mfcommander-telemetry/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m

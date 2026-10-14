@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: mfcommander-telemetry-postgres
+type: Opaque
+stringData:
+    PGPASSWORD: ENC[AES256_GCM,data:kQlYsaEFXm7IijC7PGpEOAZ74O4Dkx5dj5GVNvJgK7fY8V9ejPGbOHpYKI74W9uDuICppPR+NYkMfLk7jKzDww==,iv:qWxR372Ky2cnKFREeM6ptX55moEYOjQ9ZBKZjWSHHQo=,tag:wsD2AJvwbKaQLiOf7OI7jQ==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBSQjFpUlI4NWg1M3lnMjVL
+            eWZkQUZqb2lhNlNycUFDTDcrNisvbGlmUnlVCmNSUW5md3JLQ1hYblNRK1RseGxk
+            aE9rWCt3NmRaR29XbEZHTWg3UUl4d1UKLS0tIGx2WGE4bSsxUnZuaVE3ajR0TTVa
+            NVg0aWZla3BDeW9NVGtiUE0yR2NXV1kKZufRj86GRkiRBEQ7CitRgMQA69C0j+0u
+            coqrAxrwYXtdUlMqtE9UD4o7ZqUuI6fxaCHz/s3LlwPHpX39wsSU+Q==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1q6l62kwaly44pl9vwedqvxtxv0fsndtq53s6kzclsccslne7cpfs2352vr
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-10-14T15:53:36Z"
+    mac: ENC[AES256_GCM,data:T+yTOzERFaGAH0u0lLVm4uuQYTvaPFty9GgjpfGDcGmLETrRHr6nVejAcov9R+yJ2Trl4QfKDX+XKkcA6kdasDt4mXlW5eykVrJCGbev/IW1sRa4Xj/RsMYhncIexw1l+QrJ+hF7Pnx/3PTh9CC1oge7Kq8jprkkQjYpYeF3jKA=,iv:fxSJtnIftIBpsV0XPk+9CJIALop+if5mNkF19u9g1pA=,tag:14sPm+rE/Dpp5I3V0mohqA==,type:str]
+    version: 3.13.3
