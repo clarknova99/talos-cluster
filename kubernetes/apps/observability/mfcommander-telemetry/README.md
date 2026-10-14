@@ -1,18 +1,21 @@
 # mfcommander-telemetry
 
-Mirrors MFCommander's three DynamoDB tables (AWS `us-east-1`) into the `mfcommander` database on the `postgres16` CNPG cluster every 30 minutes, and provisions an admin-only Grafana dashboard over the mirror.
+Mirrors MFCommander's four DynamoDB tables, and the API's CloudWatch request counts (AWS `us-east-1`), into the `mfcommander` database on the `postgres16` CNPG cluster every 30 minutes, and provisions an admin-only Grafana dashboard over the mirror.
 
 | Source table | Postgres table | Notes |
 |---|---|---|
 | `mfcommander-telemetry` | `telemetry_reports` | one row per `(install_id, day)`; `counters` is `jsonb`. `schema_version` 1 counters are range ordinals (0..5 = 0, 1, 2–5, 6–20, 21–100, >100), `schema_version` 2 counters are exact counts. Every row so far is v1: exact counts start with the first MFCommander release built with payload v2, and only from installs that have updated to it. Legacy `ttl` is ignored. |
 | `mfcommander-telemetry-aggregates` | `telemetry_aggregates` | `(cohort_week, month)`; `month` is stored as the first day of that month. |
 | `mfcommander-licenses` | `licenses` | attribute-restricted Scan (`Select=SPECIFIC_ATTRIBUTES`); `signed_key` is never requested. `recover-throttle#…` bookkeeping rows are skipped. Includes licensee `email` and `customer_name`. |
+| `mfcommander-devices` | `devices` | keyed `(pk, sk)`; `kind` is `trial` (`device#<id>` / `trial`), `activation` (`license#<id>` / `device#<id>`), `unidentified` (`license#<id>` / `unidentified#…`) or `meta` (`license#<id>` / `meta`, `active_count`). Env `DEVICES_TABLE_NAME`. |
+| CloudWatch `MFCommander/API` `UnkeyedRequests`, us-east-1, per `Route` | `api_unkeyed_daily` | `(day, route)`: daily Sum for the last 15 days (UTC days). Upserted, never deleted. |
 | — | `sync_runs` | one row per run (start, finish, row counts); rows older than 90 days are pruned. |
 
-**Copy semantics are deliberate (owner decision, 2026-10-14).** Each run scans all three tables and writes them in one transaction:
+**Copy semantics are deliberate (owner decision, 2026-10-14).** Each run reads every source and writes them in one transaction:
 
-- `telemetry_reports` and `telemetry_aggregates` are **kept forever**: rows are upserted on their DynamoDB key and never deleted, so Postgres survives a row, or a whole table, lost in AWS. `sync_runs` records how many rows each run *read*, not how many Postgres holds.
-- `licenses` is an **exact mirror**: truncated and reloaded, so a refund or revocation never leaves a stale row.
+- `telemetry_reports`, `telemetry_aggregates` and `api_unkeyed_daily` are **kept forever**: rows are upserted on their key and never deleted, so Postgres survives a row, or a whole table, lost in AWS. `sync_runs` records how many rows each run *read*, not how many Postgres holds.
+- `licenses` and `devices` are **exact mirrors**: truncated and reloaded, so a refund, revocation or deactivation never leaves a stale row.
+- A source the sync cannot read yet (the table does not exist, or its IAM grant is missing) is skipped for that run with one log line: `ResourceNotFoundException` or `AccessDeniedException` on `devices`, `AccessDenied` on the CloudWatch metric. Its Postgres rows stay as they are and every other mirror still completes. Any other error fails the run. The sync user needs `dynamodb:Scan` on `mfcommander-devices`, and `cloudwatch:ListMetrics` plus `cloudwatch:GetMetricData`, before these two mirrors fill.
 
 **An erasure request therefore needs a manual step here.** After deleting the installation's rows in DynamoDB, delete them from the copy too:
 

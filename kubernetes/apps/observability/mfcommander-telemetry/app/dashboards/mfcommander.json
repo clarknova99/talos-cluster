@@ -967,6 +967,223 @@
         }
       },
       "description": "Every license with licensee email and name, regardless of the time range. Mirrors mfcommander-licenses without signed_key."
+    },
+    {
+      "id": 19,
+      "type": "row",
+      "title": "Devices",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 64,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 20,
+      "type": "timeseries",
+      "title": "Trials started per day",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 65,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT date_trunc('day', started_at AT TIME ZONE 'UTC') AT TIME ZONE 'UTC' AS time,\n       'Trials started' AS metric,\n       count(*) AS value\nFROM devices\nWHERE kind = 'trial'\n  AND $__timeFilter(started_at)\nGROUP BY 1, 2\nORDER BY 1, 2"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            },
+            "barAlignment": 0
+          },
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "description": "Devices whose trial record starts in the time range, counted per UTC day."
+    },
+    {
+      "id": 21,
+      "type": "timeseries",
+      "title": "Unkeyed API requests per day by route",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 65,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'UTC') AS time,\n       route AS metric,\n       requests AS value\nFROM api_unkeyed_daily\nWHERE $__timeFilter(day)\nORDER BY 1, 2"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            },
+            "barAlignment": 0
+          },
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "description": "Daily requests to API routes that carried no license key (CloudWatch MFCommander/API UnkeyedRequests). Kept forever once written."
+    },
+    {
+      "id": 22,
+      "type": "table",
+      "title": "Active Macs per license",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 74,
+        "w": 12,
+        "h": 12
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT a.license_id AS \"License\",\n       l.customer_name AS \"Customer\",\n       l.email AS \"Email\",\n       count(*) FILTER (WHERE a.deactivated_at IS NULL AND NOT a.over_cap) AS \"Active Macs\",\n       count(*) FILTER (WHERE a.deactivated_at IS NULL AND a.over_cap) AS \"Over cap\"\nFROM devices a\nLEFT JOIN licenses l ON l.license_id = a.license_id\nWHERE a.kind = 'activation'\nGROUP BY a.license_id, l.customer_name, l.email\nORDER BY \"Active Macs\" DESC, a.license_id"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "description": "Current activations: rows with no deactivation and not over the cap, plus the over-cap count. Ignores the time range."
+    },
+    {
+      "id": 23,
+      "type": "table",
+      "title": "Over-cap and unidentified activations",
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "mfcommander"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 74,
+        "w": 12,
+        "h": 12
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "mfcommander"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT d.activated_at AS \"Activated\",\n       d.license_id AS \"License\",\n       d.device_id AS \"Device\",\n       d.device_name AS \"Device name\",\n       d.over_cap AS \"Over cap\",\n       d.unidentified AS \"Unidentified\",\n       d.deactivated_at AS \"Deactivated\",\n       d.last_seen_at AS \"Last seen\"\nFROM devices d\nWHERE d.kind IN ('activation', 'unidentified')\n  AND (d.over_cap OR d.unidentified)\n  AND $__timeFilter(d.activated_at)\nORDER BY d.activated_at DESC NULLS LAST\nLIMIT 200"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        }
+      },
+      "description": "Activations flagged over the cap or recorded without a device identity, by activation time in the range."
     }
   ]
 }

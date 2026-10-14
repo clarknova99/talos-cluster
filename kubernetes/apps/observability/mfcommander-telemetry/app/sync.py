@@ -14,6 +14,16 @@ The licenses scan is attribute-restricted on purpose: the sync's IAM user may on
 `mfcommander-licenses` with Select=SPECIFIC_ATTRIBUTES over LICENSE_ATTRIBUTES.
 `signed_key` is a live license credential and is never requested.
 
+Two more sources ride along:
+
+* `mfcommander-devices` (trials and per-Mac activations) is an exact mirror, like licenses.
+* `MFCommander/API` / `UnkeyedRequests` (CloudWatch, us-east-1) gives daily request counts
+  per route for the last 15 days. Those are upserted and kept, like telemetry.
+
+A source the sync is not allowed to read yet (missing table or IAM grant) is skipped for
+that run with one log line; its Postgres rows are left as they are and every other mirror
+still completes.
+
 Connection settings come from the standard libpq environment (PGHOST, PGDATABASE,
 PGUSER, PGPASSWORD, ...); AWS credentials from the standard AWS environment.
 """
@@ -24,7 +34,7 @@ import json
 import logging
 import os
 import sys
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Any, Iterable, Iterator
 
@@ -33,7 +43,19 @@ log = logging.getLogger("mfcommander-telemetry-sync")
 TELEMETRY_TABLE = os.environ.get("TELEMETRY_TABLE_NAME", "mfcommander-telemetry")
 AGGREGATES_TABLE = os.environ.get("AGGREGATES_TABLE_NAME", "mfcommander-telemetry-aggregates")
 LICENSES_TABLE = os.environ.get("LICENSES_TABLE_NAME", "mfcommander-licenses")
+DEVICES_TABLE = os.environ.get("DEVICES_TABLE_NAME", "mfcommander-devices")
 GRAFANA_ROLE = os.environ.get("GRAFANA_ROLE", "mfcommander_grafana")
+
+METRICS_REGION = "us-east-1"
+UNKEYED_NAMESPACE = "MFCommander/API"
+UNKEYED_METRIC = "UnkeyedRequests"
+UNKEYED_WINDOW_DAYS = 15
+# CloudWatch GetMetricData takes at most 500 queries per request.
+METRIC_QUERY_BATCH = 500
+
+# Errors that mean "not readable yet" for one mirror; anything else fails the run.
+DEVICES_SKIPPABLE = frozenset({"ResourceNotFoundException", "AccessDeniedException"})
+UNKEYED_SKIPPABLE = frozenset({"AccessDenied", "AccessDeniedException"})
 
 # Exactly the attributes the IAM policy allows. Never add `signed_key`.
 LICENSE_ATTRIBUTES = (
@@ -85,8 +107,28 @@ AGGREGATE_COLUMNS = (
     "counter_buckets",
 )
 LICENSE_COLUMNS = LICENSE_ATTRIBUTES
+DEVICE_COLUMNS = (
+    "pk",
+    "sk",
+    "kind",
+    "device_id",
+    "license_id",
+    "device_name",
+    "started_at",
+    "last_checked_at",
+    "app_version",
+    "activated_at",
+    "deactivated_at",
+    "over_cap",
+    "unidentified",
+    "last_seen_at",
+    "active_count",
+)
+UNKEYED_COLUMNS = ("day", "route", "requests")
 TELEMETRY_KEY = ("install_id", "day")
 AGGREGATE_KEY = ("cohort_week", "month")
+DEVICE_KEY = ("pk", "sk")
+UNKEYED_KEY = ("day", "route")
 
 SCHEMA_SQL = (
     """
@@ -154,6 +196,36 @@ SCHEMA_SQL = (
     )
     """,
     "CREATE INDEX IF NOT EXISTS sync_runs_finished_at_idx ON sync_runs (finished_at)",
+    """
+    CREATE TABLE IF NOT EXISTS devices (
+        pk               text        NOT NULL,
+        sk               text        NOT NULL,
+        kind             text        NOT NULL,
+        device_id        text,
+        license_id       text,
+        device_name      text,
+        started_at       timestamptz,
+        last_checked_at  timestamptz,
+        app_version      text,
+        activated_at     timestamptz,
+        deactivated_at   timestamptz,
+        over_cap         boolean     NOT NULL DEFAULT false,
+        unidentified     boolean     NOT NULL DEFAULT false,
+        last_seen_at     timestamptz,
+        active_count     integer,
+        PRIMARY KEY (pk, sk)
+    )
+    """,
+    "CREATE INDEX IF NOT EXISTS devices_license_id_idx ON devices (license_id)",
+    "CREATE INDEX IF NOT EXISTS devices_kind_started_at_idx ON devices (kind, started_at)",
+    """
+    CREATE TABLE IF NOT EXISTS api_unkeyed_daily (
+        day       date    NOT NULL,
+        route     text    NOT NULL,
+        requests  bigint  NOT NULL,
+        PRIMARY KEY (day, route)
+    )
+    """,
 )
 
 
@@ -286,8 +358,187 @@ def scan_all(table: Any, **kwargs: Any) -> Iterator[dict[str, Any]]:
         request = dict(kwargs, ExclusiveStartKey=last_key)
 
 
-def read_sources(telemetry: Any, aggregates: Any, licenses: Any) -> dict[str, Any]:
-    """Scan the three tables and convert every item. Returns rows plus a skip count."""
+def device_kind(pk: str, sk: str) -> str | None:
+    """Which of the four `mfcommander-devices` shapes a key pair is, or None if unknown."""
+    if pk.startswith("device#") and sk == "trial":
+        return "trial"
+    if pk.startswith("license#"):
+        if sk == "meta":
+            return "meta"
+        if sk.startswith("device#"):
+            return "activation"
+        if sk.startswith("unidentified#"):
+            return "unidentified"
+    return None
+
+
+def device_row(item: dict[str, Any]) -> tuple:
+    """One `mfcommander-devices` item -> a `devices` row, in DEVICE_COLUMNS order.
+
+    Keys are the source of truth for `kind`. The id columns prefer an attribute the item
+    carries and fall back to the key, so a trial (which has no device_id attribute) still
+    gets its device id from `device#<id>`.
+    """
+    pk, sk = str(item["pk"]), str(item["sk"])
+    kind = device_kind(pk, sk)
+    if kind is None:
+        raise ValueError(f"unrecognised devices key: {pk!r} / {sk!r}")
+    device_id = license_id = None
+    if kind == "trial":
+        device_id = pk[len("device#"):]
+    elif kind == "activation":
+        license_id = item.get("license_id") or pk[len("license#"):]
+        device_id = item.get("device_id") or sk[len("device#"):]
+    elif kind in ("unidentified", "meta"):
+        license_id = item.get("license_id") or pk[len("license#"):]
+    return (
+        pk,
+        sk,
+        kind,
+        device_id,
+        license_id,
+        item.get("device_name"),
+        parse_timestamp(item.get("started_at")),
+        parse_timestamp(item.get("last_checked_at")),
+        item.get("app_version"),
+        parse_timestamp(item.get("activated_at")),
+        parse_timestamp(item.get("deactivated_at")),
+        item.get("over_cap") is True,
+        item.get("unidentified") is True,
+        parse_timestamp(item.get("last_seen_at")),
+        to_int(item.get("active_count")),
+    )
+
+
+def error_code(error: BaseException) -> str | None:
+    """The `Error.Code` of a botocore ClientError. Duck-typed: sync.py never imports botocore."""
+    response = getattr(error, "response", None)
+    if isinstance(response, dict):
+        return (response.get("Error") or {}).get("Code")
+    return None
+
+
+def read_devices(table: Any) -> list[tuple] | None:
+    """Scan the devices table. None means it was not readable this run (see module docs)."""
+    try:
+        items = list(scan_all(table))
+    except Exception as error:
+        code = error_code(error)
+        if code in DEVICES_SKIPPABLE:
+            log.warning(
+                "devices mirror skipped this run (%s reading %s); existing devices rows kept",
+                code, getattr(table, "table_name", DEVICES_TABLE),
+            )
+            return None
+        raise
+    rows: list[tuple] = []
+    skipped = 0
+    for item in items:
+        if device_kind(str(item["pk"]), str(item["sk"])) is None:
+            skipped += 1
+            continue
+        rows.append(device_row(item))
+    if skipped:
+        log.warning("devices mirror: skipped %d rows with unrecognised keys", skipped)
+    return rows
+
+
+def unkeyed_window(now: datetime) -> tuple[datetime, datetime]:
+    """The last UNKEYED_WINDOW_DAYS UTC days, whole days aligned to UTC midnight.
+
+    The end is `now`, so today's partial count is written and then corrected by later runs.
+    """
+    now = now.astimezone(timezone.utc)
+    midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    return midnight - timedelta(days=UNKEYED_WINDOW_DAYS - 1), now
+
+
+def utc_day(value: datetime) -> date:
+    aware = value if value.tzinfo else value.replace(tzinfo=timezone.utc)
+    return aware.astimezone(timezone.utc).date()
+
+
+def list_routes(cloudwatch: Any) -> list[str]:
+    """Every distinct Route dimension of the unkeyed metric, following NextToken."""
+    routes: set[str] = set()
+    request: dict[str, Any] = {"Namespace": UNKEYED_NAMESPACE, "MetricName": UNKEYED_METRIC}
+    while True:
+        page = cloudwatch.list_metrics(**request)
+        for metric in page.get("Metrics", []):
+            for dimension in metric.get("Dimensions", []):
+                if dimension.get("Name") == "Route":
+                    routes.add(dimension["Value"])
+        token = page.get("NextToken")
+        if not token:
+            return sorted(routes)
+        request = dict(request, NextToken=token)
+
+
+def fetch_unkeyed_daily(cloudwatch: Any, now: datetime) -> list[tuple]:
+    """Daily Sum of UnkeyedRequests per route over the window, as (day, route, requests).
+
+    Keyed by (day, route) before returning, so one INSERT never carries a duplicate key.
+    """
+    routes = list_routes(cloudwatch)
+    if not routes:
+        return []
+    start, end = unkeyed_window(now)
+    queries = [
+        {
+            "Id": f"r{index}",
+            "MetricStat": {
+                "Metric": {
+                    "Namespace": UNKEYED_NAMESPACE,
+                    "MetricName": UNKEYED_METRIC,
+                    "Dimensions": [{"Name": "Route", "Value": route}],
+                },
+                "Period": 86400,
+                "Stat": "Sum",
+            },
+            "ReturnData": True,
+        }
+        for index, route in enumerate(routes)
+    ]
+    route_of = {f"r{index}": route for index, route in enumerate(routes)}
+    counts: dict[tuple[date, str], int] = {}
+    for offset in range(0, len(queries), METRIC_QUERY_BATCH):
+        request: dict[str, Any] = {
+            "MetricDataQueries": queries[offset:offset + METRIC_QUERY_BATCH],
+            "StartTime": start,
+            "EndTime": end,
+            "ScanBy": "TimestampAscending",
+        }
+        while True:
+            page = cloudwatch.get_metric_data(**request)
+            for result in page.get("MetricDataResults", []):
+                route = route_of[result["Id"]]
+                for at, value in zip(result["Timestamps"], result["Values"]):
+                    counts[(utc_day(at), route)] = int(round(value))
+            token = page.get("NextToken")
+            if not token:
+                break
+            request = dict(request, NextToken=token)
+    return [(day, route, requests) for (day, route), requests in sorted(counts.items())]
+
+
+def read_unkeyed(cloudwatch: Any, now: datetime) -> list[tuple] | None:
+    """None means CloudWatch denied the read this run (see module docs)."""
+    try:
+        return fetch_unkeyed_daily(cloudwatch, now)
+    except Exception as error:
+        code = error_code(error)
+        if code in UNKEYED_SKIPPABLE:
+            log.warning(
+                "api_unkeyed_daily skipped this run (%s reading %s); existing rows kept",
+                code, UNKEYED_METRIC,
+            )
+            return None
+        raise
+
+
+def read_sources(telemetry: Any, aggregates: Any, licenses: Any, devices: Any,
+                 cloudwatch: Any, now: datetime | None = None) -> dict[str, Any]:
+    """Read every source and convert it. A skipped source comes back as None."""
     license_rows: list[tuple] = []
     skipped = 0
     for item in scan_all(licenses, **license_scan_kwargs()):
@@ -300,6 +551,8 @@ def read_sources(telemetry: Any, aggregates: Any, licenses: Any) -> dict[str, An
         "telemetry_aggregates": [aggregate_row(i) for i in scan_all(aggregates)],
         "licenses": license_rows,
         "skipped_rows": skipped,
+        "devices": read_devices(devices),
+        "api_unkeyed_daily": read_unkeyed(cloudwatch, now or datetime.now(timezone.utc)),
     }
 
 
@@ -350,6 +603,10 @@ def write_mirror(conn: Any, data: dict[str, Any], started_at: datetime) -> dict[
         "telemetry_aggregates": len(data["telemetry_aggregates"]),
         "licenses": len(data["licenses"]),
         "skipped_rows": data["skipped_rows"],
+        # None = that source was skipped this run (its rows were left untouched).
+        "devices": None if data["devices"] is None else len(data["devices"]),
+        "api_unkeyed_daily": (None if data["api_unkeyed_daily"] is None
+                              else len(data["api_unkeyed_daily"])),
     }
     grafana = sql.Identifier(GRAFANA_ROLE)
     with conn.transaction():
@@ -363,6 +620,12 @@ def write_mirror(conn: Any, data: dict[str, Any], started_at: datetime) -> dict[
                          data["telemetry_aggregates"])
             cur.execute("TRUNCATE licenses")
             _copy_rows(cur, "licenses", LICENSE_COLUMNS, data["licenses"])
+            if data["devices"] is not None:
+                cur.execute("TRUNCATE devices")
+                _copy_rows(cur, "devices", DEVICE_COLUMNS, data["devices"])
+            if data["api_unkeyed_daily"] is not None:
+                _upsert_rows(cur, "api_unkeyed_daily", UNKEYED_COLUMNS, UNKEYED_KEY,
+                             data["api_unkeyed_daily"])
             cur.execute(
                 "DELETE FROM sync_runs WHERE started_at < now() - make_interval(days => %s)",
                 (SYNC_RUNS_RETENTION_DAYS,),
@@ -405,10 +668,14 @@ def main() -> int:
 
     started_at = datetime.now(timezone.utc)
     dynamodb = boto3.resource("dynamodb")
+    cloudwatch = boto3.client("cloudwatch", region_name=METRICS_REGION)
     data = read_sources(
         dynamodb.Table(TELEMETRY_TABLE),
         dynamodb.Table(AGGREGATES_TABLE),
         dynamodb.Table(LICENSES_TABLE),
+        dynamodb.Table(DEVICES_TABLE),
+        cloudwatch,
+        started_at,
     )
     # Empty conninfo: libpq reads PGHOST/PGDATABASE/PGUSER/PGPASSWORD/PGSSLMODE.
     with psycopg.connect("", application_name="mfcommander-telemetry-sync") as conn:
