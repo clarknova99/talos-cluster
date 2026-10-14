@@ -63,7 +63,58 @@ data:
           style: column
           header: false
 
-  custom.css: ""
+  custom.css: |
+    :root {
+      /* ------ Backgrounds ------ */
+      --bg-charcoal:  radial-gradient(circle at top, #404040, #252525);
+      --bg-zinc:      radial-gradient(circle at top, #3f3f46, #18181b);
+      --bg-slate:    radial-gradient(circle at top, #3f4e68, #1c2740);
+      --bg-steel:     radial-gradient(circle at top, #475569, #1e293b);
+      --bg-macchiato: radial-gradient(circle at top, #363a4f, #24273a);
+
+      /* ------ Radius ------ */
+      --radius-widget: 10px;
+      --radius-card:   15px;
+
+      /* ------ Card ------ */
+      --card-bg:           rgba(0, 0, 0, 0.10);
+      --card-bg-hover:     rgba(0, 0, 0, 0.20);
+      --card-border:       rgba(255, 255, 255, 0.10);
+      --card-border-hover: #c6a0f6;
+    }
+    #background {
+      background: var(--bg-slate) !important;
+    }
+    #information-widgets {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius-widget);
+        box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.7) !important;
+        padding: 12px 28px;
+        margin: 20px 40px 0 40px !important;
+    }
+    .service-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius-card) !important;
+        box-shadow: 6px 8px 10px rgba(0, 0, 0, 0.6) !important;
+        margin: 21px 12px;
+    }
+    .service-card:hover {
+        transform: scale(1.02);
+        background: var(--card-bg-hover);
+        border-color: var(--card-border-hover);
+        box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.8) !important;
+    }
+    .service-block {
+        background: transparent;
+    }
+    .service-group-name {
+        margin: 14px 0 0 14px !important;
+    }
+    .services-list {
+        margin-top: 2px !important;
+    }
   custom.js: ""
   bookmarks.yaml: |
     - Cloud:
@@ -86,7 +137,7 @@ data:
               href: https://github.com/clarknova99/talos-cluster/pulls
         - Pi Cluster:
             - icon: kubernetes-dashboard.png
-              href: https://github.com/clarknova99/talos-cluster/pulls
+              href: https://github.com/clarknova99/pi-talos/pulls
         - 0nedr0p GitHub:
             - icon: kubernetes-dashboard.png
               description: Helm Chart Search
