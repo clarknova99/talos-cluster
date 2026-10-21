@@ -35,7 +35,7 @@ spec:
             # Dependencies are pinned in full (--no-deps) so every run installs the same
             # set; they land in an emptyDir because the root filesystem is read-only.
             - name: deps
-              image: python:3.13.16-slim@sha256:70729b46c69b4f1e97c4822c1af3df53a1476cf5ddc6c087c0c10bc3a5678c2f
+              image: python:3.13.16-slim@sha256:cf50a4f6ac4f026458b08d5222023d700ac806410dff5e9ca8728fa44f2b850f
               command:
                 - pip
                 - install
@@ -75,7 +75,7 @@ spec:
                   mountPath: /tmp
           containers:
             - name: sync
-              image: python:3.13.16-slim@sha256:70729b46c69b4f1e97c4822c1af3df53a1476cf5ddc6c087c0c10bc3a5678c2f
+              image: python:3.13.16-slim@sha256:cf50a4f6ac4f026458b08d5222023d700ac806410dff5e9ca8728fa44f2b850f
               command: ["python", "/app/sync.py"]
               env:
                 - name: PYTHONPATH
