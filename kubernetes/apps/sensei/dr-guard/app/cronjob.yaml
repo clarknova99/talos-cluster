@@ -20,7 +20,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: guard
-              image: alpine/k8s:1.36.5
+              image: alpine/k8s:1.37.1
               command: ["/bin/sh", "/scripts/dr-guard.sh"]
               env:
                 - name: AWS_DEFAULT_REGION
