@@ -65,7 +65,7 @@ spec:
               type: RuntimeDefault
           containers:
             - name: orchestrator
-              image: alpine/k8s:1.35.0
+              image: alpine/k8s:1.37.1
               command: [/bin/bash, /scripts/orchestrate.sh]
               securityContext:
                 allowPrivilegeEscalation: false
