@@ -21,7 +21,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: dump
-          image: ghcr.io/cloudnative-pg/postgresql:16.3-7
+          image: ghcr.io/cloudnative-pg/postgresql:17.5-7
           command: [/bin/bash, /scripts/backup.sh]
           securityContext:
             allowPrivilegeEscalation: false
