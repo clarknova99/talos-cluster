@@ -19,12 +19,19 @@ def _fallback_urls(url):
     match = re.fullmatch(r"(rr?\d+)---(sn-[a-z0-9-]+)\.googlevideo\.com", parsed.netloc)
     if parsed.scheme != "https" or parsed.path != "/videoplayback" or not match:
         return []
-    names = parse_qs(parsed.query).get("mn", [])
+    params = parse_qs(parsed.query)
+    names = params.get("mn", [])
     if len(names) != 1:
         return []
     names = list(dict.fromkeys(names[0].split(",")))
     if match[2] not in names:
         return []
+    # fvip names the video server in the backup CDN. A primary GGC's rr1/rr2
+    # number can redirect elsewhere; also retain it as an alternate route.
+    prefixes = [match[1]]
+    fvip = params.get("fvip", [])
+    if len(fvip) == 1 and re.fullmatch(r"[1-9][0-9]?", fvip[0]):
+        prefixes = list(dict.fromkeys([f"r{fvip[0]}", *prefixes]))
     query = "&".join(
         part for part in parsed.query.split("&")
         if unquote(part.partition("=")[0]) != "fallback_count"
@@ -33,11 +40,12 @@ def _fallback_urls(url):
     for name in names:
         if name == match[2] or not re.fullmatch(r"sn-[a-z0-9-]+", name):
             continue
-        host = f"{match[1]}---{name}.googlevideo.com"
-        backups.append(urlunsplit(parsed._replace(
-            netloc=host, query=f"{query}&fallback_count={len(backups) + 1}")))
-        if len(backups) == 3:
-            break
+        for prefix in prefixes:
+            host = f"{prefix}---{name}.googlevideo.com"
+            backups.append(urlunsplit(parsed._replace(
+                netloc=host, query=f"{query}&fallback_count={len(backups) + 1}")))
+            if len(backups) == 3:
+                return backups
     return backups
 
 
@@ -85,14 +93,19 @@ class YoutubeCdnFallbackPP(PostProcessor):
             except TransportError:
                 pass
             primary = urlsplit(url).hostname
+            failures = []
             for backup in backups:
+                host = urlsplit(backup).hostname
                 try:
                     if not self._probe(backup, headers):
+                        failures.append(f"{host}: empty response")
                         continue
                 except HTTPError as error:
+                    failures.append(f"{host}: HTTP {error.status}")
                     error.close()
                     continue
-                except TransportError:
+                except TransportError as error:
+                    failures.append(f"{host}: {type(error).__name__}")
                     continue
                 fmt["url"] = backup
                 self.to_screen(
@@ -100,5 +113,7 @@ class YoutubeCdnFallbackPP(PostProcessor):
                     f"for format {fmt.get('format_id', 'unknown')}")
                 break
             else:
-                self.report_warning(f"No reachable backup CDN for {primary}; keeping original URL")
+                self.report_warning(
+                    f"No reachable backup CDN for {primary}; keeping original URL "
+                    f"({'; '.join(failures)})")
         return [], info

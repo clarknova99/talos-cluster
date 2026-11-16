@@ -134,6 +134,23 @@ class CdnFallbackTests(unittest.TestCase):
         self.assertEqual(backup.count("fallback_count="), 1)
         self.assertTrue(backup.endswith("fallback_count=1"))
 
+    def test_prefers_advertised_video_server_with_original_prefix_as_backup(self):
+        targets = _fallback_urls(URL + "&fvip=10")
+        self.assertEqual([urlsplit(url).hostname for url in targets], [
+            "r10---sn-backup.googlevideo.com", BACKUP])
+        info = {"extractor": "youtube"} | copy.deepcopy(self.info["requested_formats"][0])
+        info["url"] += "&fvip=10"
+        with patch.object(self.pp, "_probe", side_effect=[TransportError("primary"), TransportError("first backup"), True]) as probe:
+            self.pp.run(info)
+        self.assertEqual(probe.call_count, 3)
+        self.assertEqual(info["url"], targets[1])
+
+    def test_invalid_video_server_is_not_used_and_candidate_count_is_bounded(self):
+        for value in ("evil.example", "1@evil", "0", "999", "1&fvip=2"):
+            targets = _fallback_urls(URL + "&fvip=" + value)
+            self.assertEqual([urlsplit(url).hostname for url in targets], [BACKUP])
+        self.assertLessEqual(len(_fallback_urls(URL.replace("sn-backup", "sn-one,sn-two,sn-three") + "&fvip=10")), 3)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -20,6 +20,8 @@ socket timeout. Only a transport failure triggers probing of the alternate
 Googlevideo CDN names in that URL's `mn` parameter. The signed query,
 request headers, and TLS verification are preserved. HTTP/authentication
 and primary certificate errors are left to the normal downloader.
+The advertised `fvip` video server is preferred within each backup CDN;
+the original server prefix is also tried, with at most three backup probes.
 
 Probes respect each format's `available_at` timestamp, just as yt-dlp's
 downloader does. YouTube rejects requests made before this time with HTTP
