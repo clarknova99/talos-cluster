@@ -15,7 +15,7 @@ see [upstream issue 1986](https://github.com/yt-dlp/yt-dlp/issues/1986).
 `app/youtube_cdn_fallback.py` is a yt-dlp postprocessor mounted from a
 ConfigMap into the supported system plugin directory. `YTDL_OPTIONS`
 runs it at `before_dl`, after video/audio format selection. It probes
-each selected HTTPS stream with a one-byte range request and a three-second
+each selected HTTPS stream with a 1 KiB range request and a three-second
 socket timeout. Only a transport failure triggers probing of the alternate
 Googlevideo CDN names in that URL's `mn` parameter. The signed query,
 request headers, and TLS verification are preserved. HTTP/authentication
@@ -23,7 +23,9 @@ and primary certificate errors are left to the normal downloader.
 
 Probes respect each format's `available_at` timestamp, just as yt-dlp's
 downloader does. YouTube rejects requests made before this time with HTTP
-403, including probes made by a `before_dl` postprocessor.
+403, including probes made by a `before_dl` postprocessor. Probe headers
+are copied so the probe's Range cannot change normal download chunking
+or partial-file resumption.
 
 There are no fixed IP overrides or VPN requirements. Healthy primary
 servers continue to be used. Other websites and HLS streams are unchanged.

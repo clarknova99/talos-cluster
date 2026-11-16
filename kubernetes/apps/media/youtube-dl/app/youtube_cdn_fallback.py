@@ -47,11 +47,13 @@ class YoutubeCdnFallbackPP(PostProcessor):
         self.timeout = float(timeout)
 
     def _probe(self, url, headers):
-        # Read one byte and close, including when a server ignores Range.
-        request = Request(url, headers=headers, extensions={"timeout": self.timeout})
-        request.headers["Range"] = "bytes=0-0"
+        # Request reuses HTTPHeaderDict instances. Copy so the probe's Range
+        # cannot leak into the real download and override its chunking/resume.
+        request = Request(url, headers=dict(headers), extensions={"timeout": self.timeout})
+        request.headers["Range"] = "bytes=0-1023"
         with self._downloader.urlopen(request) as response:
-            return response.status in (200, 206) and bool(response.read(1))
+            # Read at most 1 KiB, including when a server ignores Range.
+            return response.status in (200, 206) and bool(response.read(1024))
 
     def run(self, info):
         if info.get("extractor_key") != "Youtube" and info.get("extractor") != "youtube":

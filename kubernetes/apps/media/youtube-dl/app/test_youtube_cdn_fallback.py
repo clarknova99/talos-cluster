@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 from yt_dlp import YoutubeDL
 from yt_dlp.networking import Response
 from yt_dlp.networking.exceptions import CertificateVerifyError, HTTPError, TransportError
+from yt_dlp.utils.networking import HTTPHeaderDict
 
 from youtube_cdn_fallback import YoutubeCdnFallbackPP, _fallback_urls
 
@@ -34,7 +35,7 @@ class CdnFallbackTests(unittest.TestCase):
 
         def urlopen(request):
             requests.append(request)
-            self.assertEqual(request.headers["Range"], "bytes=0-0")
+            self.assertEqual(request.headers["Range"], "bytes=0-1023")
             self.assertEqual(request.extensions["timeout"], 3)
             if urlsplit(request.url).hostname == PRIMARY:
                 raise TransportError("connect timeout")
@@ -49,6 +50,18 @@ class CdnFallbackTests(unittest.TestCase):
         for fmt, itag in zip(result["requested_formats"], ("299", "140")):
             self.assertEqual(fmt["url"], URL.replace(PRIMARY, BACKUP).replace("itag=299", f"itag={itag}") + "&fallback_count=1")
         self.assertTrue(all(response.closed for response in responses))
+
+    def test_probe_does_not_mutate_shared_headers_or_resume_range(self):
+        for initial in ({"User-Agent": "test"}, {"User-Agent": "test", "Range": "bytes=100-200"}):
+            with self.subTest(initial=initial):
+                headers = HTTPHeaderDict(initial)
+                response = Response(io.BytesIO(b"x" * 2048), URL, {}, 206)
+                with patch.object(self.ydl, "urlopen", return_value=response) as urlopen:
+                    self.assertTrue(self.pp._probe(URL, headers))
+                self.assertEqual(dict(headers), initial)
+                request = urlopen.call_args.args[0]
+                self.assertIsNot(request.headers, headers)
+                self.assertEqual(request.headers["Range"], "bytes=0-1023")
 
     def test_healthy_primary_is_unchanged(self):
         original = copy.deepcopy(self.info)
