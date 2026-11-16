@@ -5,6 +5,7 @@ postprocessor at before_dl, after format selection, for video and audio.
 """
 
 import re
+import time
 from urllib.parse import parse_qs, unquote, urlsplit, urlunsplit
 
 from yt_dlp.networking import Request
@@ -62,6 +63,12 @@ class YoutubeCdnFallbackPP(PostProcessor):
             backups = _fallback_urls(url)
             if not backups:
                 continue
+            # before_dl runs before the downloader's normal availability wait.
+            # YouTube returns 403 if even a range probe arrives before this time.
+            wait = (fmt.get("available_at") or info.get("available_at") or 0) - time.time()
+            if wait > 0:
+                self.to_screen(f"Waiting {wait:.2f} seconds for YouTube media availability")
+                time.sleep(wait)
             headers = fmt.get("http_headers") or info.get("http_headers") or {}
             try:
                 self._probe(url, headers)

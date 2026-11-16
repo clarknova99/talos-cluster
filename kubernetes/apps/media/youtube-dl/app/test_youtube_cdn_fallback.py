@@ -57,6 +57,23 @@ class CdnFallbackTests(unittest.TestCase):
         self.assertEqual(self.info, original)
         self.assertEqual(probe.call_count, 2)
 
+    def test_waits_for_media_availability_before_probing(self):
+        info = {"extractor": "youtube", "available_at": 105} | self.info["requested_formats"][0]
+        calls = []
+        with patch("youtube_cdn_fallback.time.time", return_value=100), \
+                patch("youtube_cdn_fallback.time.sleep", side_effect=lambda seconds: calls.append(("wait", seconds))), \
+                patch.object(self.pp, "_probe", side_effect=lambda *_: calls.append(("probe",)) or True):
+            self.pp.run(info)
+        self.assertEqual(calls, [("wait", 5), ("probe",)])
+
+    def test_expired_availability_does_not_add_delay(self):
+        info = {"extractor": "youtube", "available_at": 95} | self.info["requested_formats"][0]
+        with patch("youtube_cdn_fallback.time.time", return_value=100), \
+                patch("youtube_cdn_fallback.time.sleep") as sleep, \
+                patch.object(self.pp, "_probe", return_value=True):
+            self.pp.run(info)
+        sleep.assert_not_called()
+
     def test_http_and_certificate_errors_do_not_trigger_fallback(self):
         for error in (HTTPError(Response(io.BytesIO(), URL, {}, 403)), CertificateVerifyError("bad cert")):
             with self.subTest(error=type(error).__name__):

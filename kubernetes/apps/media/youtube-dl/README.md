@@ -21,6 +21,10 @@ Googlevideo CDN names in that URL's `mn` parameter. The signed query,
 request headers, and TLS verification are preserved. HTTP/authentication
 and primary certificate errors are left to the normal downloader.
 
+Probes respect each format's `available_at` timestamp, just as yt-dlp's
+downloader does. YouTube rejects requests made before this time with HTTP
+403, including probes made by a `before_dl` postprocessor.
+
 There are no fixed IP overrides or VPN requirements. Healthy primary
 servers continue to be used. Other websites and HLS streams are unchanged.
 The existing Reloader annotation restarts MeTube when the ConfigMap changes.
