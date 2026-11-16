@@ -5,3 +5,11 @@ kind: Kustomization
 namespace: media
 resources:
   - ./helmrelease.yaml
+configMapGenerator:
+  - name: youtube-dl-cdn-fallback
+    files:
+      - ./youtube_cdn_fallback.py
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

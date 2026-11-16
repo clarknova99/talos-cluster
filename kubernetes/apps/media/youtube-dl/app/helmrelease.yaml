@@ -65,6 +65,7 @@ spec:
                   "clean_infojson": true,
                   "writethumbnail": true,
                   "postprocessors": [
+                    {"key": "YoutubeCdnFallback", "when": "before_dl"},
                     {"key": "SponsorBlock"},
                     {
                       "key": "FFmpegSubtitlesConvertor",
@@ -121,6 +122,12 @@ spec:
         hostnames:
           - ytdl.${SECRET_DOMAIN}
     persistence:
+      cdn-fallback:
+        type: configMap
+        name: youtube-dl-cdn-fallback
+        globalMounts:
+          - path: /etc/yt-dlp/plugins/cdn-fallback/yt_dlp_plugins/postprocessor
+            readOnly: true
       downloads:
         enabled: true
         type: nfs
