@@ -64,7 +64,7 @@ spec:
           worker:
             image:
               repository: ghcr.io/langfuse/langfuse-worker
-              tag: 3.187.0@sha256:077ef8977e43288cd2e05743c95868b819e93f2aa795b83cf392b3ec3d23cd43
+              tag: 4.83.0@sha256:a6eac4bb99df27dd01a090e63d1a54660ba14044ae5e4c1ef1c883cec5d68ee4
             env:
               <<: *sharedEnv
     service:
