@@ -35,7 +35,7 @@
 
 This repository manages a bare-metal Kubernetes cluster running [Talos Linux](https://www.talos.dev/). Infrastructure is declared as code and deployed via [Flux CD](https://fluxcd.io/) GitOps. HTTP ingress uses [Envoy Gateway](https://gateway.envoyproxy.io/) with the [Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/); some services also expose dedicated LoadBalancer IPs.
 
-**Cluster Details** (verified 2026-09-29; desired versions are in [talconfig.yaml](kubernetes/bootstrap/talos/talconfig.yaml)):
+**Cluster Details**
 - **OS**: Talos Linux v1.13.0
 - **Kubernetes**: v1.36.0
 - **Cluster Name**: `home-kubernetes`
@@ -53,9 +53,9 @@ This repository manages a bare-metal Kubernetes cluster running [Talos Linux](ht
 | earth | Beelink EQ13  | 32GB | 192.168.3.214 | Control Plane | /dev/sdb |
 | mars | Intel NUC8i5BEH  | 32GB | 192.168.3.102 | Worker | /dev/sdb |
 | jupiter | Intel NUC11PAHi7   | 64GB |192.168.3.219 | Worker | /dev/sdb |
-|  | Firewalla Gold   |  | Not verified | Router |   |
-|  | Zyxel GS1900-24E |  | Not verified | Network Switch |   |
-|  | APC SMT1500C     |  | Not verified | UPS |   |
+|  | Firewalla Gold   |  |  | Router |   |
+|  | Zyxel GS1900-24E |  |  | Network Switch |   |
+|  | APC SMT1500C     |  |  | UPS |   |
 
 
 All control plane nodes share VIP `192.168.3.20` for the Kubernetes API server.
@@ -70,7 +70,7 @@ The cluster is managed entirely through GitOps using Flux CD. Changes are commit
 - `cluster-repositories` — Helm, Git, and OCI repository sources
 - `cluster-apps` — All application workloads, with SOPS decryption for secrets
 
-As verified on 2026-09-29, the Git source polls every minute and the `flux-system` entry point has a 10-minute interval. The two child root Kustomizations have 1-hour intervals; app intervals are commonly 30 minutes. New source revisions trigger reconciliation without waiting for those periodic intervals.
+The Git source polls every minute and the `flux-system` entry point has a 10-minute interval. The two child root Kustomizations have 1-hour intervals; app intervals are commonly 30 minutes. New source revisions trigger reconciliation without waiting for those periodic intervals.
 
 When committing, use `task flux:commit -- "<commit message>"`. It pulls, stages **all** changes, commits, pushes, and requests reconciliation of `flux-system` with its source. Review the working tree first and check Flux readiness afterward; a reconcile request does not guarantee every application is healthy.
 
